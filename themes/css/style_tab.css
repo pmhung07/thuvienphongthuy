@@ -1,0 +1,309 @@
+/**
+Author: pmhung07@gmail.com
+Version: 1
+Description: TiengAnh2020
+*/
+
+/*---------------------------*/
+/*-------Css Generate--------*/
+/*---------HOMEPAGE----------*/
+/*---------------------------*/
+@media screen and (max-width: 1024px) {
+	html, body, div, span, applet, object, iframe,
+	h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+	a, abbr, acronym, address, big, cite, code,
+	del, dfn, em, img, ins, kbd, q, s, samp,
+	small, strike, strong, sub, sup, tt, var,
+	b, u, i, center,
+	dl, dt, dd, ol, ul, li,
+	fieldset, form, label, legend,
+	table, caption, tbody, tfoot, thead, tr, th, td,
+	article, aside, canvas, details, embed, 
+	figure, figcaption, footer, header, hgroup, 
+	menu, nav, output, ruby, section, summary,
+	time, mark, audio, video {
+		font-size: 11px!important;
+	}
+	.content{
+		width: 100%;
+	}
+
+	/*----------HEADER----------*/
+	.header{
+		padding-top: 0px;
+	}
+	.main-menu li a{
+		padding: 13px 6px;
+		font-weight: normal;
+	}
+	.register {
+		margin: 45px 0px 46px 25px;
+	}
+	.register a{
+		text-transform: uppercase;
+	}
+	.logo {
+		margin: 19px 0px;
+	}
+	.logo img{
+		width: 70%;
+	}
+	.main{
+		margin-top: 60px;
+	}
+	.slider-search{
+		top: 15%;
+	}
+	.slider-search h4{
+		font-size: 15px!important;
+	}
+	.main-menu-active{
+		background: url(../img/icon-menu-down.png) no-repeat center 28px;
+	}
+	/*LIST COURSES*/
+	.list-courses-filter-title{
+		width: 100%;
+	}
+	.list-courses-filter-search{
+		width: 100%;
+	}
+	.searchtext-module{
+		margin-top: 0px;
+	}
+	#courses-search input[type="submit"] {
+		margin: 0px 0px 0px 0px!important;
+	}
+	/*REGIS - LOGIN*/
+	.controls input{
+		width: 100%;
+	}
+	.login-social{
+		width: 50%;
+	}
+	.login{
+		float: none;
+	}
+	.regis{
+		float: none;
+	}
+	.nav-menu ul li{
+		width: 90%;
+		margin-bottom: 1px;
+	}
+	.content-show-community{
+		width: 48%;
+	}
+}
+@media screen and (max-width: 769px) {
+	.content{
+		width: 420px;
+		margin: 0 auto;
+		position: relative;
+	}
+	.content-main{
+		padding: 0px 20px;
+	}
+	.header{
+		height: auto;
+		position: static;
+		overflow: hidden;
+	}
+	.logo{
+		display: block;
+		width: 98px;
+		height: 100px;
+		margin: 15px auto;
+		float: none;
+	}
+	.logo img{
+		width: 100%;
+	}
+	.register{
+		width: 200px;
+		margin: 25px auto;
+		float: none;
+	}
+	.register span{
+		padding: 10px 17px;
+	}
+	.main {
+		margin-top: 0px;
+	}
+	.main-menu{
+		width: 100%;
+		margin: 0 auto;
+		display: block;
+		background: #08bbb7;
+	}
+	.main-menu{
+		display: none;
+	}
+	.main-menu-toggle{
+		display: block;
+		background: #14a4a1 url(../img/icon-tool-mobile.png) no-repeat 98% 50%;
+		color: #ffffff;
+		font-weight: 500;
+		text-transform: uppercase;
+		padding: 12px 15px 11px;
+		cursor: pointer;
+		margin: 0 auto;
+	}
+	.main-menu-active-url{
+		border: none;
+	}
+	.main-menu li{
+		width: 100%;
+	}
+	.main-menu-parent a{
+		color: white;
+		padding-left: 14px!important;
+		display: block;
+		float: none!important;
+		background: url(../img/icon-tool-child-mobile.png) no-repeat 98% 50%;
+	}
+	.slider-search{
+		top: 10%;
+	}
+	.register-home li a{
+		width: 100%;
+		line-height: 50px;
+	}
+
+	/*HOME - MAIN - CONTENT*/
+	.module{
+		margin-top: 20px;
+	}
+	.col-home{
+		width: 100%;
+	}
+	.row-home-title{
+		margin: 15px 0px;
+	}
+	.col-home-info_title{
+		margin: 12px 0px;
+	}
+	.col-home-info p{
+		margin-bottom: 10px;
+	}
+	/*HOME - MAIN - LIB*/
+	.col-home-lib-img{
+		width: 100%;
+		margin: 15px 0px;
+	}
+	.col-home-cir-img{
+		width: 100%!important;
+		margin: 35px 0px;
+	}
+
+	/*FOOTER*/
+	.footer{
+		margin-top: 80px;
+	}
+	.footer-list-main-col{
+		width: 100%;
+		margin-bottom: 15px;
+	}
+	.footer-list-main-parent{
+		font-size: 17px!important;
+		color: black;
+	}
+	.footer-list-main-child{
+		font-size: 14px!important;
+		line-height: 18px;
+	}
+	.footer-list-main-col span {
+		width: 100%;
+		float: left;
+		margin-top: 10px;
+		border-bottom: solid 1px #E5DFDF;
+		padding-bottom: 15px;
+	}
+	.footer-copy{
+		height: auto;
+	}
+	.footer-copy-main{
+		width: 100%;
+	}
+	.footer-copy-social{
+		width: 100%;
+		margin: 0px 0px 30px 0px;
+	}
+	.footer-copy-social ul li{
+		float: left;
+	}
+	/*LIST COURSES*/
+	.list-courses-main-content{
+		width: 100%;
+	}
+	.content-show-courses{
+		width: 100%;
+		margin-right: 0%;
+	}
+	/*SIDE BAR*/
+	.list-courses-main-sidebar{
+		width: 100%;
+	}
+	/*NEWS*/
+	.news_show_img{
+		width: 100%;
+	}
+	.news-show-info{
+		width: auto;
+	}
+	/*LOGIN - REGIS*/
+	.login{
+		width: 100%;
+	}
+	.regis{
+		width: 100%;
+	}
+	.login-social {
+		width: 75%;
+	}
+	/*LIGHT BOX*/
+	#result_lb{
+    	width: 250px;
+	}
+	/*COMMUNITY*/
+	.content-show-community{
+		width: 98%;
+	}
+	/*PAGING*/
+	.paging{
+		height: auto;
+	}
+	.paging_listing ul a{
+		margin-bottom: 5px;
+	}
+	/*PAYMENT*/
+	.payment-step-list{
+		width: 100%;
+		margin-bottom: 5px;
+	}
+	.payment-method{
+		width: 100%;
+	}
+	.payment-price{
+		width: 100%;
+	}
+	.payment-confirm{
+		width: 100%;
+	}
+	.user-tool{
+		display: none;
+	}
+	/*14032015*/
+	.wrap-search-google{
+		display: none;
+	}
+	/*16032015*/
+	.list-courses-main-user{
+		width: 100%;
+	}
+	.block-content-info .controls input{
+		width: 95%!important;
+	}
+	.block-content-show-content{
+		padding: 0px;
+	}
+}

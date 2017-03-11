@@ -1,0 +1,45 @@
+
+body{
+    font-family: Arial,sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+}
+#result_lb{
+    width: 500px;
+}
+.lb_top{
+    background: url(../img/bg-title-nav.png) no-repeat 0px 20px;
+    margin: 0px 0px 10px 0px;
+    padding: 0px 0px 10px 0px;
+}
+.middle_cont{
+    margin-bottom: 10px;
+}
+.section{
+    color: rgb(0, 152, 165);
+}
+.result{
+    color: rgb(181, 5, 5);
+}
+.act_button{
+    padding: 8px 14px;
+    overflow: hidden;
+    float: left;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+}
+.back{
+    background: #11B9C0;
+}
+.show{
+    background: rgb(165, 1, 1);
+}
+.back:hover{
+    color: white;
+    background: #19D1D8;
+}
+.show:hover{
+    background: rgb(187, 9, 9);
+    color: white;
+}

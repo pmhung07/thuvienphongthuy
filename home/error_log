@@ -1,0 +1,56 @@
+[23-Feb-2017 20:29:43 America/Chicago] PHP Warning:  Missing argument 1 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:29:43 America/Chicago] PHP Warning:  Missing argument 2 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:29:43 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 39
+[23-Feb-2017 20:29:43 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 40
+[23-Feb-2017 20:29:43 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 44
+[23-Feb-2017 20:29:43 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 47
+[23-Feb-2017 20:29:43 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:29:43 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:34:22 America/Chicago] PHP Warning:  Missing argument 1 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:34:22 America/Chicago] PHP Warning:  Missing argument 2 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:34:22 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 39
+[23-Feb-2017 20:34:22 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 40
+[23-Feb-2017 20:34:22 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 44
+[23-Feb-2017 20:34:22 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 47
+[23-Feb-2017 20:34:22 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:34:22 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:35:13 America/Chicago] PHP Warning:  Missing argument 1 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:35:13 America/Chicago] PHP Warning:  Missing argument 2 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:35:13 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 39
+[23-Feb-2017 20:35:13 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 40
+[23-Feb-2017 20:35:13 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 44
+[23-Feb-2017 20:35:13 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 47
+[23-Feb-2017 20:35:13 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:35:13 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:36:11 America/Chicago] PHP Warning:  Missing argument 1 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:36:11 America/Chicago] PHP Warning:  Missing argument 2 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:36:11 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 39
+[23-Feb-2017 20:36:11 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 40
+[23-Feb-2017 20:36:11 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 44
+[23-Feb-2017 20:36:11 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 47
+[23-Feb-2017 20:36:11 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:36:11 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:36:21 America/Chicago] PHP Warning:  Missing argument 1 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:36:21 America/Chicago] PHP Warning:  Missing argument 2 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:36:21 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 39
+[23-Feb-2017 20:36:21 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 40
+[23-Feb-2017 20:36:21 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 44
+[23-Feb-2017 20:36:21 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 47
+[23-Feb-2017 20:36:21 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:36:21 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:38:04 America/Chicago] PHP Warning:  Missing argument 1 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:38:04 America/Chicago] PHP Warning:  Missing argument 2 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:38:04 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 39
+[23-Feb-2017 20:38:04 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 40
+[23-Feb-2017 20:38:04 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 44
+[23-Feb-2017 20:38:04 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 47
+[23-Feb-2017 20:38:04 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:38:04 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:38:21 America/Chicago] PHP Warning:  Missing argument 1 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:38:21 America/Chicago] PHP Warning:  Missing argument 2 for user::user(), called in /home/phongthuyvuong/thuvienphongthuy.vn/home/config.php on line 44 and defined in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 37
+[23-Feb-2017 20:38:21 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 39
+[23-Feb-2017 20:38:21 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 40
+[23-Feb-2017 20:38:21 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 44
+[23-Feb-2017 20:38:21 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 47
+[23-Feb-2017 20:38:21 America/Chicago] PHP Notice:  Undefined variable: login_name in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56
+[23-Feb-2017 20:38:21 America/Chicago] PHP Notice:  Undefined variable: password in /home/phongthuyvuong/thuvienphongthuy.vn/classes/user.php on line 56

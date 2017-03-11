@@ -1,0 +1,5 @@
+username-ftp : hamhoc
+password-ftp : 2316%2^&sdbadask
+http://123.30.40.92/phpmyadmin/
+username-mysql : hamhoc_hamhoc
+password-mysql : da2787@*&dksaj

@@ -1,0 +1,33 @@
+<?
+include("inc_security.php");
+
+//========== variable json=========//
+$msg   = "";
+$err 	 = "";
+$json  = array();
+$fs_errorMsg = "";
+//====== get variable question=====//
+$med_id	       = getValue("med_id","int","POST",0);
+$que_media_id   = 0;
+//=================================//
+if($med_id > 0){
+   $myform = new generate_form();
+   $myform->add("que_media_id","que_media_id",1,1,"",0,"",0,"");
+   $myform->addTable("questions");
+   //Check $action for insert new data
+   $fs_errorMsg .= $myform->checkdata();
+   if($fs_errorMsg == ""){
+      $myform->removeHTML(0);
+   	$db_update = new db_execute($myform->generate_update_SQL("que_id", $med_id));
+   	unset($db_update);
+      $msg = "Quá trình sửa đổi thành công";
+   }else{
+      $err = "Có lỗi trong quá trình sửa đổi";
+   }
+   
+   //==================
+   $json['msg'] = $msg;
+   $json['err'] = $err;
+   echo json_encode($json);
+}
+?>
