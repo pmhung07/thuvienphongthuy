@@ -1,8 +1,8 @@
-<?php 
+<?php
 /*------------------------------------------*/
-$load_time = microtime(); 
-$load_time = explode(' ',$load_time); 
-$load_time = $load_time[1] + $load_time[0]; 
+$load_time = microtime();
+$load_time = explode(' ',$load_time);
+$load_time = $load_time[1] + $load_time[0];
 $page_start = $load_time;
 /*------------------------------------------*/
 
@@ -83,12 +83,12 @@ require_once('config.php');
 
 <?php
 /*------------------------------------------*/
-$load_time = microtime(); 
-$load_time = explode(' ',$load_time); 
-$load_time = $load_time[1] + $load_time[0]; 
-$page_end = $load_time; 
-$final_time = ($page_end - $page_start); 
-$page_load_time = number_format($final_time, 9, '.', ''); 
+$load_time = microtime();
+$load_time = explode(' ',$load_time);
+$load_time = $load_time[1] + $load_time[0];
+$page_end = $load_time;
+$final_time = ($page_end - $page_start);
+$page_load_time = number_format($final_time, 9, '.', '');
 //echo("<span style='font-size:11px; display: block; text-align: center;'>Page generated in " . $page_load_time . " seconds</span>");
 /*------------------------------------------*/
 ?>

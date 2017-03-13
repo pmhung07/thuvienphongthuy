@@ -2,6 +2,11 @@
 ob_start();
 @session_start();
 require_once("initsession.php");
+
+// Bootstrap appliation
+require_once '../bootstrap/setup.php';
+require_once("../functions/app_functions.php");
+
 require_once("../includes/inc_config_variable.php");
 require_once("../classes/database.php");
 require_once("../classes/generate_form.php");
@@ -36,8 +41,8 @@ require_once("../functions/pagebreak.php");
 //require_once("../includes/inc_config_website.php");
 
 /*if($_SERVER["SERVER_NAME"] != "tienganh2020.com"){
-   	header("HTTP/1.1 301 Moved Permanently"); 
-   	header("Location: http://tienganh2020.com".$_SERVER["REQUEST_URI"]); 
+   	header("HTTP/1.1 301 Moved Permanently");
+   	header("Location: http://tienganh2020.com".$_SERVER["REQUEST_URI"]);
    	redirect("http://tienganh2020.com" . $_SERVER["REQUEST_URI"]);
 }*/
 

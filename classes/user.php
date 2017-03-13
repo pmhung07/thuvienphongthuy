@@ -34,7 +34,7 @@ class user{
 	password  : password (no hash)
 	level: nhom user; 0: Normal; 1: Admin (default level = 0)
 	*/
-	function user($login_name,$password){
+	function __construct($login_name,$password){
 		/*CHECK SYSTEM LOGIN*/
 			$sys_login_name = $login_name;
 			$sys_login_password = $password;
@@ -52,20 +52,20 @@ class user{
 			//remove \' if gpc_magic_quote = on
 			$password = str_replace("\'","'",$password);
 		}
-		
+
 		if ($login_name=="" && $password=="") return;
 
 		$db_user = new db_query("SELECT *
 								   FROM users
 								  WHERE use_email = '" . $this->removequote($login_name) . "'");
-		
+
 		if ($row=mysql_fetch_array($db_user->result)){
 			//kiem tra password va use_active
 			if($checkcookie == 0)	$password = md5($password . $row["use_security"]);
 
 			// Nếu đăng nhập trên hệ thống
 			if($sys_login_name != "" && $sys_login_password != ""){
-				if ($password == $row["use_password"] && $row["use_active"] == 1) { 
+				if ($password == $row["use_password"] && $row["use_active"] == 1) {
 					$this->logged         	= 1;
 					$this->login_name 	 	= $login_name;
 					$this->use_name 	    = $row["use_name"];
@@ -98,7 +98,7 @@ class user{
 	                $this->use_ex     		= $row['use_ex'];
 	                $this->user_wallet     	= $row['user_wallet'];
 	                $this->user_admin       = $row['user_admin'];
-				}else if ($password == $row["use_password"] && $row["use_active"] == 1) { 
+				}else if ($password == $row["use_password"] && $row["use_active"] == 1) {
 					$this->logged         	= 1;
 					$this->login_name 	 	= $login_name;
 					$this->use_name 	    = $row["use_name"];
@@ -137,7 +137,7 @@ class user{
 	*/
 	function savecookie($time=0){
 		if ($this->logged!=1) return false;
-		
+
 		if ($time > 0){
 			setcookie("login_name",$this->login_name,time()+$time,"/");
 			setcookie("PHPSESS1D",$this->password,time()+$time,"/");
@@ -147,7 +147,7 @@ class user{
 			setcookie("PHPSESS1D",$this->password,null,"/");
 		}
 	}
-	
+
 	function fake_login_openid($email, $nickname = "", $fullname = ""){
 		$this->logged = 0;
 		if($email == "") return '';
@@ -169,7 +169,7 @@ class user{
 			$db_ex 		= 	new db_execute("INSERT INTO users(use_active,use_login,use_password,use_email,use_date,use_name,use_openid)
 										         VALUES( 1,'" . $nickname . "','" . $password . "','" . $email . "','".$use_date."','" . $fullname ."',1)");
 		 	unset($db_ex);
-         
+
         	$db_user = new db_query("SELECT use_id FROM users WHERE use_email = '".$email."';");
          	$row_user = mysql_fetch_assoc($db_user->result);
          	unset($db_user);
@@ -179,7 +179,7 @@ class user{
 			$this->logged = 1;
 		}
 	}
-	
+
 	/*
 	Logout account
 	*/
@@ -196,8 +196,8 @@ class user{
 
 		$db_user = new db_query("SELECT use_password,use_security
 								   FROM users, user_group
-								  WHERE use_group = group_id 
-								    AND use_active=1 
+								  WHERE use_group = group_id
+								    AND use_active=1
 								    AND use_login = '" . $this->removequote($this->login_name) . "'");
 
 		if ($row=mysql_fetch_array($db_user->result)){
@@ -215,7 +215,7 @@ class user{
 		$temp = str_replace("'","''",$temp);
 		return $temp;
 	}
-	
+
 	/*
 	check_user_level: Kiem tra xem User co thuoc nhom Admin hay khong. Mac dinh User thuoc nhom Normal.
 	table_name: ten bang (Ex; Users)
@@ -243,7 +243,7 @@ class user{
 			return 0;
 		}
 	}
-	
+
 	/*
 	check_data_in_db : Kiem tra xem data hien thoi co phai thuoc user ko (check trong database)
 	table_name : ten table
@@ -261,7 +261,7 @@ class user{
 
 		//neu dump_query = 1 thi in ra ma`n hinh
 		if ($dump_query==1) echo $my_query;
-		
+
 		//kiem tra query
 		$db_check = new db_query($my_query);
 		//neu ton tai record do thi` tra ve gia tri 1, neu ko thi` tra ve gia tri 0
@@ -274,7 +274,7 @@ class user{
 			return 0;
 		}
 	}
-	
+
 	/*
 	check_data : kiem tra xem data co phai thuoc user_id khong (check trong luc fetch_array)
 	user_id : gia tri user id để so sánh
@@ -284,21 +284,21 @@ class user{
 		if ($this->u_id != $user_id) return 0;
 		return 1;
 	}
-	
+
 	/*
 	change password : Sau khi change password phải dùng hàm save cookie. Su dung trong truong hop Change Profile
 	*/
 	function change_password($old_password,$new_password){
-		
+
 		//replace quote if gpc_magic_quote = on
 		$old_password = str_replace("\'","'",$old_password);
 		$new_password = str_replace("\'","'",$new_password);
-		
+
 		//chua login -> fail
 		if ($this->logged!=1) return 0;
 		//old password ko đúng -> fail
 		if (md5($old_password . $this->use_security)!=$this->password) return 0;
-		
+
 		//change password
 		$db_update = new db_execute("UPDATE users
 									 SET use_password = '" . md5($new_password . $this->use_security). "'
@@ -307,33 +307,33 @@ class user{
 		$this->password = md5($new_password . $this->use_security);
 		return 1;
 	}
-	
+
 	/*
 	check user access
 	*/
-	
+
 	function check_access($right_list,$id_value=0){
 		$right_array = explode(",",$right_list);
 		//lap trong right_list de tim quyen (right)
 		//print_r($this->user_right_name_array);
-		
+
 		for ($i=0;$i<count($right_array);$i++){
 			//neu user_right_name_array ma bang rong tuc la khong co quyen nao ca thi return 0
 			if(!is_array($this->user_right_name_array)) return 0;
 			//Tim thay quyen cua trong right list
 			//if (strpos($this->user_right_list,$right_array[$i])!==false){
 			//Tim trong array
-			
-			$key = array_search($right_array[$i], $this->user_right_name_array); 
+
+			$key = array_search($right_array[$i], $this->user_right_name_array);
 			//co ton tai
-		
+
 			if ($key!==false){
 				//eval global variable
-				global $$right_array["$i"];
+				// global $$right_array["$i"];
 				$temp = $$right_array["$i"];
 				//Kiem tra xem bien dc eval co ton tai khong
 				if (!isset($temp)) { echo "<b>Variable " . $right_array["$i"] . " is undefined. </b><br>"; return 0;}
-				
+
 				//Neu co soluong va` action ko phai fullaccess thi` kiem tra so luong
 				if ($this->user_right_quantity_array[$key]!=0 && $temp["action"]!="fullaccess" ){
 					//gan query
@@ -343,18 +343,18 @@ class user{
 					//echo $sql;
 					//neu action = change value them sql
 					if ($temp["action"]=="changevalue") $sql.= " AND " . $temp["change_field"] . "= 1 ";
-		
+
 					//neu id them va`o khac 0 thi` loai bo id khoi cau lenh sql
 					if ($id_value!=0) $sql.=" AND " . $temp["id_field"] . "<>" . $id_value;
-					
+
 					//Execute SQL
 					$db_sum = new db_query($sql);
 					$row = mysql_fetch_array($db_sum->result);
 					unset($db_sum);
-					
+
 					//Kiem tra count neu nho hon gia tri cho phep thi` return 1
 					if ($row["count"] < $this->user_right_quantity_array[$key]) return 1;
-					
+
 				}
 				else{
 					return 1;
@@ -363,17 +363,17 @@ class user{
 		}
 		return 0;
 	}
-	
-	
+
+
 }
 ?>
 <?
 /*
 defined right
 Bao gom cac thong so sau :
-right gom co :  insert : Them 1 ban ghi moi, 
-				update : Sua chua ban ghi, 
-				delete : Xoa ban ghi, 
+right gom co :  insert : Them 1 ban ghi moi,
+				update : Sua chua ban ghi,
+				delete : Xoa ban ghi,
 				changevalue : Sua 1 column (field) na`o day trong ban ghi, vi du : hot, news, approver
 				fullaccess : Admin 1 muc nao do
 */

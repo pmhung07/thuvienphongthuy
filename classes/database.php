@@ -6,19 +6,18 @@
 /**
  * Class db_init
  * Class khoi tao ket noi database
- */ 
-error_reporting(0);
+ */
 class db_init{
     /** Ten Server */
-	var $server;   
+	var $server;
 	/** Ten User */
-    var $username;   
+    var $username;
     /** Mat khau */
-	var $passworddb; 
+	var $passworddb;
     /** Ten CSDL */
-	var $database;    
+	var $database;
  	var $cookie_server 							= '';
-         
+
     /*********************************************************************************************************/
 	/**
 	 * db_init::db_init()
@@ -27,22 +26,24 @@ class db_init{
 	 */
 	function db_init(){
  		// Khai bao Server localhost day
-		
-		$this->server	 					= "localhost";
+
+		$this->server	 					= config('db_host');
 		//$this->username 					= "sql_hochay";
 		//$this->database					= "db_hochay";
 		//$this->passworddb					= 'lfdsjlvnslfdslfhs2q'; //matj khau server ape
-		$this->username 					= "thuvienphongthuy_vn";
-		$this->database				   		= "thuvienphongthuy_vn";
-		$this->passworddb					= 'tamnguyen999'; //matj khau server ape
+		$this->username 					= config('db_username');
+		$this->database				   		= config('db_database');
+		$this->passworddb					= config('db_password'); //matj khau server ape
 
 		if($_SERVER['SERVER_NAME'] == 'localhost'){
 			$this->cookie_server			= '/'; //cau hinh server luu cookie
 		}else{
 			$this->cookie_server			= ''; //cau hinh server luu cookie
 		}
+
+
 	}
-	
+
     /*********************************************************************************************************/
 	/**
 	 * db_init::log()
@@ -52,18 +53,18 @@ class db_init{
 	 * @return
 	 */
 	function log($filename, $content){
-		
+
 		$log_path     =   $_SERVER["DOCUMENT_ROOT"] . "/logs/";
 		$handle       =   @fopen($log_path . $filename . ".cfn", "a");
 		//Neu handle chua co mo thêm ../
 		if (!$handle) $handle = @fopen($log_path . $filename . ".cfn", "a");
 		//Neu ko mo dc lan 2 thi exit luon
-		if (!$handle) exit();		
-		fwrite($handle, date("d/m/Y h:i:s A") . " " . @$_SERVER["REQUEST_URI"] . "\n" . $content . "\n");	
-		fclose($handle); 	
-			
+		if (!$handle) exit();
+		fwrite($handle, date("d/m/Y h:i:s A") . " " . @$_SERVER["REQUEST_URI"] . "\n" . $content . "\n");
+		fclose($handle);
+
 	}
-    
+
     /*********************************************************************************************************/
  	/**
  	 * db_init::debug_query()
@@ -72,14 +73,14 @@ class db_init{
  	 * @param string $file_line_query : noi dung loi
  	 * @return
  	 */
- 	function debug_query($query, $file_line_query){ 		
+ 	function debug_query($query, $file_line_query){
  		//neu localhost thi luon save query vào file con de kiem tra
  		if(@$_SERVER["SERVER_ADDR"] == "127.0.0.1"){
  			$this->log("query",$file_line_query . " \n " . $query);
  		}
- 		
+
  	}
-    
+
     /*********************************************************************************************************/
 	/**
 	 * db_init::__destruct()
@@ -92,8 +93,8 @@ class db_init{
 		unset($this->passworddb);
 		unset($this->database);
 	}
-    
-    
+
+
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -102,79 +103,81 @@ class db_init{
 /**
  * Class db_query
  * Class thuc hien 1 truy van
- */ 
+ */
 class db_query{
 	/** Ket qua cua cau truy van */
-	var $result;               
+	var $result;
     /** ket noi */
-	var $links;        
-    /** Thoi gian nhieu nhat 1 cau query duoc thuc hien */                
+	var $links;
+    /** Thoi gian nhieu nhat 1 cau query duoc thuc hien */
 	var $time_slow_log = 0.05;     //
-     
-    /*********************************************************************************************************/ 
+
+    /*********************************************************************************************************/
 	/**
 	 * db_query::db_query()
-	 * 
+	 *
 	 * @param mixed $query : cau truy van
 	 * @param string $file_line_query : loi se ghi
 	 * @return
 	 */
 	function db_query($query, $file_line_query = ""){
-	
-		$dbinit       = new db_init();		
+
+		$dbinit       = new db_init();
 		//Khai bao connect
 		$this->links  = @mysql_connect($dbinit->server, $dbinit->username, $dbinit->passworddb);
 		//Neu khong ket noi duoc
 		if(!$this->links){
-			
+
 			//ghi ra log loi query
 			$path        = $_SERVER['DOCUMENT_ROOT'] . "/logs/";
 			$filename    = "errorconect.cfn";
 			$url         = $file_line_query;
 			$str         = "File : " . $file_line_query . " ";
 			$str        .= "IP:" . $_SERVER['REMOTE_ADDR'] . " Not connect DB: host: " . $dbinit->server . ", User : " . $dbinit->username . chr(13);
-			$str         = "" . chr(13) . chr(13) . $str;			
-			$dbinit->log("errorconect", $str); 					
+			$str         = "" . chr(13) . chr(13) . $str;
+			$dbinit->log("errorconect", $str);
+
+
 			exit();
 		}
-		
-		$db_select    = mysql_select_db($dbinit->database,$this->links);		
+
+		$db_select    = mysql_select_db($dbinit->database,$this->links);
 		$time_start   = $this->microtime_float();
-		
+
 		@mysql_query("SET NAMES 'utf8'");
 		$this->result = @mysql_query($query, $this->links);
-		
+
 		$time_end     = $this->microtime_float();
 		$time         = $time_end - $time_start;
 		//neu thoi gian thuc hien query lon hon hoac bang 0.05 thi ghi log lai.
 		if ($time >= $this->time_slow_log){
-		
+
 			//Ghi log o file
 			$path    = $_SERVER['DOCUMENT_ROOT'] . "/logs/";
 			//Ghi log o file
 			$str     = "File : " . $file_line_query . "\n";
 			$str    .= "Query time : " . number_format($time,10,".",",") . "\n";
 			$str    .= "IP:" . $_SERVER['REMOTE_ADDR'] . $query . chr(13);
-			$dbinit->log("slow_sql", $str); 
-		
+			$dbinit->log("slow_sql", $str);
+
 		}
-		
-		
+
+
 		//Neu query ko co ket qua -> dump log
 		if (!$this->result){
 			//ghi ra log loi query
 			$path    = $_SERVER['DOCUMENT_ROOT'] . "/logs/";
 			$error   = @mysql_error($this->links);
-			@mysql_close($this->links);	
+			@mysql_close($this->links);
 		 	$dbinit->log("error_sql", $error . "\n" . $query);
 			die( $error . ": " . $query);
 		}
-		
+
 		//ghi query ra log de kiem tra
 		$dbinit->debug_query($query, $file_line_query);
 		unset($dbinit);
 	}
-    
+
     /*********************************************************************************************************/
 	/**
 	 * db_query::resultArray()
@@ -187,13 +190,13 @@ class db_query{
 			if($field_id != ""){
 				$arrayReturn[$row[$field_id]] = $row;
 			}else{
-				$arrayReturn[] = $row;	
+				$arrayReturn[] = $row;
 			}
-			
+
 		}
 		return $arrayReturn;
 	}
-    
+
     /*********************************************************************************************************/
 	/**
 	 * db_query::close()
@@ -201,12 +204,12 @@ class db_query{
 	 * @return
 	 */
 	function close(){
-		@mysql_free_result($this->result); 
-		if ($this->links){ 
-			@mysql_close($this->links);		
+		@mysql_free_result($this->result);
+		if ($this->links){
+			@mysql_close($this->links);
 		}
 	}
-	
+
     /*********************************************************************************************************/
 	/**
 	 * db_query::microtime_float()
@@ -216,7 +219,7 @@ class db_query{
 	function microtime_float(){
 	 list($usec, $sec) = explode(" ", microtime());
 	 return ((float)$usec + (float)$sec);
-	}	
+	}
 }
 //End class db_query
 
@@ -230,9 +233,9 @@ class db_query{
  */
 class db_execute{
     /** ket noi */
-	var $links; 
+	var $links;
     /** so dong bi anh huong */
-	var $total = 0;    
+	var $total = 0;
 
     /*********************************************************************************************************/
 	/**
@@ -252,16 +255,16 @@ class db_execute{
 
 		//kiem tra thanh cong hay chua
 		$this->total = @mysql_affected_rows();
-		
+
 		//neu ket qua query thuc thi khong thanh cong tru truong hop insert ignore
 		if($this->total < 0 && strpos($query, "IGNORE") === false ){
 			$error = @mysql_error($this->links);
-			@mysql_close($this->links);	
+			@mysql_close($this->links);
             //ghi log
-			$dbinit->log("error_sql", $file_line_query . " " . $error . "\n" . $query); 	
+			$dbinit->log("error_sql", $file_line_query . " " . $error . "\n" . $query);
 		}
 		@mysql_close($this->links);
-		
+
 		//ghi query ra log de kiem tra
 		$dbinit->debug_query($query, $file_line_query);
 		unset($dbinit);
@@ -280,17 +283,17 @@ class db_execute{
 class db_count{
 	/** so luong ket qua */
     var $total;
-    
+
 	/*********************************************************************************************************/
     /**
 	 * db_count::db_count()
-	 * 
+	 *
 	 * @param string $sql : Cau lenh sql
 	 * @return int so ket qua
 	 */
 	function db_count($sql){
 		$db_ex    = new db_query($sql);
-        
+
 		if( $row = mysql_fetch_assoc($db_ex->result)){
 			$this->total = intval($row["count"]);
 		}else{
@@ -312,48 +315,48 @@ class db_count{
  */
 class db_execute_return{
 	/** ket noi*/
-	var $links;    
+	var $links;
     /** ket qua*/
-	var $result;  
-    
-    /*********************************************************************************************************/ 
+	var $result;
+
+    /*********************************************************************************************************/
 	/**
 	 * db_execute_return::db_execute()
-	 * 
+	 *
 	 * @param string $query : cau truy van
 	 * @param string $file_line_query : Loi se ghi
 	 * @return int :ID duoc them vao cuoi cung.
 	 */
 	function db_execute($query, $file_line_query = ""){
-		
+
 		$dbinit       =   new db_init();
 		$this->links  =   @mysql_connect($dbinit->server, $dbinit->username, $dbinit->passworddb);
 		@mysql_select_db($dbinit->database);
-		
-		
+
+
 		@mysql_query("SET NAMES 'utf8'");
 		@mysql_query($query);
-		
+
 		$total        =   @mysql_affected_rows();
-		
+
 		//neu ket qua khong thanh cong và khong phai là insert ignore
 		if($total < 0 && strpos($query, "IGNORE") === false ){
-				
+
 			$error = @mysql_error($this->links);
-			@mysql_close($this->links);	
-			 
-			$dbinit->log("error_sql", $file_line_query . " " . $error . "\n" . $query); 	
-		}		
-		
+			@mysql_close($this->links);
+
+			$dbinit->log("error_sql", $file_line_query . " " . $error . "\n" . $query);
+		}
+
 		$last_id      =   0;
 		$this->result = @mysql_query("select LAST_INSERT_ID() as last_id",$this->links);
-		
+
 		if($row = @mysql_fetch_array($this->result)){
 			$last_id = $row["last_id"];
 		}
-		
-		@mysql_close($this->links); 
-		
+
+		@mysql_close($this->links);
+
 		//ghi query ra log de kiem tra
 		$dbinit->debug_query($query, $file_line_query);
 		//huy bien
