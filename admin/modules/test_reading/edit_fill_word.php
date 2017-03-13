@@ -9,11 +9,11 @@ checkAddEdit("edit");
    $fil_id 		      = getValue("fil_id");
    $record_id 		   = getValue("record_id");
 
-   $myform = new generate_form();  
+   $myform = new generate_form();
    $myform->add("fil_phrases", "fil_phrases", 0, 0, "", 1, "Bạn chưa nhập câu", 0, "");
    $myform->add("fil_paragraph", "fil_paragraph", 0, 0, "",1, "Bạn chưa nhập đoạn văn", 0, "");
    $myform->add("fil_position","fil_position",1,0,0,1,"Bạn chưa nhập vị trí",0,"");
-	
+
 	//Add table insert data
 	$myform->addTable("test_fillwords");
    //Get action variable for add new data
@@ -21,14 +21,14 @@ checkAddEdit("edit");
    //Check $action for insert new data
    if($action == "execute"){
    	//Check form data
-   	$fs_errorMsg .= $myform->checkdata();      
-   	if($fs_errorMsg == ""){ 	
+   	$fs_errorMsg .= $myform->checkdata();
+   	if($fs_errorMsg == ""){
    		$myform->removeHTML(0);
    		$db_ex = new db_execute($myform->generate_update_SQL("fil_id",$fil_id));
-   		redirect("add_exercises.php?iPara=".$iPara."&record_id=".$record_id);	
-   	}	
+   		redirect("add_exercises.php?iPara=".$iPara."&record_id=".$record_id);
+   	}
    }
-   
+
    $myform->addFormname("add_new");
    $myform->evaluate();
    $myform->checkjavascript();
@@ -39,10 +39,10 @@ checkAddEdit("edit");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <?=$load_header?>
-<? 
+<?
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM test_fillwords WHERE fil_id = " . $fil_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -75,7 +75,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
       $form->close_form();
       unset($form);
       ?>
-   </p>   
+   </p>
    <?=template_bottom() ?>
 </body>
 </html>

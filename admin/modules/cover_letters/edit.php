@@ -37,18 +37,18 @@ $listAll 								= $menu->getAllChild("categories_multi","cat_id","cat_parent_id
      $post_cat_parent_id = $menu->getParentid('categories_multi','cat_id','cat_parent_id',$post_cat_id);
    }
 
-   $cv_time = time(); 
+   $cv_time = time();
 
    $myform = new generate_form();
-   $myform->add("cv_cat_id","cv_cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,""); 
-   $myform->add("cv_cat_parent_id","post_cat_parent_id",1,1,0,0,"Bạn chưa chọn danh mục",0,""); 
-   $myform->add("cv_language","cv_language",1,0,0,0,"",0,""); 
+   $myform->add("cv_cat_id","cv_cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,"");
+   $myform->add("cv_cat_parent_id","post_cat_parent_id",1,1,0,0,"Bạn chưa chọn danh mục",0,"");
+   $myform->add("cv_language","cv_language",1,0,0,0,"",0,"");
    $myform->add("cv_name", "cv_name", 0, 0, "", 1, "Bạn chưa nhập tiêu đề CV", 0, "");
    $myform->add("cv_price", "cv_price", 0, 0, "", 1, "Bạn chưa nhập giá", 0, "");
    $myform->add("cv_info","cv_info", 0, 0,"", 0, "", 0, "");
    $myform->add("cv_time","cv_time", 0, 1,"", 0, "", 0, "");
    $myform->add("cv_active","cv_active",1,0,0,0,"",0,"");
-   
+
    $myform->add("cv_meta_title","cv_meta_title",0,0,"",0,"",0,"");
    $myform->add("cv_meta_description","cv_meta_description",0,0,"",0,"",0,"");
    $myform->add("cv_meta_keywords","cv_meta_keywords",0,0,"",0,"",0,"");
@@ -57,8 +57,8 @@ $listAll 								= $menu->getAllChild("categories_multi","cat_id","cat_parent_id
    $action = getValue("action", "str", "POST", "");
    if($action == "execute"){
    	$fs_errorMsg .= $myform->checkdata();
-   	if($fs_errorMsg == ""){	   	
-         
+   	if($fs_errorMsg == ""){
+
          $upload     = new upload("cv_avatar", $imgpath, $fs_extension, $fs_filesize);
          $filename   = $upload->file_name;
          if($filename != ""){
@@ -82,14 +82,14 @@ $listAll 								= $menu->getAllChild("categories_multi","cat_id","cat_parent_id
          if($filenamedata != ""){
             $myform->add("cv_data","filenamedata",0,1,0,0);
          }
-        
+
          $fs_errorMsg .= $upload->show_warning_error();
-         
-         if($fs_errorMsg == ""){                  
+
+         if($fs_errorMsg == ""){
          	$myform->removeHTML(0);
          	$db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
-        		redirect($fs_redirect);	
-         }         
+        		redirect($fs_redirect);
+         }
    	}
    }
    $myform->addFormname("add_new");
@@ -99,16 +99,16 @@ $listAll 								= $menu->getAllChild("categories_multi","cat_id","cat_parent_id
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
-$db_data 	= new db_query("SELECT * FROM cover_letters 
-                            INNER JOIN categories_multi ON cover_letters.cv_cat_id=categories_multi.cat_id 
+$db_data 	= new db_query("SELECT * FROM cover_letters
+                            INNER JOIN categories_multi ON cover_letters.cv_cat_id=categories_multi.cat_id
                             WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }

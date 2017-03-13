@@ -2,7 +2,7 @@
 <?
    //-----------------------------------------------------------------------------------------------------------------
    //-----------------------------------------------------------------------------------------------------------------
-   $test_id = getValue("test_id","int","GET",0); 
+   $test_id = getValue("test_id","int","GET",0);
    //1.Kiem tra xem co ton tai bai thi nay khong
    //check_isset_ielts($test_id);
    //2.Kiem tra cac truong hop user truy cap bai thi
@@ -22,7 +22,7 @@
    $remainingSeconds = floor(($time_diff-($remainingDay*60*60*24)-($remainingHour*60*60))-($remainingMinutes*60));
    //------------------------------------------------------------------------------------------------------------------
    //echo $_SESSION['order_speak'];
-   $db_select_cont   = new db_query("SELECT * FROM ielt_content INNER JOIN ielt_type ON(iecon_iety_id = iety_id) 
+   $db_select_cont   = new db_query("SELECT * FROM ielt_content INNER JOIN ielt_type ON(iecon_iety_id = iety_id)
                                      WHERE iety_ielt_id = ".$test_id." AND iety_type = 3 AND iecon_part_speak = 2");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -71,9 +71,9 @@
          <div class="time_record">
             <p id="time_re"></p>
             <div id="status"></div>
-            <div id="wami"></div>                      
-         </div> 
-         <?while($row_speaking = mysql_fetch_assoc($db_select_cont->result)){  ?>
+            <div id="wami"></div>
+         </div>
+         <?while($row_speaking = mysqli_fetch_assoc($db_select_cont->result)){  ?>
          <div id="speak_record">
             <div id="guide_speak">
                Click <img class="" src="<?=$var_path_ielt?>speak_mic.png" /> để ghi âm câu trả lời. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Click <img class="" src="<?=$var_path_ielt?>speak_record.png" /> để kết thúc câu trả lời và tự động chuyển câu hỏi.
@@ -95,11 +95,11 @@
                   <img style="display: none;margin-top: 5px;" id="wait_record" class="img_act_record cl_speak_act" src="<?=$var_path_ielt?>wait_stop.gif" />
                   <span class="sp_act_record">Stop</span>
                   <span style="display: none;" id="af_stop" class="sp_act_record">Waiting..</span>
-               </div>   
+               </div>
                <div id="btn_speak_part">
                   <img class="img_act_record" src="<?=$var_path_ielt?>speak_part.png" />
                   <span class="sp_act_record">Part 2 / 3</span>
-               </div>    
+               </div>
                <div id="btn_speak_guide">
                   <img class="img_act_record" src="<?=$var_path_ielt?>speak_guide.png" />
                   <span class="sp_act_record">Question 1 / 1</span>
@@ -116,18 +116,18 @@
 </html>
 <script>
 /*********************************************************************************
-*Start record 
+*Start record
 *********************************************************************************/
-$(document).ready(function() { 
+$(document).ready(function() {
     window.document.onload = setup();
 });
 
-$("#start_record").click(function (){ 
+$("#start_record").click(function (){
    $("#btn_wait_record").show();
    $("#btn_speak_record").hide();
    window.document.onload = record();
-});  
-$("#stop_record").click(function (){ 
+});
+$("#stop_record").click(function (){
    window.document.onload = stop();
    $("#btn_speak_record").show();
    $("#btn_wait_record").hide();
@@ -142,17 +142,17 @@ $("#stop_record").click(function (){
 
 /*********************************************************************************
 *Function ghi am
-*********************************************************************************/  
+*********************************************************************************/
 
 function setup() {
    Wami.setup("wami");
 }
-function record() { 
+function record() {
    <?
       $_SESSION["record_second_speak"] = $name_file.".wav";
    ?>
    console.log(Wami);
-   Wami.startRecording('http://<?=$base_url?>/ielts/js/accessfile.php?name=<?=$name_file?>.wav');                    
+   Wami.startRecording('http://<?=$base_url?>/ielts/js/accessfile.php?name=<?=$name_file?>.wav');
 }
 function stop() {
    Wami.stopRecording();
@@ -163,12 +163,12 @@ function status(msg) {
 }
 
 /*********************************************************************************
-*Append time 
+*Append time
 *********************************************************************************/
 
-var hours = <?=$remainingHour?>  
-var minutes = <?=$remainingMinutes?>  
-var seconds = <?=$remainingSeconds?> 
+var hours = <?=$remainingHour?>
+var minutes = <?=$remainingMinutes?>
+var seconds = <?=$remainingSeconds?>
 function setCountDown ()
 {
    seconds--;
@@ -190,6 +190,6 @@ function setCountDown ()
    SD=window.setTimeout( "setCountDown()", 1000 );
    if(minutes == '00' && seconds == '00') { seconds = "00"; window.clearTimeout(SD);
       window.location = "speaking_third.php";
-   } 
+   }
 }
 </script>

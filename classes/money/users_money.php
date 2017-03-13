@@ -26,17 +26,17 @@ require_once($class_money_dir . "/BKTransactionAPI.php");
 Class lưu trử thông tin tài khoản của user
 */
 class UserMoney{
-	
+
 	//khai báo số lượng bảng lưu lịch sử tiêu tiền
 	protected $num_table_spent = 10;
 	//khai báo số lượng bảng lưu lịch sử nạp tiền
 	protected $num_table_add	=	10;
 	//khai báo mật khẩu mã hóa
 	protected $password_sercurity	=	"flsjfsld01lf0s;fs0";
-	
+
 	//khai bao thư mục chứa log
 	protected $path_log;
-	
+
 	//khai báo biến chứa tiền
 	protected $money				=	0;
 	protected $money_promotion	=	0;
@@ -51,11 +51,11 @@ class UserMoney{
 	public	 $baokim_secure_pass;
 	//phần trăm tiền được nhận từ thẻ khi nạp tiền
 	protected $percent_card = 0.83;
-	
+
 	protected $mmca_money	=	0;
    public    $numm_pay     =   0;
-	
-	
+
+
 	/**
 	 * Hàm khởi tạo
 	 */
@@ -64,11 +64,11 @@ class UserMoney{
       if($user_id < 0) $user_id 		= 	0;
       $this->user_id						=	$user_id;
       $this->path_log				   =	$_SERVER["DOCUMENT_ROOT"] . "/logs/";
-		
-		
+
+
 		/*$this->baokim_transaction_api_url		=	"http://sandbox.baokim.vn/services/transaction_api/init?wsdl";
 		$this->baokim_api_password 				=   "hochay";
-		$this->baokim_api_username				=	"hochay"; 
+		$this->baokim_api_username				=	"hochay";
 		$this->baokim_secure_pass				=	"a63f5c5d7d21cd80";
 		//$this->baokim_secure_secret  			=   "hochayvnlml3w34";
 		$this->baokim_merchant_id				=	"759";
@@ -76,10 +76,10 @@ class UserMoney{
 		$this->baokim_payment_url 				=	"http://sandbox.baokim.vn/payment/customize_payment/order";
 		//link otp nạp qua bảo kim
 		$this->baokim_request_url				=	"http://sandbox.baokim.vn/services/payment_pro_2/init?wsdl";*/
-      
+
       /*$this->baokim_transaction_api_url		=	"http://sandbox.baokim.vn/services/transaction_api/init?wsdl";
 		$this->baokim_api_password 				=  "nhajben";
-		$this->baokim_api_username				   =	"nhajben"; 
+		$this->baokim_api_username				   =	"nhajben";
 		$this->baokim_secure_pass			 	   =	"ebc9f951ea3020e8";
 		$this->baokim_secure_secret  			   =  "nhajben";
 		$this->baokim_merchant_id				   =	"577";
@@ -87,11 +87,11 @@ class UserMoney{
 		$this->baokim_payment_url 				   =	"http://sandbox.baokim.vn/payment/customize_payment/order";
 		//link otp nạp qua bảo kim
 		$this->baokim_request_url				   =	"http://sandbox.baokim.vn/services/payment_pro_2/init?wsdl";*/
-		
-		
+
+
 	 	$this->baokim_transaction_api_url	=	"https://www.baokim.vn/services/transaction_api/init?wsdl";
 		$this->baokim_api_password 			=  "wwwhochayvn9Hfdhfkfkd";
-		$this->baokim_api_username				=	"wwwhochayvn"; 
+		$this->baokim_api_username				=	"wwwhochayvn";
 		$this->baokim_secure_pass				=	"6d7ad20e66d056fc";
 		$this->baokim_secure_secret  			=  "hochayvnlml3w34";
 		$this->baokim_merchant_id				=	"9688";
@@ -99,11 +99,11 @@ class UserMoney{
 		$this->baokim_payment_url 				=	"https://www.baokim.vn/payment/customize_payment/order";
 		//link otp nạp qua bảo kim
 		$this->baokim_request_url				=	"https://www.baokim.vn/services/payment_pro_2/init?wsdl";
-		
-		/** 
+
+		/**
 		$this->baokim_transaction_api_url	=	"https://www.baokim.vn/services/transaction_api/init?wsdl";
 		$this->baokim_api_password 			=  "893bsdj278sd9n78sdn27sdn";
-		$this->baokim_api_username				=	"diep2810"; 
+		$this->baokim_api_username				=	"diep2810";
 		$this->baokim_secure_pass				=	"6c11c4496df586cf";
 		$this->baokim_user_email				=	"diep2810@gmail.com";
 		$this->baokim_merchant_id				=	"3290";
@@ -111,10 +111,10 @@ class UserMoney{
 		$this->baokim_request_url				=	"https://www.baokim.vn/services/payment_pro_2/init?wsdl";
 		*/
 	}
-	
 
-	
-	
+
+
+
 	/**
 	 * Hàm lấy số tiền còn lại
 	 */
@@ -126,7 +126,7 @@ class UserMoney{
       										FROM money_users
       										WHERE mou_user_id = " . $this->user_id
       										, __FILE__ . " Line: " . __LINE__);
-      	if($row = mysql_fetch_assoc($db_select->result)){
+      	if($row = mysqli_fetch_assoc($db_select->result)){
       		$this->money				=	$row["mou_money"];
       		$this->money_promotion	=	$row["mou_money_promotion"];
       	}else{
@@ -135,7 +135,7 @@ class UserMoney{
       }
       return $this->money;
  	}
- 	
+
 	/**
 	 * Hàm lấy số tiền còn lại
 	 */
@@ -147,7 +147,7 @@ class UserMoney{
 												FROM money_users
 												WHERE mou_user_id = " . $this->user_id
 												, __FILE__ . " Line: " . __LINE__);
-			if($row = mysql_fetch_assoc($db_select->result)){
+			if($row = mysqli_fetch_assoc($db_select->result)){
 				$this->money				=	$row["mou_money"];
 				$this->money_promotion	=	$row["mou_money_promotion"];
 			}else{
@@ -156,15 +156,15 @@ class UserMoney{
  		}
  	}
    /**
-   * 
+   *
    * Hàm nạp tiền qua ATM
-   * 
-   */ 	
+   *
+   */
 	function add_money_atm($user_id,$bank_id,$uname,$total_amount,$url_return,$timeact,$payment_type,$comment = "",$type_pay){
 	   $user_id	 =	intval($user_id);
 	   $uname    = replaceMQ($uname);
 	   $db_user  = new db_query("SELECT * FROM users WHERE use_id = ".$user_id);
-	   $row_user = mysql_fetch_assoc($db_user->result);
+	   $row_user = mysqli_fetch_assoc($db_user->result);
 	   unset($db_user);
 	   $payer_name = $row_user['use_name'];
 	   $payer_email = $row_user['use_email'];
@@ -195,36 +195,36 @@ class UserMoney{
 																  	  )", __FILE__ . " Line: " . __LINE__);
 	   unset($db_execute);
       if($vg_transaction_id <= 0){
-			$this->errorMsg .= "&bull; Có lỗi xảy ra khi thực hiện. Bạn hãy liên hệ ban quản trị để nhờ trợ giúp.<br />";	
-      //ngược lại thì bắt đầu bắn sang bảo kim	
-		}else{		    
-         $request_info = new PaymentInfoRequest(); 	    			
+			$this->errorMsg .= "&bull; Có lỗi xảy ra khi thực hiện. Bạn hãy liên hệ ban quản trị để nhờ trợ giúp.<br />";
+      //ngược lại thì bắt đầu bắn sang bảo kim
+		}else{
+         $request_info = new PaymentInfoRequest();
 			$request_info->api_username            = $this->baokim_api_username;
         	$request_info->api_password            = $this->baokim_api_password;
-        	$request_info->merchant_id             = $this->baokim_merchant_id;			
+        	$request_info->merchant_id             = $this->baokim_merchant_id;
 			$request_info->bk_seller_email         = $this->baokim_user_email;
         	$request_info->order_id                = $type_pay."_".$vg_transaction_id;
         	$request_info->total_amount            = $total_amount;
         	$request_info->tax_fee                 = $tax_fee;
         	$request_info->shipping_fee            = $shipping_fee;
         	$request_info->order_description       = "Nạp tiền kích hoạt tài khoản hochay.vn";
-        	$request_info->currency_code           = "VND";					
+        	$request_info->currency_code           = "VND";
 			$request_info->bank_payment_method_id  = $bank_id;
 			$request_info->payment_mode            = 1;
 			$request_info->payer_name              = $uname;
-			$request_info->payer_email             = $payer_email;			
-			
-			if($row_user['use_phone'] == "" ) { 
-				$request_info->payer_phone_no  = "0986278627"; 
-			}else{ 
-				$request_info->payer_phone_no = str_replace("+84","0",$row_user['use_phone']); 
-			}; 
-			
+			$request_info->payer_email             = $payer_email;
+
+			if($row_user['use_phone'] == "" ) {
+				$request_info->payer_phone_no  = "0986278627";
+			}else{
+				$request_info->payer_phone_no = str_replace("+84","0",$row_user['use_phone']);
+			};
+
 			$request_info->shipping_address        = "";
         	$request_info->payer_message           = "";
         	$request_info->escrow_timeout          = "";
         	$request_info->extra_fields_value      = "";
-			
+
 			//$location                              = 'http://sandbox.baokim.vn';
 			$location                              = 'https://www.baokim.vn';
 			$bk                                    = new BKPaymentProService2($location."/services/payment_pro_2/init?wsdl");
@@ -240,14 +240,14 @@ class UserMoney{
 			}
       }
 	}
-   
+
    /**
-   * 
+   *
    * Hàm nạp tiền qua ATM - v2
-   * 
-   */ 	
+   *
+   */
 	function add_money_atm_v2($user_id,$bank_id,$uname,$total_amount,$url_return,$timeact,$payment_type,$comment = "",$type_pay){
-	   
+
       $user_id	           =	intval($user_id);
       $uname              =   replaceMQ($uname);
       $bank_id	           =	intval($bank_id);
@@ -259,15 +259,15 @@ class UserMoney{
       $tax_fee            =   "0";
 	   $shipping_fee       =   "0";
 	   $order_description  =   "Note order";
-      
+
 	   $db_user  = new db_query("SELECT * FROM users WHERE use_id = ".$user_id);
-	   $row_user = mysql_fetch_assoc($db_user->result);
+	   $row_user = mysqli_fetch_assoc($db_user->result);
 	   unset($db_user);
-      
+
 	   $payer_name         = $row_user['use_name'];
 	   $payer_email        = $row_user['use_email'];
 	   if ($uname == '') $uname = $payer_name;
-      
+
       $db_execute			  = new db_execute_return();
 	   $vg_transaction_id  = $db_execute->db_execute("INSERT INTO money_atm_add(maa_user_id,maa_money,maa_ip,maa_comment,maa_date,maa_status,maa_bank)
 																	  VALUES(
@@ -281,19 +281,19 @@ class UserMoney{
                     																  	  )", __FILE__ . " Line: " . __LINE__);
 	   unset($db_execute);
       if($vg_transaction_id <= 0){
-			$this->errorMsg .= "&bull; Có lỗi xảy ra khi thực hiện. Bạn hãy liên hệ ban quản trị để nhờ trợ giúp.<br />";	
-      //ngược lại thì bắt đầu bắn sang bảo kim	
-		}else{		    
-         $request_info = new PaymentInfoRequest(); 	    			
+			$this->errorMsg .= "&bull; Có lỗi xảy ra khi thực hiện. Bạn hãy liên hệ ban quản trị để nhờ trợ giúp.<br />";
+      //ngược lại thì bắt đầu bắn sang bảo kim
+		}else{
+         $request_info = new PaymentInfoRequest();
 			$request_info->api_username            = $this->baokim_api_username;
         	$request_info->api_password            = $this->baokim_api_password;
-        	$request_info->merchant_id             = $this->baokim_merchant_id;			
+        	$request_info->merchant_id             = $this->baokim_merchant_id;
 			$request_info->bk_seller_email         = $this->baokim_user_email;
         	$request_info->total_amount            = $total_amount;
         	$request_info->tax_fee                 = $tax_fee;
         	$request_info->shipping_fee            = $shipping_fee;
         	$request_info->order_description       = "Nạp tiền kích hoạt tài khoản hoc123.vn";
-        	$request_info->currency_code           = "VND";					
+        	$request_info->currency_code           = "VND";
 			$request_info->bank_payment_method_id  = $bank_id;
 			$request_info->payment_mode            = 1;
 			$request_info->payer_name              = $uname;
@@ -303,14 +303,14 @@ class UserMoney{
         	$request_info->escrow_timeout          = "";
         	$request_info->extra_fields_value      = "";
          $request_info->url_return              = $url_return;
-         
-         if($row_user['use_phone'] == "" ) { 
-				$request_info->payer_phone_no       = "0986278627"; 
-			}else{ 
+
+         if($row_user['use_phone'] == "" ) {
+				$request_info->payer_phone_no       = "0986278627";
+			}else{
             //$request_info->payer_phone_no = str_replace("+84","0",$row_user['use_phone']);
             $request_info->payer_phone_no = "0000000000";
-			}; 
-         
+			};
+
          // Bắn các kiểu của thanh toán để phân biệt khi trả về update CSDL
          if($payment_type == 1){
      	      $request_info->order_id             = "entire".$type_pay."_".$vg_transaction_id; //atm_... or visa_...
@@ -320,13 +320,13 @@ class UserMoney{
             }
          }else{
             $request_info->order_id             = "retail".$type_pay."_".$vg_transaction_id; // retaiatm_... or retailvisa_...
-         }			
-			
+         }
+
 			// Bắn sang Bảo Kim
 			$location                              = 'https://www.baokim.vn';
 			$bk                                    = new BKPaymentProService2($location."/services/payment_pro_2/init?wsdl");
 			$response_info                         = $bk->DoPaymentPro($request_info);
-         
+
 			if($response_info->error_code == 0){
 				$url    =   $response_info->url_redirect;
 				redirect($url);
@@ -335,12 +335,12 @@ class UserMoney{
 			}
       }
 	}
-   
+
 	/**
 	 * Hàm nạp tiền qua mobile card
 	 * 1111111111 : 20 nghìn
 	 * 2222222222 : 100 nghìn
-	 * $iMethod = 92 hoac 93 hoac 107 
+	 * $iMethod = 92 hoac 93 hoac 107
 	 */
  	function add_money_mobile_card($user_id, $pin, $serial,$imoney ,$timeact,$type ,$num_pay, $iMethod, $comment = ""){
  		$user_id	=	intval($user_id);
@@ -348,13 +348,13 @@ class UserMoney{
  		$serial	    =	replaceMQ($serial);
  		$mmca_ip	=	ip2long($_SERVER['REMOTE_ADDR']);
  		$comment	=	replaceMQ($comment);
- 		
-		
+
+
  		if($user_id <= 0){
  			$this->log("add_money_mobile_card.cfn", "UserID<=0");
 			return 0;
  		}
- 		
+
  		$db_execute				= new db_execute_return();
 		$vg_transaction_id	= $db_execute->db_execute("INSERT INTO money_mobile_card_add(mmca_user_id,mmca_pin,mmca_serial,mmca_ip,mmca_comment,mmca_date,mmca_status,mmca_card)
 																	   VALUES(
@@ -370,12 +370,12 @@ class UserMoney{
 		unset($db_execute);
 		if($vg_transaction_id <= 0){
 			$this->errorMsg .= "&bull; Có lỗi xảy ra khi thực hiện. Bạn hãy liên hệ ban quản trị để nhờ trợ giúp.<br />";
-			
-		//ngược lại thì bắt đầu bắn sang bảo kim	
+
+		//ngược lại thì bắt đầu bắn sang bảo kim
 		}else{
 			$BKTransactionAPI 			= new BKTransactionAPI("https://www.baokim.vn/the-cao/saleCard/wsdl");
 			// Call class nạp thẻ qua Bảo Kim
-			$info_topup						= new TopupToMerchantRequest();			
+			$info_topup						= new TopupToMerchantRequest();
 			$info_topup->api_password		= $this->baokim_api_password;
 			$info_topup->api_username 		= $this->baokim_api_username;
 			$info_topup->merchant_id 		= $this->baokim_merchant_id;
@@ -383,7 +383,7 @@ class UserMoney{
 			$info_topup->pin_field 			= $pin;
 			$info_topup->seri_field 		= $serial;
 			$info_topup->card_id 			= $iMethod;
-			$info_topup->transaction_id 	= $vg_transaction_id . "_mobile_card";			
+			$info_topup->transaction_id 	= $vg_transaction_id . "_mobile_card";
 			// Chuyển $info_topup về dạng array để sort
 			$data_sign_array 					= (array)$info_topup;
 			//print_r($data_sign_array);
@@ -394,7 +394,7 @@ class UserMoney{
 			// Gán lại data_sign để gửi sang Bảo Kim
 			$info_topup->data_sign 			= $data_sign;
 			// Thực hiện kết nối với Bảo Kim
-            
+
 			try{
 				$response	= $BKTransactionAPI->DoTopupToMerchant($info_topup);
 				$this->log("add_money_mobile_card", "User_id: " . $user_id . " Provider card: " . $iMethod . " " . json_encode($response));
@@ -405,12 +405,12 @@ class UserMoney{
 				$this->errorMsg	.= "&bull; Lỗi kết nối. Bạn hãy thử lại sau.<br />";
 				//echo $this->errorMsg;
 			}
-			
+
 			// Nếu kết nối thành công thì thực hiện ($response->error_code == 0 - Nạp tiền thành công, $response->error_code == 5 - Trường hợp user nhập lại những thẻ chưa được update trong db của vg)
-			
+
 			if(isset($response->error_code)){
 				if($response->error_code == 0 || $response->error_code == 5){
-				    
+
 					$money							= doubleval($response->info_card);
 					$mmca_bk_transaction_id		= trim($response->transaction_id);
 					$this->mmca_money						= $this->percent_card * $money;
@@ -435,15 +435,15 @@ class UserMoney{
 				    if ($this->errorMsg == 'Giao dịch thành công') { $this->errorMsg = ""; }
 					// Kiểm tra lần cuối nếu $fs_errorMsg khác rỗng mới thực thi giao dịch
 					if($this->errorMsg == ""){
-						
+
 						// Check BK transaction_id trả về nếu không có trong db mới cập nhật
 						$db_transaction	= new db_query("SELECT mmca_id
 																	 FROM money_mobile_card_add
 																	 WHERE mmca_bk_transaction_id = '" . replaceMQ($mmca_bk_transaction_id) . "'");
-						
+
                         // Nếu chưa tồn tại transaction thì mới thực hiện
-						if(mysql_num_rows($db_transaction->result) == 0){
-							
+						if(mysqli_num_rows($db_transaction->result) == 0){
+
 							$db_update	= new db_execute("UPDATE money_mobile_card_add
 																	SET mmca_bk_transaction_id = '" . replaceMQ($mmca_bk_transaction_id) . "',
 																		 mmca_money = " . $this->mmca_money . ",
@@ -451,21 +451,21 @@ class UserMoney{
 																		 mmca_last_update = " . time() . ",
 																		 mmca_status = " . $mmca_status . "
 																	WHERE mmca_user_id = " . $user_id . " AND mmca_id = " . $vg_transaction_id);
-					
+
 							unset($db_update);
-							
+
 							//update money vao bảng payment_money
 							$insert_money = new db_execute("INSERT INTO payment_user (pau_uid,pau_money,pau_time) VALUES ('$user_id','$money',".time().")", __FILE__ . " Line: " . __LINE__);
-                            
+
                             //kick hoạt tài khoản theo thời gian
 							$timesafe = 0;
 							$sql_uinvite  =  new db_query("SELECT * FROM user_invite_tree WHERE uit_uid = ".$user_id );
-							while($row_uinvite   = mysql_fetch_assoc($sql_uinvite->result)){
+							while($row_uinvite   = mysqli_fetch_assoc($sql_uinvite->result)){
 								$timesafe = 20;
 							}
 							unset($sql_uinvite);
-                            $sqlActCout   =  new db_query("SELECT * FROM users WHERE use_id = ".$user_id ); 
-                            while($rowActCout   = mysql_fetch_assoc($sqlActCout->result)){
+                            $sqlActCout   =  new db_query("SELECT * FROM users WHERE use_id = ".$user_id );
+                            while($rowActCout   = mysqli_fetch_assoc($sqlActCout->result)){
                                 if($type == "course"){
                                     if($rowActCout['use_status_act'] == 0){
                                         $datestart = time();
@@ -477,7 +477,7 @@ class UserMoney{
                                         $db_user_update	= new db_execute("UPDATE users
                         												SET use_status_act = 1,
                                                                         use_date_act_start = ". $datestart ." ,
-                                                                        use_date_act_end   = ". $dateend ." 
+                                                                        use_date_act_end   = ". $dateend ."
                         												WHERE use_id = " . $user_id );
                                         unset($db_user_update);
                                 }elseif($type == "test"){
@@ -499,46 +499,46 @@ class UserMoney{
                                         $db_del = new db_execute("DELETE FROM user_payment_test WHERE use_pt_user_id =" . $user_id);
                                         unset($db_del);
                                     }
-                                    
+
                                 }
-                                        
+
                             }
                             unset($rowActCout);
-							
+
 							//bắt đầu cộng tiền vào db tài khoản chính
 							return $this->add($user_id, $this->mmca_money, $comment, TYPE_ADD_FROM_MOBILE_CARD, TYPE_MONEY_MAIN);
-						
-						}// End if(mysql_num_rows($db_transaction->result) == 0)
+
+						}// End if(mysqli_num_rows($db_transaction->result) == 0)
 						else{
 							$this->errorMsg	.= "&bull; Mã PIN và số Serial này đã được sử dụng hoặc không hợp lệ. Mã giao dịch bị trùng<br />";
 						}
 						unset($db_transaction);
-						
+
 					}//if($this->errorMsg == "")
-					
+
 				} // if($response->error_code == 0 || $response->error_code == 5)
-			
+
 			} //if(isset($response->error_code) && $fs_errorMsg == "")
-			
+
 		} //if($vg_transaction_id <= 0)
-		
- 		
+
+
  	}
-	
-   
+
+
    function add_money_mobile_card_v2($user_id, $pin, $serial,$imoney ,$timeact,$type ,$num_pay, $iMethod, $comment = "",$pay_type){
  		$user_id	=	intval($user_id);
  		$pin		=	replaceMQ($pin);
  		$serial	    =	replaceMQ($serial);
  		$mmca_ip	=	ip2long($_SERVER['REMOTE_ADDR']);
  		$comment	=	replaceMQ($comment);
- 		
-		
+
+
  		if($user_id <= 0){
  			$this->log("add_money_mobile_card.cfn", "UserID<=0");
 			return 0;
  		}
- 		
+
  		$db_execute				= new db_execute_return();
 		$vg_transaction_id	= $db_execute->db_execute("INSERT INTO money_mobile_card_add(mmca_user_id,mmca_pin,mmca_serial,mmca_ip,mmca_comment,mmca_date,mmca_status,mmca_card)
 																	   VALUES(
@@ -554,12 +554,12 @@ class UserMoney{
 		unset($db_execute);
 		if($vg_transaction_id <= 0){
 			$this->errorMsg .= "&bull; Có lỗi xảy ra khi thực hiện. Bạn hãy liên hệ ban quản trị để nhờ trợ giúp.<br />";
-			
-		//ngược lại thì bắt đầu bắn sang bảo kim	
+
+		//ngược lại thì bắt đầu bắn sang bảo kim
 		}else{
 			$BKTransactionAPI 			= new BKTransactionAPI("https://www.baokim.vn/the-cao/saleCard/wsdl");
 			// Call class nạp thẻ qua Bảo Kim
-			$info_topup						= new TopupToMerchantRequest();			
+			$info_topup						= new TopupToMerchantRequest();
 			$info_topup->api_password		= $this->baokim_api_password;
 			$info_topup->api_username 		= $this->baokim_api_username;
 			$info_topup->merchant_id 		= $this->baokim_merchant_id;
@@ -567,7 +567,7 @@ class UserMoney{
 			$info_topup->pin_field 			= $pin;
 			$info_topup->seri_field 		= $serial;
 			$info_topup->card_id 			= $iMethod;
-			$info_topup->transaction_id 	= $vg_transaction_id . "_mobile_card";			
+			$info_topup->transaction_id 	= $vg_transaction_id . "_mobile_card";
 			// Chuyển $info_topup về dạng array để sort
 			$data_sign_array 					= (array)$info_topup;
 			//print_r($data_sign_array);
@@ -578,7 +578,7 @@ class UserMoney{
 			// Gán lại data_sign để gửi sang Bảo Kim
 			$info_topup->data_sign 			= $data_sign;
 			// Thực hiện kết nối với Bảo Kim
-            
+
 			try{
 				$response	= $BKTransactionAPI->DoTopupToMerchant($info_topup);
 				$this->log("add_money_mobile_card", "User_id: " . $user_id . " Provider card: " . $iMethod . " " . json_encode($response));
@@ -589,12 +589,12 @@ class UserMoney{
 				$this->errorMsg	.= "&bull; Lỗi kết nối. Bạn hãy thử lại sau.<br />";
 				//echo $this->errorMsg;
 			}
-			
+
 			// Nếu kết nối thành công thì thực hiện ($response->error_code == 0 - Nạp tiền thành công, $response->error_code == 5 - Trường hợp user nhập lại những thẻ chưa được update trong db của vg)
-			
+
 			if(isset($response->error_code)){
 				if($response->error_code == 0 || $response->error_code == 5){
-				    
+
 					$money							= doubleval($response->info_card);
 					$mmca_bk_transaction_id		= trim($response->transaction_id);
 					$this->mmca_money						= $this->percent_card * $money;
@@ -619,15 +619,15 @@ class UserMoney{
 				    if ($this->errorMsg == 'Giao dịch thành công') { $this->errorMsg = ""; }
 					// Kiểm tra lần cuối nếu $fs_errorMsg khác rỗng mới thực thi giao dịch
 					if($this->errorMsg == ""){
-						
+
 						// Check BK transaction_id trả về nếu không có trong db mới cập nhật
 						$db_transaction	= new db_query("SELECT mmca_id
 																	 FROM money_mobile_card_add
 																	 WHERE mmca_bk_transaction_id = '" . replaceMQ($mmca_bk_transaction_id) . "'");
-						
+
                         // Nếu chưa tồn tại transaction thì mới thực hiện
-						if(mysql_num_rows($db_transaction->result) == 0){
-							
+						if(mysqli_num_rows($db_transaction->result) == 0){
+
 							$db_update	= new db_execute("UPDATE money_mobile_card_add
 																	SET mmca_bk_transaction_id = '" . replaceMQ($mmca_bk_transaction_id) . "',
 																		 mmca_money = " . $this->mmca_money . ",
@@ -635,21 +635,21 @@ class UserMoney{
 																		 mmca_last_update = " . time() . ",
 																		 mmca_status = " . $mmca_status . "
 																	WHERE mmca_user_id = " . $user_id . " AND mmca_id = " . $vg_transaction_id);
-					
+
 							unset($db_update);
-							
+
 							//update money vao bảng payment_money
 							$insert_money = new db_execute("INSERT INTO payment_user (pau_uid,pau_money,pau_time) VALUES ('$user_id','$money',".time().")", __FILE__ . " Line: " . __LINE__);
-                            
+
                             //kick hoạt tài khoản theo thời gian
 							$timesafe = 0;
 							$sql_uinvite  =  new db_query("SELECT * FROM user_invite_tree WHERE uit_uid = ".$user_id );
-							while($row_uinvite   = mysql_fetch_assoc($sql_uinvite->result)){
+							while($row_uinvite   = mysqli_fetch_assoc($sql_uinvite->result)){
 								$timesafe = 20;
 							}
 							unset($sql_uinvite);
-                            $sqlActCout   =  new db_query("SELECT * FROM users WHERE use_id = ".$user_id ); 
-                            while($rowActCout   = mysql_fetch_assoc($sqlActCout->result)){
+                            $sqlActCout   =  new db_query("SELECT * FROM users WHERE use_id = ".$user_id );
+                            while($rowActCout   = mysqli_fetch_assoc($sqlActCout->result)){
                                 if($type == "course"){
                                     //action here
                                     if($pay_type == 1){
@@ -657,31 +657,31 @@ class UserMoney{
                                     }else{
                                        add_user_money($user_id,1,$imoney);
                                     }
-                                }       
+                                }
                             }
                             unset($rowActCout);
 							//bắt đầu cộng tiền vào db tài khoản chính
 							return $this->add($user_id, $this->mmca_money, $comment, TYPE_ADD_FROM_MOBILE_CARD, TYPE_MONEY_MAIN);
-						
-						}// End if(mysql_num_rows($db_transaction->result) == 0)
+
+						}// End if(mysqli_num_rows($db_transaction->result) == 0)
 						else{
 							$this->errorMsg	.= "&bull; Mã PIN và số Serial này đã được sử dụng hoặc không hợp lệ. Mã giao dịch bị trùng<br />";
 						}
 						unset($db_transaction);
-						
+
 					}//if($this->errorMsg == "")
-					
+
 				} // if($response->error_code == 0 || $response->error_code == 5)
-			
+
 			} //if(isset($response->error_code) && $fs_errorMsg == "")
-			
+
 		} //if($vg_transaction_id <= 0)
-		
- 		
+
+
  	}
-   
-   
-	
+
+
+
 	/**
 	 * Ham nạp tiền qua tài khoản bảo kim
 	 * User đăng nhập
@@ -693,14 +693,14 @@ class UserMoney{
  		$use_id		=	intval($user_id);
  		$use_money 	=	intval($use_money);
  		$use_mail	=	$use_mail;
- 		$use_time	=	time(); 		
+ 		$use_time	=	time();
  		$bk                  = new BKPaymentProService2($this->baokim_request_url);
  		//check user đăng nhập chưa
  		if($user_id <= 0 || $use_money < 0){
  			$this->log("add_money_baokim.cfn", "UserID<=0");
 			return 1;
  		}
- 		
+
  		//lưu thông tin trước khi truyền tham số đi
  		$db_bk	=	new db_execute_return();
  		$bk_id	=	$db_bk->db_execute("INSERT INTO money_baokim(mbk_time,mbk_user_id,mbk_money,mbk_otp,mbk_mail,mbk_description,mbk_error,mbk_phone)
@@ -728,11 +728,11 @@ class UserMoney{
 			$motphim_request->escrow_timeout = 3;
 			$motphim_request->tax_fee 		= '';
 			$motphim_request->shipping_fee 	= '';
-			
+
 			$motphim_request->affiliate_id = '';
 			$motphim_request->affiliate_site_id = '';
 			$motphim_request->business_line_id = '';
-		 	
+
 		 	//gọi hàm order
 		 	$order_info = new OrderInfo();
 			$order_info->order_id = $bk_id . "_hh_";
@@ -740,19 +740,19 @@ class UserMoney{
 			$order_info->order_amount = $use_money;
 			$order_info->order_url_detail = '';
 			$motphim_request->order_info = $order_info;
-			
-			
+
+
 			$payer_info = new PayerInfo();
 			$payer_info->payer_name = "Tai khoan hochay";
 			$payer_info->payer_email = $use_mail;
 			$payer_info->payer_phone_no = $phone;
 			$payer_info->payer_message = "Nạp gỗ vào tài khoản trên trang hochay.vn";
 			$motphim_request->payer_info = $payer_info;
-			
+
 			$response = $bk->DoPayWithBaokimAccount($motphim_request);
 			$this->errorMsg .= $response->response_message;
 			$this->log("add_money_baokim.cfn", "REQUEST: User_id: " . $user_id . " User Phone: ". $phone ." Use_mail: " . $use_mail . " Money: " . $use_money . " " . json_encode($response));
-			
+
 			//cuối cùng kiểm tra reposne_code=0 thì update transaction_id
 			if($response->response_code == 0){
 				$db_ex	=	new db_execute("UPDATE money_baokim SET mbk_transaction_id='". $response->transaction_id . "' WHERE mbk_id=". $bk_id);
@@ -761,8 +761,8 @@ class UserMoney{
 			return $response;
 		 }
  	}
- 	
- 	/** 
+
+ 	/**
 	 * User nhập OTP gửi tiếp về bảo kim
 	 * Baokim trả về thành công hoăc không thành công
 	 */
@@ -777,7 +777,7 @@ class UserMoney{
 		//lấy mail
 		$db_buymail	=	new db_query("SELECT mbk_mail FROM money_baokim WHERE mbk_transaction_id='". $transaction_id ."'");
 		//nếu có thì gửi đi
-		if($row = mysql_fetch_assoc($db_buymail->result)){
+		if($row = mysqli_fetch_assoc($db_buymail->result)){
 			$baokim_buyer_account_email = $row['mbk_mail'];
 			$verifyOTP = new VerifyTransactionOTPRequest();
 	    	$verifyOTP->api_password   = $this->baokim_api_password;
@@ -798,17 +798,17 @@ class UserMoney{
 	    		/**
 	    		 * Check nếu tồn tại user và transaction_id
 	  			 * update trạng thái bảng money_naokim
-	    		 * 
+	    		 *
 	    		 */
-	    		$db_check	=	new db_query("SELECT * FROM money_baokim 
+	    		$db_check	=	new db_query("SELECT * FROM money_baokim
 				 										WHERE mbk_user_id =". $user_id . " AND mbk_transaction_id='" . $transaction_id . "'");
-				if($row_check = mysql_fetch_assoc($db_check->result)){
+				if($row_check = mysqli_fetch_assoc($db_check->result)){
 					//update trạng thái thành công
 					$db_ex	=	new db_execute("UPDATE money_baokim SET mbk_status=1 WHERE mbk_transaction_id='". replaceMQ($bk_transaction) . "'");
-	    			
+
                     //kick hoạt tài khoản theo thời gian
-                    $sqlActCout  =  new db_query("SELECT * FROM users WHERE use_id = ".$user_id ); 
-                    while($rowActCout   = mysql_fetch_assoc($sqlActCout->result)){
+                    $sqlActCout  =  new db_query("SELECT * FROM users WHERE use_id = ".$user_id );
+                    while($rowActCout   = mysqli_fetch_assoc($sqlActCout->result)){
                         if($type == "course"){
                             if($rowActCout['use_status_act'] == 0){
                                 $datestart = time();
@@ -820,10 +820,10 @@ class UserMoney{
                                 $db_update	= new db_execute("UPDATE users
                 												SET use_status_act = 1,
                                                                 use_date_act_start = ". $datestart ." ,
-                                                                use_date_act_end   = ". $dateend ." 
+                                                                use_date_act_end   = ". $dateend ."
                 												WHERE use_id = " . $user_id );
                                 unset($db_update);
-                                
+
                         }elseif($type == "test"){
                             $db_update	= new db_execute("UPDATE users
                 												SET use_test_status = 1
@@ -832,18 +832,18 @@ class UserMoney{
                         }
                     }
                     unset($rowActCout);
-                    
+
                     //check nếu chưa nạp tiền thì insert ngược lại thì update
-	    			$db_checkuser	=	new db_query("SELECT * 
-					 											FROM money_users 
+	    			$db_checkuser	=	new db_query("SELECT *
+					 											FROM money_users
 																WHERE mou_user_id=". $user_id);
-					if($row_use	=	mysql_fetch_assoc($db_checkuser->result)){
-						$db_money	=	new db_execute("UPDATE money_users SET mou_money = mou_money  + ". $row_check['mbk_money'] . " 
+					if($row_use	=	mysqli_fetch_assoc($db_checkuser->result)){
+						$db_money	=	new db_execute("UPDATE money_users SET mou_money = mou_money  + ". $row_check['mbk_money'] . "
 						 											WHERE mou_user_id=". $user_id);
 					}else{
 						//inssert vao bang
 						//bắt đầu cộng tiền vào db tài khoản chính
-						return $this->add($user_id, $row_check['mbk_money'] , "Nạp tiền qua tài khoản bảo kim", TYPE_ADD_BAOKIM, TYPE_MONEY_MAIN);						
+						return $this->add($user_id, $row_check['mbk_money'] , "Nạp tiền qua tài khoản bảo kim", TYPE_ADD_BAOKIM, TYPE_MONEY_MAIN);
 					}
 					unset($db_checkuser,$db_ex, $db_money);
 				}
@@ -874,7 +874,7 @@ class UserMoney{
  		if($type_money ==  TYPE_MONEY_PROMOTION){
  			$money_promotion	=	$money;
  			$money				=	0;
- 		}		 												  
+ 		}
 	  //nếu khác 0 thì tiếp tục cập nhật trừ tiền
 		if($last_id > 0){
 			//bắt đầu trừ tiền
@@ -892,16 +892,16 @@ class UserMoney{
 				unset($db_ex);
 			}
 		}
-		
+
 		if($status != 0){
 			return 1;
 		}else{
 			return 0;
 		}
-			 												  
+
  	}
- 	
- 	
+
+
  	/**
 	 * Hàm nạp tiền
 	 */
@@ -919,7 +919,7 @@ class UserMoney{
 		if($type_money ==  TYPE_MONEY_PROMOTION){
  			$money_promotion	=	$money;
  			$money				=	0;
- 		}		 												  
+ 		}
 	  //nếu khác 0 thì tiếp tục cập nhật trừ tiền
 		if($last_id > 0){
 			//bắt đầu trừ tiền
@@ -937,15 +937,15 @@ class UserMoney{
 				unset($db_ex);
 			}
 		}
-		
+
 		if($status != 0){
 			return 1;
 		}else{
 			return 0;
 		}
-			 												  
+
  	}
-	
+
 	/**
 	 * Hàm cộng vào bảng tiền tổng
 	 * default : tien chinh và cộng tiền
@@ -957,40 +957,40 @@ class UserMoney{
 		$mou_money					=	isset($array_value["money"]) ? doubleval($array_value["money"]) : 0;
 		$mou_money_promotion		=	isset($array_value["money_promotion"]) ? doubleval($array_value["money_promotion"]) : 0;
 		$mou_hash					=	"";
-		
+
 		//nếu user _id = 0 thì ghi log và return luôn
 		if($user_id == 0){
 			$this->log("add_money_users.cfn", json_encode($array_value));
 			return 0;
 		}
-		
+
 		//nếu trường hợp tiền âm
 		if($mou_money <= 0 && $mou_money_promotion <= 0){
 			$this->log("add_money_users.cfn", json_encode($array_value));
 			return 0;
 		}
-		
+
 		//nếu tiền khuyến mại là số âm thì gán bằng 0
 		if($mou_money_promotion < 0) $mou_money_promotion = 0;
-		
+
 		if($type_update == TYPE_UPDATE_MONEY_ADD){
 	 		$mou_quantity_add			=	1;
 	 		$mou_quantity_spent		=	0;
-	 		
+
  		}else{
 	 		$mou_quantity_add			=	0;
 	 		$mou_quantity_spent		=	1;
 	 		$mou_money_promotion		=	0 - $mou_money_promotion;
 	 		$mou_money					=	0 - $mou_money;
 	 	}
-		
+
 		//select từ bảng lưu tiền ra xem đã tồn tại record id chưa
  		$db_select	=	new db_query("SELECT *
 											  FROM money_users
 											  WHERE mou_user_id = " . $user_id
 		 									 , __FILE__ . " Line: " . __LINE__);
 		 //nếu đã tồn tại tài khoản thì update
-		 if($row = mysql_fetch_assoc($db_select->result)){
+		 if($row = mysqli_fetch_assoc($db_select->result)){
 		 	//nếu là cộng tiền thì
 		 	if($type_update == TYPE_UPDATE_MONEY_ADD){
 		 		$mou_quantity_add			=	intval($row["mou_quantity_add"]) + 1;
@@ -1005,7 +1005,7 @@ class UserMoney{
 		 	$mou_money_promotion		=	doubleval($row["mou_money_promotion"]) + $mou_money_promotion;
 		 	//bắt đầu update vào db
 		 	$db_ex	=	new db_execute("UPDATE money_users
-												SET 
+												SET
 												mou_money = " . $mou_money . "
 												,mou_money_promotion = " . $mou_money_promotion . "
 												,mou_quantity_add = " . $mou_quantity_add . "
@@ -1020,16 +1020,16 @@ class UserMoney{
 				$this->log("add_money_users.cfn", "Update Error: " . json_encode($array_value));
 				return 0;
 			}
-		 
-		 //ngược lại thì thêm mới vào	
+
+		 //ngược lại thì thêm mới vào
 		 }else{
-		 	
+
 		 	//nếu là tiêu tiền thì return không thành công
 		 	if($type_update == TYPE_UPDATE_MONEY_SPENT){
 		 		$this->log("add_money_users.cfn", "Update Error: " . json_encode($array_value));
 				return 0;
 		 	}//end if
-		 	
+
 		 	//bắt đầu insert vào db
 		 	$db_ex	=	new db_execute("INSERT IGNORE INTO money_users(mou_user_id,mou_money,mou_money_promotion,mou_quantity_add,mou_quantity_spent,mou_hash)
 			 									 VALUES
@@ -1049,10 +1049,10 @@ class UserMoney{
 				$this->log("add_money_users.cfn", "Insert Error: " . json_encode($array_value));
 				return 0;
 			}
-		 	
-		 }//if($row = mysql_fetch_assoc($db_select->result))
+
+		 }//if($row = mysqli_fetch_assoc($db_select->result))
  	}
- 	
+
  	/**
  	 * Hàm insert nạp tiền
  	 */
@@ -1121,30 +1121,30 @@ class UserMoney{
 				$this->log("insert_money_spent.cfn", "Insert Error: " . json_encode($array));
 				return 0;
 			}
- 	}	
- 	
- 	 	
+ 	}
+
+
  	/**
  	 * Hàm mã hóa dữ liệu mỗi lần update hoặc insert
  	 */
  	protected function hash_money($array){
  		return md5($this->password_sercurity . "|" . json_encode($array));
  	}
-	
+
 	function get_real_money_added(){
  		return $this->mmca_money;
  	}
-	
+
 	function log($filename, $content){
-		
+
 		$handle       =   @fopen($this->path_log . $filename, "a");
 		//Neu handle chua co mo thêm ../
 		if (!$handle) $handle = @fopen($filename, "a");
 		//Neu ko mo dc lan 2 thi exit luon
-		if (!$handle) exit();		
-		@fwrite($handle, date("d/m/Y h:i:s A") . " " . $content . " " . @$_SERVER["REQUEST_URI"] . "\n");	
-		@fclose($handle); 	
-			
+		if (!$handle) exit();
+		@fwrite($handle, date("d/m/Y h:i:s A") . " " . $content . " " . @$_SERVER["REQUEST_URI"] . "\n");
+		@fclose($handle);
+
 	}
 }
 

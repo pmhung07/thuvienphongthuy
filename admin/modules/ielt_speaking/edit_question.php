@@ -53,14 +53,14 @@ if($action == "execute"){
    $fs_errorMsg .= $upload_img->show_warning_error();
 	//Check form data
 	$fs_errorMsg .= $myform->checkdata();
-	if($fs_errorMsg == ""){		
+	if($fs_errorMsg == ""){
 		//Insert to database
       $myform->removeHTML(0);
 		$db_ex = new db_execute($myform->generate_update_SQL("ieque_id	", $ieque_id));
 		redirect($fs_redirect);
-		
+
 	}//End if($fs_errorMsg == "")
-	
+
 }//End if($action == "execute")
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -74,14 +74,14 @@ margin:5px;
 }
 </style>
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM ielt_questions WHERE ieque_id = " . $ieque_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -114,7 +114,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 	$form->close_form();
 	unset($form);
 	?>
-	
+
 </body>
 </html>
 <style>

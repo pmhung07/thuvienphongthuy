@@ -12,9 +12,9 @@ require_once("inc_security.php");
 	/*
 	1: Ten truong trong bang
 	2: Tieu de header
-	3: kieu du lieu ( vnd : kiểu tiền VNĐ, usd : kiểu USD, date : kiểu ngày tháng, picture : kiểu hình ảnh, 
+	3: kieu du lieu ( vnd : kiểu tiền VNĐ, usd : kiểu USD, date : kiểu ngày tháng, picture : kiểu hình ảnh,
 							array : kiểu combobox có thể edit, arraytext : kiểu combobox ko edit,
-							copy : kieu copy, checkbox : kieu check box, edit : kiểu edit, delete : kiểu delete, string : kiểu text có thể edit, 
+							copy : kieu copy, checkbox : kieu check box, edit : kiểu edit, delete : kiểu delete, string : kiểu text có thể edit,
 							number : kiểu số, text : kiểu text không edit
 	4: co sap xep hay khong, co thi de la 1, khong thi de la 0
 	5: co tim kiem hay khong, co thi de la 1, khong thi de la 0
@@ -32,17 +32,17 @@ require_once("inc_security.php");
 	//$list->add("","Delete","delete");
 	$list->ajaxedit($fs_table);
    $sql = '';
-	$total		= new db_count("SELECT count(*) AS count 
+	$total		= new db_count("SELECT count(*) AS count
       								 FROM " . $fs_table . "
-      								 WHERE 1 " . $list->sqlSearch().$sql);	
-   
-	$db_listing	= new db_query("SELECT * 
+      								 WHERE 1 " . $list->sqlSearch().$sql);
+
+	$db_listing	= new db_query("SELECT *
       								 FROM " . $fs_table . "
       								 WHERE 1 " . $list->sqlSearch().$sql."
       								 ORDER BY " . $list->sqlSort() . $id_field ." DESC
       								 " . $list->limit($total->total));
-    $total_row = mysql_num_rows($db_listing->result);
-   
+    $total_row = mysqli_num_rows($db_listing->result);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -61,9 +61,9 @@ require_once("inc_security.php");
    $i = 0;
    //thực hiện lênh select csdl
    $check_content = '';
-   while($row = mysql_fetch_assoc($db_listing->result)){
+   while($row = mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?> 
+   ?>
    <form action="quickedit.php?returnurl=<?=base64_encode(getURL())?>" method="post" name="form_listing" id="form_listing" enctype="multipart/form-data">
    <input type="hidden" name="iQuick" value="update" />
    <?=$list->start_tr($i, $row[$id_field])?>
@@ -99,7 +99,7 @@ require_once("inc_security.php");
           <a onClick="loadactive(this); return false;" href="active.php?record_id=<?=$row['sig_id']?>&value=<?=abs($row["sig_active"]-1)?>&url=<?=base64_encode(getURL())?>">
           <img border="0" src="<?=$fs_imagepath?>check_<?=$row["sig_active"]?>.gif" title="Active!"/>
         </a>
-   </td>   
+   </td>
    <?
      }
    ?>

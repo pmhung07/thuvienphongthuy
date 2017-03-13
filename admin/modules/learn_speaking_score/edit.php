@@ -16,7 +16,7 @@ $lsr_status = 1;
 
 $db_data_rs 	= new db_query("SELECT learn_unit_id,lsr_spe_id,com_id,cou_id FROM learn_speaking a,courses_multi b,courses c,learn_speak_result d
                             WHERE a.learn_unit_id = b.com_id AND b.com_cou_id=c.cou_id AND d.lsr_spe_id = a.learn_sp_id AND lsr_id=".$record_id);
-while($row_rs = mysql_fetch_assoc($db_data_rs->result)){
+while($row_rs = mysqli_fetch_assoc($db_data_rs->result)){
    $cou_id = $row_rs['cou_id'];
    $unit_id = $row_rs['com_id'];
 }unset($db_data_rs);
@@ -35,11 +35,11 @@ while($row_rs = mysql_fetch_assoc($db_data_rs->result)){
 	9). Loi dua ra man hinh neu co duplicate
 	*/
    //$datetime =  date("Y-m-d g:i:s");
-   $myform = new generate_form(); 
+   $myform = new generate_form();
    $myform->add("lsr_point", "lsr_point", 0, 0, "", 0, "", 0, "");
    $myform->add("lsr_comment", "lsr_comment", 0, 0, "", 0, "", 0, "");
    $myform->add("lsr_status", "lsr_status", 1, 1, 1, 0, "", 0, "");
-	
+
 	//Add table insert data
 	$myform->addTable($fs_table);
    //Get action variable for add new data
@@ -47,15 +47,15 @@ while($row_rs = mysql_fetch_assoc($db_data_rs->result)){
    //Check $action for insert new data
    if($action == "execute"){
    	//Check form data
-   	$fs_errorMsg .= $myform->checkdata();      
+   	$fs_errorMsg .= $myform->checkdata();
 		//Insert to database
 		$myform->removeHTML(0);
 		$db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
       //Notify
       user_notification($user_id,'Giáo viên đã chấm điểm bài làm của bạn tại bài học <a href="'.$les_url.'">'.$les_name.'</a>');
       save_score_user($point_sp,10,$cou_id,$unit_id,2,$user_id);
-		redirect($fs_redirect); 
-      unset($db_ex);		
+		redirect($fs_redirect);
+      unset($db_ex);
   	}
    $myform->addFormname("add_new");
 ?>
@@ -64,16 +64,16 @@ while($row_rs = mysql_fetch_assoc($db_data_rs->result)){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM learn_speak_result
-                            INNER JOIN learn_speaking ON learn_speak_result.lsr_spe_id=learn_speaking.learn_sp_id   
+                            INNER JOIN learn_speaking ON learn_speak_result.lsr_spe_id=learn_speaking.learn_sp_id
                             WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -106,9 +106,9 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
          <?
          $para = $row['lsr_audio'];
          $para_split = explode(" ",$para);
-         $para_count = count($para_split);      
+         $para_count = count($para_split);
          for($i = 0;$i < $para_count;$i++){
-            if($i % 2 != 0){         
+            if($i % 2 != 0){
                echo "<br/>";
             }else{
                if($para_split[$i] != ""){
@@ -117,11 +117,11 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
                }else{
                   echo "Not Audio";
                }
-            }               
-         }             
+            }
+         }
          ?>
          </div><br />
-      </td>		
+      </td>
    </tr>
    <?=$form->text("Chấm điểm", "lsr_point", "lsr_point", $lsr_point, "Chấm điểm", 1, 250, "", 255, "", "", "")?>
    <?=$form->textarea("Nhận xét giáo viên", "lsr_comment", "lsr_comment", $lsr_comment, "Nội dung", 1, 400, 200, 255, "", "", "")?>
@@ -140,4 +140,4 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 </html>
 <style>
 .a_detail{padding: 2px 15px;border: solid 1px;background: #EEE;text-decoration: none;color: #164989;float: left;cursor: pointer;margin-bottom: 10px;}
-</style>  
+</style>

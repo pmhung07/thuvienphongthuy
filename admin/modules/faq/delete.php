@@ -25,7 +25,7 @@ switch ($type_del) {
 //kiểm tra xóa hết cấp con chưa mới có thể xóa cấp cha
 //$db_select = new db_query("SELECT com_id FROM " . $fs_table . " WHERE com_parent_id =" . $record_id);
 /*
-if($row=mysql_fetch_assoc($db_select->result)){
+if($row=mysqli_fetch_assoc($db_select->result)){
 	echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
 	echo '<script language="javascript">alert("' . translate_text("You must delete all the levels of this category") . '!");</script>';
 	redirect($fs_redirect);

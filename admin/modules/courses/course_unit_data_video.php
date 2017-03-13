@@ -88,7 +88,7 @@ if($action == "execute"){
 	unset($form);
 	?>
 	</div>
-	
+
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<div style="width:50%;">
 	<table cellpadding="5" cellspacing="0" width="100%" style="border-collapse:collapse;" bordercolor="#CCCCCC" border="1">
@@ -106,7 +106,7 @@ if($action == "execute"){
 		?>
 		<?
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){
+		while($row = mysqli_fetch_assoc($db_picture->result)){
 			$i++;
 		?>
 			<tr <?=$fs_change_bg?>>
@@ -124,11 +124,11 @@ if($action == "execute"){
 	</div>
 
 
-   
+
    <?=template_bottom() ?>
    <? /*------------------------------------------------------------------------------------------------*/ ?>
 
-   
+
 
 
    </body>

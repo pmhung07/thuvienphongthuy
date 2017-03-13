@@ -6,8 +6,8 @@ checkAddEdit("edit");
    $fs_action			= getURL();
    $fs_errorMsg		= "";
    $media_id = getValue("media_id","int","GET",0);
-   
-   $myform = new generate_form();  
+
+   $myform = new generate_form();
    $myform->add("media_des", "media_des", 0, 0, "",1, "Bạn chưa nhập mô tả", 0, "");
    $myform->add("media_paragraph", "media_paragraph", 0, 0, "", 0, "Bạn chưa nhập đoạn văn", 1, "");
 	//Add table insert data
@@ -17,15 +17,15 @@ checkAddEdit("edit");
    //Check $action for insert new data
    if($action == "execute"){
    	//Check form data
-   	$fs_errorMsg .= $myform->checkdata();      
-   	if($fs_errorMsg == ""){ 	
+   	$fs_errorMsg .= $myform->checkdata();
+   	if($fs_errorMsg == ""){
    		$myform->removeHTML(0);
    		$db_ex = new db_execute($myform->generate_update_SQL("media_id",$media_id));
          echo("<script>alert('Sửa đổi thành công')</script>");
    		redirect($fs_action);
-   	}	
+   	}
    }
-   
+
    $myform->addFormname("add_new");
    $myform->evaluate();
    $myform->checkjavascript();
@@ -36,10 +36,10 @@ checkAddEdit("edit");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <?=$load_header?>
-<? 
+<?
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM media_exercies WHERE media_id = " . $media_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -71,7 +71,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
       $form->close_form();
       unset($form);
       ?>
-   </p>   
+   </p>
    <?=template_bottom() ?>
 </body>
 </html>

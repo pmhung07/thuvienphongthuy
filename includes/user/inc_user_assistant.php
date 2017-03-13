@@ -1,4 +1,4 @@
-<?php 
+<?php
 if($myuser->use_teacher != 1){
     redirect('http://'.$base_url);
 }
@@ -8,13 +8,13 @@ if($action  == 'addclass'){
     $class     = getValue('class','str','POST');
     if($class != ''){
         $dbCheckMail = new db_query('SELECT * FROM class WHERE class_name = "'.$class.'"');
-        $numRowMail  = mysql_num_rows($dbCheckMail->result);
+        $numRowMail  = mysqli_num_rows($dbCheckMail->result);
         if($numRowMail <= 0){
             $curtime         =  time();
             $uid = $myuser->u_id;
             $sql                =  "INSERT INTO `class` (`class_id`, `class_name`, `class_university_code`, `class_user_created`, `class_time_created`) VALUES (NULL, '$class', NULL, '$uid', '$curtime');";
             $db_insert          =  new db_execute($sql);
-            $msg .= 'Đăng ký lớp thành công';       
+            $msg .= 'Đăng ký lớp thành công';
         }else{
             $msg .= 'Lơp học này đã được đăng ký';
         }
@@ -59,8 +59,8 @@ if($action  == 'addclass'){
 		        	</script>
 		        </div>
 		        <div class="list_student">
-		        	<?php 
-		        	$db_query_class = new db_query('SELECT * FROM class WHERE class_user_created='.$myuser->u_id); 
+		        	<?php
+		        	$db_query_class = new db_query('SELECT * FROM class WHERE class_user_created='.$myuser->u_id);
 		        	$arrClass = $db_query_class->resultArray();
 		        	foreach($arrClass as $keyClass=>$valueClass){
 		        	?>
@@ -68,7 +68,7 @@ if($action  == 'addclass'){
 		        			<div class="asshead">
 				        		<div class="list_student_class">Lớp : <span><?=$valueClass['class_name']?></span></div>
 				        		<div class="list_student_adduser">
-				        			Thêm học viên : 
+				        			Thêm học viên :
 				        			<input class="email_student_add_<?=$valueClass['class_id']?>" type="text" value="" placeholder="Email học viên">
 				        			<span class="add_student" onclick="addStudent(<?=$valueClass['class_id']?>)">Save</span>
 				        		</div>
@@ -102,7 +102,7 @@ if($action  == 'addclass'){
 				        					<div class="list_student_details_head_col_show_2"><?=$valu['use_email']?></div>
 				        				</a>
 				        				<div class="list_student_details_head_col_show_3">
-				        					<? 
+				        					<?
 				        					if($valu['use_name'] != ''){
 				        						echo $valu['use_name'];
 				        					}else{
@@ -112,7 +112,7 @@ if($action  == 'addclass'){
 				        					?>
 				        				</div>
 				        				<div class="list_student_details_head_col_show_4">
-				        					<a class="chamdiem" onclick="resultquiz(<?=$valu['use_id']?>)">Chi tiết</a>	
+				        					<a class="chamdiem" onclick="resultquiz(<?=$valu['use_id']?>)">Chi tiết</a>
 				        				</div>
 				        			</div>
 				        			<div class="list_student_details_mark list_student_details_mark_<?=$valu['use_id']?>">
@@ -127,7 +127,7 @@ if($action  == 'addclass'){
 				        	</div>
 
 			        		</div>
-			        		
+
 		        		</div>
 		        	<?php }unset($db_query_class); ?>
 		        </div>
@@ -157,7 +157,7 @@ function addStudent(class_id){
 		url:'http://<?=$base_url?>/ajax/request.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Thêm học viên thành công');	
+				alert('Thêm học viên thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý hoặc không tồn tại địa chỉ Email');
@@ -180,7 +180,7 @@ function sendmesclass(class_id){
 			url:'http://<?=$base_url?>/ajax/sendmesclass.php',
 			success:function(data){
 				if($.trim(data) == 1){
-					alert('Gửi tin nhắn thành công');	
+					alert('Gửi tin nhắn thành công');
 					window.location.reload();
 				}else{
 					alert('Xảy ra lỗi trong quá trình xử lý hoặc không tồn tại địa chỉ Email');
@@ -207,7 +207,7 @@ function sendmesclassrieng(class_id,u_id){
 			url:'http://<?=$base_url?>/ajax/sendmesclassrieng.php',
 			success:function(data){
 				if($.trim(data) == 1){
-					alert('Gửi tin nhắn thành công');	
+					alert('Gửi tin nhắn thành công');
 					window.location.reload();
 				}else{
 					alert('Xảy ra lỗi trong quá trình xử lý hoặc không tồn tại địa chỉ Email');

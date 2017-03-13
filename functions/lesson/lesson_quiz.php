@@ -16,13 +16,13 @@ function lesson_quiz($unit,$unit_num,$unit_name){
     $var_head_lib2  .= '<script type="text/javascript" src="'.$var_path_js.'slimScroll.min.js"></script>';
     $var_head_lib2  .= '<script type="text/javascript" src="'.$var_path_media.'jwplayer.js"></script>';
     $var_head_lib2  .= '<script type="text/javascript">jwplayer.key="IyBF3HN/WxYyCXbdjRCOrUH3C4FJGuzHP9SQ6mz/YQcKlam8eP/Fvm6VM6g=";</script>';
-   
+
     $sqlCou     = new db_query('SELECT * FROM courses,courses_multi WHERE courses.cou_id = courses_multi.com_cou_id AND courses_multi.com_id = '.$unit);
-    $rowCou     = mysql_fetch_assoc($sqlCou->result);
+    $rowCou     = mysqli_fetch_assoc($sqlCou->result);
     $iCou       = $rowCou['cou_id'];
     //Lấy thông tin dạng bài học
     $sqlUnitMail = new db_query('SELECT * FROM lesson_details WHERE les_det_type = 3 AND les_com_id ='.$unit);
-    $rowUnitMail = mysql_fetch_assoc($sqlUnitMail->result);
+    $rowUnitMail = mysqli_fetch_assoc($sqlUnitMail->result);
     $iUnit       = $rowUnitMail['les_det_id'];
     unset($sqlUnitMail);
     //Lấy nội dung bài học và bài tập
@@ -31,8 +31,8 @@ function lesson_quiz($unit,$unit_num,$unit_name){
     $type    = "";
     $javaStr = ""; ?>
    <?=$var_head_lib2?>
-   <script src="<?=$var_path_js?>jquery.media.js"></script> 
-   <script type="text/javascript">                                
+   <script src="<?=$var_path_js?>jquery.media.js"></script>
+   <script type="text/javascript">
       var urlPoint      =   "";
       var baseurl       =  'http://<?=$base_url?>';
       $(document).ready(function(){
@@ -49,74 +49,74 @@ function lesson_quiz($unit,$unit_num,$unit_name){
 			$in = 0;
 			$classinput = "";
 			$numA       = array();
-		    while($rowQuick  = mysql_fetch_assoc($sqlQuick->result)){
+		    while($rowQuick  = mysqli_fetch_assoc($sqlQuick->result)){
 			    $sqlQues     = new db_query("SELECT * FROM questions WHERE que_exe_id = ".$rowQuick['exe_id']." ORDER BY que_type , que_order ASC");
-				while($rowQues = mysql_fetch_assoc($sqlQues->result)){                                            
+				while($rowQues = mysqli_fetch_assoc($sqlQues->result)){
 					$in ++;
 					$type[$in] = $rowQues['que_type'];
 					echo get_media_quiz($rowQues['que_media_id']);
-					if($rowQues['que_type']== 1 ){ ?>				
+					if($rowQues['que_type']== 1 ){ ?>
                         <!--  bắt đầu hiển thị nội dung quick dạng chọn câu đúng -->
                         <div>
-                            <div class="cau_hoi" style=""><?=$in?>.<?php echo $rowQues['que_content'] =   str_replace ('&&', '<br />', $rowQues['que_content']);  ?></div>	   
+                            <div class="cau_hoi" style=""><?=$in?>.<?php echo $rowQues['que_content'] =   str_replace ('&&', '<br />', $rowQues['que_content']);  ?></div>
                      	    <?php
                      		$sqlAns    = new db_query("SELECT * FROM answers WHERE ans_ques_id = ".$rowQues['que_id']);
                      		$arrayT    = array(1=>'A',2=>'B',3=>'C',4=>'D',5=>'E');
                      		$iA        = 0;
-                     		while($rowAns = mysql_fetch_assoc($sqlAns->result)){
+                     		while($rowAns = mysqli_fetch_assoc($sqlAns->result)){
                      		$iA ++;
-                           	?>                        			   
+                           	?>
                                 <span class="check_box">
                                     <input id="checke<?=$in?>_<?=$iA?>" name="chec_box<?=$in?>" type="radio" value="<?=$rowAns['ans_id']?>" />
                                     <label for="checke<?=$in?>_<?=$iA?>"><?=$arrayT[$iA]?>. <?=$rowAns['ans_content']?></label>
                                 </span>
-                                <br/>   
+                                <br/>
                         	<?php } ?>
                         </div>
-				    <?php }elseif($rowQues['que_type']== 2 ){ 
+				    <?php }elseif($rowQues['que_type']== 2 ){
 						$arrayCont  =  getMainC($rowQues['que_content']);
 						$cArrayCont =  count($arrayCont); ?>
  						<div>
                             <?php
                             $j = 0;
                             for($i=0;$i<$cArrayCont;$i++){
-                                if($i%2 != 0) { 
+                                if($i%2 != 0) {
                                    $j ++;
                                    $classinput .= "#editme".$in."_".$j.",";
                                    echo '<span id="editme'.$in.'_'.$j.'" style="color:red;font-weight: bold;">....................</span>';
                                 }else{
                                 	echo $arrayCont[$i];
-                                }     
+                                }
                             }
                             $numA[$in] = $j;
                             ?>
          				</div>
-				    <?php }elseif($rowQues['que_type']== 3 ){ 
+				    <?php }elseif($rowQues['que_type']== 3 ){
     					$arrayAns  = getStringAns($rowQues['que_content']);
     					$result    = count($arrayAns);
     					$rand_keys = array_random($arrayAns, $result); ?>
-      						<div>     						
+      						<div>
          						<div class="cau_hoi"><?=$in?>. Kéo thả từ thích hợp vào khoảng trống</div>
-         						<div class="menu_quiz"> 
+         						<div class="menu_quiz">
          							<?php for($i=0;$i<$result;$i++){ ?>
          								<a href="#"><span><?=$i+1?> .</span> <span id="draggable<?=$in?>_<?=$i+1?>"><?=trim($rand_keys[$i])?></span></a>
          							<?php } ?>
          						</div>
-                                <div class="menu_ans_drag"> 
+                                <div class="menu_ans_drag">
                                     <?php
                                     $arrayCont  =  getMainC($rowQues['que_content']);
                                     $cArrayCont =  count($arrayCont);
                                     $j = 0;
                                     for($i=0;$i<$cArrayCont;$i++){
-                                        if($i%2 != 0) { 
+                                        if($i%2 != 0) {
                                             $j ++;
                                             echo '<span id="droppable'.$in.'_'.$j.'"><span class="dotset">.................</span></span>';
                                         }else{
                                       	    echo $arrayCont[$i];
-                                        }     
+                                        }
                                     }
-                                    $numA[$in] = $j; ?>      
-                                </div>                                  
+                                    $numA[$in] = $j; ?>
+                                </div>
       						</div>
 						<?php } ?>
 			        <?php } ?>
@@ -124,8 +124,8 @@ function lesson_quiz($unit,$unit_num,$unit_name){
                <div>&nbsp;</div>
                <h2 class="button button-orange pull-right_result">Xem kết quả bài đã làm</h2>
                <div class="clearfix"></div>
-            </div>	
-   	    </div>     
+            </div>
+   	    </div>
    	<div class="clearfix"></div>
    </div>
 <script type="text/javascript">
@@ -141,7 +141,7 @@ $(document).ready(function(){
 	});
 });
 </script>
-<script>                                
+<script>
 $(document).ready(function(){
     <?php
     for($i=1;$i<=$in;$i++){
@@ -149,7 +149,7 @@ $(document).ready(function(){
             for($idrag=1;$idrag<=$numA[$i];$idrag++){ ?>
             var valueDropDrag<?=$i?> = "";
             var valuePoint<?=$i?> = [];
-            $( "#draggable<?=$i?>_<?=$idrag?>" ).draggable({ appendTo: "body",helper: "clone" });    
+            $( "#draggable<?=$i?>_<?=$idrag?>" ).draggable({ appendTo: "body",helper: "clone" });
             $( "#droppable<?=$i?>_<?=$idrag?>" ).droppable({
        	        activeClass: "ui-state-hover",
        	        hoverClass: "ui-state-active",
@@ -185,10 +185,10 @@ $(document).ready(function(){
             $.fancybox({
                 'type'   : 'ajax',
                 'href'   :  baseurl+ '/ajax/mark_quiz.php?icou=<?=$iCou?>&iunit=<?=$iUnit?>&unit=<?=$unit?>&nAns=<?=$in?>&' + urlPoint,
-            });       
-    }); 
+            });
+    });
 });
 
-</script> 
+</script>
 <div id="fade" class="black_overlay"></div>
 <?php } ?>

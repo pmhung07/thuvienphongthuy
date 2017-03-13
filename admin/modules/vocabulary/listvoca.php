@@ -11,8 +11,8 @@ checkAddEdit("add");
 									WHERE lesson_details.les_com_id = courses_multi.com_id
                                     AND   lesson_details.les_det_type = 3
                                     AND   courses_multi.com_parent_id =  ".$record_id );
-    
-    
+
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -27,21 +27,21 @@ checkAddEdit("add");
 	if(!is_array($listAll)) $listAll = array();
 	?>
 	<table border="1" cellpadding="3" cellspacing="0" class="table" width="100%" bordercolor="<?=$fs_border?>">
-		<tr> 
+		<tr>
 			<td class="bold bg" width="5"><input type="checkbox" id="check_all" onClick="check('1','<?=count($listAll)+1?>')"/></td>
 			<td class="bold bg" width="2%" nowrap="nowrap" align="center"><img src="<?=$fs_imagepath?>save.png" border="0"/></td>
 			<td class="bold bg" ><?=translate_text("name")?></td>
             <td class="bold bg" align="center" width="180" >chi tiết</td>
             <td class="bold bg" align="center" width="100" >Sửa chi tiết</td>
-            <td class="bold bg" align="center" width="30" >Xóa</td>				
+            <td class="bold bg" align="center" width="30" >Xóa</td>
 		</tr>
 		<form action="quickedit.php?returnurl=<?=base64_encode(getURL())?>" method="post" name="form_listing" id="form_listing" enctype="multipart/form-data">
-		<input type="hidden" name="iQuick" value="update" />	
-		<? 
-		
+		<input type="hidden" name="iQuick" value="update" />
+		<?
+
 		$i=0;
         $j = 0;
-		while($row = mysql_fetch_array($db_lesson->result)){ $i++;
+		while($row = mysqli_fetch_array($db_lesson->result)){ $i++;
 		?>
 		<tr <? if($i%2==0) echo ' bgcolor="#FAFAFA"';?>>
 			<td <? if($row["admin_id"] == $admin_id) echo ' bgcolor="#FFFF66"';?>>
@@ -50,7 +50,7 @@ checkAddEdit("add");
 			<td width="2%" nowrap="nowrap" align="center"><img src="<?=$fs_imagepath?>save.png" border="0" style="cursor:pointer" onClick="document.form_listing.submit()" alt="Save"></td>
 			<td nowrap="nowrap">
 				<b><a href="">Phần vocabulary của Lesson : <?php echo $row['com_name'] ?></a></b>
-                
+
 			</td>
             <td align="center"><a title="Xem chi tiết" class="thickbox noborder a_detail" href="listdetail.php?url=<?=base64_encode(getURL())?>&record_id=<?=$row["les_det_id"]?>&TB_iframe=true&amp;height=450&amp;width=950"">Xem chi tiết</a></td>
 		    <td align="center" width="16"><a class="text" href="editvoca.php?record_id=<?=$row["les_det_id"]?>&returnurl=<?=base64_encode(getURL())?>"><img src="<?=$fs_imagepath?>edit.png" alt="EDIT" border="0"></a></td>

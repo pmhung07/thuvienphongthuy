@@ -16,13 +16,13 @@ $ans_first_true = 0;
 $ans_last_true = 1;
 
 $db_select_ans  = new db_query("SELECT sg_ans_id FROM sg_test_answers WHERE sg_ans_ques_id = ". $ans_ques_id);
-while($row_ans = mysql_fetch_assoc($db_select_ans->result)){
+while($row_ans = mysqli_fetch_assoc($db_select_ans->result)){
    $ans_id = $row_ans["sg_ans_id"];
    $myform = new generate_form();
    $myform->add("sg_ans_true","ans_first_true",1,1,0,0,"",0,"");
    $myform->addTable("sg_test_answers");
   	$db_update = new db_execute($myform->generate_update_SQL("sg_ans_id", $ans_id));
-  	unset($db_update);     
+  	unset($db_update);
 }unset($db_select_ans);
 
 $myform_udp = new generate_form();

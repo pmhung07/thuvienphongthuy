@@ -8,7 +8,7 @@ checkAddEdit("add");
 	$fs_redirect = base64_decode(getValue("url","str","GET",base64_encode("listing.php")));
 	$after_save_data = getValue("after_save_data", "str", "POST", "add.php");
 	$com_active = 1;
-	
+
 	$myform = new generate_form();
 
  	$dbquery = new db_query("SELECT * FROM courses_multi_tabs WHERE cou_tab_id =".$iTab);
@@ -29,8 +29,8 @@ checkAddEdit("add");
    	<? /*------------------------------------------------------------------------------------------------*/ ?>
    	<?=template_top($fs_title)?>
    	<? /*------------------------------------------------------------------------------------------------*/ ?>
-   	<a style="background: #A0007F;text-decoration: none;color: white;padding: 10px 20px;display: -webkit-inline-box;text-transform: uppercase;" href="course_unit_data.php?iTab=<?=$iTab?>&iUnit=<?=$iUnit?>">Refresh</a>	
-   	<a style="background: #A0007F;text-decoration: none;color: white;padding: 10px 20px;display: -webkit-inline-box;text-transform: uppercase;" href="<?=$fs_redirect?>">Quay lại quản lý Bài học</a>	
+   	<a style="background: #A0007F;text-decoration: none;color: white;padding: 10px 20px;display: -webkit-inline-box;text-transform: uppercase;" href="course_unit_data.php?iTab=<?=$iTab?>&iUnit=<?=$iUnit?>">Refresh</a>
+   	<a style="background: #A0007F;text-decoration: none;color: white;padding: 10px 20px;display: -webkit-inline-box;text-transform: uppercase;" href="<?=$fs_redirect?>">Quay lại quản lý Bài học</a>
    	<div class="navtool">
    		<div class="navtool_title">Tabs : <span><?=$arrTabs[0]['cou_tab_name']?> </span> ---------- Unit : <span><?=$arrUnits[0]['com_name']?> </span></div>
    	</div>
@@ -48,7 +48,7 @@ checkAddEdit("add");
    		<div class></div>
    	</div>
   	<div class="sidebartool">
-  		
+
   	</div>
 
    <?=template_bottom() ?>
@@ -66,7 +66,7 @@ checkAddEdit("add");
 		$sql = '';
 		$db_picture = new db_query("SELECT * FROM courses_multi_tabs_block WHERE  com_block_tab_id=" . $iTab." ORDER BY com_block_data_order");
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){ $i++;
+		while($row = mysqli_fetch_assoc($db_picture->result)){ $i++;
 		?>
 			<tr style="background:#FDD5D5;">
 				<td align="center"><?=$i?></td>
@@ -99,7 +99,7 @@ function update_orderblockmain(com_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Update Thứ tự Block thành công');	
+				alert('Update Thứ tự Block thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');

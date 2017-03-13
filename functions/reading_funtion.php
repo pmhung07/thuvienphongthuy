@@ -4,7 +4,7 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
    $myuser = new user();
    switch($teque_type){
       case "1":
-      $arr_read_multi_use[$teque_id] = "";      
+      $arr_read_multi_use[$teque_id] = "";
       ?>
          <div id="ques_slice">
             <div id="slice_detail">
@@ -13,53 +13,53 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
                <input id="teque_score_<?=($i-1)?>" type="hidden" value="<?=$teque_score?>" />
                <p class="p_slice_detail"><?="<b>Question " .$i. " :</b> " .$teque_content?></p>
                <table cellspacing="10" class="tbl_slice_detail">
-                  <?                                              
+                  <?
                   $db_select_ans = new db_query("SELECT * FROM test_answers WHERE tan_teques_id = ".$teque_id);
-                  while($row_ans = mysql_fetch_assoc($db_select_ans->result)){
+                  while($row_ans = mysqli_fetch_assoc($db_select_ans->result)){
                      $ans_id = $row_ans['tan_id'];
                      if($row_ans['tan_true'] == 1){
-                        $arr_read_multi_true[$teque_id] = $ans_id;                            
-                     }                                          
+                        $arr_read_multi_true[$teque_id] = $ans_id;
+                     }
                      ?>
-                     <tr>  
+                     <tr>
                         <td>
                            <span class="rdo_box">
                            <input id="" <? if(isset($_SESSION["ques_".$myuser->u_id."_".$teque_id])){
                                               if($_SESSION["ques_".$myuser->u_id."_".$teque_id] == $ans_id){
                                                  echo "checked=''";
                                               }} ?> type="radio"  name="radio_ans_<?=$i?>" value="<?=$ans_id?>"/></span></td>
-                        <td style="font-size: 13px;"><?=$row_ans['tan_content']?></td>                    
-                     </tr>              
+                        <td style="font-size: 13px;"><?=$row_ans['tan_content']?></td>
+                     </tr>
                   <?}unset($db_select_ans);?>
                </table>
             </div>
             <div id="direct_ques_multichoice">
                Click on an oval to select your answer.To choose a different answer,click on a different oval.
             </div>
-         </div> 
-         
-         <div id="para_slice">         
+         </div>
+
+         <div id="para_slice">
             <?
-            $db_select_highlight = new db_query("SELECT high_teque_id FROM test_highlight 
+            $db_select_highlight = new db_query("SELECT high_teque_id FROM test_highlight
                                                  WHERE high_tec_id = ".$tec_id);
             $arrques_in_highlight[] = "";
             $i = 0;
-            while($row_ques_highlight = mysql_fetch_assoc($db_select_highlight->result)){
+            while($row_ques_highlight = mysqli_fetch_assoc($db_select_highlight->result)){
                $arrques_in_highlight[$i] = $row_ques_highlight['high_teque_id'];
-               $i++; 
+               $i++;
             }unset($db_select_highlight);
             if(in_array($teque_id,$arrques_in_highlight)){
                $db_select_highlight = new db_query("SELECT * FROM test_highlight WHERE high_teque_id = ".$teque_id);
-               if($row_highlight = mysql_fetch_assoc($db_select_highlight->result)){
+               if($row_highlight = mysqli_fetch_assoc($db_select_highlight->result)){
                   echo "<p style='font-weight:bold;'>". $tec_name ."</p>";
                   echo $row_highlight['high_paragraph'];
                }unset($db_select_highlight);
-            }else{  
+            }else{
                echo "<p style='font-weight:bold;'>". $tec_name ."</p>";
                echo $tec_content;
             }
             ?>
-         </div>  
+         </div>
       <?
          break;
       case "2":
@@ -72,7 +72,7 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
             <input id="teque_id_<?=($i-1)?>" type="hidden" value="<?=$teque_id?>" />
             <input id="teque_score_<?=($i-1)?>" type="hidden" value="<?=$teque_score?>" />
             <div id="drag_first_direct">
-               <span class="direct_drag_1"><?="<b>Question " .$i. " :</b> " ?>An introductory  sentence for a brief summary of the passage  is provided below.Complete the summary by 
+               <span class="direct_drag_1"><?="<b>Question " .$i. " :</b> " ?>An introductory  sentence for a brief summary of the passage  is provided below.Complete the summary by
                selecting the <b>THREE</b> answer choice that express the most important ideas in the passage.Some sentences
                do not belong in the summary bacause they express ideas that are not presented in the passage or are minor
                ideas in the passage.<b>This question is worth 2 points</b><br /><br />
@@ -94,14 +94,14 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
                         <span id="droppable_<?=$i?>" class="drop_reading">
                            <span class='text-ct' style='color:red;font-weight: bold;font-size:11px;'>
                               <?
-                              if($row_ans_choose = mysql_fetch_assoc($db_select_ans_choose->result)){
+                              if($row_ans_choose = mysqli_fetch_assoc($db_select_ans_choose->result)){
                                  echo $row_ans_choose['tan_content'];
                               }
                               ?>
                            </span>
                         </span>
                      </div>
-                     <?   
+                     <?
                   }
                }else{
                ?>
@@ -116,7 +116,7 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
                   <?
                   $db_select_ans = new db_query("SELECT * FROM test_answers WHERE tan_teques_id = ".$teque_id);
                   $i = 1;
-                  while($row_ans = mysql_fetch_assoc($db_select_ans->result)){
+                  while($row_ans = mysqli_fetch_assoc($db_select_ans->result)){
                   ?>
                   <li id="draggable_<?=$teque_id?>_<?=$i?>" class="ans_drag_1"><b><?=$i." . "?></b>
                      <span>
@@ -130,8 +130,8 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
          <script>
          $(document).ready(function(){
             <?for($j = 1;$j <= $i;$j++){?>
-               $("#draggable_<?=$teque_id?>_<?=$j?>").draggable({ appendTo: "body",helper: "clone" }); 
-            <?}?> 
+               $("#draggable_<?=$teque_id?>_<?=$j?>").draggable({ appendTo: "body",helper: "clone" });
+            <?}?>
             <?for($j = 1;$j < 4;$j++){?>
                $("#droppable_<?=$teque_id?>_<?=$j?>").droppable({
                   activeClass: "ui-state-hover",
@@ -145,7 +145,7 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
                   }
                });
             <?}?>
-            
+
          });
          </script>
          <?
@@ -166,10 +166,10 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
             <div id="drag_ans_ques_2">
                <div id="drag_true_2">
                   <?
-                  $db_select_ans = new db_query("SELECT * FROM test_answers 
+                  $db_select_ans = new db_query("SELECT * FROM test_answers
                                                  WHERE tan_teques_id = ".$teque_id);
                   $count_ans = 1;
-                  while($row_ans = mysql_fetch_assoc($db_select_ans->result)){
+                  while($row_ans = mysqli_fetch_assoc($db_select_ans->result)){
                   ?>
                   <div id="draggable_ans_<?=$teque_id?>_<?=$count_ans?>" class="drag_lis_ans">
                      <b><?=$count_ans." . "?></b><?=$row_ans['tan_content']?>
@@ -183,17 +183,17 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
                   $i = 0;
                   $arr_count = array();
                   $arr_ans_drag_2 = array();
-                  $db_select_quessub = new db_query("SELECT * FROM  test_questions_sub 
+                  $db_select_quessub = new db_query("SELECT * FROM  test_questions_sub
                                                      WHERE quesub_teque_id = ".$teque_id);
-                  //$total_ques_sub = mysql_num_rows($db_select_quessub->result);
-                  $count_ques_sub = 1;                                  
-                  while($row_quessub = mysql_fetch_assoc($db_select_quessub->result)){
+                  //$total_ques_sub = mysqli_num_rows($db_select_quessub->result);
+                  $count_ques_sub = 1;
+                  while($row_quessub = mysqli_fetch_assoc($db_select_quessub->result)){
                      $i++;
                      $arr_count[$i] = 0;
                      $row_sl_sub = new db_query("SELECT tan_id FROM test_answers WHERE tan_quesub_id = ".$row_quessub['quesub_id']);
                      //total count ans fil subques
-                     $total_ans_sub = mysql_num_rows($row_sl_sub->result); 
-                     //echo $total_ans_sub;      
+                     $total_ans_sub = mysqli_num_rows($row_sl_sub->result);
+                     //echo $total_ans_sub;
                      ?>
                      <li id="id_list_subquest_<?=$count_ques_sub?>" class="li_list_subqques">
                      <input id="ip_subques_<?=$count_ques_sub?>" type="hidden" value="<?=$row_quessub['quesub_id']?>"/>
@@ -201,13 +201,13 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
                         <ul class="ul_list_ans">
                            <?
                            $count_ans_sub = 1;
-                           while($row_sub = mysql_fetch_assoc($row_sl_sub->result)){
+                           while($row_sub = mysqli_fetch_assoc($row_sl_sub->result)){
                               $arr_count[$i]++;
                               ?>
                               <li id="droppable_ans_<?=$teque_id?>_<?=$count_ques_sub?>_<?=$count_ans_sub?>" class="drag_ans_true_2"></li>
-                              <?    
-                              $count_ans_sub++;  
-                           }unset($row_sl_sub);   
+                              <?
+                              $count_ans_sub++;
+                           }unset($row_sl_sub);
                            ?>
                         </ul>
                      </li>
@@ -215,12 +215,12 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
                   </ul>
                </div>
             </div>
-         </div>                         
+         </div>
       <script>
       $(document).ready(function(){
          <?for($j = 1;$j <= $count_ans;$j++){?>
-            $("#draggable_ans_<?=$teque_id?>_<?=$j?>").draggable({ appendTo: "body",helper: "clone" }); 
-         <?}?> 
+            $("#draggable_ans_<?=$teque_id?>_<?=$j?>").draggable({ appendTo: "body",helper: "clone" });
+         <?}?>
          <?for($j = 1;$j < $count_ques_sub;$j++){?>
             <?for($k = 1;$k < $count_ans_sub;$k++){?>
                $("#droppable_ans_<?=$teque_id?>_<?=$j?>_<?=$k?>").droppable({
@@ -234,7 +234,7 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
                      $( "<span class='text-ct' style='color:red;font-weight: bold;font-size:11px;'></span>" ).html( ui.draggable.html() ).appendTo( this );
                   }
                });
-         <?}}?>   
+         <?}}?>
       });
       </script>
          <?
@@ -247,33 +247,33 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
             <input id="teque_id_<?=($i-1)?>" type="hidden" value="<?=$teque_id?>" />
             <input id="teque_score_<?=($i-1)?>" type="hidden" value="<?=$teque_score?>" />
             <div id="slice_detail">
-               <p class="p_slice_detail"><?="<b>Question " .$i. " :</b> " ?>Look at the four squares [<span class='sp_fill'>+</span>] 
+               <p class="p_slice_detail"><?="<b>Question " .$i. " :</b> " ?>Look at the four squares [<span class='sp_fill'>+</span>]
                that indicate where the following sentence could be added to the passage. </p>
                <?
                $db_select_fill = new db_query("SELECT * FROM test_fillwords WHERE fil_teque_id = ".$teque_id);
                $i = 0;
-               if($row_ques_fil = mysql_fetch_assoc($db_select_fill->result)){  
+               if($row_ques_fil = mysqli_fetch_assoc($db_select_fill->result)){
                   $que_id = $row_ques_fil['fil_teque_id'];
                   $phrases = $row_ques_fil['fil_phrases'];
                   $para = $row_ques_fil['fil_paragraph'];
                }
                ?>
-               <p id="fill_detail" class="p_slice_detail"><b><?=$phrases?></b></p>  
-               <p class="p_slice_detail"><?=$teque_content?></p>             
+               <p id="fill_detail" class="p_slice_detail"><b><?=$phrases?></b></p>
+               <p class="p_slice_detail"><?=$teque_content?></p>
             </div>
             <div id="direct_ques_multichoice">
                Click on a square [<span class='sp_fill'>+</span>] to add the sentence to the passage.To select a different location,click on a differnt square.
             </div>
-         </div>   
-         <div id="para_slice"> 
+         </div>
+         <div id="para_slice">
             <?echo "<p style='font-weight:bold;'>". $tec_name ."</p>";?>
             <?
                //count string
                //$para_rm = removeHTML($para);
                $para_split = explode("|",$para);
-               $para_count = count($para_split);         
+               $para_count = count($para_split);
                for($i = 0;$i < $para_count;$i++){
-                  if($i % 2 != 0){         
+                  if($i % 2 != 0){
                      ?>
                      <span class='sp_fill' id='sp_fill_<?=$que_id?>_<?=$para_split[$i]?>' onclick="append_fillword(<?=$que_id?>,<?=$para_split[$i]?>,'<?=$phrases?>')">
                         +
@@ -282,8 +282,8 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
                   }else{
                      echo $para_split[$i];
                   }
-                                 
-               }                                  
+
+               }
             ?>
          </div>
          <script>
@@ -292,13 +292,13 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
                $(".sp_fill").css("color","#4CB6E3");
                $("#sp_fill_"+iQues+"_"+position).append(phrases);
                $("#sp_fill_"+iQues+"_"+position).css("color","white");
-               
+
                var currentPage = $currentPage + 1;
                var get_id_check = $currentPage + 1;
                var teque_type = $("#teque_type_"+$currentPage).val();
                var teque_id = $("#teque_id_"+$currentPage).val();
                var teque_score = $("#teque_score_"+$currentPage).val();
-               
+
                $.ajax({
                   type:'POST',
                   dataType:'JSON',
@@ -310,11 +310,11 @@ function reading_ques($teque_id,$teque_tec_id,$teque_content,$teque_type,$teque_
                      teque_score:teque_score
                   },
                url:'../ajax/save_questions.php',
-               success:function(data){  
+               success:function(data){
                   if(data.err == ''){
                   }else{
                   }}
-               });         
+               });
             }
          </script>
          <?

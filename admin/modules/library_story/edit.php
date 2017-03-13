@@ -4,7 +4,7 @@ checkAddEdit("edit");
 
 $fs_redirect 	   = base64_decode(getValue("url","str","GET",base64_encode("listing.php")));
 $record_id 	      = getValue("record_id");
-$tags             = getValue("lib_story_tags","str","POST",""); 
+$tags             = getValue("lib_story_tags","str","POST","");
 $type             = getValue("type","int","GET");
 //Khai báo biến khi thêm mới
 $fs_title			= "Edit Library Game";
@@ -64,7 +64,7 @@ if($action == "execute"){
    $fs_errorMsg .= $myform->checkdata();
    if($fs_errorMsg == ""){
    	$upload_img = new upload("lib_story_image", $imgpath, $fs_extension, $fs_filesize);
-   	$filename_img = $upload_img->file_name;     
+   	$filename_img = $upload_img->file_name;
       if($filename_img != ""){
          delete_file("library_story","lib_story_id",$record_id,"lib_story_image",$imgpath);
          $myform->add("lib_story_image","filename_img",0,1,0,0);
@@ -72,7 +72,7 @@ if($action == "execute"){
    		resize_image($imgpath, $filename_img, $arr["width"], $arr["height"], $arr["quality"], $type);
          }
       }
-      if($fs_errorMsg == ""){    
+      if($fs_errorMsg == ""){
       	$myform->removeHTML(0);
       	$db_insert = new db_execute($myform->generate_update_SQL($id_field, $record_id));
          unset($db_insert);
@@ -92,16 +92,16 @@ $fs_errorMsg .= $myform->strErrorField;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
+<?
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->addFormname("edit");
-$myform->checkjavascript(); 
+$myform->checkjavascript();
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM " . $fs_table . " WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}

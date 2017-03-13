@@ -24,7 +24,7 @@ $tags          = getValue("unit_test_tags","str","POST","");
 	9). Loi dua ra man hinh neu co duplicate
 	*/
    //$datetime =  date("Y-m-d g:i:s");
-   $myform = new generate_form(); 
+   $myform = new generate_form();
    $myform->add("uni_test_name", "uni_test_name", 0, 0, "", 1, "Bạn chưa nhập tên của đề thi", 0, "Đề thi này đã có trong cơ sở dữ liệu!");
    $myform->add("uni_test_active","uni_test_active",1,0,0,0,"",0,"");
 	$myform->add("uni_test_tags","uni_test_tags",0,0,"",0,"",0,"");
@@ -35,8 +35,8 @@ $tags          = getValue("unit_test_tags","str","POST","");
    //Check $action for insert new data
    if($action == "execute"){
    	//Check form data
-   	$fs_errorMsg .= $myform->checkdata();      
-   	if($fs_errorMsg == ""){ 	
+   	$fs_errorMsg .= $myform->checkdata();
+   	if($fs_errorMsg == ""){
    		$upload		= new upload("uni_test_image", $imgpath, $fs_extension, $fs_filesize);
    		$filename	= $upload->file_name;
          if($filename != ""){
@@ -44,15 +44,15 @@ $tags          = getValue("unit_test_tags","str","POST","");
       		foreach($arr_resize as $type => $arr){
     				resize_image($imgpath, $filename, $arr["width"], $arr["height"], $arr["quality"], $type);
       		}
-   		}	
+   		}
    		//Insert to database
    		$myform->removeHTML(0);
    		$db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
          //Lưu tag cho đề thi ĐH (Group type:3, type:4)
          if($tags != '') save_tags($record_id,$tags,3,4);
    		//Redirect to:
-   		redirect($fs_redirect); 
-         unset($db_ex);		
+   		redirect($fs_redirect);
+         unset($db_ex);
    	}
    }
    $myform->addFormname("add_new");
@@ -62,14 +62,14 @@ $tags          = getValue("unit_test_tags","str","POST","");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM uni_test WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -95,7 +95,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
    <?=$form->text("Tên đề thi", "uni_test_name", "uni_test_name", $uni_test_name, "Tên đề thi", 0, 250, "", 255, "", "", "")?>
    <?=$form->getFile("Hình ảnh", "uni_test_image", "uni_test_image", "Chọn hình ảnh", 0, 40, "", "")?>
    <?=$form->text("Tags", "unit_test_tags", "unit_test_tags", $unit_test_tags, "Tags", 0, 450,24, 255, "", "", "<span  style=\"color: red;padding-left: 10px;\" >(Các từ khóa viết thường, cách nhau bằng dấu \",\")</span>")?>
-   <?=$form->checkbox("Kích hoạt", "uni_test_active", "uni_test_active", 1 ,$uni_test_active, "",0, "", "")?>  
+   <?=$form->checkbox("Kích hoạt", "uni_test_active", "uni_test_active", 1 ,$uni_test_active, "",0, "", "")?>
    <?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>
    <?=$form->hidden("action", "action", "execute", "");?>
    <?

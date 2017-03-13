@@ -8,9 +8,9 @@ function base64_url_decode($input) {
 
 function get_day(){
    $array_value = array( 1 => "01", 2  => "02", 3  => "03", 4  => "04", 5  => "05", 6  => "06", 7  => "07", 8  => "08", 9  => "09", 10 => "10",
-                        11 => "11", 12 => "12", 13 => "13", 14 => "14", 15 => "15", 16 => "16", 17 => "17", 18 => "18", 19 => "19", 20 => "20", 
+                        11 => "11", 12 => "12", 13 => "13", 14 => "14", 15 => "15", 16 => "16", 17 => "17", 18 => "18", 19 => "19", 20 => "20",
                         21 => "21", 22 => "22", 23 => "23", 24 => "24", 25 => "25", 26 => "26", 27 => "27", 28 => "28", 29 => "29", 30 => "30", 31 => "31" );
-   return $array_value;                   
+   return $array_value;
 }
 
 function get_month(){
@@ -20,12 +20,12 @@ function get_month(){
 }
 
 function get_year(){
-   $array_value =  array(1950 => "1950",  1951 => "1951",  1952 => "1952",  1953 => "1953",  1954 => "1954",  1955 => "1955",  1956 => "1956",  1957 => "1957",  1958 => "1958",   1959 => "1959", 
+   $array_value =  array(1950 => "1950",  1951 => "1951",  1952 => "1952",  1953 => "1953",  1954 => "1954",  1955 => "1955",  1956 => "1956",  1957 => "1957",  1958 => "1958",   1959 => "1959",
                          1960 => "1960",  1961 => "1961",  1962 => "1962",  1963 => "1963",  1964 => "1964",  1965 => "1965",  1966 => "1966",  1967 => "1967",  1968 => "1968",   1969 => "1969",
                          1970 => "1970",  1971 => "1971",  1972 => "1972",  1973 => "1973",  1974 => "1974",  1975 => "1975",  1976 => "1976",  1977 => "1977",  1978 => "1978",   1979 => "1979",
                          1980 => "1980",  1981 => "1981",  1982 => "1982",  1983 => "1983",  1984 => "1984",  1985 => "1985",  1986 => "1986",  1987 => "1987",  1988 => "1988",   1989 => "1989",
                          1990 => "1990",  1991 => "1991",  1992 => "1992",  1993 => "1993",  1994 => "1994",  1995 => "1995",  1996 => "1996",  1997 => "1997",  1998 => "1998",   1999 => "1999",
-                         2000 => "2000",  2001 => "2001",  2002 => "2002",  2003 => "2003",  2004 => "2004",  2005 => "2005",  2006 => "2006",  2007 => "2007",  2008 => "2008",   2009 => "2009",  
+                         2000 => "2000",  2001 => "2001",  2002 => "2002",  2003 => "2003",  2004 => "2004",  2005 => "2005",  2006 => "2006",  2007 => "2007",  2008 => "2008",   2009 => "2009",
                          2010 => "2010",  2011 => "2011",  2012 => "2012",  2014 => "2014",  2015 => "2015");
    return $array_value;
 }
@@ -33,7 +33,7 @@ function get_year(){
 function array_language(){
 	$db_language	= new db_query("SELECT * FROM languages ORDER BY lang_id ASC");
 	$arrReturn		= array();
-	while($row = mysql_fetch_array($db_language->result)){
+	while($row = mysqli_fetch_array($db_language->result)){
 		$arrReturn[$row["lang_id"]] = array($row["lang_code"], $row["lang_name"]);
 	}
 	return $arrReturn;
@@ -72,14 +72,14 @@ function cut_string($str, $length, $char=" ..."){
 	//Nếu chuỗi cần cắt nhỏ hơn $length thì return luôn
 	$strlen	= mb_strlen($str, "UTF-8");
 	if($strlen <= $length) return $str;
-	
+
 	//Cắt chiều dài chuỗi $str tới đoạn cần lấy
 	$substr	= mb_substr($str, 0, $length, "UTF-8");
 	if(mb_substr($str, $length, 1, "UTF-8") == " ") return $substr . $char;
-	
+
 	//Xác định dấu " " cuối cùng trong chuỗi $substr vừa cắt
 	$strPoint= mb_strrpos($substr, " ", "UTF-8");
-	
+
 	//Return string
 	if($strPoint < $length - 20) return $substr . $char;
 	else return mb_substr($substr, 0, $strPoint, "UTF-8") . $char;
@@ -275,9 +275,9 @@ function removeAccent($mystring){
 }
 
 function removeHTML($string){
-	$string = preg_replace ('/<script.*?\>.*?<\/script>/si', ' ', $string); 
-	$string = preg_replace ('/<style.*?\>.*?<\/style>/si', ' ', $string); 
-	$string = preg_replace ('/<.*?\>/si', ' ', $string); 
+	$string = preg_replace ('/<script.*?\>.*?<\/script>/si', ' ', $string);
+	$string = preg_replace ('/<style.*?\>.*?<\/style>/si', ' ', $string);
+	$string = preg_replace ('/<.*?\>/si', ' ', $string);
 	$string = str_replace ('&nbsp;', ' ', $string);
     $string = str_replace ('&amp;', '&', $string);
 	$string = mb_convert_encoding($string, "UTF-8", "UTF-8");
@@ -291,7 +291,7 @@ function removeScript($string){
 	$string = preg_replace ('/On([a-zA-Z]*)=".*?"/si', ' ', $string);
 	$string = preg_replace ("/on([a-zA-Z]*)='.*?'/si", " ", $string);
 	$string = preg_replace ("/On([a-zA-Z]*)='.*?'/si", " ", $string);
-	return $string; 
+	return $string;
 }
 function removeLink($string){
 	$string = preg_replace ('/<a.*?\>/si', '', $string);
@@ -358,29 +358,29 @@ function generate_star($value = 1, $width = 19){
 
 //Hàm cắt chuỗi , hiển thị số từ
 function truncateString_($str, $len, $charset="UTF-8"){
-    $str = html_entity_decode($str, ENT_QUOTES, $charset);   
+    $str = html_entity_decode($str, ENT_QUOTES, $charset);
     if(mb_strlen($str, $charset)> $len){
         $arr = explode(' ', $str);
         $str = mb_substr($str, 0, $len, $charset);
         $arrRes = explode(' ', $str);
         $last = $arr[count($arrRes)-1];
-        unset($arr); 
+        unset($arr);
         if(strcasecmp($arrRes[count($arrRes)-1], $last))   unset($arrRes[count($arrRes)-1]);
-      return implode(' ', $arrRes)."...";    
+      return implode(' ', $arrRes)."...";
    }
     return $str;
 }
 // Hàm remover HTML đối với phần nội dung khóa học
 function removeHTMLMain($string){
-	$string = preg_replace ('/<script.*?\>.*?<\/script>/si', ' ', $string); 
+	$string = preg_replace ('/<script.*?\>.*?<\/script>/si', ' ', $string);
 	$string = preg_replace ('/<style.*?\>.*?<\/style>/si', ' ', $string);
 	$string = preg_replace ('/<b.*?\>/si', '^b^', $string);
 	$string = preg_replace ('/<\/b>/si', '*b*', $string);
-	$string = preg_replace ('/<.*?\>/si', ' ', $string); 
+	$string = preg_replace ('/<.*?\>/si', ' ', $string);
     $string = str_replace ('^b^', '<b>', $string);
 	$string = str_replace ('*b*', '</b>', $string);
 	$string = str_replace ('&nbsp;', ' ', $string);
-    $string = str_replace ('&amp;', '&', $string);    
+    $string = str_replace ('&amp;', '&', $string);
 	$string = mb_convert_encoding($string, "UTF-8", "UTF-8");
 	$string = str_replace (array(chr(9),chr(10),chr(13)), ' ', $string);
 	for($i = 0; $i <= 5; $i++) $string = str_replace ('  ', ' ', $string);
@@ -400,12 +400,12 @@ function getMainCNoTr($str1){
     $str3   = removeHTMLMain($str2);
     $str    = explode("&&", $str3);
     $count  = count($str);
-    $content = ''; 
+    $content = '';
     for($i=0;$i < $count ;$i++){
         $strSub    = explode("|", $str[$i]);
         $countSub  = count($strSub);
         for($j=0;$j < $countSub ;$j++){
-           $content .= '<span >'.$strSub[$j].'</span>'; 
+           $content .= '<span >'.$strSub[$j].'</span>';
         }
         $content  .= '<div style=" height: 8px;"></div>';
      }
@@ -416,21 +416,21 @@ function getMainCTran($str1,$strTr1){
     $strTr2   = removeLink($strTr1);
     $strTr3   = removeHTML($strTr2);
     $strTr    = explode("&&", $strTr3);
-    
+
     $str2   = removeLink($str1);
     $str3   = removeHTMLMain($str2);
     $str    = explode("&&", $str3);
     $count  = count($str);
-    $contentTr = ''; 
+    $contentTr = '';
     for($i=0;$i < $count ;$i++){
         $strSub    = explode("|", $str[$i]);
         $strTrSub  = explode("|", $strTr[$i]);
         $countSub  = count($strSub);
         for($j=0;$j < $countSub ;$j++){
            if(isset($strTrSub[$j])) { $translate = $strTrSub[$j]; }else{$translate = "";};
-           $contentTr .= '<span class="masterTooltip" title="'.$strSub[$j].'" >'.$strSub[$j].'</span>'; 
+           $contentTr .= '<span class="masterTooltip" title="'.$strSub[$j].'" >'.$strSub[$j].'</span>';
            $contentTr  .= '<div style=" height: 4px;"></div>';
-           $contentTr .= '<span class="masterTooltipTranslate" title="'.$translate.'" >'.$translate.'</span>'; 
+           $contentTr .= '<span class="masterTooltipTranslate" title="'.$translate.'" >'.$translate.'</span>';
         }
         $contentTr  .= '<div style=" height: 8px;"></div>';
      }
@@ -443,7 +443,7 @@ function getStringAns($str){
     $j           =  0;
     $arrayAns    =  array();
     for($i=0;$i<$count1;$i++){
-       if($i%2 != 0) { 
+       if($i%2 != 0) {
            $arrayAns[$j] = strtolower($arrayString[$i]);
            $j ++;
        }
@@ -454,10 +454,10 @@ function getStringAns($str){
 function checklike($uid,$cid,$type){
     $check = 0;
     if ($type   = 'courses'){
-        $typeid = 1; 
+        $typeid = 1;
     }
     $sqlCheck   =  new db_query("SELECT * FROM user_like WHERE usel_use_id = ".$uid." AND usel_cou_id = ".$cid." AND usel_type =".$typeid);
-    while($rowCheck  = mysql_fetch_assoc($sqlCheck->result)){
+    while($rowCheck  = mysqli_fetch_assoc($sqlCheck->result)){
         $check ++;
     }unset($sqlCheck);
     if($check == 0){
@@ -506,17 +506,17 @@ function checkmedia_les($type_media,$url){
 function get_count_test($cat_id){
 	if($cat_id == 9){
 		$db_test = new db_query("SELECT * FROM test WHERE test_active = 1");
-		$num_test = mysql_num_rows($db_test->result);
+		$num_test = mysqli_num_rows($db_test->result);
 		unset($db_test);
 		return $num_test;
 	}elseif($cat_id == 76){
 		$db_test = new db_query("SELECT * FROM toeic WHERE toeic_active = 1");
-		$num_test = mysql_num_rows($db_test->result);
+		$num_test = mysqli_num_rows($db_test->result);
 		unset($db_test);
 		return $num_test;
 	}elseif($cat_id == 35){
 		$db_test = new db_query("SELECT * FROM ielts WHERE ielt_active = 1");
-		$num_test = mysql_num_rows($db_test->result);
+		$num_test = mysqli_num_rows($db_test->result);
 		unset($db_test);
 		return $num_test;
 	}
@@ -526,7 +526,7 @@ function get_count_test($cat_id){
 function check_test($u_id){
     $check  = 0;
     $sqlCheck   =  new db_query("SELECT * FROM users WHERE use_id = ".$u_id);
-    while($rowCheck  = mysql_fetch_assoc($sqlCheck->result)){
+    while($rowCheck  = mysqli_fetch_assoc($sqlCheck->result)){
         if ( $rowCheck['use_test_complete'] == 1 && $rowCheck['use_test_status'] == 0){
             $check = 1;
         }
@@ -543,7 +543,7 @@ function check_test($u_id){
 function check_ielts($u_id){
     $check  = 0;
     $sqlCheck   =  new db_query("SELECT * FROM users WHERE use_id = ".$u_id);
-    while($rowCheck  = mysql_fetch_assoc($sqlCheck->result)){
+    while($rowCheck  = mysqli_fetch_assoc($sqlCheck->result)){
         if ( $rowCheck['use_ielts_complete'] == 1 && $rowCheck['use_ielts_status'] == 0){
             $check = 1;
         }
@@ -560,19 +560,19 @@ function check_ielts($u_id){
 //1.Kiem tra xem co ton tai bai thi khong
 function check_isset_test($test_id){
 	$db_check_test = new db_query("SELECT COUNT(test_name) FROM test WHERE test_id = ".$test_id);
-	$row_check = mysql_fetch_assoc($db_check_test->result);
+	$row_check = mysqli_fetch_assoc($db_check_test->result);
 	if($row_check['COUNT(test_name)'] == 0){
 		redirect("http://tienganh2020.com");
 	}
 }
 function check_isset_ielts($test_id){
 	$db_check_test = new db_query("SELECT COUNT(ielt_name) FROM ielts WHERE ielt_id = ".$test_id);
-	$row_check = mysql_fetch_assoc($db_check_test->result);
+	$row_check = mysqli_fetch_assoc($db_check_test->result);
 	if($row_check['COUNT(ielt_name)'] == 0){
 		redirect("http://tienganh2020.com");
 	}
 }
-//2.Truong hop lay bai thi khac 
+//2.Truong hop lay bai thi khac
 function check_access_test_other($test_id){
    $myuser = new user();
    $u_id = $myuser->u_id;
@@ -583,7 +583,7 @@ function check_access_test_other($test_id){
 		}else{
 			//Truong hop khong phai thi thu
 			$db_check_tesr = new db_query("SELECT COUNT(tesr_id) FROM test_result WHERE tesr_test_id = ".$test_id." AND tesr_user_id = ".$u_id." AND tesr_user_success = 0");
-			$row_check = mysql_fetch_assoc($db_check_tesr->result);
+			$row_check = mysqli_fetch_assoc($db_check_tesr->result);
 			if($row_check['COUNT(tesr_id)'] == 0){
 				redirect("http://tienganh2020.com");
 			}
@@ -599,7 +599,7 @@ function check_access_ielts_other($test_id){
    if($myuser->logged == 1){
 		//Truong hop khong phai thi thu
 		$db_check_tesr = new db_query("SELECT COUNT(ielr_id) FROM ielts_result WHERE ielr_ielt_id = ".$test_id." AND ielr_user_id = ".$u_id." AND ielr_user_success = 0");
-		$row_check = mysql_fetch_assoc($db_check_tesr->result);
+		$row_check = mysqli_fetch_assoc($db_check_tesr->result);
 		if($row_check['COUNT(ielr_id)'] == 0){
 		 redirect("http://hochay.vn");
 		}
@@ -615,8 +615,8 @@ function check_access_part($u_id){
 		$tesr_id = getValue("tesr_id","int","GET",0);
 		//get tesr_id if not exists
 		if($tesr_id == 0){
-			$sqlcheck = new db_query("SELECT tesr_id FROM test_result WHERE tesr_user_id = ".$u_id." AND tesr_user_success = 0");      
-			while($rowcheck = mysql_fetch_assoc($sqlcheck->result)){
+			$sqlcheck = new db_query("SELECT tesr_id FROM test_result WHERE tesr_user_id = ".$u_id." AND tesr_user_success = 0");
+			while($rowcheck = mysqli_fetch_assoc($sqlcheck->result)){
 				$tesr_id = $rowcheck['tesr_id'];
 			}unset($rowcheck);
 		}
@@ -624,7 +624,7 @@ function check_access_part($u_id){
 		$_SESSION['tesr_id'] = $tesr_id;
 		//check success part
 		$db_part_success = new db_query("SELECT tesr_part_success FROM test_result WHERE tesr_id =".$tesr_id);
-		if($row_part = mysql_fetch_assoc($db_part_success->result)){
+		if($row_part = mysqli_fetch_assoc($db_part_success->result)){
 			$tesr_part_success = $row_part['tesr_part_success'];
 		}
 	}return $tesr_part_success;
@@ -637,8 +637,8 @@ function check_access_part_ielts($u_id){
 		$ielr_id = getValue("ielr_id","int","GET",0);
 		//get tesr_id if not exists
 		if($ielr_id == 0){
-			$sqlcheck = new db_query("SELECT ielr_id FROM ielts_result WHERE ielr_user_id = ".$u_id." AND 	ielr_user_success = 0");      
-			while($rowcheck = mysql_fetch_assoc($sqlcheck->result)){
+			$sqlcheck = new db_query("SELECT ielr_id FROM ielts_result WHERE ielr_user_id = ".$u_id." AND 	ielr_user_success = 0");
+			while($rowcheck = mysqli_fetch_assoc($sqlcheck->result)){
 				$ielr_id = $rowcheck['ielr_id'];
 			}unset($rowcheck);
 		}
@@ -646,7 +646,7 @@ function check_access_part_ielts($u_id){
 		$_SESSION['ielr_id'] = $ielr_id;
 		//check success part
 		$db_part_success = new db_query("SELECT ielr_part_success FROM ielts_result WHERE ielr_id =".$ielr_id);
-		if($row_part = mysql_fetch_assoc($db_part_success->result)){
+		if($row_part = mysqli_fetch_assoc($db_part_success->result)){
 			$tesr_part_success = $row_part['ielr_part_success'];
 		}
 	}return $tesr_part_success;
@@ -700,7 +700,7 @@ function creat_time_ielts($time_test_real){
 function check_give_course_test($uid_inviter){
 	$sqlUser = new db_query("SELECT use_date_act_end,use_test_status,use_status_act FROM users WHERE use_id = ".$uid_inviter);
 
-	if($row_user = mysql_fetch_assoc($sqlUser->result)){
+	if($row_user = mysqli_fetch_assoc($sqlUser->result)){
 		$invite_date = $row_user['use_date_act_end'];
 		$invite_test = $row_user['use_test_status'];
 		$invite_status = $row_user['use_status_act'];
@@ -708,21 +708,21 @@ function check_give_course_test($uid_inviter){
 
 	$invite_date_total = $invite_date + (48 * 60 * 60);
 	$invite_test_total = $invite_test + 1;
-   
+
 	$sqlCheck = new db_query("SELECT user_invite_count FROM user_invite WHERE user_invite_uid = ".$uid_inviter);
-	while($row_check  = mysql_fetch_assoc($sqlCheck->result)){
+	while($row_check  = mysqli_fetch_assoc($sqlCheck->result)){
 		if($row_check['user_invite_count'] == 2){
-			// cộng time học        
+			// cộng time học
 			if($invite_status == 1){
 				$db_ex = new db_execute("UPDATE users SET use_date_act_end = ". $invite_date_total ." WHERE use_id = " . $uid_inviter);
 				$db_ex_1 = new db_execute("UPDATE users SET use_status_act = 1 WHERE use_id = " . $uid_inviter);
 			}else{
-				$use_date   =  time();  
-				$use_date_end  =  $use_date + (48* 60 * 60); 
+				$use_date   =  time();
+				$use_date_end  =  $use_date + (48* 60 * 60);
 				$db_ex = new db_execute("UPDATE users SET use_date_act_start = ". $use_date ." WHERE use_id = " . $uid_inviter);
 				$db_ex = new db_execute("UPDATE users SET use_date_act_end = ". $use_date_end ." WHERE use_id = " . $uid_inviter);
 				$db_ex_1 = new db_execute("UPDATE users SET use_status_act = 1 WHERE use_id = " . $uid_inviter);
-			}  
+			}
 		}
 
 		if($row_check['user_invite_count'] == 5){
@@ -738,7 +738,7 @@ function checkLearn($uid,$learn){
     if($learn == 'writing')  { $dblearn = 'learn_writing';  }
     if($learn == 'speaking') { $dblearn = 'learn_speaking'; }
     $sqlCheck   =  new db_query("SELECT * FROM ".$dblearn." WHERE learn_unit_id = ".$uid);
-    while($rowCheck  = mysql_fetch_assoc($sqlCheck->result)){
+    while($rowCheck  = mysqli_fetch_assoc($sqlCheck->result)){
         $check = 1;
     }
     unset($sqlCheck);
@@ -751,12 +751,12 @@ function checkLesson($uid,$learn){
 	if($learn == 'grammar') { $dblearn = 'grammar_lesson';$les_det_type = 2;$det_id = "gram_det_id"; }
 	if($learn == 'vocabulary') { $dblearn = 'vocabulary_lesson';$les_det_type = 3;$det_id = "voc_det_id"; }
 	$sqlUnitMail = new db_query("SELECT * FROM lesson_details WHERE les_det_type = ".$les_det_type." AND les_com_id =".$uid);
-	$rowUnitMail = mysql_fetch_assoc($sqlUnitMail->result);
+	$rowUnitMail = mysqli_fetch_assoc($sqlUnitMail->result);
 	$iUnit       = $rowUnitMail['les_det_id'];
 	unset($sqlUnitMail);
 	//Lấy nội dung bài học và bài tập
 	$sqlCont    = new db_query("SELECT * FROM ".$dblearn." WHERE ".$det_id." = ".$iUnit);
-	while($rowCheck  = mysql_fetch_assoc($sqlCont->result)){
+	while($rowCheck  = mysqli_fetch_assoc($sqlCont->result)){
 	    $check = 1;
 	}
 	return $check;
@@ -765,9 +765,9 @@ function checkLesson($uid,$learn){
 function checkUnit($uid){
     $check  = 0;
     $db1 = new db_query('SELECT exe_id FROM exercises WHERE exe_type = 0 AND exe_com_id = '.$uid);
-    while($row1 = mysql_fetch_assoc($db1->result)){
+    while($row1 = mysqli_fetch_assoc($db1->result)){
       $db2 = new db_query('SELECT que_id FROM questions WHERE que_exe_id = '.$row1['exe_id']);
-      while($row2 = mysql_fetch_assoc($db2->result)){
+      while($row2 = mysqli_fetch_assoc($db2->result)){
          $check++;
       }unset($db2);
     }unset($db1);
@@ -778,7 +778,7 @@ function checkUnit($uid){
 function checkUnit_main($uid){
     $check  = 0;
     $sqlCheck   =  new db_query("SELECT * FROM main_lesson WHERE main_det_id = (SELECT les_det_id FROM lesson_details WHERE les_com_id = ". $uid ." AND les_det_type = 1)");
-    if($rowCheck  = mysql_fetch_assoc($sqlCheck->result)){
+    if($rowCheck  = mysqli_fetch_assoc($sqlCheck->result)){
         $check = 1;
     }
     unset($sqlCheck);
@@ -797,7 +797,7 @@ function add_test_result($u_id,$test_id){
 //Ham check xem user da tham gia khoa hoc hay chua, neu chua tham gia thi insert vao bang user_course
 function check_user_course($idUser,$idCou){
 	$sqlCheck   =  new db_query("SELECT * FROM user_course WHERE usec_use_id = ".$idUser." AND usec_cou_id = ".$idCou);
-	$row_check  = mysql_fetch_assoc($sqlCheck->result);
+	$row_check  = mysqli_fetch_assoc($sqlCheck->result);
 	unset($sqlCheck);
 	if($row_check == Null){
 		$sql  =  "INSERT INTO `user_course` (`usec_use_id`, `usec_cou_id`, `usec_start_time`, `usec_status`) VALUES ('".$idUser."', '".$idCou."', '".time()."', '0');";
@@ -812,7 +812,7 @@ function check_user_course($idUser,$idCou){
 function check_fb_badge($idUser,$idbadge){
 	$time = time();
 	$db_useb = new db_query("SELECT * FROM user_badges WHERE useb_use_id = ".$idUser." AND useb_badge_id = ".$idbadge);
-	$row_useb = mysql_fetch_assoc($db_useb->result);
+	$row_useb = mysqli_fetch_assoc($db_useb->result);
 	unset($db_useb);
 	if($row_useb == NUll){
 		//Neu chua co badge nay thi them vao bang user_badges
@@ -827,27 +827,27 @@ function check_fb_badge($idUser,$idbadge){
 		}
 		//Tang ngay su dung
 		$db_award = new db_query("SELECT * FROM users WHERE use_id = ".$idUser);
-		$row_award = mysql_fetch_assoc($db_award->result);
+		$row_award = mysqli_fetch_assoc($db_award->result);
 		if($row_award['use_status_act'] == 0){
 			$use_date_end  =  $time + ($day*24*60*60);
 			$sql = "UPDATE users SET use_date_act_start = '".$time."',use_date_act_end = '".$use_date_end."',use_status_act = '1' WHERE use_id = ".$idUser;
 			$db_update = new db_execute($sql);
-			unset($db_update);  
+			unset($db_update);
 		}
 		else{
 			$use_date_act_end  = $row_award['use_date_act_end'] + ($day*24*60*60);
 			$sql = "UPDATE users SET use_date_act_end = '".$use_date_act_end."' WHERE use_id = ".$idUser;
 			$db_update = new db_execute($sql);
-			unset($db_update);    
+			unset($db_update);
 		}unset($db_award);
 		return 1;
 	}
 	return 0;
 }
 
-// Hàm hiển thị ramdon phần tử trong mảng 
+// Hàm hiển thị ramdon phần tử trong mảng
 function array_random($arr, $num = 1) {
-    shuffle($arr);    
+    shuffle($arr);
     $r = array();
     for ($i = 0; $i < $num; $i++) {
         $r[] = $arr[$i];
@@ -875,9 +875,9 @@ function getRealIp()
 function checkUserIP($ip,$course){
 	$check = 1; // = 1  nếu là lần đầu đăng nhập
 	$sqlIP = new db_query("SELECT * FROM user_ip WHERE use_ip = '".$ip."'");
-	while($rowIP = mysql_fetch_assoc($sqlIP->result)){
+	while($rowIP = mysqli_fetch_assoc($sqlIP->result)){
 		if($rowIP['use_course'] == $course){
-			$check = 2; 
+			$check = 2;
 		}else{
 			$check = 0;
 		}
@@ -896,7 +896,7 @@ function get_media_sp($straudio){
 	$media     = "";
 	$audio     = explode("|",$straudio);
 	$count     = count($audio);
-	for($i=0;$i < $count ;$i++){  
+	for($i=0;$i < $count ;$i++){
 		 $media .= '<a class="media" href="'.getURL(1,0,0,0).'js/data_record/'.trim($audio[$i]).'"></a><br />';
 	}
 	return $media;
@@ -907,7 +907,7 @@ function nameLevel($idLvC){
      $db_level = new db_query("SELECT *
 					           FROM levels
 					           WHERE lev_id	= ".$idLvC);
-    while($row = mysql_fetch_assoc($db_level->result)){
+    while($row = mysqli_fetch_assoc($db_level->result)){
         $nLevel = $row['lev_name'];
 	}
     unset($db_level);
@@ -920,7 +920,7 @@ function nameCate($idCoureC){
     $db_cate = new db_query("SELECT cat_name
                              FROM categories_multi
                              WHERE cat_id	= ".$idCoureC);
-    while($row = mysql_fetch_assoc($db_cate->result)){
+    while($row = mysqli_fetch_assoc($db_cate->result)){
         $nCate = $row['cat_name'];
 	}unset($db_cate);
     return $nCate;
@@ -930,13 +930,13 @@ function nameCate($idCoureC){
 // Hàm get media cho quiz
 function get_media_quiz($id){
 	 $media  = "";
-	 if (($id != '0') && ($id != '')){	 
+	 if (($id != '0') && ($id != '')){
 	 $id     = explode("|", $id);
      $count  = count($id);
-     for($i=0;$i < $count ;$i++){   
-     
+     for($i=0;$i < $count ;$i++){
+
 		 $sqlMedia    = new db_query("SELECT * FROM media_exercies WHERE media_id = ".$id[$i]);
-		 while($rowMedia = mysql_fetch_assoc($sqlMedia->result)){
+		 while($rowMedia = mysqli_fetch_assoc($sqlMedia->result)){
 			 if($rowMedia['media_type'] == 2){
 				 $media .= "<div style='margin-top:10px;padding:10px;border-top:1px dashed #999'><b>Audio cho phần bài tập</b></div>";
 				 $media .= '<a class="media" href="'.getURL(1,0,0,0).'/data/exercises_unit/'.$rowMedia['media_name'].'"></a>';
@@ -959,13 +959,13 @@ function get_media_quiz($id){
 // Hàm get media cho quiz
 function get_media_quiz_skill($id){
 	$media  = "";
-	 if (($id != '0') && ($id != '')){	 
+	 if (($id != '0') && ($id != '')){
 	 $id     = explode("|", $id);
      $count  = count($id);
-     for($i=0;$i < $count ;$i++){   
-     
+     for($i=0;$i < $count ;$i++){
+
 		 $sqlMedia    = new db_query("SELECT * FROM media_exercies WHERE media_id = ".$id[$i]);
-		 while($rowMedia = mysql_fetch_assoc($sqlMedia->result)){
+		 while($rowMedia = mysqli_fetch_assoc($sqlMedia->result)){
 			 if($rowMedia['media_type'] == 2){
 				 $media .= "<div><b>Audio cho phần bài tập</b></div>";
 				 $media .= '<a class="media" href="'.getURL(1,0,0,0).'/data/skill_exercises/'.$rowMedia['media_name'].'"></a>';
@@ -988,7 +988,7 @@ function get_media_quiz_skill($id){
 // Hàm get media cho thư viện
 function get_media_library($file,$image){
 	global $base_url;
-	
+
 	$media  = "<script type='text/javascript' src='"."http://".$base_url."/"."mediaplayer/jwplayer.js'></script>";
 	$media .= "<center><div id='mediaplayer'></div></center>";
 	$media .= "<script type='text/javascript'>
@@ -1052,7 +1052,7 @@ function get_media_skill_v2($file,$count){
 
 //Hàm tạo chuỗi ngẫu nhiên
 function rand_string( $length ) {
-$str = "";   
+$str = "";
 $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
 $size = strlen( $chars );
 for( $i = 0; $i < $length; $i++ ) {
@@ -1063,9 +1063,9 @@ return $str;
 //Hàm Share Facebook Badge
 function share_fb_badge($iUser){
    $db_usea = new db_query("SELECT usea_share_sum FROM user_action WHERE usea_use_id = ".$iUser);
-   $row_usea = mysql_fetch_assoc($db_usea->result);
+   $row_usea = mysqli_fetch_assoc($db_usea->result);
    unset($db_usea->result);
-   
+
    if($row_usea['usea_share_sum'] >= 30){
       $add_this_badge = check_fb_badge($iUser,7);
       if($add_this_badge == 1) return 7;
@@ -1093,68 +1093,68 @@ function get_id_module($module){
 	switch($module) {
 
 		// Categories_multi Table
-        case "listCourses"     			:  
+        case "listCourses"     			:
         case "listCommunity"			:
-        case "listSkills"      			:	
+        case "listSkills"      			:
         // Libraries Categories Table
-        case "listLibraries"			: 	
+        case "listLibraries"			:
         // News Categories Table
         case "listNews"					: 	$id = getValue("iCategory");		break;
 
-        case "listCoursesMain"  		:  	$id = getValue("iCourse");			break;  
-        case "listSkillsDetails"  		:  	$id = getValue("iSkill");       	break;  
-        case "listCommunityDetails"  	:  	$id = getValue("iCommunity");   	break;  
+        case "listCoursesMain"  		:  	$id = getValue("iCourse");			break;
+        case "listSkillsDetails"  		:  	$id = getValue("iSkill");       	break;
+        case "listCommunityDetails"  	:  	$id = getValue("iCommunity");   	break;
 
-        case "listLibrariesDetails"  	:  	$id = getValue("iLibrary");   		break;  
-        case "listNewsDetails"  		:  	$id = getValue("iNew");   			break;  
-                                                                         
-        default                			:  	$id = 0;  
+        case "listLibrariesDetails"  	:  	$id = getValue("iLibrary");   		break;
+        case "listNewsDetails"  		:  	$id = getValue("iNew");   			break;
+
+        default                			:  	$id = 0;
 
     } 	return $id;
 }
 
 //Hàm get id cho skill
 function get_id_skill($skill){
-	switch($skill) 
-        { 
+	switch($skill)
+        {
         case "cate"     :  $id = getValue("cate","int","GET",""); break;
         case "les"      :  $id = getValue("iles","int","GET",""); break;
-        case "edit_les" :  $id = getValue("iles","int","GET",""); break; 
-        default         :  $id = 0;  
+        case "edit_les" :  $id = getValue("iles","int","GET",""); break;
+        default         :  $id = 0;
         }
 	return $id;
 }
 // Hàm mã hóa url
-function encrypt($string, $key) { 
-	$result = ''; 
-	for($i=0; $i<strlen($string); $i++) { 
-		$char = substr($string, $i, 1); 
-		$keychar = substr($key, ($i % strlen($key))-1, 1); 
-		$char = chr(ord($char)+ord($keychar)); 
-		$result.=$char; 
+function encrypt($string, $key) {
+	$result = '';
+	for($i=0; $i<strlen($string); $i++) {
+		$char = substr($string, $i, 1);
+		$keychar = substr($key, ($i % strlen($key))-1, 1);
+		$char = chr(ord($char)+ord($keychar));
+		$result.=$char;
 	}
-	return base64_encode($result); 
+	return base64_encode($result);
 }
 // Hàm giải mã url
-function decrypt($string, $key) { 
-	$result = ''; 
+function decrypt($string, $key) {
+	$result = '';
 	$string = base64_decode($string);
-	
-	for($i=0; $i<strlen($string); $i++) { 
-	$char = substr($string, $i, 1); 
-	$keychar = substr($key, ($i % strlen($key))-1, 1); 
-	$char = chr(ord($char)-ord($keychar)); 
-	$result.=$char; 
+
+	for($i=0; $i<strlen($string); $i++) {
+	$char = substr($string, $i, 1);
+	$keychar = substr($key, ($i % strlen($key))-1, 1);
+	$char = chr(ord($char)-ord($keychar));
+	$result.=$char;
 	}
 
-	return $result; 
+	return $result;
 }
 // Hàm kiểm tra  thanh toán
 function checkpayment($methods,$price,$time,$type){
 		$check = 0;
 		if ($type == 'course'){
 			if(($methods == 'atm') || ($methods == 'baokim') || ($methods == 'visa') || ($methods == 'tranfers')){
-				if(($time == '35' && $price == '50000') 
+				if(($time == '35' && $price == '50000')
 					|| ($time == '75' && $price == '100000')
 					|| ($time == '360' && $price == '140000')
 					|| ($time == '540' && $price == '300000'))
@@ -1168,7 +1168,7 @@ function checkpayment($methods,$price,$time,$type){
 				{ $check = 2; }
 			}
 			if($methods == 'card'){
-				if(($time == '30' && $price == '50000') 
+				if(($time == '30' && $price == '50000')
 					|| ($time == '60' && $price == '100000')
 					|| ($time == '300' && $price == '300000')
 					|| ($time == '450' && $price == '400000'))
@@ -1191,7 +1191,7 @@ function get_cateCourse($icou){
     $db_cate = new db_query("SELECT cat_name,cat_id
 									FROM   categories_multi,courses
 									WHERE  courses.cou_id = ".$icou." AND categories_multi.cat_id = courses.cou_cat_id");
-    while($row_cate = mysql_fetch_assoc($db_cate->result)){
+    while($row_cate = mysqli_fetch_assoc($db_cate->result)){
       $nCate['name']    = $row_cate['cat_name'];
 	  $nCate['id']      = $row_cate['cat_id'];
     }; unset($db_cate);
@@ -1202,26 +1202,26 @@ function get_li_link($id,$name,$method,$lesson,$type = ""){
 	global $base_url;
 	if ($lesson == $method) { $classLi = "active"; }else{ $classLi = ""; }
 	switch($method){
-		case "main" 			: 			
+		case "main" 			:
 			$title   = "Main Lesson";
 			$classA  = "icon-main";
 			break;
 		case "grammar"          :
 			$title   = "Grammar";
 			$classA  = "icon-gram";
-			break;	
+			break;
 		case "vocabulary"       :
 			$title   = "Vocabulary";
 			$classA  = "icon-voca";
-			break;	
+			break;
 		case "quiz"             :
 			$title   = "Quiz";
 			$classA  = "icon-quiz";
-			break;	
+			break;
 		case "speak"            :
 			$title   = "Speaking";
 			$classA  = "icon-speak";
-			break;	
+			break;
 		case "write"			:
 			$title   = "Writing";
 			$classA  = "icon-write";
@@ -1237,13 +1237,13 @@ function get_li_link($id,$name,$method,$lesson,$type = ""){
 	}
 	$li  = '<li class="lessonTooltip '.$classLi.'" title="'.$title.'">';
 	$url123doc = '';
-	if ($type != ""){ $url123doc = '/123doc'; } 
+	if ($type != ""){ $url123doc = '/123doc'; }
 	$li .= '<a href="http://'.$base_url.$url123doc.'/lesson/'.$method.'/'.$id.'/'.removeTitle($name).'.html" class="'.$classA .'">&nbsp;</a></li>';
 	return $li;
 }
 function get_menu_icon($iCou,$id,$name,$lesson){
 	$sqlForm    = new db_query("SELECT * FROM courses WHERE cou_id = ".$iCou);
-	if($row_form = mysql_fetch_assoc($sqlForm->result)){
+	if($row_form = mysqli_fetch_assoc($sqlForm->result)){
 		$type = $row_form['cou_form'];
 	}unset($sqlForm);
 	$menu = '<ul>';
@@ -1254,17 +1254,17 @@ function get_menu_icon($iCou,$id,$name,$lesson){
 		if($type != 2){
 			$menu .=   get_li_link($id,$name,"quiz",$lesson);
 		}
-	    if (checkLearn($id,'writing') == 1) { 
+	    if (checkLearn($id,'writing') == 1) {
 			$menu .=   get_li_link($id,$name,"write",$lesson);
 	    }if (checkLearn($id,'speaking') == 1) {
 			$menu .=   get_li_link($id,$name,"speak",$lesson);
-	    }    		
+	    }
 	}elseif($type == 3){
 		$menu .=   get_li_link($id,$name,"strategy",$lesson);
 		$menu .=   get_li_link($id,$name,"practice",$lesson);
 	}
-    $menu .= '</ul>';  
-    return $menu; 
+    $menu .= '</ul>';
+    return $menu;
 }
 
 function check_learn_user($iles,$iuser,$type){
@@ -1277,7 +1277,7 @@ function check_learn_user($iles,$iuser,$type){
 	}elseif($type == 'skl_write'){
 	   $sqlRe   = new db_query("SELECT * FROM learn_writing_result WHERE lwr_skl_les_id = ".$iles." AND lwr_use_id = ".$iuser);
 	}
-	$row_check  = mysql_fetch_assoc($sqlRe->result);
+	$row_check  = mysqli_fetch_assoc($sqlRe->result);
 	if ($row_check == NULL) { $check = 0; }else{ $check = 1; }
 	unset($sqlRe);
 	return $check;
@@ -1287,10 +1287,10 @@ function get_person_sk($ilesson,$lesson_type){
    $num_person = 0;
    if($lesson_type == 2 || $lesson_type == 5){
       $db = new db_query("SELECT lsr_id FROM learn_speak_result WHERE lsr_skl_les_id = ".$ilesson);
-      $num_person = mysql_num_rows($db->result);
+      $num_person = mysqli_num_rows($db->result);
    }elseif($lesson_type == 3 || $lesson_type == 4){
       $db = new db_query("SELECT lwr_id FROM learn_writing_result WHERE lwr_skl_les_id = ".$ilesson);
-      $num_person = mysql_num_rows($db->result);
+      $num_person = mysqli_num_rows($db->result);
    }
    return $num_person;
 }
@@ -1301,7 +1301,7 @@ function check_user_online($u_id){
    //------------------
    $base_url            =  $_SERVER['HTTP_HOST'];
    $db_count_uonline    = new db_query("SELECT count(*) AS count FROM user_online WHERE uonl_user_id = ".$u_id);
-	$row_count_uonline	= mysql_fetch_array($db_count_uonline->result);
+	$row_count_uonline	= mysqli_fetch_array($db_count_uonline->result);
 	$count_uonline       = $row_count_uonline["count"];
    $time_waiting        = 5 * 60;
    //------------------
@@ -1314,7 +1314,7 @@ function check_user_online($u_id){
    }else{
       $current_time = time();
       $db_onl_off = new db_query("SELECT uonl_onl_off,uonl_last_act FROM user_online WHERE uonl_user_id = ".$u_id);
-      while($row_onl_off = mysql_fetch_assoc($db_onl_off->result)){
+      while($row_onl_off = mysqli_fetch_assoc($db_onl_off->result)){
          $get_onl_off = $row_onl_off['uonl_onl_off'];
          $last_time_act = $row_onl_off['uonl_last_act'];
       }unset($db_onl_off);
@@ -1352,7 +1352,7 @@ function update_logout($u_id){
 function ins_cookie($u_id){
    $base_url            =  $_SERVER['HTTP_HOST'];
    $db_count_uonline    = new db_query("SELECT count(*) AS count FROM user_online WHERE uonl_user_id = ".$u_id);
-	$row_count_uonline	= mysql_fetch_array($db_count_uonline->result);
+	$row_count_uonline	= mysqli_fetch_array($db_count_uonline->result);
 	$count_uonline       = $row_count_uonline["count"];
    $time_waiting        = 5 * 60;
    //------------------
@@ -1383,7 +1383,7 @@ function check_user_online_v2($u_id){
    //------------------
    $base_url            =  $_SERVER['HTTP_HOST'];
    $db_count_uonline    = new db_query("SELECT count(*) AS count FROM user_online WHERE uonl_user_id = ".$u_id);
-	$row_count_uonline	= mysql_fetch_array($db_count_uonline->result);
+	$row_count_uonline	= mysqli_fetch_array($db_count_uonline->result);
 	$count_uonline       = $row_count_uonline["count"];
    $time_waiting        = 5 * 60;
    //------------------
@@ -1396,7 +1396,7 @@ function check_user_online_v2($u_id){
    }else{
       $current_time = time();
       $db_onl_off = new db_query("SELECT uonl_onl_off,uonl_last_act FROM user_online WHERE uonl_user_id = ".$u_id);
-      while($row_onl_off = mysql_fetch_assoc($db_onl_off->result)){
+      while($row_onl_off = mysqli_fetch_assoc($db_onl_off->result)){
          $get_onl_off = $row_onl_off['uonl_onl_off'];
          $last_time_act = $row_onl_off['uonl_last_act'];
       }unset($db_onl_off);
@@ -1421,7 +1421,7 @@ function check_user_online_v2($u_id){
 function ins_cookie_v2($u_id){
    $base_url            =  $_SERVER['HTTP_HOST'];
    $db_count_uonline    = new db_query("SELECT count(*) AS count FROM user_online WHERE uonl_user_id = ".$u_id);
-	$row_count_uonline	= mysql_fetch_array($db_count_uonline->result);
+	$row_count_uonline	= mysqli_fetch_array($db_count_uonline->result);
 	$count_uonline       = $row_count_uonline["count"];
    $time_waiting        = 5 * 60;
    //------------------
@@ -1436,7 +1436,7 @@ function ins_cookie_v2($u_id){
 
 function generate_lesson_detail_v2($str_cate,$type,$iCou,$iUnit,$name){
 	global $base_url;
-   $link	= 'http://'.$base_url."/khoa-hoc/".removeTitle($str_cate)."/" . removeTitle($name)	.	"/" . $iCou . "-" . $iUnit . "-" . $type . ".html"; 
+   $link	= 'http://'.$base_url."/khoa-hoc/".removeTitle($str_cate)."/" . removeTitle($name)	.	"/" . $iCou . "-" . $iUnit . "-" . $type . ".html";
    return $link;
 }
 
@@ -1446,7 +1446,7 @@ function get_cate_parent_htt_v2($arr_cate_id){
    $i = 1;
    foreach ($arr_cate_id as $value) {
       $db_cate = new db_query('SELECT * FROM categories_multi WHERE 	cat_id = '.$value.' AND cat_active = 1');
-      if($row_cate = mysql_fetch_assoc($db_cate->result)){
+      if($row_cate = mysqli_fetch_assoc($db_cate->result)){
          $cat_name = $row_cate["cat_name"];
       }unset($db_cate);
       echo '<div class="course_right_block">';
@@ -1459,13 +1459,13 @@ function get_cate_parent_htt_v2($arr_cate_id){
       echo          '<span class="course_right_block_title">'.$cat_name.'</span>';
       echo          '<ul class="scroll-pane">';
                     $db_cou = new db_query('SELECT cou_id,cou_name,cou_form FROM courses WHERE cou_cat_id = '.$value.' AND cou_active = 1 ORDER BY cou_name ASC');
-                    while($row_cou = mysql_fetch_assoc($db_cou->result)){
+                    while($row_cou = mysqli_fetch_assoc($db_cou->result)){
                        $cou_form = $row_cou['cou_form'];
-                       $cou_df = "";                       
-                       if($cou_form == 3){ $cou_df = "strategy"; }else{ $cou_df = "main"; }                                            
+                       $cou_df = "";
+                       if($cou_form == 3){ $cou_df = "strategy"; }else{ $cou_df = "main"; }
                        $sqlFirstUnit = new db_query("SELECT com_id,com_name FROM courses_multi WHERE com_num_unit = 1 AND com_cou_id = ".$row_cou['cou_id']);
-                       if($row_uFirst = mysql_fetch_assoc($sqlFirstUnit->result)){ $first_unit = $row_uFirst['com_id'];$u_name = $row_uFirst['com_name']; }unset($sqlFirstUnit);
-                       echo '<li><a href="'.generate_lesson_detail_v2($cou_df,$row_cou['cou_id'],$first_unit,$u_name).'">'.$row_cou['cou_name'].'</a></li>'; 
+                       if($row_uFirst = mysqli_fetch_assoc($sqlFirstUnit->result)){ $first_unit = $row_uFirst['com_id'];$u_name = $row_uFirst['com_name']; }unset($sqlFirstUnit);
+                       echo '<li><a href="'.generate_lesson_detail_v2($cou_df,$row_cou['cou_id'],$first_unit,$u_name).'">'.$row_cou['cou_name'].'</a></li>';
                     }unset($db_cou);
       echo          '</ul>';
       echo       '</div>';
@@ -1481,9 +1481,9 @@ function print_cate_cou($iParent = 0,$type = 0){
    if($type == 1){
       $var_path_img =  '/pictures/categories/';
       $db_skcate = new db_query('SELECT cat_id,cat_name,cat_picture FROM categories_multi WHERE cat_parent_id = '.$iParent.' AND cat_active = 1 ORDER BY cat_order ASC');
-      $num = mysql_num_rows($db_skcate->result);
+      $num = mysqli_num_rows($db_skcate->result);
       $c = 0;
-      while($row_skcate = mysql_fetch_assoc($db_skcate->result)){
+      while($row_skcate = mysqli_fetch_assoc($db_skcate->result)){
          $c++;
          if($c == 1 || ($c - 1)%3 == 0){
             if($c == 1) echo '<div class="item active">';
@@ -1500,12 +1500,12 @@ function print_cate_cou($iParent = 0,$type = 0){
          echo          '<span class="course_right_block_title">'.$row_skcate['cat_name'].'</span>';
          echo          '<ul class="scroll-pane">';
                         $db_cou = new db_query('SELECT cou_id,cou_name,cou_form FROM courses WHERE cou_cat_id = '.$row_skcate['cat_id'].' AND cou_active = 1 ORDER BY cou_name ASC');
-                        while($row_cou = mysql_fetch_assoc($db_cou->result)){
+                        while($row_cou = mysqli_fetch_assoc($db_cou->result)){
                            $cou_form = $row_cou['cou_form'];
                            $cou_df = "";
-                           if($cou_form == 3){ $cou_df = "strategy"; }  else{ $cou_df = "main";}                                                                                                              
+                           if($cou_form == 3){ $cou_df = "strategy"; }  else{ $cou_df = "main";}
                            $sqlFirstUnit = new db_query("SELECT com_id,com_name FROM courses_multi WHERE com_num_unit = 1 AND com_cou_id = ".$row_cou['cou_id']);
-                           if($row_uFirst = mysql_fetch_assoc($sqlFirstUnit->result)){ $first_unit = $row_uFirst['com_id'];$u_name = $row_uFirst['com_name']; }unset($sqlFirstUnit);
+                           if($row_uFirst = mysqli_fetch_assoc($sqlFirstUnit->result)){ $first_unit = $row_uFirst['com_id'];$u_name = $row_uFirst['com_name']; }unset($sqlFirstUnit);
                            echo '<li><a href="'.generate_lesson_detail_v2($cou_df,$row_cou['cou_id'],$first_unit,$u_name).'">'.$row_cou['cou_name'].'</a></li>';
                         }unset($db_cou); unset($row_cou);
          echo           '</ul>';
@@ -1513,14 +1513,14 @@ function print_cate_cou($iParent = 0,$type = 0){
          echo     '</div>';
          echo  '</div>';
          if(($c%3 == 0) && ($c < $num)) echo '</div>';
-         elseif($c == $num) echo '</div>';                   
+         elseif($c == $num) echo '</div>';
       }unset($db_skcate);
    }elseif($type == 2){
       $var_path_img = '/themes_v2/images/';
       $db_skcate = new db_query('SELECT cat_id,cat_name,cat_picture FROM categories_multi WHERE cat_parent_id = 0 AND cat_active = 1 AND cat_type = 0 ORDER BY cat_order ASC');
-      $num = mysql_num_rows($db_skcate->result);
+      $num = mysqli_num_rows($db_skcate->result);
       $c = 0;
-      while($row_skcate = mysql_fetch_assoc($db_skcate->result)){
+      while($row_skcate = mysqli_fetch_assoc($db_skcate->result)){
          $c++;
          if($c == 1 || ($c - 1)%3 == 0){
             if($c == 1) echo '<div class="item active">';
@@ -1537,7 +1537,7 @@ function print_cate_cou($iParent = 0,$type = 0){
          echo          '<span class="course_right_block_title">'.$row_skcate['cat_name'].'</span>';
          echo          '<ul class="scroll-pane">';
                         $db_cate = new db_query('SELECT cat_id,cat_name FROM categories_multi WHERE cat_parent_id = '.$row_skcate['cat_id']);
-                        while($row_cate = mysql_fetch_assoc($db_cate->result)){
+                        while($row_cate = mysqli_fetch_assoc($db_cate->result)){
                            echo '<li><a class="skill_cate" id="'.$row_cate['cat_id'].'">'.$row_cate['cat_name'].'</a></li>';
                         }unset($db_cate); unset($row_cate);
          echo           '</ul>';
@@ -1545,7 +1545,7 @@ function print_cate_cou($iParent = 0,$type = 0){
          echo     '</div>';
          echo  '</div>';
          if(($c%3 == 0) && ($c < $num)) echo '</div>';
-         elseif($c == $num) echo '</div>';                   
+         elseif($c == $num) echo '</div>';
       }unset($db_skcate);
    }
 }
@@ -1556,10 +1556,10 @@ function print_cate_cou($iParent = 0,$type = 0){
 /*
 function gen_home_block1_course_v2($iCourse){
 	global $var_path_img,$base_url;
-	
+
 	$db_query = new db_query("SELECT * FROM categories_multi WHERE cat_id = ".$iCourse." AND cat_active = 1");
-	$result = mysql_fetch_assoc($db_query->result);
-	
+	$result = mysqli_fetch_assoc($db_query->result);
+
 	if($iCourse == 0){
 		$title = "Tiếng Anh trẻ em";
 		$description = "";
@@ -1569,7 +1569,7 @@ function gen_home_block1_course_v2($iCourse){
 		$description = $result['cat_description'];
 		$url = gen_course_cate_v2($iCourse, $title);
 	}
-	
+
 	$return = '';
 	$return .= '<div class="course_block">';
 	$return .= '<div class="course_block_left" style="background:url(\''.$var_path_img.'home/course_'.$iCourse.'.jpg\') no-repeat">';
@@ -1581,7 +1581,7 @@ function gen_home_block1_course_v2($iCourse){
 	$return .= '</div>';
 	$return .= '<div class="clearfix"></div>';
 	$return .= '</div><!--end a course block-->';
-		
+
 	return $return;
 }
 */
@@ -1590,11 +1590,11 @@ function gen_home_course_block_1_v2($iCourse){
 	global $var_path_img,$base_url;
    $myuser = new user();
    $u_id = $myuser->u_id;
-	
+
 	$db_query = new db_query('SELECT * FROM categories_multi WHERE cat_id = '.$iCourse.' AND cat_active = 1');
-	$result = mysql_fetch_assoc($db_query->result);
+	$result = mysqli_fetch_assoc($db_query->result);
 	unset($db_query);
-	
+
 	if($iCourse == 0){
 		$title = "Tiếng Anh trẻ em";
 		$description = "";
@@ -1604,15 +1604,15 @@ function gen_home_course_block_1_v2($iCourse){
 		$description = $result['cat_description'];
 		$url = gen_course_cate_v3($iCourse);
 	}
-	
+
 	//query child courses
-	
+
 	/*
 	$courses_array = array();
 	$db_query = new db_query('SELECT DISTINCT(cou_lev_id) FROM courses ORDER BY cou_lev_id ASC');
-	while($result = mysql_fetch_assoc($db_query->result)){
+	while($result = mysqli_fetch_assoc($db_query->result)){
 		$db_query2 = new db_query('SELECT * FROM levels WHERE lev_id = '.$result['cou_lev_id']);
-		$result2 = mysql_fetch_assoc($db_query2->result);
+		$result2 = mysqli_fetch_assoc($db_query2->result);
 		array_push($courses_array,$result2);
 		unset($db_query2);
 	}
@@ -1620,7 +1620,7 @@ function gen_home_course_block_1_v2($iCourse){
 	*/
 	$courses_array = array();
 	$db_query = new db_query("SELECT * FROM categories_multi WHERE cat_parent_id = ".$iCourse." AND cat_active = 1");
-	while($db_result = mysql_fetch_assoc($db_query->result)){
+	while($db_result = mysqli_fetch_assoc($db_query->result)){
       if(check_userdemo($u_id) == 1){
          if($db_result['cat_id'] != 135 && $db_result['cat_id'] != 143 && $db_result['cat_id'] != 139){
 		      array_push($courses_array,$db_result);
@@ -1631,7 +1631,7 @@ function gen_home_course_block_1_v2($iCourse){
 	}
 	unset($db_result);
 	unset($db_query);
-   
+
 	$return ='';
 	$return.='<div class="home-block-item">';
 		$return.='<a href="'.$url.'" title="'.$title.'">';
@@ -1647,39 +1647,39 @@ function gen_home_course_block_1_v2($iCourse){
       */
       $db_cou = new db_query("SELECT cou_id,cou_name,cou_info FROM courses INNER JOIN categories_multi ON cou_cat_id = cat_id WHERE cat_parent_id = ".$iCourse." ORDER BY cou_time DESC LIMIT 4");
       $i = 0;
-      while($row_cou = mysql_fetch_assoc($db_cou->result)){
+      while($row_cou = mysqli_fetch_assoc($db_cou->result)){
          $i++;
          $db_com = new db_query("SELECT com_id FROM courses_multi WHERE com_cou_id = ".$row_cou['cou_id']." AND com_num_unit = 1");
-         $row_com = mysql_fetch_assoc($db_com->result);
+         $row_com = mysqli_fetch_assoc($db_com->result);
          unset($db_com);
          if($i == 1){
             $return.='<li><span class="icon icon-list-play"></span><h3><a href="'.gen_course_les_v3($row_com['com_id']).'" title="'.removeHTML($row_cou['cou_info']).'">'.$row_cou['cou_name'].'</a> <sup style="color: #ff0000; font-weight: bold; font-size: 10px;">NEW</sup></h3></li>';
          }else{
             $return.='<li><span class="icon icon-list-play"></span><h3><a href="'.gen_course_les_v3($row_com['com_id']).'" title="'.removeHTML($row_cou['cou_info']).'">'.$row_cou['cou_name'].'</a></h3></li>';
          }
-         
-      }unset($db_cou);   
+
+      }unset($db_cou);
 		$return.='</ul>';
-		
+
 	$return.='</div>';
-	
+
 	return $return;
 }
 
 function gen_home_course_block_2_v2($iCourse,$logged,$act){
 	global $var_path_img,$base_url;
-	
+
 	$return ='';
 	$return.='<div class="home-block-item">';
 	$db_query = new db_query('SELECT * FROM categories_multi WHERE cat_id = '.$iCourse.' AND cat_active = 1');
-	$result = mysql_fetch_assoc($db_query->result);
+	$result = mysqli_fetch_assoc($db_query->result);
 		$return.='<a href="'.gen_course_cate_v3($iCourse).'" title="'.$result['cat_name'].'"><h2 class="home-block-item-img" style="background-image:url(\''.$var_path_img.'home/test_'.$iCourse.'.jpg\')"></h2></a>';
 	unset($db_query);
 	unset($result);
 		$return.='<ul class="unstyled home-block-item-list">';
-			
+
 			$db_query = new db_query('SELECT * FROM categories_multi WHERE cat_parent_id = '.$iCourse.' AND cat_active = 1 ORDER BY cat_view DESC');
-			while($result = mysql_fetch_assoc($db_query->result)){
+			while($result = mysqli_fetch_assoc($db_query->result)){
 				if($result['cat_view']==2){	//link phần thi thử
 					$return.='<li style="position:relative">';
 					$return.='<div class="pull-right">';
@@ -1703,7 +1703,7 @@ function gen_home_course_block_2_v2($iCourse,$logged,$act){
 					//manipulate
 					$db_query2 = new db_query("SELECT * FROM ".$test_table." LIMIT 0,4");
 					$i=0;
-					while($result2 = mysql_fetch_assoc($db_query2->result)){
+					while($result2 = mysqli_fetch_assoc($db_query2->result)){
 						$i++;
                   if(($logged == 1) && ($act == 1)){
                      $return.='<a target="_blank" class="bg_cyan white" href="'.$url_prefix.$result2[$prefix.'_id'].'">'.$i.'</a>';
@@ -1714,14 +1714,14 @@ function gen_home_course_block_2_v2($iCourse,$logged,$act){
 					}
 					unset($result2);
 					unset($db_query2);
-					
-						
+
+
 						$return.='<a class="bg_cyan white" href="'.gen_course_cate_v3($result['cat_id']).'" title="'.$result['cat_name'].'">...</a>';
 					/* 4-TOEFL
 						27-TOEIC
 						28-IELTS */
 					//$db_query2 = new db_query("SELECT * FROM ");
-					//$result2 = 
+					//$result2 =
 					$return.='</div>';
 					$return.='<h3>';
 					$return.='<a href="'.gen_course_cate_v3($result['cat_id']).'" title="'.$result['cat_name'].'">'.$result['cat_name'];
@@ -1733,7 +1733,7 @@ function gen_home_course_block_2_v2($iCourse,$logged,$act){
 						$return.='<h3><a href="'.gen_course_cate_v3($result['cat_id']).'" title="'.$result['cat_name'].'">'.$result['cat_name'].'</a></h3>';
 						$return.='<ul class="unstyled">';
 						$db_query2 = new db_query('SELECT * FROM categories_multi WHERE cat_parent_id = '.$result['cat_id'].' AND cat_active = 1');
-						while($result2 = mysql_fetch_assoc($db_query2->result)){
+						while($result2 = mysqli_fetch_assoc($db_query2->result)){
 							$return.='<li><h3><a href="'.gen_course_cate_v3($result2['cat_id']).'" title="'.$result2['cat_name'].'">'.$result2['cat_name'].'</a></h3></li>';
 						}
 						unset($db_query2);
@@ -1746,23 +1746,23 @@ function gen_home_course_block_2_v2($iCourse,$logged,$act){
             $return .= '<li>';
             $return .= '<h3></h3>';
             $return .= '</li>';
-            
+
             $return .= '<li>';
             $return .= '<h3></h3>';
-            $return .= '</li>';  
+            $return .= '</li>';
          }
-			
+
 		$return.='</ul>';
 	$return.='</div>';
-	
+
 	return $return;
 }
 
 function gen_home_course_block_3_v2($iCourse){
 	global $var_path_img,$base_url;
-	
+
 	$return ='';
-	$name_parent = 
+	$name_parent =
 	Cate($iCourse);
 	//giới thiệu section - temporarily fixed
 	$return.='<div class="home-block-item">';
@@ -1770,15 +1770,15 @@ function gen_home_course_block_3_v2($iCourse){
 		$return.='<h2 class="home-block-item-title">Giới thiệu</h2>';
 		$return.='<p>Tiếng Anh phổ thông là phần dành cho các học sinh cấp II & cấp III</p>';
 	$return.='</div>';
-	
+
 	$cat_array = array();
 	$db_query = new db_query('SELECT * FROM categories_multi WHERE cat_parent_id = '.$iCourse.' AND cat_active = 1');
-	while($result = mysql_fetch_assoc($db_query->result)){
+	while($result = mysqli_fetch_assoc($db_query->result)){
 		array_push($cat_array,$result);
 	}
 	unset($result);
 	unset($db_query);
-	
+
 	$i=2;
 	foreach($cat_array as $cat){
 		$return.='<div class="home-block-item">';
@@ -1787,12 +1787,12 @@ function gen_home_course_block_3_v2($iCourse){
 				$return.='<h2 class="home-block-item-title">'.$cat['cat_name'].'</h2>';
 			$return.='</a>';
 			$return.='<ul class="home-block-item-list unstyled">';
-			
+
 			$db_query = new db_query('SELECT * FROM courses WHERE cou_cat_id = '.$cat['cat_id'].' AND cou_active = 1 ORDER BY cou_name ASC');
          $name_cate = $name_parent.'-'.$cat['cat_name'];
-			while($result = mysql_fetch_assoc($db_query->result)){
+			while($result = mysqli_fetch_assoc($db_query->result)){
 				$db_query2 = new db_query('SELECT * FROM courses_multi WHERE com_cou_id = '.$result['cou_id'].' AND com_active = 1');
-				$result2 = mysql_fetch_assoc($db_query2->result);
+				$result2 = mysqli_fetch_assoc($db_query2->result);
 				unset($db_query2);
 				$return.='<li><h3><a href="'.gen_course_les_v3($result2['com_id']).'" title="'.$result['cou_name'].'">'.$result['cou_name'].'</a></h3></li>';
 			}
@@ -1800,14 +1800,14 @@ function gen_home_course_block_3_v2($iCourse){
 		$return.='</div>';
 		$i++;
 	}
-	
+
 	return $return;
 }
 
 function gen_home_course_block_4_v2($iCourse){
 	//tiếng Anh trẻ em
 	/*
-	 * 
+	 *
 	 * <div class="course_block">
 				<h2 class="bold"><a href="http://<?=$base_url?>/kids/#screenType=1&id=1" title="Superstar Kids 1">Superstar Kids 1</a></h2>
 				<ul class="unstyled">
@@ -1830,15 +1830,15 @@ function gen_home_course_block_4_v2($iCourse){
 			</div>
 	 */
 	 global $base_url;
-	 
+
 	 $return ='';
 	 $db_query = new db_query('SELECT * FROM categories_multi WHERE cat_parent_id = '.$iCourse.' AND cat_active = 1');
-	 while($db_result = mysql_fetch_assoc($db_query->result)){
+	 while($db_result = mysqli_fetch_assoc($db_query->result)){
 		$return.='<div class="course_block">';
 			$return.='<h2 class="bold"><a href="'.gen_course_cate_v3($db_result['cat_id']).'" title="'.$db_result['cat_name'].'">'.$db_result['cat_name'].'</a></h2>';
 			$return.='<ul class="unstyled">';
 				$db_query2 = new db_query('SELECT * FROM categories_multi WHERE cat_parent_id = '.$db_result['cat_id'].' AND cat_active = 1');
-				while($db_result2 = mysql_fetch_assoc($db_query2->result)){
+				while($db_result2 = mysqli_fetch_assoc($db_query2->result)){
 					$return.='<li><span class="icon icon-three-lines"></span><h3><a href="'.gen_course_cate_v3($db_result2['cat_id']).'" title="'.$db_result2['cat_name'].'">'.$db_result2['cat_name'].'</a></h3></li>';
 				}
 				unset($db_result2);
@@ -1849,76 +1849,76 @@ function gen_home_course_block_4_v2($iCourse){
 	 }
 	 unset($db_result);
 	 unset($db_query);
-	 
+
 	 return $return;
 }
 
 function gen_home_course_block_5_v2($iCourse){
 	global $var_path_img,$base_url;
-	
+
 	$return ='';
 	$nparent = nameCate($iCourse);
 	$db_query = new db_query('SELECT * FROM categories_multi WHERE cat_parent_id = '.$iCourse.' AND cat_active = 1');
-	while($result = mysql_fetch_assoc($db_query->result)){
+	while($result = mysqli_fetch_assoc($db_query->result)){
 		$return.='<div class="home-block-item bg_gray2">';
-		
+
 		$return.='<a href="'.gen_sk_cate_v2($result['cat_id'],$result['cat_name']).'" title="'.$result['cat_name'].'">';
 		$return.='<h2 class="home-block-item-img pull-left" style="background-image:url(\''.$var_path_img.'home/course_'.$result['cat_id'].'.jpg\')"></h2>';
 		$return.='<h2 class="home-block-item-title">'.$result['cat_name'].'</h2>';
 		$return.='</a>';
-		
+
 		$return.='<ul class="unstyled">';
 		$db_query2 = new db_query('SELECT * FROM skill_lesson WHERE skl_les_cat_id = '.$result['cat_id'].' AND skl_les_active = 1 ORDER BY skl_les_time DESC LIMIT 0,3');
-		while($result2 = mysql_fetch_assoc($db_query2->result)){
+		while($result2 = mysqli_fetch_assoc($db_query2->result)){
 			$return.='<li><h3><a href="'.gen_sk_les_v2($result['cat_name'],$result2['skl_les_id'],$result2['skl_les_name']).'" title="'.$result2['skl_les_name'].'">'.$result2['skl_les_name'].'</a></h3></li>';
 		}
 		$return.='</ul>';
 		$return.='<a href="'.gen_sk_cate_v2($result['cat_id'],$result['cat_name']).'" title="'.$result['cat_name'].'">Xem thêm...</a>';
 		$return.='<div class="clearfix"></div>';
-		
+
 		$return.='</div>';
 	}
-	
+
 	return $return;
 }
 
 function gen_home_course_block_6_v2($iCourse){
 	//từ vựng
 	global $var_path_img,$base_url;
-	
+
 	$return ='';
-	
+
 	$db_query = new db_query('SELECT * FROM categories_multi WHERE cat_id = '.$iCourse.' AND cat_active = 1');
-	$result = mysql_fetch_assoc($db_query->result);
-	
+	$result = mysqli_fetch_assoc($db_query->result);
+
 	$return.='<div class="home-block-item">';
 		$return.='<a href="'.gen_course_cate_v3($result['cat_id']).'" title="'.$result['cat_name'].'">';
 		$return.='<h2 class="home-block-item-img" style="background-image:url(\''.$var_path_img.'home/course_'.$iCourse.'.jpg\')"></h2>';
 		$return.='</a>';
 		$return.='<ul class="unstyled">';
 		$db_query2 = new db_query('SELECT cou_id,cou_name,cou_info,cou_time FROM courses INNER JOIN categories_multi ON cat_id = cou_cat_id WHERE cat_parent_id = '.$iCourse.' AND cou_active = 1 ORDER BY cou_time DESC LIMIT 0,4');
-		while($db_result2 = mysql_fetch_assoc($db_query2->result)){
+		while($db_result2 = mysqli_fetch_assoc($db_query2->result)){
          $db_com = new db_query("SELECT com_id FROM courses_multi WHERE com_cou_id = ".$db_result2['cou_id']." AND com_num_unit = 1");
-         $row_com = mysql_fetch_assoc($db_com->result);
+         $row_com = mysqli_fetch_assoc($db_com->result);
          unset($db_com);
 			$return.='<li><span class="icon icon-list-play"></span><a style="margin-left:20px" href="'.gen_course_les_v3($row_com['com_id']).'" title="'.removeHTML($db_result2['cou_info']).'">'.$db_result2['cou_name'].'</a></li>';
 		}
 		unset($db_result2);
 		unset($db_query2);
-		
+
 		$return.='</ul>';
 		$return.='<a style="margin-left:20px" href="'.gen_course_cate_v3($result['cat_id']).'" title="'.$result['cat_name'].'">Xem thêm</a>';
 	$return.='</div>';
-	
+
 	return $return;
 }
 
 function gen_home_course_block_7_v2($iCourse){
 	global $var_path_img,$base_url,$var_path_skill;
-	
+
 	$return ='';
 	$db_query = new db_query('SELECT * FROM categories_multi WHERE cat_parent_id = '.$iCourse.' AND cat_active = 1');
-	while($result = mysql_fetch_assoc($db_query->result)){
+	while($result = mysqli_fetch_assoc($db_query->result)){
 		$return.='<div class="home-block-item">';
 		$return.='<a href="'.gen_sk_cate_v2($result['cat_id'], $result['cat_name']).'" title="'.$result['cat_name'].'">';
 			$return.='<div class="home-block-item-left bg_green">';
@@ -1928,7 +1928,7 @@ function gen_home_course_block_7_v2($iCourse){
 		$return.='</a>';
 		$return.='<div class="home-block-item-right">';
 		$db_query2 = new db_query('SELECT * FROM skill_lesson WHERE skl_les_cat_id = '.$result['cat_id'].' AND skl_les_active = 1 ORDER BY skl_les_id ASC LIMIT 0,4');
-		while($result2 = mysql_fetch_assoc($db_query2->result)){
+		while($result2 = mysqli_fetch_assoc($db_query2->result)){
 			$return.='<a href="'.gen_sk_les_v2($result['cat_name'],$result2['skl_les_id'], $result2['skl_les_name']).'" title="'.$result2['skl_les_name'].'">';
 				$return.='<div class="item">';
 				$return.='<div class="item-background" style="background-image:url(\'http://'.$base_url.$var_path_skill.'small_'.$result2['skl_les_img'].'\')"></div>';
@@ -1938,7 +1938,7 @@ function gen_home_course_block_7_v2($iCourse){
 		}
 		unset($result2);
 		unset($db_query2);
-		
+
 		$return.='<a href="'.gen_sk_cate_v2($result['cat_id'], $result['cat_name']).'" title="'.$result['cat_name'].'">';
 			$return.='<div class="item-more">';
 				$db_count = new db_count('SELECT count(*) AS count FROM skill_lesson WHERE skl_les_cat_id = '.$result['cat_id'].' AND skl_les_active = 1');
@@ -1949,27 +1949,27 @@ function gen_home_course_block_7_v2($iCourse){
 		$return.='</a>';
 		$return.='</div>';
 		$return.='<div class="clearfix"></div>';
-		
+
 		$return.='</div>';
 	}
-	
+
 	return $return;
 }
 
 function gen_home_course_block_11_v2($iCourse){
 	global $var_path_img,$base_url,$var_path_skill;
-	
+
 	$return = '';
 	//get children
 	$db_query = new db_query('SELECT * FROM categories_multi WHERE cat_parent_id = '.$iCourse.' AND cat_active = 1');
-	while($result = mysql_fetch_assoc($db_query->result)){
+	while($result = mysqli_fetch_assoc($db_query->result)){
 		$return.='<div class="home-block-item">';
 			$return.='<a href="'.gen_sk_cate_v2($result['cat_id'], $result['cat_name']).'"><div class="home-block-item-title bg_cyan white" style="background-image:url(\'/themes_v2/images/home/course_'.$result['cat_id'].'_small.png\')">'.str_replace("Luyện Nghe ","",str_replace("Luyện Nói ","",$result['cat_name'])).'</div></a>';
-			
+
 			//get posts
 			$db_query2 = new db_query('SELECT * FROM skill_lesson WHERE skl_les_cat_id = '.$result['cat_id'].' AND skl_les_active = 1 ORDER BY skl_les_time DESC LIMIT 0,4');
 			$i = 0;
-			while($result2 = mysql_fetch_assoc($db_query2->result)){
+			while($result2 = mysqli_fetch_assoc($db_query2->result)){
 				$i++;
 				if($i==1){
 					$return.='<a href="'.gen_sk_les_v2($result['cat_name'],$result2['skl_les_id'], $result2['skl_les_name']).'" title="'.$result2['skl_les_name'].'"><div class="home-block-item-first">';
@@ -1981,29 +1981,29 @@ function gen_home_course_block_11_v2($iCourse){
 					$return.='</div></a>';
 				} else {
 					if($i==2){$return.='<ul class="home-block-item-list unstyled">';}
-					
+
 					$return.='<li><a class="black" href="'.gen_sk_les_v2($result['cat_name'],$result2['skl_les_id'], $result2['skl_les_name']).'" title="'.$result2['skl_les_name'].'"><span class="cyan">'.date("d/m/Y",$result2['skl_les_time']).'</span> - '.truncateString_($result2['skl_les_name'],30).'</a></li>';
 
 					if($i==4){$return.='</ul>';}
 				}
 			}
-			
+
 			$return.='<a class="home-block-item-more cyan" href="'.gen_sk_cate_v2($result['cat_id'], $result['cat_name']).'">Xem thêm »</a>';
-			
-			
+
+
 		$return.='</div>';
 	}
-	
+
 	return $return;
 }
 
 function gen_home_course_block_8_v2($iCourse){
 	global $var_path_img,$base_url,$var_path_skill;
 	$return ='';
-	
+
 	$db_query = new db_query('SELECT * FROM categories_multi WHERE cat_id = '.$iCourse.' AND cat_active = 1');
-	$result = mysql_fetch_assoc($db_query->result);
-	
+	$result = mysqli_fetch_assoc($db_query->result);
+
 	$return.='<div class="home-block-left">';
 		$return.='<a href="'.gen_sk_cate_v2($result['cat_id'], $result['cat_name']).'" title="'.$result['cat_name'].'">';
 			$return.='<img src="'.$var_path_img.'/home/course_'.$iCourse.'.jpg" alt="'.$result['cat_name'].'" />';
@@ -2012,7 +2012,7 @@ function gen_home_course_block_8_v2($iCourse){
 	$return.='<div class="home-block-right">';
 		$return.='<ul class="unstyled">';
 		$db_query2 = new db_query('SELECT * FROM categories_multi WHERE cat_parent_id = '.$iCourse.' AND cat_active = 1');
-		while($result2 = mysql_fetch_assoc($db_query2->result)){
+		while($result2 = mysqli_fetch_assoc($db_query2->result)){
 			$return.='<li>';
 				//count
 				$db_count = new db_count('SELECT count(*) AS count FROM skill_lesson WHERE skl_les_cat_id = '.$result2['cat_id'].' AND skl_les_active = 1');
@@ -2020,14 +2020,14 @@ function gen_home_course_block_8_v2($iCourse){
 				$return.='<a href="'.gen_sk_cate_v2($result2['cat_id'],$result2['cat_name']).'" title="'.$result2['cat_name'].'">';
 					$return.='<div class="pull-right">'.$count.' bài <span class="icon icon-greater"></span></div>';
 				$return.='</a>';
-				
+
 				$return.='<a href="'.gen_sk_cate_v2($result2['cat_id'],$result2['cat_name']).'" title="'.$result2['cat_name'].'">';
 					$return.='<h2 class="item-title">'.$result2['cat_name'].'</h2>';
 				$return.='</a>';
 				//query last 2 posts
 				$return.='<div class="item-child-posts">';
 				$db_query3 = new db_query('SELECT * FROM skill_lesson WHERE skl_les_cat_id = '.$result2['cat_id'].' AND skl_les_active = 1 ORDER BY skl_les_time DESC LIMIT 0,2');
-				while($result3 = mysql_fetch_assoc($db_query3->result)){
+				while($result3 = mysqli_fetch_assoc($db_query3->result)){
 					$return2 =' | <a href="'.gen_sk_les_v2($result2['cat_name'],$result3['skl_les_id'], $result3['skl_les_name']).'"><span class="cyan">'.date("d/m/Y",$result3['skl_les_time']).'</span> - '.$result3['skl_les_name'].'</a>';
 				}
 				$return.=truncateString_(substr($return2,2),320);
@@ -2035,11 +2035,11 @@ function gen_home_course_block_8_v2($iCourse){
 				$return.='</div>';
 			$return.='</li>';
 		}
-		
+
 		$return.='</ul>';
 	$return.='</div>';
 	$return.='<div class="clearfix"></div>';
-	
+
 	return $return;
 }
 
@@ -2048,7 +2048,7 @@ function gen_home_course_block_9_v2($iCourse){
 	$return ='';
 	$nparent = nameCate($iCourse);
 	$db_query = new db_query('SELECT * FROM categories_multi WHERE cat_parent_id = '.$iCourse.' AND cat_active = 1');
-		while($result = mysql_fetch_assoc($db_query->result)){
+		while($result = mysqli_fetch_assoc($db_query->result)){
 			$return.='<div class="home-block-item">';
 			$return.='<a href="'.gen_sk_cate_v2($result['cat_id'],$result['cat_name']).'" title="'.$result['cat_name'].'">';
 				$return.='<h2 class="home-block-item-title bold">'.$result['cat_name'].'</h2>';
@@ -2059,11 +2059,11 @@ function gen_home_course_block_9_v2($iCourse){
 			$return.='<div class="home-block-item-right">';
 				$return.='<ul class="unstyled">';
 				$db_query2 = new db_query('SELECT * FROM skill_lesson WHERE skl_les_cat_id = '.$result['cat_id'].' AND skl_les_active = 1 LIMIT 0,3');
-				while($result2 = mysql_fetch_assoc($db_query2->result)){
+				while($result2 = mysqli_fetch_assoc($db_query2->result)){
 					$return.='<li><div class="icon icon-list-play"></div><h3><a href="'.gen_sk_les_v2($result['cat_name'],$result2['skl_les_id'],$result2['skl_les_name']).'" title="'.$result2['skl_les_name'].'">'.substr($result2['skl_les_name'],0,35).((strlen($result2['skl_les_name'])>35)?'...':'').'</a></h3></li>';
 				}
 				$return.='</ul>';
-				
+
 				$db_count = new db_count('SELECT count(*) AS count FROM skill_lesson WHERE skl_les_cat_id = '.$result['cat_id'].' AND skl_les_active = 1');
 				$count = $db_count->total;
 				$return.='<span style="margin-left:16px">Xem thêm <a href="'.gen_sk_cate_v2($result['cat_id'],$result['cat_name']).'" title="'.$result['cat_name'].'">'.$count.' bài khác</a></span>';
@@ -2071,19 +2071,19 @@ function gen_home_course_block_9_v2($iCourse){
 		$return.='</div>';
 		}
 		$return.='<div class="clearfix"></div>';
-		
+
 	return $return;
 }
 
 function gen_home_course_block_10_v2($lib_cat_type,$color){
 	global $var_path_img;
-	
+
 	$title = '';
 	$slug = '';
 	$url = '';
-	
+
 	$return ='';
-	
+
 	switch($lib_cat_type){
 		case 1:
 			$title = 'Trò chơi tiếng Anh';
@@ -2099,7 +2099,7 @@ function gen_home_course_block_10_v2($lib_cat_type,$color){
 			$slug = 'video';
 			break;
 	}
-	
+
 	$return.='<div class="home-block-item">';
 		$return.='<div class="home-block-item-img" style="background-image:url(\''.$var_path_img.'home/thu_vien_'.$lib_cat_type.'.jpg\')">';
 			$return.='<a href="'.gen_lib_cat_v2(-$lib_cat_type, $slug).'" title="'.$title.'">';
@@ -2107,29 +2107,29 @@ function gen_home_course_block_10_v2($lib_cat_type,$color){
 			$return.='</a>';
 			$return.='<ul class="home-block-item-list unstyled">';
 			$db_query = new db_query("SELECT * FROM library_".$slug." ORDER BY lib_".$slug."_count_view DESC LIMIT 0,5");
-			while($result = mysql_fetch_assoc($db_query->result)){
+			while($result = mysqli_fetch_assoc($db_query->result)){
 				$return.='<li><a href="'.gen_lib_post_v2($lib_cat_type, $result['lib_'.$slug.'_id'], $result['lib_'.$slug.'_title']).'">'.truncateString_($result['lib_'.$slug.'_title'],20).' - '.$result['lib_'.$slug.'_count_view'].' <i class="icon-white icon-eye-open"></i></a></li>';
 			}
 			$return.='<a href="'.gen_lib_cat_v2(-$lib_cat_type, $slug).'" title="'.$title.'">Xem thêm »</a>';
-				
+
 			$return.='</ul>';
 		$return.='</div>';
 		$return.='<h2 class="home-block-item-title"><a href="'.gen_lib_cat_v2(-$lib_cat_type, $slug).'" title="'.$title.'">'.$title.'</a></h2>';
 	$return.='</div>';
-	
-	
+
+
 	$return.='';
 	$return.='';
-	
+
 	return $return;
 }
 
 
 function gen_lib_cat_list_v2($lib_cat_type){
 	$return = array();
-	
+
 	$db_query = new db_query("SELECT lib_cat_id,lib_cat_name,lib_cat_description,lib_cat_picture FROM library_cate WHERE lib_cat_type = ".$lib_cat_type." AND lib_cat_parent_id = 0 AND lib_cat_active = 1");
-	while($result = mysql_fetch_assoc($db_query->result)):
+	while($result = mysqli_fetch_assoc($db_query->result)):
 		array_push(	$return,array(	'id'	=> $result['lib_cat_id'],
 											'name'=> $result['lib_cat_name'],
 											'desc'=> $result['lib_cat_description'],
@@ -2137,20 +2137,20 @@ function gen_lib_cat_list_v2($lib_cat_type){
 					 );
 	endwhile;
 	unset($db_query);
-	
+
 	return $return;
-	
+
 }
 
 function gen_lib_cat_block_v2($lib_cat_type,$color){
 	global $var_path_library,$var_path_img ;
-	
+
 	$return = '';
-	
+
 	$title = '';
 	$slug = '';
 	$url = '';
-	
+
 	switch($lib_cat_type){
 		case 1:
 			$title = 'Game';
@@ -2173,9 +2173,9 @@ function gen_lib_cat_block_v2($lib_cat_type,$color){
 		$return .='</div>';
 		$return .='<div class="list-line-right">';
 			$return .='<div class="list-line-right-carousel">';
-			
+
 			$single_titles = gen_lib_cat_list_v2($lib_cat_type);
-			
+
 			foreach($single_titles as $single_title){
 				$return .='<div class="item">';
 					$return .='<div class="item-info">';
@@ -2186,10 +2186,10 @@ function gen_lib_cat_block_v2($lib_cat_type,$color){
 					$return .='<div class="item-hover bg_'.$color.'">';
 						$return .= '<div class="item-hover-title">'.$single_title['name'].'</div>';
 						$return .='<div class="item-hover-button"><a href="'.gen_lib_cat_v2($single_title['id'],$single_title['name']).'">Xem chi tiết</a></div>';
-					$return .='</div>';				
+					$return .='</div>';
 				$return .='</div>';
 			}
-			
+
 			$return .='</div>';
 			if(sizeof($single_titles)>3){
 				$return .='<a href="#" id="ui-carousel-next" class="next"></a>';
@@ -2197,14 +2197,14 @@ function gen_lib_cat_block_v2($lib_cat_type,$color){
 			}
 		$return .='</div>';
 	$return .='</div>';
-	
+
 	return $return;
 }
 
 /*
  * i=0
- * return[0] 
- * 
+ * return[0]
+ *
 
 /*
  * 2013 06 04 - Duong
@@ -2213,7 +2213,7 @@ function gen_lib_cat_block_v2($lib_cat_type,$color){
 //generate library post
 function gen_game_post_v2($id){
 	global $var_path_library_game,$var_path_library_game_file;
-	
+
 	$return = array(	'type_name'		=> 'Game',
 							'slug'		=> 'game',
 							'img_path'	=> $var_path_library_game,
@@ -2223,131 +2223,131 @@ function gen_game_post_v2($id){
 	//Query
 	$sql = 'SELECT library_cate.lib_cat_name,library_game.* FROM library_game INNER JOIN library_cate ON library_game.lib_game_catid = library_cate.lib_cat_id WHERE lib_game_id = '.$id;
 	$db_query = new db_query($sql);
-	$db_row = mysql_fetch_assoc($db_query->result);
+	$db_row = mysqli_fetch_assoc($db_query->result);
 	unset($db_query);
-	
+
 	//Update the view count
 	$sql = 'UPDATE library_game SET lib_game_count_view = lib_game_count_view + 1 WHERE lib_game_id = '.$id;
 	$db_update = new db_execute($sql);
 	unset($db_update);
-	
+
 	//Others
 	$sql = 'SELECT * FROM library_game WHERE lib_game_id <> '.$id.' AND lib_game_catid = '.$db_row['lib_game_catid'].' ORDER BY RAND() LIMIT 10';
 	$db_query = new db_query($sql);
 	$result_array = $db_query->resultArray();
 	unset($db_query);
-	
+
 	$return['result'] = $db_row;
 	$return['others'] = $result_array;
-	
+
 	return $return;
 }
 
 function gen_story_post_v2($id){
 	global $var_path_library_story,$var_path_library_story_file;
-	
+
 	$return = array(	'type_name'		=> 'Truyện',
 							'slug'		=> 'story',
 							'img_path'	=> $var_path_library_story,
 							'file_path'	=> $var_path_library_story_file,
 							'files_url' 		=> array());
-	
+
 	//Query
 	//Update the view count
 	//Others
-	
+
 	//Query
 	$sql = 'SELECT library_cate.lib_cat_name,library_story.* FROM library_story INNER JOIN library_cate ON library_story.lib_story_catid = library_cate.lib_cat_id WHERE lib_story_id = '.$id;
 	$db_query = new db_query($sql);
-	$db_row = mysql_fetch_assoc($db_query->result);
+	$db_row = mysqli_fetch_assoc($db_query->result);
 	unset($db_query);
-	
+
 	//Update the view count
 	$sql = 'UPDATE library_story SET lib_story_count_view = lib_story_count_view + 1 WHERE lib_story_id = '.$id;
 	$db_update = new db_execute($sql);
 	unset($db_update);
-	
+
 	//get the images
 	$sql = 'SELECT * FROM images_story WHERE img_story_id = '.$id;
 	$db_query = new db_query($sql);
-	while($images = mysql_fetch_assoc($db_query->result)){
+	while($images = mysqli_fetch_assoc($db_query->result)){
 		array_push($return['files_url'],$images['img_url']);
 	}
 	unset($db_query);
-	
+
 	//Others
 	$sql = 'SELECT * FROM library_story WHERE lib_story_id <> '.$id.' AND lib_story_catid = '.$db_row['lib_story_catid'].' ORDER BY lib_story_id DESC LIMIT 10';
 	$db_query = new db_query($sql);
 	$result_array = $db_query->resultArray();
 	unset($db_query);
-	
+
 	$return['result'] = $db_row;
 	$return['others'] = $result_array;
-	
+
 	return $return;
 }
 
 function gen_song_post_v2($id){
 	global $var_path_library_song,$var_path_library_song_file;
-	
+
 	$return = array(	'type_name'	=> 'Bài hát',
 							'slug'		=> 'song',
 							'img_path'	=> $var_path_library_song,
 							'file_path'	=> $var_path_library_song_file,
 							'files_url' 		=> array());
-	
+
 	//Query
 	$sql = 'SELECT library_cate.lib_cat_name,library_'.$return['slug'].'.* FROM library_'.$return['slug'].' INNER JOIN library_cate ON library_'.$return['slug'].'.lib_'.$return['slug'].'_catid = library_cate.lib_cat_id WHERE lib_'.$return['slug'].'_id = '.$id;
 	$db_query = new db_query($sql);
-	$db_row = mysql_fetch_assoc($db_query->result);
+	$db_row = mysqli_fetch_assoc($db_query->result);
 	unset($db_query);
-	
+
 	//Update the view count
 	$sql = 'UPDATE library_'.$return['slug'].' SET lib_'.$return['slug'].'_count_view = lib_'.$return['slug'].'_count_view + 1 WHERE lib_'.$return['slug'].'_id = '.$id;
 	$db_update = new db_execute($sql);
 	unset($db_update);
-	
+
 	//Others
 	$sql = 'SELECT * FROM library_'.$return['slug'].' WHERE lib_'.$return['slug'].'_id <> '.$id.' AND lib_'.$return['slug'].'_catid = '.$db_row['lib_'.$return['slug'].'_catid'].' ORDER BY lib_'.$return['slug'].'_id DESC LIMIT 10';
 	$db_query = new db_query($sql);
 	$result_array = $db_query->resultArray();
 	unset($db_query);
-	
+
 	$return['result'] = $db_row;
 	$return['others'] = $result_array;
-	
+
 	return $return;
 }
 
 function gen_video_post_v2($id){
 	global $var_path_library_video,$var_path_library_video_file;
-	
+
 	$return = array(	'type_name'		=> 'Video',
 							'slug'		=> 'video',
 							'img_path'	=> $var_path_library_video,
 							'file_path'	=> $var_path_library_video_file,
 							'files_url' 		=> array());
-	
+
 	//Query
 	$sql = 'SELECT library_cate.lib_cat_name,library_'.$return['slug'].'.* FROM library_'.$return['slug'].' INNER JOIN library_cate ON library_'.$return['slug'].'.lib_'.$return['slug'].'_catid = library_cate.lib_cat_id WHERE lib_'.$return['slug'].'_id = '.$id;
 	$db_query = new db_query($sql);
-	$db_row = mysql_fetch_assoc($db_query->result);
+	$db_row = mysqli_fetch_assoc($db_query->result);
 	unset($db_query);
-	
+
 	//Update the view count
 	$sql = 'UPDATE library_'.$return['slug'].' SET lib_'.$return['slug'].'_count_view = lib_'.$return['slug'].'_count_view + 1 WHERE lib_'.$return['slug'].'_id = '.$id;
 	$db_update = new db_execute($sql);
 	unset($db_update);
-	
+
 	//Others
 	$sql = 'SELECT * FROM library_'.$return['slug'].' WHERE lib_'.$return['slug'].'_id <> '.$id.' AND lib_'.$return['slug'].'_catid = '.$db_row['lib_'.$return['slug'].'_catid'].' ORDER BY lib_'.$return['slug'].'_id DESC LIMIT 10';
 	$db_query = new db_query($sql);
 	$result_array = $db_query->resultArray();
 	unset($db_query);
-	
+
 	$return['result'] = $db_row;
 	$return['others'] = $result_array;
-	
+
 	return $return;
 
 	return $return;
@@ -2356,7 +2356,7 @@ function gen_video_post_v2($id){
 function get_user_courses($user_id){
    $arr_ucou = array();
    $db = new db_query('SELECT usec_cou_id FROM user_course INNER JOIN courses ON user_course.usec_cou_id = courses.cou_id WHERE usec_use_id = '.$user_id.' AND cou_active = 1 ORDER BY usec_get_time DESC');
-   while($row = mysql_fetch_assoc($db->result)){
+   while($row = mysqli_fetch_assoc($db->result)){
       $arr_ucou[] = $row['usec_cou_id'];
    }unset($db);
    return $arr_ucou;
@@ -2364,7 +2364,7 @@ function get_user_courses($user_id){
 function get_user_courses_v2($user_id){
    $arr_ucou = array();
    $db = new db_query('SELECT ucp_cou_id FROM user_courses_pack INNER JOIN courses ON user_courses_pack.ucp_cou_id = courses.cou_id WHERE ucp_use_id = '.$user_id.' AND ucp_status = 1');
-   while($row = mysql_fetch_assoc($db->result)){
+   while($row = mysqli_fetch_assoc($db->result)){
       $arr_ucou[] = $row['ucp_cou_id'];
    }unset($db);
    return $arr_ucou;
@@ -2372,7 +2372,7 @@ function get_user_courses_v2($user_id){
 function get_user_courses_view($user_id){
    $arr_ucou = array();
    $db = new db_query('SELECT usec_cou_id FROM user_course INNER JOIN courses ON user_course.usec_cou_id = courses.cou_id WHERE usec_use_id = '.$user_id.' LIMIT 0,8');
-   while($row = mysql_fetch_assoc($db->result)){
+   while($row = mysqli_fetch_assoc($db->result)){
       $arr_ucou[] = $row['usec_cou_id'];
    }unset($db);
    return $arr_ucou;
@@ -2380,7 +2380,7 @@ function get_user_courses_view($user_id){
 function get_user_courses_wish($user_id){
    $arr_ucou = array();
    $db = new db_query('SELECT wishes_object_id FROM wishes INNER JOIN courses ON wishes.wishes_object_id = courses.cou_id WHERE wishes_user_id = '.$user_id.' LIMIT 0,8');
-   while($row = mysql_fetch_assoc($db->result)){
+   while($row = mysqli_fetch_assoc($db->result)){
       $arr_ucou[] = $row['wishes_object_id'];
    }unset($db);
    return $arr_ucou;
@@ -2389,9 +2389,9 @@ function get_user_courses_wish($user_id){
 function get_user_fnc($user_id){
    $course_fn = array();
    $db_uc = new db_query('SELECT usec_cou_id,usec_cou_point FROM user_course INNER JOIN courses ON user_course.usec_cou_id = courses.cou_id WHERE usec_use_id = '.$user_id.' AND cou_active = 1 ORDER BY usec_get_time DESC');
-   while($row_uc = mysql_fetch_assoc($db_uc->result)){
+   while($row_uc = mysqli_fetch_assoc($db_uc->result)){
       $db_fn = new db_query('SELECT COUNT(com_id) AS num_unit FROM courses_multi WHERE com_cou_id = '.$row_uc['usec_cou_id']);
-      $row_fn = mysql_fetch_assoc($db_fn->result);
+      $row_fn = mysqli_fetch_assoc($db_fn->result);
       unset($db_fn);
       $sum_point = $row_fn['num_unit']*20;
       if(($row_uc['usec_cou_point'] != 0) && ($sum_point <= $row_uc['usec_cou_point'])){
@@ -2403,7 +2403,7 @@ function get_user_fnc($user_id){
 //Ham check tai khoan con su dung khong
 function check_act_user($user_id){
    $db_user = new db_query('SELECT use_status_act FROM users WHERE use_id = '.$user_id);
-   while($row_user = mysql_fetch_assoc($db_user->result)){
+   while($row_user = mysqli_fetch_assoc($db_user->result)){
       $user_status = $row_user['use_status_act'];
    }unset($db_user);
    return $user_status;
@@ -2413,7 +2413,7 @@ function check_user_write($u_id,$write_id){
    $count_user_write = 0;
    $base_url            =  $_SERVER['HTTP_HOST'];
    $db_user_write       = new db_query("SELECT count(*) AS count FROM learn_writing_result WHERE lwr_use_id = ".$u_id." AND lwr_wri_id = ".$write_id);
-	$row_user_write	   = mysql_fetch_array($db_user_write->result);
+	$row_user_write	   = mysqli_fetch_array($db_user_write->result);
 	$count_user_write    = $row_user_write["count"];
    //------------------
    if($count_user_write > 0){
@@ -2425,7 +2425,7 @@ function check_user_speak($u_id,$write_id){
    $count_user_speak    = 0;
    $base_url            =  $_SERVER['HTTP_HOST'];
    $db_user_speak       = new db_query("SELECT count(*) AS count FROM learn_speak_result WHERE lsr_use_id = ".$u_id." AND lsr_spe_id = ".$write_id);
-	$row_user_speak	   = mysql_fetch_array($db_user_speak->result);
+	$row_user_speak	   = mysqli_fetch_array($db_user_speak->result);
 	$count_user_speak    = $row_user_speak["count"];
    //------------------
    if($count_user_speak > 0){
@@ -2441,34 +2441,34 @@ function get_strforum($parent_id){
       case 8:
          $str_id_forum = "9,37,40";
          break;
-      //Chung chi quoc te   
+      //Chung chi quoc te
       case 10:
          $str_id_forum = "11,19,20";
          break;
-      //Ky nang tieng anh   
+      //Ky nang tieng anh
       case 12:
          $str_id_forum = "21,22,23,24,25";
          break;
-      //Kien thuc tieng anh   
+      //Kien thuc tieng anh
       case 13:
          $str_id_forum = "26,27,38,39";
          break;
-      //Tieng anh tre em   
+      //Tieng anh tre em
       case 14:
          $str_id_forum = "43";
          break;
-      //Tieng anh pho thong   
+      //Tieng anh pho thong
       case 15:
          $str_id_forum = "34,35,36";
          break;
-      //Tieng anh chuyen nganh    
+      //Tieng anh chuyen nganh
       case 16:
          $str_id_forum = "28,29,45,46,47,48,49";
          break;
       //Hoc tieng anh qua video
       case 50:
          $str_id_forum = "51";
-         break;      
+         break;
    }
    return $str_id_forum;
 }
@@ -2477,12 +2477,12 @@ function get_meta_courses($id){
    $base_url     = $_SERVER['HTTP_HOST'];
    $iunit = getValue("iunit","int","GET",0);
    $type  = getValue("type","str","GET","");
-   
+
    $db_unit = new db_query("SELECT * FROM courses_multi WHERE com_id = ".$iunit);
-   $row_unit = mysql_fetch_assoc($db_unit->result);
+   $row_unit = mysqli_fetch_assoc($db_unit->result);
    unset($db_unit);
    switch($type){
-      case 'main':         $name_type = "Bài học chính";    break;    
+      case 'main':         $name_type = "Bài học chính";    break;
       case 'speak':        $name_type = "Bài nói";          break;
       case 'write':        $name_type = "Bài viết";         break;
       case 'grammar':      $name_type = "Ngữ pháp";         break;
@@ -2493,7 +2493,7 @@ function get_meta_courses($id){
       default:             $name_type = "";
    }
    $sql          = new db_query("SELECT * FROM courses WHERE cou_id = ".$id);
-   $row          = mysql_fetch_assoc($sql->result);
+   $row          = mysqli_fetch_assoc($sql->result);
    unset($sql);
    /*
    $row_unit['title']       == '' ? $title          = $row_unit['com_name'].' - '.$name_type          : $title          = $row_unit['title'].' - '.$name_type;
@@ -2503,13 +2503,13 @@ function get_meta_courses($id){
    $title         =  $row_unit['com_name'].' - '.$name_type;
    $description   =  $row_unit['com_content'];
    $keywords      =  $row['cou_name'].','.$row_unit['com_name'].','.$name_type;
-   
-   $arr_meta['image']        = "http://".$base_url."/pictures/courses/small_".$row['cou_image']; 
+
+   $arr_meta['image']        = "http://".$base_url."/pictures/courses/small_".$row['cou_image'];
    $arr_meta['title']        = removeHTML(str_replace ('"', ' ', $title));
    $arr_meta['description']  = removeHTML(str_replace ('"', ' ', $description));
-   $arr_meta['keywords']     = removeHTML(str_replace ('"', ' ', $keywords)); 
-   
-   return $arr_meta;             
+   $arr_meta['keywords']     = removeHTML(str_replace ('"', ' ', $keywords));
+
+   return $arr_meta;
 }
 //Lay thong tin SEO cho danh muc phan thu vien
 function get_meta_lib_cat($id){
@@ -2518,32 +2518,32 @@ function get_meta_lib_cat($id){
    $arr = array(0,-1,-2,-3,-4); //0:library, -1:game, -2:story, -3:song, -4:video
    if(!in_array($id,$arr)){
       $sql          = new db_query("SELECT * FROM library_cate WHERE lib_cat_id = ".$id);
-      $row          = mysql_fetch_assoc($sql->result);
+      $row          = mysqli_fetch_assoc($sql->result);
       unset($sql);
-      
+
       $row['title']        == ''? $title        = $row['lib_cat_name']        : $title       = $row['title'];
       $row['description']  == ''? $description  = $row['lib_cat_description'] : $description = $row['description'];
       $row['keywords']     == ''? $keywords     = $row['lib_cat_name']        : $keywords    = $row['keywords'];
-      
-      $arr_meta['image']        = "http://".$base_url."/pictures/library_cat/".$row['lib_cat_picture'];   
+
+      $arr_meta['image']        = "http://".$base_url."/pictures/library_cat/".$row['lib_cat_picture'];
       $arr_meta['title']        = removeHTML(str_replace ('"', ' ', $title));
       $arr_meta['description']  = removeHTML(str_replace ('"', ' ', $description));
-      $arr_meta['keywords']     = removeHTML(str_replace ('"', ' ', $keywords));   
+      $arr_meta['keywords']     = removeHTML(str_replace ('"', ' ', $keywords));
    }else{
       switch($id){
          case "0":
-           $arr_meta['title']        = "TÀI LIỆU,NGHE NHẠC,XEM PHIM,ĐỌC TRUYỆN,CHƠI GAME,TIN TỨC,GIẢI TRÍ";  
+           $arr_meta['title']        = "TÀI LIỆU,NGHE NHẠC,XEM PHIM,ĐỌC TRUYỆN,CHƠI GAME,TIN TỨC,GIẢI TRÍ";
            $arr_meta['description']  = "Học tiếng anh online,thư giãn qua các video giải trí,đọc các bộ truyện tranh nổi tiếng,nghe nhạc,xem phim,chơi game và download tài liệu miễn phí";
            $arr_meta['keywords']     = "Tài liệu, nghe nhạc, xem phim, đọc truyện tranh, game, tin tức, thư giãn, tiếng anh online, miễn phí";
            break;
          case "-1":
-           $arr_meta['title']        = "Game học tiếng Anh, English Game, Học tiếng Anh qua trò chơi";  
+           $arr_meta['title']        = "Game học tiếng Anh, English Game, Học tiếng Anh qua trò chơi";
            $arr_meta['description']  = "Chơi game online không giới hạn với các loại game vui, game hot nhất hiện nay hoàn toàn miễn phí, Ở đây các bạn sẽ được giải lao qua các trò chơi tiếng Anh vừa vui nhộn, vừa kiểm tra kiến thức tiếng Anh của bạn.";
            $arr_meta['keywords']     = "game học tiếng Anh, English Game, kho game miễn phí, Trò chơi tiếng Anh, Học Tiếng Anh Miễn Phí, học tiếng Anh qua trò chơi, tiếng Anh, học tiếng Anh qua game";
            $arr_meta['image']        = "http://".$base_url."/themes_v2/images/home/thu_vien_1.jpg";
            break;
          case "-2":
-           $arr_meta['title']        = "ĐỌC TRUYỆN TRANH ONLINE,TRUYỆN CƯỜI TIẾNG ANH,MANGA,TRUYỆN NGẮN HAY";  
+           $arr_meta['title']        = "ĐỌC TRUYỆN TRANH ONLINE,TRUYỆN CƯỜI TIẾNG ANH,MANGA,TRUYỆN NGẮN HAY";
            $arr_meta['description']  = "Thưởng thức thế giới truyện tranh, manga online, các câu chuyện cười tiếng anh và các truyện ngắn hay nhất hoàn toàn miễn phí";
            $arr_meta['keywords']     = "Đọc truyện tranh, online, truyện cười tiếng anh, truyện ngắn hay, miễn phí, manga";
            $arr_meta['image']        = "http://".$base_url."/themes_v2/images/home/thu_vien_2.jpg";
@@ -2555,14 +2555,14 @@ function get_meta_lib_cat($id){
            $arr_meta['image']        = "http://".$base_url."/themes_v2/images/home/thu_vien_3.jpg";
            break;
          case "-4":
-           $arr_meta['title']        = "Học tiếng anh qua video, video học tiếng anh, Phim tiếng anh";  
+           $arr_meta['title']        = "Học tiếng anh qua video, video học tiếng anh, Phim tiếng anh";
            $arr_meta['description']  = "Học tiếng anh qua các bản tin tức 24h của đài VOA news, BBC news, CNN news, xem phim và thư giãn với video hài, hot nhất.";
            $arr_meta['keywords']     = "Học tiếng anh qua video, Clip học tiếng anh, video học tiếng anh, Học tiếng anh qua phim, Học tiếng Anh qua CNN, Học tiếng Anh qua BBC, Học tiếng Anh qua VOA";
            $arr_meta['image']        = "http://".$base_url."/themes_v2/images/home/thu_vien_4.jpg";
-           break;           
+           break;
       }
    }
-   return $arr_meta;           
+   return $arr_meta;
 }
 //Lay thong tin SEO cho trang chi tiet phan thu vien
 function get_meta_lib_post($id){
@@ -2577,59 +2577,59 @@ function get_meta_lib_post($id){
       case 3:
          $table = "library_song"; break;
       case 4:
-         $table = "library_video"; break;         
+         $table = "library_video"; break;
    }
    if($table == "library_game"){
       $sql          = new db_query("SELECT * FROM library_game WHERE lib_game_id = ".$id);
-      $row          = mysql_fetch_assoc($sql->result);
+      $row          = mysqli_fetch_assoc($sql->result);
       unset($sql);
-      
+
       $row['meta_title']       == '' ? $title          = $row['lib_game_title'] : $title          = $row['meta_title'];
       $row['meta_description'] == '' ? $description    = $row['lib_game_info']  : $description    = $row['meta_description'];
       $row['meta_keywords']    == '' ? $keywords       = $row['lib_game_title'] : $keywords       = $row['meta_keywords'];
-      
+
       $arr_meta['image']        = "http://".$base_url."/pictures/library_game/".$row['lib_game_image'];
       $arr_meta['title']        = removeHTML(str_replace ('"', ' ', $title));
       $arr_meta['description']  = removeHTML(str_replace ('"', ' ', $description));
-      $arr_meta['keywords']     = removeHTML(str_replace ('"', ' ', $keywords)); 
-      
+      $arr_meta['keywords']     = removeHTML(str_replace ('"', ' ', $keywords));
+
    }else if($table == "library_story"){
       $sql          = new db_query("SELECT * FROM library_story WHERE lib_story_id = ".$id);
-      $row          = mysql_fetch_assoc($sql->result);
+      $row          = mysqli_fetch_assoc($sql->result);
       unset($sql);
-      
+
       $row['meta_title']       == '' ? $title          = $row['lib_story_title']  : $title          = $row['meta_title'];
       $row['meta_description'] == '' ? $description    = $row['lib_story_intro']  : $description    = $row['meta_description'];
       $row['meta_keywords']    == '' ? $keywords       = $row['lib_story_title']  : $keywords       = $row['meta_keywords'];
-      
+
       $arr_meta['image']        = "http://".$base_url."/pictures/library_story/".$row['lib_story_image'];
       $arr_meta['title']        = removeHTML(str_replace ('"', ' ', $title));
       $arr_meta['description']  = removeHTML(str_replace ('"', ' ', $description));
       $arr_meta['keywords']     = removeHTML(str_replace ('"', ' ', $keywords));
-      
+
    }else if($table == "library_song"){
       $sql          = new db_query("SELECT * FROM library_song WHERE lib_song_id = ".$id);
-      $row          = mysql_fetch_assoc($sql->result);
+      $row          = mysqli_fetch_assoc($sql->result);
       unset($sql);
-      
+
       $row['meta_title']       == '' ? $title          = $row['lib_song_title']  : $title          = $row['meta_title'];
       $row['meta_description'] == '' ? $description    = $row['lib_song_info']   : $description    = $row['meta_description'];
       $row['meta_keywords']    == '' ? $keywords       = $row['lib_song_title']  : $keywords       = $row['meta_keywords'];
-      
+
       $arr_meta['image']        = "http://".$base_url."/pictures/song/".$row['lib_song_image'];
       $arr_meta['title']        = removeHTML(str_replace ('"', ' ', $title));
       $arr_meta['description']  = removeHTML(str_replace ('"', ' ', $description));
       $arr_meta['keywords']     = removeHTML(str_replace ('"', ' ', $keywords));
-            
+
    }else if($table == "library_video"){
       $sql          = new db_query("SELECT * FROM library_video WHERE lib_video_id = ".$id);
-      $row          = mysql_fetch_assoc($sql->result);
+      $row          = mysqli_fetch_assoc($sql->result);
       unset($sql);
-      
+
       $row['meta_title']       == '' ? $title          = $row['lib_video_title'] : $title          = $row['meta_title'];
       $row['meta_description'] == '' ? $description    = $row['lib_video_info']  : $description    = $row['meta_description'];
       $row['meta_keywords']    == '' ? $keywords       = $row['lib_video_title'] : $keywords       = $row['meta_keywords'];
-      
+
       $arr_meta['image']        = "http://".$base_url."/pictures/video/".$row['lib_video_image'];
       $arr_meta['title']        = removeHTML(str_replace ('"', ' ', $title));
       $arr_meta['description']  = removeHTML(str_replace ('"', ' ', $description));
@@ -2641,18 +2641,18 @@ function get_meta_lib_post($id){
 //Ham check xem user xem bai post nay chua (pmhung)
 function check_user_view_post($u_id,$p_id){
    $db_user_view       = new db_query("SELECT count(*) AS count FROM post_user_view WHERE puv_user_id = ".$u_id);
-	$row_user	        = mysql_fetch_array($db_user_view->result);
+	$row_user	        = mysqli_fetch_array($db_user_view->result);
 	$count_user         = $row_user["count"];
    //------------------
    if($count_user <= 0){
-      $array_post = array($p_id); 
-      $arr_encode = json_encode($array_post);  
+      $array_post = array($p_id);
+      $arr_encode = json_encode($array_post);
       $sql_insert = "INSERT INTO post_user_view  VALUES (NULL,". $u_id .", '". $arr_encode ."')";
       $db_ins = new db_execute($sql_insert);
       unset($db_ins);
    }else{
       $sql          = new db_query("SELECT puv_post_id  FROM post_user_view WHERE puv_user_id = ".$u_id);
-      $row          = mysql_fetch_assoc($sql->result);
+      $row          = mysqli_fetch_assoc($sql->result);
       unset($sql);
       $arr_de = json_decode($row['puv_post_id']);
       if (!in_array($p_id, $arr_de)) {
@@ -2666,8 +2666,8 @@ function check_user_view_post($u_id,$p_id){
 // Hàm check xem có  cat con trong cat cha không(pttuan)
 function check_child($cat_id){
    $db_check_child = new db_query('SELECT *
-                                   FROM categories_multi 
-                                   WHERE cat_parent_id ='.$cat_id);  
+                                   FROM categories_multi
+                                   WHERE cat_parent_id ='.$cat_id);
    $list_check    = $db_check_child->resultArray();
    unset($db_check_child);
    $total = count($list_check);
@@ -2681,36 +2681,36 @@ function check_child($cat_id){
 function check_count_new($u_id,$c_id,$type = 0){
    $count_new          = 0;
    if($type == 0){
-   $db_count           = new db_query("SELECT count(*) AS count 
-                                       FROM post_community 
+   $db_count           = new db_query("SELECT count(*) AS count
+                                       FROM post_community
                                        JOIN categories_multi ON(postcom_cat_id = cat_id)
                                        WHERE cat_parent_id =".$c_id);
    }
    if($type == 1){
     $db_count = new db_query("SELECT count(*) AS count
-                              FROM post_community 
+                              FROM post_community
                               WHERE postcom_cat_id = ".$c_id);
    }
-	$row_count	        = mysql_fetch_array($db_count->result);
+	$row_count	        = mysqli_fetch_array($db_count->result);
 	$count_post         = $row_count["count"];
    //------------------
    $sql          = new db_query("SELECT puv_post_id  FROM post_user_view WHERE puv_user_id = ".$u_id);
-   $row          = mysql_fetch_assoc($sql->result);
+   $row          = mysqli_fetch_assoc($sql->result);
    unset($sql);
    $arr_de = json_decode($row['puv_post_id']);
    $count_view = 0;
    if($type == 0){
-   $db_commu = new db_query("SELECT postcom_id 
-                             FROM post_community 
+   $db_commu = new db_query("SELECT postcom_id
+                             FROM post_community
                              JOIN categories_multi ON(postcom_cat_id = cat_id)
                              WHERE cat_parent_id=".$c_id);
    }
    if($type == 1){
-      $db_commu = new db_query("SELECT postcom_id 
-                                FROM post_community 
+      $db_commu = new db_query("SELECT postcom_id
+                                FROM post_community
                                 WHERE postcom_cat_id=".$c_id);
-   }           
-   while($row_commu = mysql_fetch_assoc($db_commu->result)){
+   }
+   while($row_commu = mysqli_fetch_assoc($db_commu->result)){
       if(is_array($arr_de)){
          if (in_array($row_commu['postcom_id'], $arr_de)) {
             $count_view++;
@@ -2743,25 +2743,25 @@ function check_cat_news($id){
 // Đếm số lượng bài viết trong phần cộng đồng
 function count_topic(){
 	$db_cate = new db_query("SELECT cat_id
-                           FROM categories_multi 
+                           FROM categories_multi
                            WHERE cat_type = 2 AND cat_parent_id  = 0 AND cat_active = 1 AND cat_id != 227 AND cat_id != 228 AND cat_id != 229 AND cat_id != 230 AND cat_id != 212 ");
    $i = 0;
    $total_topics = 0;
-   while($row_cate = mysql_fetch_assoc($db_cate->result)){
+   while($row_cate = mysqli_fetch_assoc($db_cate->result)){
       if(check_child($row_cate['cat_id'])){
-        $db_count= new db_count("SELECT count(*) AS count 
+        $db_count= new db_count("SELECT count(*) AS count
                                  FROM post_community
                                  JOIN categories_multi
                                  ON(postcom_cat_id = cat_id)
                                  WHERE postcom_active = 1 AND cat_parent_id =".$row_cate['cat_id']);
       }else{
         $db_count  =  new db_count('SELECT count(*) AS count
-                                  FROM post_community 
-                                  JOIN categories_multi 
+                                  FROM post_community
+                                  JOIN categories_multi
                                   ON(cat_id = postcom_cat_id)
                                   WHERE postcom_active = 1 AND postcom_cat_id = '.$row_cate['cat_id']);
       }
-        
+
       $row_count   = $db_count->total;
       $total_topics += $row_count;
       unset($db_count);
@@ -2771,7 +2771,7 @@ function count_topic(){
 function total_user(){
    $db_user = new db_query('SELECT count(*) as count_user
                             FROM users');
-   $count_user = mysql_fetch_assoc($db_user->result);
+   $count_user = mysqli_fetch_assoc($db_user->result);
    unset($db_user);
    return $count_user['count_user'];
 }
@@ -2781,7 +2781,7 @@ function last_user(){
                              WHERE 1
                              ORDER BY use_id DESC
                              LIMIT 1');
-     $last_use = mysql_fetch_assoc($db_user->result);
+     $last_use = mysqli_fetch_assoc($db_user->result);
      unset($db_user);
      return $last_use['use_name'];
 }
@@ -2789,7 +2789,7 @@ function last_user(){
 function check_view_new_post($u_id,$p_id){
    $new          = 0;
    $sql          = new db_query("SELECT puv_post_id  FROM post_user_view WHERE puv_user_id = ".$u_id);
-   $row          = mysql_fetch_assoc($sql->result);
+   $row          = mysqli_fetch_assoc($sql->result);
    unset($sql);
    $arr_de = json_decode($row['puv_post_id']);
    if(is_array($arr_de)){
@@ -2805,9 +2805,9 @@ function check_view_new_post($u_id,$p_id){
 function get_str_cate_from_cou($iCou){
    $str_cate = "";
    $ncate    = "";
-   $nlev     = "";  
+   $nlev     = "";
    $db_info = new db_query("SELECT cou_cat_id,cou_lev_id FROM courses WHERE cou_id = ".$iCou);
-   $row_info = mysql_fetch_assoc($db_info->result);
+   $row_info = mysqli_fetch_assoc($db_info->result);
    unset($db_info);
    if(in_array($row_info['cou_cat_id'],array(1,2,3,26))){
       switch($row_info['cou_lev_id']){
@@ -2823,12 +2823,12 @@ function get_str_cate_from_cou($iCou){
       $str_cate = $ncate.'-'.$nlev;
    }else{
       $db_cate = new db_query("SELECT cat_id,cat_name,cat_parent_id FROM categories_multi WHERE cat_id = ".$row_info['cou_cat_id']);
-      $row_cate = mysql_fetch_assoc($db_cate->result);
+      $row_cate = mysqli_fetch_assoc($db_cate->result);
       $ncate = $row_cate['cat_name'];
       unset($db_cate);
       //parent cate
       $db_parent = new db_query("SELECT cat_id,cat_name FROM categories_multi WHERE cat_id = ".$row_cate['cat_parent_id']);
-      $row_parent = mysql_fetch_assoc($db_parent->result);
+      $row_parent = mysqli_fetch_assoc($db_parent->result);
       $nparent = $row_parent['cat_name'];
       unset($db_parent);
       $str_cate = $nparent.'-'.$ncate;
@@ -2860,12 +2860,12 @@ function get_cate_from_reason($reason){
             array_unshift($arr_cate,14,15,16,17); break;
          case 7:
             //Từ mới
-            array_unshift($arr_cate,3); break;        
+            array_unshift($arr_cate,3); break;
          case 8:
             //Rèn luyện tổng thể
-            array_unshift($arr_cate,2,1,26); break;      
+            array_unshift($arr_cate,2,1,26); break;
          default:
-            array_unshift($arr_cate,2,1,26); break;                             
+            array_unshift($arr_cate,2,1,26); break;
       }
    }
    return $arr_cate;
@@ -2897,12 +2897,12 @@ function build_test_from_reason($reason){
                $str_part = "2,4,5,6"; break;
             case 7:
                //Từ mới
-               $str_part = "1,2,3,4"; break;            
+               $str_part = "1,2,3,4"; break;
             case 8:
                //Rèn luyện tổng thể
-               $str_part = "1,2,3,4,5,6"; break;      
+               $str_part = "1,2,3,4,5,6"; break;
             default:
-               $str_part = "1,2,3,4,5,6"; break;                             
+               $str_part = "1,2,3,4,5,6"; break;
          }
       }
    }
@@ -2914,13 +2914,13 @@ function get_cate_onlink($iCate,$iLev){
    $name2 = "";
    $name_on_link = "";
    $db_cate = new db_query("SELECT cat_id,cat_name,cat_parent_id FROM categories_multi WHERE cat_id = ".$iCate);
-   $row_cate = mysql_fetch_assoc($db_cate->result);
+   $row_cate = mysqli_fetch_assoc($db_cate->result);
    unset($db_cate);
-   
+
    $db_parent = new db_query("SELECT cat_id,cat_name FROM categories_multi WHERE cat_id = ".$row_cate['cat_parent_id']);
-   $row_parent = mysql_fetch_assoc($db_parent->result);
+   $row_parent = mysqli_fetch_assoc($db_parent->result);
    unset($db_parent);
-   
+
    if(in_array($iCate,array(2,1,26,3))){
       $name1 = $row_cate['cat_name'];
       switch($iLev){
@@ -2928,7 +2928,7 @@ function get_cate_onlink($iCate,$iLev){
          case 2: $name2 = "intermediate";          break;
          case 3: $name2 = "upper-intermediate";    break;
          case 4: $name2 = "advanced";              break;
-         default: $name2 = "";                     break;         
+         default: $name2 = "";                     break;
       }
    }else{
       $name1 = $row_parent['cat_name'];
@@ -2946,14 +2946,14 @@ function creat_time_sg_test($time_test_real){
    return $time_diff;
 }
 //
-function curPageURL() { 
- $pageURL = 'http://'; 
- if ($_SERVER["SERVER_PORT"] != "80") { 
-  $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"]; 
- } else { 
-  $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; 
- } 
- return $pageURL; 
+function curPageURL() {
+ $pageURL = 'http://';
+ if ($_SERVER["SERVER_PORT"] != "80") {
+  $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+ } else {
+  $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+ }
+ return $pageURL;
 }
 //
 function get_array_cate_sg($arr_reason,$lev_id){
@@ -2989,7 +2989,7 @@ function get_array_cate_sg($arr_reason,$lev_id){
             if($lev_id == 1) array_unshift($arr_cate,172,173,174,176,177);
             if($lev_id == 2 || $lev_id == 3) array_unshift($arr_cate,178,179,180,181,182);
             if($lev_id == 4) array_unshift($arr_cate,185,186,187,188,189);
-         }   
+         }
          if($rs == 6){
             //TOEFL
             array_unshift($arr_cate,14,15,16,17);
@@ -3007,7 +3007,7 @@ function get_array_cate_sg($arr_reason,$lev_id){
             if($lev_id == 2) array_unshift($arr_cate,136,140,144);
             if($lev_id == 3) array_unshift($arr_cate,137,141,145);
             if($lev_id == 4) array_unshift($arr_cate,138,142,146);
-         }   
+         }
    }
    return $arr_cate;
 }
@@ -3015,7 +3015,7 @@ function get_array_cate_sg($arr_reason,$lev_id){
 function creat_log_user($user_id,$courses_name,$unit_names){
    //nếu chưa tồn tại tài khoản thì không update
    //bắt đầu insert vào db
-   $array_u = array();  
+   $array_u = array();
    for($i = 15768;$i<=15827;$i++){
       $array_u[] = $i;
    }
@@ -3023,13 +3023,13 @@ function creat_log_user($user_id,$courses_name,$unit_names){
       $db_execute	= new db_execute_return();
     	$umoney_return  = $db_execute->db_execute("INSERT IGNORE INTO temp_log(temp_log_user_id,temp_log_time,temp_log_description	)
    	 									                VALUES(" . $user_id . " , '" . time() . "' , '". "Courses : " . $courses_name."----- Unit : ".$unit_names . "')"
-                                                 , __FILE__ . " Line: " . __LINE__);   
+                                                 , __FILE__ . " Line: " . __LINE__);
       unset($db_execute);
    }
 }
 function check_userdemo($user_id){
    $check = 0;
-   $array_u = array();  
+   $array_u = array();
    for($i = 15768;$i<=15827;$i++){
       $array_u[] = $i;
    }
@@ -3050,17 +3050,17 @@ function invite_friend($user,$friend){
       unset($db_ins);
       //notify
       $db_user_send = new db_query("SELECT use_id,use_name FROM users WHERE use_id = ".$user);
-      $row_user_send = mysql_fetch_assoc($db_user_send->result);
+      $row_user_send = mysqli_fetch_assoc($db_user_send->result);
       $user_send_name = $row_user_send['use_name'];
       unset($db_user_send);
       user_notification($friend,'<a href="/user/u-'.$user.'">'.$user_send_name.'</a> muốn kết bạn với bạn. <span>Click <a class="accept_fri">vào đây</a> để xác nhận.<span>');
       //log
       $db_user = new db_query("SELECT use_id,use_name FROM users WHERE use_id = ".$friend);
-      $row_user = mysql_fetch_assoc($db_user->result);
+      $row_user = mysqli_fetch_assoc($db_user->result);
       $user_name = $row_user['use_name'];
       unset($db_user);
       user_activity_log($user,'Bạn đã gửi lời mời kết bạn đến <a href="/user/u-'.$friend.'">'.$user_name.'</a>');
-   } 
+   }
 }
 // Chấp nhận
 function accept_friend($user,$friend){
@@ -3073,13 +3073,13 @@ function accept_friend($user,$friend){
    unset($db_inc);
    //notification
    $db_user_send = new db_query("SELECT use_id,use_name FROM users WHERE use_id = ".$user);
-   $row_user_send = mysql_fetch_assoc($db_user_send->result);
+   $row_user_send = mysqli_fetch_assoc($db_user_send->result);
    $user_send_name = $row_user_send['use_name'];
    unset($db_user_send);
    user_notification($friend,'<a href="/user/u-'.$user.'">'.$user_send_name.'</a> đã đồng ý kết bạn với bạn. <span>Gửi <a class="send_mes">tin nhắn</a></span>');
    //log
    $db_user = new db_query("SELECT use_id,use_name FROM users WHERE use_id = ".$friend);
-   $row_user = mysql_fetch_assoc($db_user->result);
+   $row_user = mysqli_fetch_assoc($db_user->result);
    $user_name = $row_user['use_name'];
    unset($db_user);
    user_activity_log($user,'Bạn đã đồng ý kết bạn với <a href="/user/u-'.$friend.'">'.$user_name.'</a>');
@@ -3091,7 +3091,7 @@ function denied_friend($user,$friends){
    unset($db_inc);
    //log
    $db_user = new db_query("SELECT use_id,use_name FROM users WHERE use_id = ".$friends);
-   $row_user = mysql_fetch_assoc($db_user->result);
+   $row_user = mysqli_fetch_assoc($db_user->result);
    $user_name = $row_user['use_name'];
    unset($db_user);
    user_activity_log($user,'Bạn đã từ chối kết bạn với <a href="/user/u-'.$friend.'">'.$user_name.'</a>');
@@ -3104,7 +3104,7 @@ function remove_friend($user,$friend){
 	unset($db_exec_1);
    //log
    $db_user = new db_query("SELECT use_id,use_name FROM users WHERE use_id = ".$friend);
-   $row_user = mysql_fetch_assoc($db_user->result);
+   $row_user = mysqli_fetch_assoc($db_user->result);
    $user_name = $row_user['use_name'];
    unset($db_user);
    user_activity_log($user,'Bạn đã xóa <a href="/user/u-'.$friend.'">'.$user_name.'</a> khỏi danh sách bạn bè');
@@ -3113,11 +3113,11 @@ function remove_friend($user,$friend){
 function check_frienship($user,$friend){
    $check_fr = 0;
    $db_count= new db_query("SELECT count(*) AS count FROM friendship a ,friendship b WHERE a.frs_user = b.frs_friend AND a.frs_friend = b.frs_user AND a.frs_user =".$user." AND a.frs_friend=".$friend);
-   $row		= mysql_fetch_array($db_count->result);
+   $row		= mysqli_fetch_array($db_count->result);
 	unset($db_count);
    $count_fr = $row["count"];
    $db_count_2= new db_query("SELECT count(*) AS count FROM friendship a ,friendship b WHERE a.frs_user = b.frs_friend AND a.frs_friend = b.frs_user AND a.frs_user =".$friend." AND a.frs_friend=".$user);
-   $row_2		= mysql_fetch_array($db_count_2->result);
+   $row_2		= mysqli_fetch_array($db_count_2->result);
 	unset($db_count_2);
    $count_fr_2 = $row_2["count"];
    if($count_fr > 0 && $count_fr_2 > 0){
@@ -3132,7 +3132,7 @@ function get_friend($user){
    $arr_friend = array();
    $db_list_friend = new db_query("SELECT frs_friend FROM friendship WHERE frs_user = ".$user." AND frs_stt=1 ");
    $i = 0;
-   while($arr_friend_list = mysql_fetch_assoc($db_list_friend->result)){
+   while($arr_friend_list = mysqli_fetch_assoc($db_list_friend->result)){
       $arr_friend[$i] = $arr_friend_list['frs_friend'];
       $i++;
    }unset($db_list_friend);
@@ -3143,7 +3143,7 @@ function get_friend_invite($user){
    $arr_friend = array();
    $db_list_friend = new db_query("SELECT frs_user FROM friendship WHERE frs_friend = ".$user." AND frs_stt=0 ");
    $i = 0;
-   while($arr_friend_list = mysql_fetch_assoc($db_list_friend->result)){
+   while($arr_friend_list = mysqli_fetch_assoc($db_list_friend->result)){
       $arr_friend[$i] = $arr_friend_list['frs_user'];
       $i++;
    }unset($db_list_friend);
@@ -3176,7 +3176,7 @@ function count_user_notification($user_id){
    // Select Count
    $count_notification = 0;
 	$db_count= new db_query("SELECT count(*) AS count FROM user_notification WHERE user_noti_uid=".$user_id." AND user_noti_status = 0");
-	$row		= mysql_fetch_array($db_count->result);
+	$row		= mysqli_fetch_array($db_count->result);
 	unset($db_count);
    $count_notification = $row["count"];
 	return $count_notification;
@@ -3186,7 +3186,7 @@ function count_user_activitylog($user_id){
    // Select Count
    $count_activity = 0;
 	$db_count= new db_query("SELECT count(*) AS count FROM user_activity_log WHERE user_act_uid=".$user_id." AND user_act_stt = 0");
-	$row		= mysql_fetch_array($db_count->result);
+	$row		= mysqli_fetch_array($db_count->result);
 	unset($db_count);
    $count_activity = $row["count"];
 	return $count_activity;
@@ -3203,7 +3203,7 @@ function count_user_message($user_id){
    // Select Count
    $count_notification = 0;
 	$db_count= new db_query("SELECT count(*) AS count FROM user_message WHERE user_mes_receid=".$user_id." AND user_mes_type = 0");
-	$row		= mysql_fetch_array($db_count->result);
+	$row		= mysqli_fetch_array($db_count->result);
 	unset($db_count);
    $count_notification = $row["count"];
 	return $count_notification;
@@ -3216,13 +3216,13 @@ function send_message($user_id,$friend_id,$description){
    unset($db_ins);
    //Noti
    $db_user = new db_query("SELECT use_id,use_name FROM users WHERE use_id = ".$user_id);
-   $row_user = mysql_fetch_assoc($db_user->result);
+   $row_user = mysqli_fetch_assoc($db_user->result);
    $user_name = $row_user['use_name'];
    unset($db_user);
    user_notification($friend_id,'<a href="/user/u-'.$user_id.'">'.$user_name.'</a> đã gửi <a href="/user/message/'.$user_id.'">tin nhắn</a> cho bạn');
    //log
    $db_user = new db_query("SELECT use_id,use_name FROM users WHERE use_id = ".$friend_id);
-   $row_user = mysql_fetch_assoc($db_user->result);
+   $row_user = mysqli_fetch_assoc($db_user->result);
    $user_name = $row_user['use_name'];
    unset($db_user);
    user_activity_log($user_id,'Bạn đã gửi tin nhắn đến <a href="/user/u-'.$friend_id.'">'.$user_name.'</a>');
@@ -3241,12 +3241,12 @@ function find_course_packages($iCourse,$string=0,$type){
 	 */
 	$data_array = array();
 	$db_query = new db_query("SELECT * FROM package_data WHERE padt_data_id = ".$iCourse." AND padt_type= ".$type);
-	while($db_result = mysql_fetch_assoc($db_query->result)){
+	while($db_result = mysqli_fetch_assoc($db_query->result)){
 		array_push($data_array,$db_result['padt_pack_id']);
 	}
 	unset($db_result);
 	unset($db_query);
-	
+
 	//produce the output
 	switch($string){
 		case 0:
@@ -3258,7 +3258,7 @@ function find_course_packages($iCourse,$string=0,$type){
 			$return.=implode(',',$data_array);
 			break;
 	}
-	
+
 	return $return;
 }
 
@@ -3271,12 +3271,12 @@ function find_package_courses($iPackage,$string=0){
 	 */
 	$data_array = array();
 	$db_query = new db_query("SELECT * FROM package_data WHERE padt_pack_id = ".$iPackage);
-	while($db_result = mysql_fetch_assoc($db_query->result)){
+	while($db_result = mysqli_fetch_assoc($db_query->result)){
 		array_push($data_array,$db_result['padt_data_id']);
 	}
 	unset($db_result);
 	unset($db_query);
-	
+
 		//produce the output
 	switch($string){
 		case 0:
@@ -3288,7 +3288,7 @@ function find_package_courses($iPackage,$string=0){
 			$return.=implode(',',$data_array);
 			break;
 	}
-	
+
 	return $return;
 }
 
@@ -3296,40 +3296,40 @@ function purchase_package($user_id,$pid_array,$type){
 	//kiểm tra số tiền của tài khoản hiện tại
 	$user_main_account = get_money($user_id);
 	//lấy thông tin về gói
-	
+
 	$packages = array();
 	$packages['total'] = 0;
 	$packages['children'] = array();
 
 	foreach($pid_array as $pid){
 		$db_query = new db_query("SELECT * FROM package WHERE pack_id = ".$pid);
-		$db_result = mysql_fetch_assoc($db_query->result);
+		$db_result = mysqli_fetch_assoc($db_query->result);
 			$data_array = array(	'id'			=> $db_result['pack_id'],
 										'name'		=> $db_result['pack_name'],
 										'price'		=> $db_result['pack_price'],
 										'total_day'	=> $db_result['pack_totalday'],
 										'children'	=> array());
 			$db_query2 = new db_query("SELECT * FROM package_data WHERE padt_pack_id = ".$pid);
-			while($db_result2 = mysql_fetch_assoc($db_query2->result)){
+			while($db_result2 = mysqli_fetch_assoc($db_query2->result)){
 				array_push($data_array['children'],$db_result2['padt_data_id']);
 			}
 			unset($db_result2);
 			unset($db_query2);
 			$packages['total']+=$data_array['price'];
 			array_push($packages['children'],$data_array);
-			
+
 			unset($data_array);
 		unset($db_result);
-		unset($db_query);	
+		unset($db_query);
 	}
-	
+
 	if($packages['total']>$user_main_account){
 		$response = "Số tiền trong tài khoản của bạn không đủ để thực hiện. Xin vui lòng nạp tiền";
 	} else {
 		//trừ tiền trong tài khoản
 		$total_money = (sizeof($packages['children'])<3)?($packages['total']):(($packages['total'])*0.83);
 		substract_money($user_id,$total_money);
-		
+
 		foreach($packages['children'] as $package){
 			//lưu log vào package_user
 			$db_execute = new db_execute_return();
@@ -3342,7 +3342,7 @@ function purchase_package($user_id,$pid_array,$type){
 			   if($course_id == 0) { $type = 0; }
 				$db_query = new db_query("SELECT * FROM user_courses_pack WHERE ucp_use_id = ".$user_id." AND ucp_cou_id = ".$course_id." AND ucp_status = ".$type);
 				//check xem có tồn tại chưa
-				if(!$db_result = mysql_fetch_assoc($db_query->result)){
+				if(!$db_result = mysqli_fetch_assoc($db_query->result)){
 				   $current_time = time();
 				   $end_time = $current_time + ($package['total_day'])*(24*3600);
 					$db_execute = new db_execute_return();
@@ -3355,7 +3355,7 @@ function purchase_package($user_id,$pid_array,$type){
 					//Nếu đã tồn tại
 					//Check xem thời gian hết hạn có lớn hơn hiện tại ko
 					$current_time = time();
-					
+
 					$end_time = $db_result['ucp_end_time'];
 					if($end_time > $current_time){
 						$start_time = $end_time;
@@ -3373,16 +3373,16 @@ function purchase_package($user_id,$pid_array,$type){
 				}
 			}
 		}
-		
-		
+
+
 		$response = 'CHÚC MỪNG, BẠN ĐÃ MUA KHÓA HỌC THÀNH CÔNG!<br/>';
 		$response.= 'Khóa học vừa mua sẽ tự động cập nhật vào<br/>';
 		$response.= '"Khóa đang học" tại trang cá nhân';
 	}
-	
-	
+
+
 	return $response;
-	
+
 }
 
 function is_mobile(){
@@ -3400,23 +3400,23 @@ function nameCourses($id){
                                  JOIN comments
                                  ON(com_post_id = cou_id)
                                  WHERE com_id ='.$id);
-      $comment = mysql_fetch_assoc($db_comment->result);
+      $comment = mysqli_fetch_assoc($db_comment->result);
       unset($db_comment);
       return $comment['cou_name'];
-      
+
 }
 function idFaq_rerult($id){
-    $db_user_ques = new db_query('SELECT que_user_id 
+    $db_user_ques = new db_query('SELECT que_user_id
                                  FROM faq_questions
                                  WHERE que_id ='.$id);
-    $usercheck = mysql_fetch_assoc($db_user_ques->result);
+    $usercheck = mysqli_fetch_assoc($db_user_ques->result);
     unset($db_user_ques);
     return $usercheck['que_user_id'];
 }
 function count_mem_in_cou($iCou){
    $mem = 0;
    $db_query = new db_query('SELECT DISTINCT usec_use_id FROM user_course WHERE usec_cou_id = '.$iCou);
-   $mem = mysql_num_rows($db_query->result);
+   $mem = mysqli_num_rows($db_query->result);
    return $mem;
 }
 
@@ -3434,7 +3434,7 @@ function show_type_support($id){
     $db_name = new db_query('SELECT scat_type
                              FROM support_category
                              WHERE scat_active = 1 AND scat_parent_id = 0 AND scat_id ='.$id);
-    $row = mysql_fetch_assoc($db_name->result);
+    $row = mysqli_fetch_assoc($db_name->result);
     unset($db_name);
     return $row['scat_type'];
 }
@@ -3444,7 +3444,7 @@ function show_type_support($id){
  */
 function gen_module_link($module,$params = array()){
 	global $base_url;
-	
+
 	$link ='';
 	$link.='http://'.$base_url.'/home_v2/module.php?module='.$module;
 	if(sizeof($params)>0){
@@ -3454,19 +3454,19 @@ function gen_module_link($module,$params = array()){
 }
 function gen_include_link($path){
 	global $base_url;
-	
+
 	$link ='';
 	$link.='http://'.$base_url.'/includes_v2/'.$path;
-	
+
 	return $link;
 }
 
 function gen_home_link($path){
 	global $base_url;
-	
+
 	$link ='';
 	$link.='http://'.$base_url.'/home_v2/'.$path;
-	
+
 	return $link;
 }
 function gen_edit_course_category_link($params = array()){
@@ -3493,7 +3493,7 @@ function check_user_course_v2($user_id,$cou_id,$type){
    $db_query_full = new db_query('SELECT ucp_end_time,ucp_id
                                   FROM user_courses_pack
                                   WHERE ucp_use_id = '.$user_id.' AND ucp_cou_id = 0');
-   if($row_full = mysql_fetch_assoc($db_query_full->result)){
+   if($row_full = mysqli_fetch_assoc($db_query_full->result)){
       $time_end_full = $row_full['ucp_end_time'];
       if($time_end_full > time()){
          $check_user_course = 1;
@@ -3502,26 +3502,26 @@ function check_user_course_v2($user_id,$cou_id,$type){
                              FROM user_courses_pack
                              WHERE ucp_use_id = '.$user_id.' AND ucp_status = 1 AND ucp_type ='.$type);
          $i = 0;
-         while($row = mysql_fetch_assoc($db_query->result)){
+         while($row = mysqli_fetch_assoc($db_query->result)){
             $arr_cou_get[$i] = $row['ucp_cou_id'];
             $i++;
          }unset($db_query);
          if(in_array($cou_id,$arr_cou_get) || in_array(0,$arr_cou_get)){
             $check_user_course = 1;
-         }   
+         }
       }
    }else{
       $db_query = new db_query('SELECT ucp_cou_id
                           FROM user_courses_pack
                           WHERE ucp_use_id = '.$user_id.' AND ucp_status = 1 AND ucp_type ='.$type);
       $i = 0;
-      while($row = mysql_fetch_assoc($db_query->result)){
+      while($row = mysqli_fetch_assoc($db_query->result)){
          $arr_cou_get[$i] = $row['ucp_cou_id'];
          $i++;
       }unset($db_query);
       if(in_array($cou_id,$arr_cou_get) || in_array(0,$arr_cou_get)){
          $check_user_course = 1;
-      }   
+      }
    }
    return $check_user_course;
 }
@@ -3530,8 +3530,8 @@ function check_date_course($user_id,$cou_id,$type){
    $db_query_full = new db_query('SELECT ucp_end_time,ucp_id
                                   FROM user_courses_pack
                                   WHERE ucp_use_id = '.$user_id.' AND ucp_cou_id = 0');
-   
-   if($row_full = mysql_fetch_assoc($db_query_full->result)){
+
+   if($row_full = mysqli_fetch_assoc($db_query_full->result)){
       $time_end_full = $row_full['ucp_end_time'];
       $ucp_id_full = $row_full['ucp_id'];
       if($time_end_full < time()){
@@ -3541,12 +3541,12 @@ function check_date_course($user_id,$cou_id,$type){
          unset($db_execute);
       }
    }
-   
+
    // check khoa le
    $db_query = new db_query('SELECT ucp_end_time,ucp_id
                              FROM user_courses_pack
                              WHERE ucp_use_id = '.$user_id.' AND ucp_cou_id = '.$cou_id.' AND ucp_type='.$type);
-   if($row = mysql_fetch_assoc($db_query->result)){
+   if($row = mysqli_fetch_assoc($db_query->result)){
       $time_end = $row['ucp_end_time'];
       $ucp_id = $row['ucp_id'];
       if($time_end < time()){
@@ -3561,7 +3561,7 @@ function check_crc_user($cou_id,$user_id){
    $check = 0;
    $db_query = new db_query('SELECT * FROM hoc123_courses
                              WHERE id = '.$cou_id.' AND user_created ='.$user_id);
-   if(!$row = mysql_fetch_assoc($db_query->result)){
+   if(!$row = mysqli_fetch_assoc($db_query->result)){
       $check = 0;
    }else{
       $check = 1;
@@ -3572,7 +3572,7 @@ function check_crc_user($cou_id,$user_id){
 function chk_user_course($user_id,$cou_id){
    $db_chk = new db_query("SELECT id,status FROM hoc123_user_course WHERE user_id = ".$user_id." AND cou_id = ".$cou_id);
    if($db_chk){
-      $row_chk = mysql_fetch_assoc($db_chk->result);
+      $row_chk = mysqli_fetch_assoc($db_chk->result);
       return $row_chk['status'];
    }else{
       return 0;
@@ -3613,13 +3613,13 @@ function get_list_num_page($pageCount,$page){
             }
             // In ra dấu ...
             $str .= '<span>…</span>';
-            for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+            for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
                $str .= '<a title="'.$j.'">'.$j.'</a>';
             }
          }else{
             $go_page = $page + 4;
             if($pageCount - $page > 8 && $go_page < $pageCount - 3){
-               for ($i=1; $i<=2; $i++) { 
+               for ($i=1; $i<=2; $i++) {
                   $str .= '<a title="'.$i.'">'.$i.'</a>';
                }
                $str .= '<span>…</span>';
@@ -3632,12 +3632,12 @@ function get_list_num_page($pageCount,$page){
                   }
                }
                $str .= '<span>…</span>';
-               for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+               for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
                   $str .= '<a title="'.$j.'">'.$j.'</a>';
                }
             }else{
                if($pageCount-$page < 6){
-                  for ($i=1; $i<=2; $i++) { 
+                  for ($i=1; $i<=2; $i++) {
                      $str .= '<a title="'.$i.'">'.$i.'</a>';
                   }
                   $str .= '<span>…</span>';
@@ -3650,7 +3650,7 @@ function get_list_num_page($pageCount,$page){
                   }
                }
                else{
-                  for ($i=1; $i<=2; $i++) { 
+                  for ($i=1; $i<=2; $i++) {
                      $str .= '<a title="'.$i.'">'.$i.'</a>';
                   }
                   $str .= '<span>…</span>';
@@ -3662,7 +3662,7 @@ function get_list_num_page($pageCount,$page){
                      }
                   }
                }
-   
+
             }
          }
       }else{
@@ -3686,7 +3686,7 @@ function get_exam_arr(){
    $exam_array = array();
    //Select de thi dai hoc
    $db_exam = new db_query('SELECT * FROM uni_test WHERE uni_test_active = 1 ORDER BY uni_test_date,uni_test_name DESC');
-   while($row_exam = mysql_fetch_assoc($db_exam->result)){
+   while($row_exam = mysqli_fetch_assoc($db_exam->result)){
       $data_array = array();
       $data_array = array('id'            => $row_exam['uni_test_id'],
                           'name'          => $row_exam['uni_test_name'],
@@ -3694,11 +3694,11 @@ function get_exam_arr(){
                           'name_cate'     => 'Đề thi Đại học',
                           'link_cate'     => 'http://'.$_SERVER['HTTP_HOST'].'/khoa-hoc/232-luyen-thi-dai-hoc-de-thi-dai-hoc.html');
       array_push($exam_array,$data_array);
-      unset($data_array);                    
+      unset($data_array);
    }unset($db_exam);
    //Select de thi toeic
    $db_exam = new db_query('SELECT * FROM toeic WHERE toeic_active = 1 ORDER BY toeic_date,toeic_name DESC');
-   while($row_exam = mysql_fetch_assoc($db_exam->result)){
+   while($row_exam = mysqli_fetch_assoc($db_exam->result)){
       $data_array = array();
       $data_array = array('id'            => $row_exam['toeic_id'],
                           'name'          => $row_exam['toeic_name'],
@@ -3706,11 +3706,11 @@ function get_exam_arr(){
                           'name_cate'     => 'Thi thử TOEIC',
                           'link_cate'     => 'http://'.$_SERVER['HTTP_HOST'].'/khoa-hoc/76-chung-chi-toeic-thi-thu-toeic.html');
       array_push($exam_array,$data_array);
-      unset($data_array);                    
+      unset($data_array);
    }unset($db_exam);
    //Select de thi toefl
    $db_exam = new db_query('SELECT * FROM test WHERE test_active = 1 ORDER BY test_date,test_name DESC');
-   while($row_exam = mysql_fetch_assoc($db_exam->result)){
+   while($row_exam = mysqli_fetch_assoc($db_exam->result)){
       $data_array = array();
       $data_array = array('id'            => $row_exam['test_id'],
                           'name'          => $row_exam['test_name'],
@@ -3718,11 +3718,11 @@ function get_exam_arr(){
                           'name_cate'     => 'Thi thử TOEFL',
                           'link_cate'     => 'http://'.$_SERVER['HTTP_HOST'].'/khoa-hoc/9-chung-chi-toefl-thi-thu-toefl-ibt.html');
       array_push($exam_array,$data_array);
-      unset($data_array);                    
+      unset($data_array);
    }unset($db_exam);
    //Select de thi ielts
    $db_exam = new db_query('SELECT * FROM ielts WHERE ielt_active = 1 ORDER BY ielt_date,ielt_name DESC');
-   while($row_exam = mysql_fetch_assoc($db_exam->result)){
+   while($row_exam = mysqli_fetch_assoc($db_exam->result)){
       $data_array = array();
       $data_array = array('id'            => $row_exam['ielt_id'],
                           'name'          => $row_exam['ielt_name'],
@@ -3730,9 +3730,9 @@ function get_exam_arr(){
                           'name_cate'     => 'Thi thử IELTS',
                           'link_cate'     => 'http://'.$_SERVER['HTTP_HOST'].'/khoa-hoc/35-chung-chi-ielts-thi-thu-ielts.html');
       array_push($exam_array,$data_array);
-      unset($data_array);                    
+      unset($data_array);
    }unset($db_exam);
-   
+
    return $exam_array;
 }
 
@@ -3742,10 +3742,10 @@ function save_score_user($true_ques,$ques,$course,$unit,$type,$uid){
    $db_query = new db_query('SELECT user_score_id
                              FROM user_score
                              WHERE user_score_uid = '.$uid.' AND user_score_course_id = '.$course.' AND user_score_unit_id='.$unit.' AND user_score_type='.$type);
-   if($row = mysql_fetch_assoc($db_query->result)){
+   if($row = mysqli_fetch_assoc($db_query->result)){
       $user_score_id = $row['user_score_id'];
       $db_execute = new db_execute(	"UPDATE user_score
-      										 SET user_score_total = ".$total_score." , user_score_time = ".time()." 
+      										 SET user_score_total = ".$total_score." , user_score_time = ".time()."
       										 WHERE user_score_id = ".$user_score_id );
       unset($db_execute);
    }else{
@@ -3762,7 +3762,7 @@ function get_score_user($user_score_uid,$user_score_course_id,$user_score_unit_i
    $db_query = new db_query('SELECT user_score_total
                              FROM user_score
                              WHERE user_score_uid = '.$user_score_uid.' AND user_score_course_id = '.$user_score_course_id.' AND user_score_unit_id='.$user_score_unit_id.' AND user_score_unit_id='.$user_score_unit_id.' AND user_score_type='.$user_score_type);
-   if($row = mysql_fetch_assoc($db_query->result)){
+   if($row = mysqli_fetch_assoc($db_query->result)){
       $total_score = $row['user_score_total'];
    }else{
       $total_score = "Chưa có ";
@@ -3783,7 +3783,7 @@ function score_average_unit($user_id,$unit_id,$course_id,$type){
                              FROM user_score
                              WHERE user_score_uid = '.$user_id.' AND user_score_course_id='.$course_id);
    }
-   while($row = mysql_fetch_assoc($db_query->result)){
+   while($row = mysqli_fetch_assoc($db_query->result)){
      $result = $result +$row['user_score_total'];
      $record++;
    }
@@ -3802,7 +3802,7 @@ function score_average_unit($user_id,$unit_id,$course_id,$type){
 function db_get_children_array($parent_id,$table,$id_col,$parent_id_col){
 	$return = array();
 	$db_query = new db_query('SELECT '.$id_col.' FROM '.$table.' WHERE '.$parent_id_col.' = '.$parent_id);
-	while($db_row = mysql_fetch_assoc($db_query->result)){
+	while($db_row = mysqli_fetch_assoc($db_query->result)){
 		array_push($return,$db_row[$id_col]);
 	}
 	return $return;
@@ -3811,21 +3811,21 @@ function db_get_children_array($parent_id,$table,$id_col,$parent_id_col){
 //Tìm chuỗi các cha, phục vụ breadcrumb
 function db_find_parents_trail($id,$root_value,$table,$id_col,$parent_id_col){
 	$return = array();
-	
+
 	//get the current node info
 	$db_query = new db_query('SELECT * FROM '.$table.' WHERE '.$id_col.' = '.$id);
-		$return[] = mysql_fetch_assoc($db_query->result);
+		$return[] = mysqli_fetch_assoc($db_query->result);
 		unset($db_query);
-		
+
 	$i=0;
-	
+
 	while($return[$i][$parent_id_col]!=$root_value){
 		$db_query = new db_query('SELECT * FROM '.$table.' WHERE '.$id_col.' = '.$return[$i][$parent_id_col]);
-		$return[] = mysql_fetch_assoc($db_query->result);
+		$return[] = mysqli_fetch_assoc($db_query->result);
 		unset($db_query);
 		$i++;
 	}
-	
+
 	return $return;
 }
 
@@ -3981,9 +3981,9 @@ function get_cou_les_in_cate($str_cat_id = '',$cat_type = '',$page = 1){
    $per_page = 10;
    $start = ($page - 1)*$per_page;
    $db_query = new db_query("SELECT * FROM ".$posts_table." WHERE ".$posts_prefix."_cat_id IN (".$list_block['id'].") AND ".$posts_prefix."_active = 1 ORDER BY ".$posts_prefix."_order ASC LIMIT ".$start.",".$per_page."");
-   
+
    unset($db_count);
-   while($db_result = mysql_fetch_assoc($db_query->result)){
+   while($db_result = mysqli_fetch_assoc($db_query->result)){
    	$data_array = array(	'id'			   =>	$db_result[$posts_prefix.'_id'],
                            'cat_id'       => $db_result[$posts_prefix.'_cat_id'],
    								'title'		   =>	$db_result[$posts_prefix.'_name'],
@@ -3991,11 +3991,11 @@ function get_cou_les_in_cate($str_cat_id = '',$cat_type = '',$page = 1){
    								'img'			   => 'http://'.$_SERVER['HTTP_HOST'].(($cat_type==1)?'/pictures/courses/':'/pictures/skill_lesson/').$db_result[$posts_prefix.(($cat_type==1)?'_avatar':'_img')],
    								'url'			   => (($cat_type==1)? gen_intro_course($db_result[$posts_prefix.'_id'],$db_result[$posts_prefix.'_name']):gen_sk_les_v3($db_result[$posts_prefix.'_id'])),
    								'children'	   => array());
-                  
-   								
+
+
    	if($cat_type==1){
    		$db_query2 = new db_query("SELECT * FROM ".$content_table." WHERE ".$content_prefix."_".(($cat_type==0)?"les":$posts_prefix)."_id = ".$data_array['id']." AND ".$content_prefix."_active = 1 ORDER BY ".$content_table_order_col." ASC");
-   		while($db_result2 = mysql_fetch_assoc($db_query2->result)){
+   		while($db_result2 = mysqli_fetch_assoc($db_query2->result)){
    			array_push($data_array['children'],array(	'id'		=> $db_result2[$content_prefix.'_id'],
    																	'title'	=> $db_result2[$content_prefix.(($cat_type==1)?'_name':'_title')],
    																	'desc'	=> $db_result2[$content_prefix.'_content'],
@@ -4075,8 +4075,8 @@ function get_tests_in_cate($iCate = 0,$str_cate_id = '',$page = 1){
       $start = ($page - 1)*$per_page;
       $db_query = new db_query("SELECT * FROM ".$test_table." WHERE ".$prefix."_active = 1 AND ".$prefix."_cat_id IN (".$str_cate_id.") LIMIT ".$start.",".$per_page);
    }
-   
-	while($db_result = mysql_fetch_assoc($db_query->result)){
+
+	while($db_result = mysqli_fetch_assoc($db_query->result)){
 		$data_array = array(	'id'		=> $db_result[$prefix.'_id'],
                         		'cat_id'    => $db_result[$prefix.'_cat_id'],
 								'title'		=> $db_result[$prefix.'_name'],
@@ -4109,17 +4109,17 @@ function save_tags($post_id,$str_tags,$group_type,$type){
    foreach($arr_tag as $tag){
       $tag = trim($tag);
       $db_chk = new db_query("SELECT * FROM tags WHERE tag_name = '".$tag."'");
-      $row_chk = mysql_fetch_assoc($db_chk->result);
+      $row_chk = mysqli_fetch_assoc($db_chk->result);
       unset($db_chk);
       if($row_chk){
-         $last_tag_id = $row_chk['tag_id'];   
+         $last_tag_id = $row_chk['tag_id'];
       }else{
          $db_insert = new db_execute_return();
          $last_tag_id = $db_insert->db_execute('INSERT INTO tags (tag_name) VALUES ("'.$tag.'")');
          unset($db_insert);
       }
       $db = new db_query('SELECT tp_id FROM tags_posts WHERE tp_tag_id = '.$last_tag_id.' AND tp_post_id = '.$post_id.' AND tp_type = '.$type);
-      if(mysql_num_rows($db->result) == 0){
+      if(mysqli_num_rows($db->result) == 0){
          $db_insert = new db_execute('INSERT INTO tags_posts(tp_tag_id,tp_post_id,tp_group_type,tp_type) VALUES('.$last_tag_id.','.$post_id.','.$group_type.','.$type.')');
          unset($db_insert);
       }
@@ -4129,14 +4129,14 @@ function save_tags($post_id,$str_tags,$group_type,$type){
 //Lấy mảng tag
 function get_tags($post_id,$group_type,$type){
    $arr_tag = array();
-   $db = new db_query('SELECT * FROM tags_posts JOIN tags ON tp_tag_id = tag_id 
+   $db = new db_query('SELECT * FROM tags_posts JOIN tags ON tp_tag_id = tag_id
                        WHERE tp_post_id = '.$post_id.' AND tp_group_type = '.$group_type.' AND tp_type = '.$type);
-   while($row = mysql_fetch_assoc($db->result)){
+   while($row = mysqli_fetch_assoc($db->result)){
       $data = array('tag_name'   => $row['tag_name'],
                     'tag_url'    => gen_tags_url($row['tag_id'],$row['tag_name']));
-      array_push($arr_tag,$data);              
+      array_push($arr_tag,$data);
    }unset($db);
-   
+
    return $arr_tag;
 }
 //Lấy string category
@@ -4154,8 +4154,8 @@ function gen_str_cate($cat_id,$table,$id_col,$parent_id_col,$name_col){
 }
 //update exp
 function update_exp($user_id){
-   $sqlActCout = new db_query("SELECT * FROM users WHERE use_id = ".$user_id ); 
-   $rowActCout = mysql_fetch_assoc($sqlActCout->result);
+   $sqlActCout = new db_query("SELECT * FROM users WHERE use_id = ".$user_id );
+   $rowActCout = mysqli_fetch_assoc($sqlActCout->result);
    $iCattemp = $rowActCout['use_cattemp_id'];
    $iLevtemp = $rowActCout['use_levtemp_id'];
    $time_off = $rowActCout['use_temp_time']+(24*3600);
@@ -4163,23 +4163,23 @@ function update_exp($user_id){
    if($time > $time_off){
      $sql = "UPDATE user_action SET usea_login = 0,usea_edit = 0,usea_ava = 0,usea_main = 0,usea_gram = 0,usea_voc = 0,usea_quiz = 0,usea_speaking = 0,usea_writing = 0,usea_hay = 0,usea_share = 0 WHERE usea_use_id = ".$rowActCout['use_id'];
      $db_reset = new db_execute($sql);
-     unset($db_reset); 
+     unset($db_reset);
      $db_update_time = new db_execute("UPDATE users SET use_temp_time = ".$time." WHERE use_id = ".$rowActCout['use_id']);
      unset($db_update_time);
-   }     
+   }
 }
 //no avatar
 function noavatar($user_id){
    $img_path = "";
    $db_stu = new db_query("SELECT * FROM users WHERE use_id=".$user_id);
-   if($row_stu = mysql_fetch_assoc($db_stu->result)){
+   if($row_stu = mysqli_fetch_assoc($db_stu->result)){
       if($row_stu['use_gender'] == 1){
          $img_path = 'http://hoc123.vn/themes_v2/images/nam.png';
       }else{
          $img_path = 'http://hoc123.vn/themes_v2/images/nu.png';
       }
    }
-   return $img_path;   
+   return $img_path;
 }
 //Gen message for sharing courses
 function get_mes_sharing_cou($iCate = 0){
@@ -4187,7 +4187,7 @@ function get_mes_sharing_cou($iCate = 0){
    $nodes = array();
    $cat_trails = db_find_parents_trail($iCate,'0','categories_multi','cat_id','cat_parent_id');
    foreach($cat_trails as $trail){
-   array_unshift($nodes,array('id'   => $trail['cat_id'],   
+   array_unshift($nodes,array('id'   => $trail['cat_id'],
                               'text' => $trail['cat_name'],
 			                     'link' => ''.gen_course_cate_v3($trail['cat_id'])));
    }
@@ -4203,7 +4203,7 @@ function get_mes_sharing_cou($iCate = 0){
          $arr_mes[] = 'Ngồi luyện chưởng nói bắt chước theo mà cũng được phết =))) Tây ơi chờ em :x :))';
          break;
      case 37:
-         //$arr_mes[] = 'Cô ... đang tìm người dạy tiếng anh lớp 6 cho em đúng không? Cháu thấy trang này được này, cô đỡ mất thời gian đưa em đi học hehe';                  
+         //$arr_mes[] = 'Cô ... đang tìm người dạy tiếng anh lớp 6 cho em đúng không? Cháu thấy trang này được này, cô đỡ mất thời gian đưa em đi học hehe';
          $arr_mes[] = 'Anh em ơi, t tìm được trang web này, đủ bộ kiến thức luôn, ấm bụng đi ngủ rồi nhé :)) tha hồ mà lên cày kiểm tra với thi mà đỡ phải nhờ vả ai hahaa sướng quá ';
          $arr_mes[] = 'Ai bảo cứ phải ra lò mà luyện nào :)) ở nhà ngồi mát học online sướng hơn ý :D';
          $arr_mes[] = 'Chả biết các bạn thế nào, chứ mình thấy học Tiếng Anh online vừa tiện lại hiệu quả, người ta cập nhật đủ kiến thức, xong có bài tập ở dưới luôn, chả cần phải đi học thêm nhiều mà kiến thức vẫn đủ';
@@ -4214,7 +4214,7 @@ function get_mes_sharing_cou($iCate = 0){
          $arr_mes[] = 'Cứ thắc mắc sao con cháu có 5 tuổi mà hát Tiếng Anh siêu thế :)) hóa ra là ngày nào nó cũng vào đây để hát :))';
          //$arr_mes[] = 'Phải công nhận cái Super Star Kids trong hoc123 hay thật, sắp xếp khoa học bọn trẻ con dễ học theo, nó biết còn nhiều từ hơn mình :(( GATO vãi :(';
          $arr_mes[] = 'Đọc đoạn con em mô tả bố bằng Tiếng anh cười đau ruột :))) cơ mà được cái đứa chị như mình cũng đã tìm được cho nó cái web tin cậy để học :x';
-         $arr_mes[] = 'Nghe bọn trẻ con đọc Tiếng Anh đáng yêu thế :x bây giờ chúng nó còn quay ra bảo mình phát âm sai, không giống như video dạy =)))';             
+         $arr_mes[] = 'Nghe bọn trẻ con đọc Tiếng Anh đáng yêu thế :x bây giờ chúng nó còn quay ra bảo mình phát âm sai, không giống như video dạy =)))';
          break;
      case 27:
          $arr_mes[] = 'Toeic ở trường dạy chán vãi, may có mấy đứa giới thiệu cho web này, không chắc tử trận mất ';
@@ -4251,7 +4251,7 @@ function get_mes_sharing_cou($iCate = 0){
          $arr_mes[] = 'Sau nhiều tiếng chăm chỉ học hành, mai tự tin đi kiểm tra rồi :x';
          $arr_mes[] = 'Ai học khóa này cũng được ý, biết thêm nhiều từ cực luôn';
          $arr_mes[] = 'Thấy con bạn đọc lưu loát nhiều từ cũng phải mò ra học :)) hay quá đi ý ';
-         break;                      
+         break;
    }
    $arr_mes[] = 'Học là thích - Thích là nhích';
    $arr_mes[] = 'Chưa bao giờ học Tiếng Anh dễ đến thế';
@@ -4263,7 +4263,7 @@ function get_mes_sharing_cou($iCate = 0){
    $arr_mes[] = 'Khóa học Tiếng Anh vừa rẻ vừa chất lượng ';
    $arr_mes[] = 'Your life  - your chance but my way. You want to try it?';
    $rand_key = array_rand($arr_mes,1);
-   
+
    return $arr_mes[$rand_key];
 }
 
@@ -4315,7 +4315,7 @@ function checkuserinfo($logged,$name,$phone){
 function check_course_active($user_id){
 	$active = 0;
 	$dbCheckUser 	= 	new db_query('SELECT * FROM user_active WHERE uactive_user_id = "'.$user_id.'"');
-	$numUserActive  =	mysql_num_rows($dbCheckUser->result);
+	$numUserActive  =	mysqli_num_rows($dbCheckUser->result);
 	if($numUserActive <= 0){
 		$active = 0;
 	}else{
@@ -4334,7 +4334,7 @@ function check_course_active($user_id){
 function check_course_active_date($user_id){
 	$count = 0;
 	$dbCheckUser 	= 	new db_query('SELECT * FROM user_active WHERE uactive_user_id = "'.$user_id.'"');
-	$numUserActive  =	mysql_num_rows($dbCheckUser->result);
+	$numUserActive  =	mysqli_num_rows($dbCheckUser->result);
 	if($numUserActive <= 0){
 		$count = 0;
 	}else{

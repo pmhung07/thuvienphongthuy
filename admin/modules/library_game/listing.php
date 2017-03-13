@@ -10,14 +10,14 @@ require_once("inc_security.php");
 	/*
 	1: Ten truong trong bang
 	2: Tieu de header
-	3: kieu du lieu ( vnd : kiểu tiền VNĐ, usd : kiểu USD, date : kiểu ngày tháng, picture : kiểu hình ảnh, 
+	3: kieu du lieu ( vnd : kiểu tiền VNĐ, usd : kiểu USD, date : kiểu ngày tháng, picture : kiểu hình ảnh,
 							array : kiểu combobox có thể edit, arraytext : kiểu combobox ko edit,
-							copy : kieu copy, checkbox : kieu check box, edit : kiểu edit, delete : kiểu delete, string : kiểu text có thể edit, 
+							copy : kieu copy, checkbox : kieu check box, edit : kiểu edit, delete : kiểu delete, string : kiểu text có thể edit,
 							number : kiểu số, text : kiểu text không edit
 	4: co sap xep hay khong, co thi de la 1, khong thi de la 0
 	5: co tim kiem hay khong, co thi de la 1, khong thi de la 0
 	*/
-   
+
   	$list->add($name_field,"Ảnh trò chơi","string",0,1);
 	$list->add($name_field,"Tên trò chơi","string",0,1);
 	$list->add("lib_game_info","Thông tin trò chơi","text",0,1);
@@ -25,18 +25,18 @@ require_once("inc_security.php");
 	$list->add("","Edit","edit");
 	$list->add("","Delete","delete");
 	$list->ajaxedit($fs_table);
-	$total		= new db_count("SELECT count(*) AS count 
+	$total		= new db_count("SELECT count(*) AS count
       								 FROM " . $fs_table . "
-      								 WHERE 1 " . $list->sqlSearch());	
-   
-	$db_listing	= new db_query("SELECT * 
+      								 WHERE 1 " . $list->sqlSearch());
+
+	$db_listing	= new db_query("SELECT *
       								 FROM " . $fs_table . "
       								 WHERE 1 " . $list->sqlSearch() . "
       								 ORDER BY " . $list->sqlSort() . $id_field ." ASC
       								 " . $list->limit($total->total));
-                               
-   $total_row = mysql_num_rows($db_listing->result);
-   
+
+   $total_row = mysqli_num_rows($db_listing->result);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -51,9 +51,9 @@ require_once("inc_security.php");
       <?
       //thực hiện lênh select csdl
       $i = 0;
-   	while($row	=	mysql_fetch_assoc($db_listing->result)){
+   	while($row	=	mysqli_fetch_assoc($db_listing->result)){
  	   $i++;
-   	?> 
+   	?>
       	<?=$list->start_tr($i,$row[$id_field])?>
          <td width="100px"><img height="50px" src="<?=$imgpath. "small_" .$row["lib_game_image"]?>"/></td>
          <td width="200px"><span style="color: red;"><?=$row["lib_game_title"]?></span></td>
@@ -62,13 +62,13 @@ require_once("inc_security.php");
             <?
                $url = $mediapath.$row["lib_game_url"];
                checkmedia_les(3,$url);
-            ?>  
+            ?>
          </td>
          <td width="10" align="center"><a class="edit"  rel="tooltip" title="<?=translate_text("Bạn muốn sửa bản ghi")?>" href="edit.php?record_id=<?=$row['lib_game_id']?>&cat_id=<?=$row['lib_game_catid']?>&url=<?=base64_encode($_SERVER['REQUEST_URI'])?>"><img src="../../resource/images/grid/edit.png" border="0"/></a></td>
          <?//$list->showEdit($row['lib_game_id'])?>
       	<?=$list->showDelete($row['lib_game_id'])?>
       	<?=$list->end_tr()?>
-   	<?}?>  
+   	<?}?>
      <?=$list->showFooter($total_row)?>
    </div>
 </body>

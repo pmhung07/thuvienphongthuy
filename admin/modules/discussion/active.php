@@ -1,5 +1,5 @@
-<? 
-include ("inc_security.php"); 
+<?
+include ("inc_security.php");
 //check quyền them sua xoa
 checkAddEdit("edit");
 
@@ -24,7 +24,7 @@ $url				=	base64_decode(getValue("url","str","GET",base64_encode("listing.php"))
 $ajax				=	getValue("ajax");
 if($ajax==1){
 	$db_select = new db_query("SELECT " . $filed . " FROM " . $fs_active . " WHERE ".$filed_where."=" . $record_id);
-	if($row=mysql_fetch_assoc($db_select->result)){	
+	if($row=mysqli_fetch_assoc($db_select->result)){
 		$value = abs($row[$filed]-1);
 	}
 }

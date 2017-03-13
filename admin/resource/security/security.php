@@ -85,6 +85,15 @@ if($check_ip_exists == 0 || $check_ip == 0){
 	die("Ban chua co quyen vao day");
 }
 error_reporting(E_ALL);
+
+// Bootstrap appliation
+if(!defined('BASE_PATH')) {
+	define('BASE_PATH', realpath(dirname(__DIR__ . '/../../../../')));
+}
+
+require_once BASE_PATH .'/bootstrap/setup.php';
+require_once BASE_PATH .'/functions/app_functions.php';
+
 require_once("../../../classes/database.php");
 require_once("../../../classes/form.php");
 require_once("../../../classes/htmlcleaner.php");
@@ -161,14 +170,14 @@ $fs_change_bg			= 'onMouseOver="this.style.background=\'#DDF8CC\'" onMouseOut="t
 //phan ngon ngu admin
 $db_language			= new db_query("SELECT tra_text,tra_keyword FROM admin_translate");
 $langAdmin 				= array();
-while($row=mysql_fetch_assoc($db_language->result)){
+while($row=mysqli_fetch_assoc($db_language->result)){
 	$langAdmin[$row["tra_keyword"]] = $row["tra_text"];
 }
 unset($db_language);
 
 // Get config from database
 $db_con	= new db_query("SELECT * from configuration");
-if ($row=mysql_fetch_array($db_con->result)){
+if ($row=mysqli_fetch_array($db_con->result)){
 	while (list($data_field, $data_value) = each($row)) {
 		if (!is_int($data_field)){
 			//tao ra cac bien config
@@ -189,10 +198,10 @@ $is_admin		= 0; // Là Supper Admin hay không (=1 là super admin)
 $admin_city_id = 0; // Lưu lại ID của city mà user hiện tại có quyền admin
 $admin_job		= 0; // Lưu lại nghiệp vụ của nhân viên(cskh, kd, marketting)
 // Check tài khoản Admin có hợp lệ ko
-$db_admin_user = new db_query("SELECT * 
+$db_admin_user = new db_query("SELECT *
 							 			FROM admin_user
 							 			WHERE adm_loginname='" . $userlogin . "' AND adm_password='" . $password . "' AND adm_active=1 AND adm_delete = 0");
-if ($row = mysql_fetch_assoc($db_admin_user->result)){
+if ($row = mysqli_fetch_assoc($db_admin_user->result)){
 	$admin_id		= $row["adm_id"];
 	$is_admin		= $row["adm_isadmin"];
 	//$admin_city_id = $row['adm_city_id'];
@@ -202,17 +211,17 @@ unset($db_admin_user);
 
 // Hợp lệ thì mới cho xử lý tiếp
 if($admin_id > 0){
-	
+
 	//$array_admin_city => Mảng chứa những city mà user hiện tại phụ trách
 	// 1. Chứa id city và name
 	//$arrayAdminCity	= get_admin_city($admin_id, $is_admin);
 	//2. Chỉ chứa id của city
 	//$array_admin_city	= array_keys($arrayAdminCity);
-	
-	
+
+
 	//Nếu user hiện tại không phải phụ trách city nào thì deny luôn
 	//if(count($array_admin_city) == 0) redirect($fs_denypath);
-	
+
 }else{ // Không hợp lệ thì ra trang thông báo lỗi
 	redirect($fs_denypath);
 }

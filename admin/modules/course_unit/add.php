@@ -11,11 +11,11 @@ checkAddEdit("add");
    $menu = new menu();
    $sql = '1';
    $listAll = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",$sql . " AND lang_id = " . $lang_id . $sqlcategory,"cat_id,cat_name,cat_order,cat_type,cat_parent_id,cat_has_child","cat_order ASC, cat_name ASC","cat_has_child");
-	
+
    //Call Class generate_form();
 	if($cat_parent_id != "") $sqlCourse	= new db_query("SELECT cou_id,cou_name,cou_lev_id FROM courses WHERE cou_cat_id = ".$cat_parent_id );
 	$myform = new generate_form();
-   
+
    //print_r($listCourse);
 	//Loại bỏ chuc nang thay the Tag Html
    $myform -> removeHTML(0);
@@ -27,14 +27,14 @@ checkAddEdit("add");
    $myform -> add("keywords", "keywords", 0, 0, "", 1, "Bạn chưa nhập keywords của khóa học", 0, "");
    $myform -> add("description", "description", 0, 0, "", 1, "Bạn chưa nhập description của khóa học", 0, "");
    $myform -> add("com_active", "com_active", 0, 0, 0, 0, "", 0, "");
-	
+
 	$myform->addTable($fs_table);
 	$fs_errorMsg = "";
 	$action	= getValue("action", "str", "POST", "");
    if($action == "execute"){
-    
+
    //Check form data : kiêm tra lỗi
-   $fs_errorMsg .= $myform->checkdata(); 
+   $fs_errorMsg .= $myform->checkdata();
       if($fs_errorMsg == ""){
          $upload		= new upload("com_picture", $imgpath, $fs_extension, $fs_filesize);
          $filename	= $upload->file_name;
@@ -45,18 +45,18 @@ checkAddEdit("add");
             }
          }else{
             $fs_errorMsg .= "Bạn chưa nhập ảnh đại diện cho Unit!";
-         }	
+         }
        	$fs_errorMsg .= $upload->show_warning_error();
-         if($fs_errorMsg == ""){     
+         if($fs_errorMsg == ""){
             $myform->removeHTML(0);
             $db_insert = new db_execute_return();
 		      $last_test_id = $db_insert->db_execute($myform->generate_insert_SQL());
             unset($db_insert);
             for($i = 0; $i < 3; $i++){
                $les_det_type = $i + 1;
-               $myform_type = new generate_form();  
-               $myform_type->add("les_com_id	", "last_test_id", 1, 1, 0, 0, "", 0, ""); 
-               $myform_type->add("les_det_type", "les_det_type", 1, 1, 0, 0, "", 0, "");   
+               $myform_type = new generate_form();
+               $myform_type->add("les_com_id	", "last_test_id", 1, 1, 0, 0, "", 0, "");
+               $myform_type->add("les_det_type", "les_det_type", 1, 1, 0, 0, "", 0, "");
             	$myform_type->addTable("lesson_details");
                $myform->removeHTML(0);
             	$db_insert_type = new db_execute($myform_type->generate_insert_SQL());
@@ -112,8 +112,8 @@ checkAddEdit("add");
                <select name="com_cou_id" id="com_cou_id"  class="form_control" style="width: 300px;">
    				<option value="-1">- <?=translate_text("Chọn Course")?> - </option>
    				<?
-   				while($row = mysql_fetch_assoc($sqlCourse->result)){
-   				   
+   				while($row = mysqli_fetch_assoc($sqlCourse->result)){
+
    				?>
    				<option value="<?=$row['cou_id']?>" ><? echo nameLevel($row['cou_lev_id']).' -- '.$row['cou_name']?></option>
    				<? } ?>

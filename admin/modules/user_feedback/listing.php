@@ -24,12 +24,12 @@ $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
 $total			= new db_count("SELECT count(*) AS count FROM user_feedback
                                WHERE 1".$list->sqlSearch().$sql_filter);
-//câu lệnh select dữ liêu										 
+//câu lệnh select dữ liêu
 $db_listing 	= new db_query("SELECT * FROM user_feedback
                                WHERE 1".$list->sqlSearch(). $sql_filter
                                ." ORDER BY ". $list->sqlSort()  . " usefb_id DESC "
                                .	$list->limit($total->total));
-$total_row = mysql_num_rows($db_listing->result);
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -45,9 +45,9 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
       <td align="center" width="220">
          <input style="text-align: center;color: red;font-weight: bold;font-size: 11px;width: 220px;" value="<?=$row['usefb_email']?>" type="text" readonly="true" />
@@ -63,10 +63,10 @@ $total_row = mysql_num_rows($db_listing->result);
       </td>
       <td align="center" width="100">
          <a title="Xem chi tiết" class="a_detail" href="edit.php?record_id=<?=$row['usefb_id']?>&url=<?=base64_encode($_SERVER['REQUEST_URI'])?>"><b>Xem chi tiết</b></a>
-      </td>      
+      </td>
       <?=$list->showDelete($row['usefb_id'])?>
       <?=$list->end_tr()?>
-   <?}?>    
+   <?}?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>

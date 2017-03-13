@@ -21,7 +21,7 @@ if($media_id > 0){
    unset($db_del_med);
    //Update lại question:
    $db_sl_que = new db_query("SELECT que_id FROM questions WHERE que_media_id = ". $media_id);
-   while($row_ques = mysql_fetch_assoc($db_sl_que->result)){
+   while($row_ques = mysqli_fetch_assoc($db_sl_que->result)){
       $med_id = $row_ques['que_id'];
       $myform = new generate_form();
       $myform->add("que_media_id",0,1,1,"",0,"",0,"");

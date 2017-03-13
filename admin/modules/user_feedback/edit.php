@@ -24,14 +24,14 @@ $record_id 		= getValue("record_id");
 
    $myform->add("usefb_status","usefb_status",1,0,0,0,"",0,"");
 	$myform->addTable($fs_table);
-   
+
    $action = getValue("action", "str", "POST", "");
    if($action == "execute"){
    	$fs_errorMsg .= $myform->checkdata();
-   	if($fs_errorMsg == ""){	   	
+   	if($fs_errorMsg == ""){
          $myform->removeHTML(0);
          $db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
-         redirect($fs_redirect);	
+         redirect($fs_redirect);
    	}
    }
    $myform->addFormname("add_new");
@@ -41,15 +41,15 @@ $record_id 		= getValue("record_id");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM user_feedback
                             WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -87,7 +87,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
          <td class="label">Nội dung:</td>
          <td class="cont"><textarea style="width: 400px; height: 150px" readonly="true"><?=$row['usefb_content']?></textarea></td>
       </tr>
-      <?=$form->checkbox("Đã xử lý", "usefb_status", "usefb_status", 1 ,$usefb_status, "",0, "style:font-weight: bold;", "")?>  
+      <?=$form->checkbox("Đã xử lý", "usefb_status", "usefb_status", 1 ,$usefb_status, "",0, "style:font-weight: bold;", "")?>
       <?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>
       <?=$form->hidden("action", "action", "execute", "");?>
       <?

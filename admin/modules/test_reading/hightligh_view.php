@@ -13,7 +13,7 @@ $fs_redirect      = $after_save_data;
 
 ?>
 
-<div id="wr_list_answer">       
+<div id="wr_list_answer">
    <div id="list_title">Hightlight</div>
    <table class="table_info_exe">
       <tr style="font-size: 14px;">
@@ -22,22 +22,22 @@ $fs_redirect      = $after_save_data;
          <th width="20">Edit</th>
          <th width="20">Delete</th>
       </tr>
-      <? 
-      $db_ans_select = new db_query("SELECT * FROM test_highlight 
-                                     WHERE high_teque_id  = ". $iQues);  
+      <?
+      $db_ans_select = new db_query("SELECT * FROM test_highlight
+                                     WHERE high_teque_id  = ". $iQues);
       $i = 0;
-      while($row_ans = mysql_fetch_assoc($db_ans_select->result)){
+      while($row_ans = mysqli_fetch_assoc($db_ans_select->result)){
       $i++;
       ?>
       <tr style="background:#A9BAD0;">
-         <td align="center"><?=$i?></td> 
+         <td align="center"><?=$i?></td>
          <td bgcolor="white"><?=$row_ans["high_paragraph"]?></td>
          <td align="center"><a class="text" href="edit_hightligh.php?high_id=<?=$row_ans["high_id"]?>&iPara=<?=$iPara?>&record_id=<?=$record_id?>&returnurl=<?=base64_encode(getURL())?>"><img src="<?=$fs_imagepath?>edit.png" alt="EDIT" border="0"/></a></td>
          <td align="center"><img src="<?=$fs_imagepath?>delete.gif" alt="DELETE" border="0" onClick="if (confirm('Are you sure to delete?')){ window.location.href='hightligh_del.php?record_id=<?=$record_id?>&high_id=<?=$row_ans["high_id"]?>&iPara=<?=$iPara?>&returnurl=<?=base64_encode(getURL())?>'}" style="cursor:pointer"/></td>
       </tr>
       <?}?>
    </table>
-</div>            
+</div>
 
 <style>
 #wr_list_answer{float: left;margin:10px 0px 30px 11px;border-right: solid 1px #eee;border: solid 1px #eee;width: 940px;}

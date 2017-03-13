@@ -41,19 +41,19 @@ $action				= getValue("action", "str", "POST", "");
 //Check $action for insert new data
 if($action == "execute"){
 	$use_active			= getValue("use_active", "int", "POST", 0);
-	
+
 	//Check form data
 	$fs_errorMsg .= $myform->checkdata();
-	
+
 	//Get $filename and upload
 	$filename	= "";
 	if($fs_errorMsg == ""){
 		$upload			= new upload($fs_fieldupload, $fs_filepath, $fs_extension, $fs_filesize, $fs_insert_logo);
 		$filename		= $upload->file_name;
-		
+
 		$fs_errorMsg	.= $upload->warning_error;
 	}
-	
+
 	if($fs_errorMsg == ""){
 		if($filename != ""){
 			$$fs_fieldupload = $filename;
@@ -63,17 +63,17 @@ if($action == "execute"){
 			$upload->resize_image($fs_filepath, $filename, $width_normal_image, $height_normal_image, "normal_");
 
 		}//End if($filename != "")
-		
+
 		//Insert to database
 		$myform->removeHTML(0);
 		$db_update = new db_execute($myform->generate_update_SQL($id_field, $record_id));
 		unset($db_update);
-		
+
 		//Redirect after insert complate
 		redirect($fs_redirect);
-		
+
 	}//End if($fs_errorMsg == "")
-	
+
 }//End if($action == "execute")
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -81,16 +81,16 @@ if($action == "execute"){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
+<?
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->addFormname("edit");
-$myform->checkjavascript(); 
+$myform->checkjavascript();
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM " . $fs_table . " WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}

@@ -5,16 +5,16 @@ checkAddEdit("edit");
    $fs_title			= $module_name . " | Sửa đổi";
    $fs_action			= getURL();
    $fs_errorMsg		= "";
-   
+
    $fs_redirect 	= base64_decode(getValue("url","str","GET",base64_encode("listing.php")));
    $record_id 		= getValue("record_id");
 
    //Get Test
    $db_select_test = new db_query("SELECT test_id,test_name FROM test");
-   while($row = mysql_fetch_assoc($db_select_test->result)){
+   while($row = mysqli_fetch_assoc($db_select_test->result)){
       $arr_get_test[$row["test_id"]] = $row["test_name"];
    }unset($db_select_test);
-   
+
 //Call class menu - lay ra danh sach Category
 
 	/*
@@ -30,11 +30,11 @@ checkAddEdit("edit");
 	9). Loi dua ra man hinh neu co duplicate
 	*/
    //$datetime =  date("Y-m-d g:i:s");
-   $myform = new generate_form();  
+   $myform = new generate_form();
    $myform->add("typ_test_id", "typ_test_id", 1, 0, 0, 1, "Bạn chưa chọn đề thi", 0, "");
-   $myform->add("typ_name", "typ_name", 0, 0, "", 1, "Bạn chưa nhập tên phần thi", 0, ""); 
-   $myform->add("typ_type", "typ_type", 1, 0, 4, 0, "", 0, "");   
-	
+   $myform->add("typ_name", "typ_name", 0, 0, "", 1, "Bạn chưa nhập tên phần thi", 0, "");
+   $myform->add("typ_type", "typ_type", 1, 0, 4, 0, "", 0, "");
+
 	//Add table insert data
 	$myform->addTable($fs_table);
    //Get action variable for add new data
@@ -42,8 +42,8 @@ checkAddEdit("edit");
    //Check $action for insert new data
    if($action == "execute"){
    	//Check form data
-   	$fs_errorMsg .= $myform->checkdata();      
-   	if($fs_errorMsg == ""){ 	
+   	$fs_errorMsg .= $myform->checkdata();
+   	if($fs_errorMsg == ""){
    		$upload = new upload("typ_direct_audio", $data_path, $fs_extension, $fs_filesize );
    		$filename = $upload->file_name;
    		if($filename != ""){
@@ -56,15 +56,15 @@ checkAddEdit("edit");
    		//Insert to database
    		$myform->removeHTML(0);
    		$db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
-        
+
    		//echo($fs_redirect);
    		//Redirect to:
    		redirect($fs_redirect);
-   		
+
    	}//End if($fs_errorMsg == "")
-   	
+
    }//End if($action == "insert")
-   
+
    $myform->addFormname("add_new");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -72,14 +72,14 @@ checkAddEdit("edit");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM ". $fs_table ." WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }

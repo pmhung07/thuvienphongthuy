@@ -11,7 +11,7 @@ $time_cv   =  date("d/m/Y",$time);
 $gender    = '';
 $birth     = '';
 //$wri_id    = '';
-$cat_name  = ''; 
+$cat_name  = '';
 $les_name  = '';
 $comment   = '';
 $content   = '';
@@ -19,7 +19,7 @@ $point     = '';
 $date_lear = '';
 //Lay thong tin cua bai da thi
 $sqlUser = new db_query("SELECT * FROM learn_writing_result WHERE lwr_id = ".$tesr_id);
-if($row_user = mysql_fetch_assoc($sqlUser->result)){
+if($row_user = mysqli_fetch_assoc($sqlUser->result)){
    $user_id          = $row_user['lwr_use_id'];
    $les_id           = $row_user['lwr_skl_les_id'];
    $comment          = $row_user['lwr_comment'];
@@ -30,27 +30,27 @@ if($row_user = mysql_fetch_assoc($sqlUser->result)){
 
 
 /*
-$db_listing 	= new db_query("SELECT * FROM learn_writing 
+$db_listing 	= new db_query("SELECT * FROM learn_writing
                                INNER JOIN courses_multi ON learn_writing.learn_unit_id=courses_multi.com_id
                                INNER JOIN courses ON courses_multi.com_cou_id = courses.cou_id
 							   INNER JOIN categories_multi ON courses.cou_cat_id = categories_multi.cat_id
 							   WHERE learn_writing.learn_wr_id =".$wri_id);
-if($row_cate	=	mysql_fetch_assoc($db_listing->result)){
+if($row_cate	=	mysqli_fetch_assoc($db_listing->result)){
 	$name_lesson  =   $row_cate['com_name'];
 	$id_lesson    =   $row_cate['com_id'];
 }unset($db_listing);
 */
 // Lấy thông tin của bài học học
 $db_info = new db_query("SELECT * FROM skill_lesson
-                        INNER JOIN categories_multi ON skill_lesson.skl_les_cat_id = categories_multi.cat_id 
+                        INNER JOIN categories_multi ON skill_lesson.skl_les_cat_id = categories_multi.cat_id
                         WHERE skl_les_id = ".$les_id);
-$row_info = mysql_fetch_assoc($db_info->result);
+$row_info = mysqli_fetch_assoc($db_info->result);
 unset($db_info);
 $cat_name = $row_info['cat_name'];
-$les_name = $row_info['skl_les_name'];							   
+$les_name = $row_info['skl_les_name'];
 //Lay thong tin cua user
 $sqlInfo = new db_query("SELECT * FROM users WHERE use_id = ".$user_id);
-if($row_info = mysql_fetch_assoc($sqlInfo->result)){
+if($row_info = mysqli_fetch_assoc($sqlInfo->result)){
   $user_name = $row_info['use_name'];
   $use_gender = $row_info['use_gender'];
   $user_birth = date('d/m/Y',$row_info['use_birthdays']);
@@ -69,7 +69,7 @@ $message = '
 <html>
 <head>
 	<meta charset="utf-8"/>
-	
+
 <style>
 <!--
 	table{line-height:20px;//border:1px solid #000000;border-spacing:1px;}
@@ -113,16 +113,16 @@ $message = '
 								</tr>
 								<tr>
 									<td style="border:1px solid;border-bottom:none;padding-left:10px">
-																	
+
 									</td>
 								</tr>
-								
+
 								<tr>
 									<td colspan="2" border="1" style="border:1px solid;border-right:none;border-bottom:none;padding-left:10px;">
 										Registration Number: <span style="display:inline-block;background-color:#404040;color:#FFFFFF;padding-left:5px;padding-right:5px;line-height:18px">'.$user_id.'</span>
 									</td>
 									<td rowspan="4"style="border:1px solid;padding-left:10px">
-									
+
 									</td>
 								</tr>
 								<tr>
@@ -138,7 +138,7 @@ $message = '
 								</tr>
 								<tr>
 									<td style="border:1px solid;border-right:none;padding-left:10px">
-										Date of Birth: 
+										Date of Birth:
 											<span style="display:inline-block;background-color:#404040;color:#FFFFFF;padding-left:5px;padding-right:5px;line-height:18px;">'.$user_birth.'</span>
 									</td>
 									<td style="border:1px solid;border-right:none;padding-left:10px">
@@ -147,7 +147,7 @@ $message = '
 								</tr>
 								<tr>
 									<td style="border:1px solid;border-right:none;padding-left:10px">
-										Day : 
+										Day :
 											<span style="display:inline-block;background-color:#404040;color:#FFFFFF;padding-left:5px;padding-right:5px;line-height:18px;">'.$date_lear.'</span>
 									</td>
 									<td style="border:1px solid;border-right:none;padding-left:10px">Home page :  <a href="http://hochay.vn">www.hochay.vn</a></td>
@@ -158,19 +158,19 @@ $message = '
 								</tr>
 							</table>
 						</td>
-						<td>			
-				
+						<td>
+
 						</td>
 					</tr>
 				</table>
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td style="height:10px;border-bottom:1px dashed">
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td style="padding-top:20px;">
 				<table width="960" style="line-height:30px;border:1px solid;border-spacing:0px;font-size:15px">
@@ -189,9 +189,9 @@ $message = '
                   <td style="background-color:#929397;color:#FFFFFF;text-align:center">'.$point.'</td>
 					</tr>
 				</table>
-				
+
 				<br/>
-				
+
 		</tr>
 	</table>
 </body>
@@ -209,11 +209,11 @@ if($point  != 0){
    $sendMail = new sendMail();
    $sendMail->init();
    $isSuccess = $sendMail->send($message, $email, 'You');
-   
+
    if($isSuccess == true){
-	  $db_ex = new db_execute("UPDATE learn_writing_result SET lwr_smail = 1 WHERE lwr_id = " . $tesr_id); 
-      $msg = "Gửi mail thành công";  
-	  $err = 1; 
+	  $db_ex = new db_execute("UPDATE learn_writing_result SET lwr_smail = 1 WHERE lwr_id = " . $tesr_id);
+      $msg = "Gửi mail thành công";
+	  $err = 1;
    }else{
       $err = "Có lỗi xảy ra trong quá trình gửi mail!";
    }

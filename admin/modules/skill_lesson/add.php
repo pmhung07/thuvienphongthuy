@@ -16,10 +16,10 @@
    $sql = ' cat_type = 0';
    $menu = new menu();
    $listAll = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",$sql . " AND lang_id = " . $lang_id . $sqlcategory,"cat_id,cat_name,cat_order,cat_type,cat_parent_id,cat_has_child","cat_order ASC, cat_name ASC","cat_has_child");
-   
+
    $arr_type = array(
-                      1 => "Bài học thường(không chấm)" , 
-                      2 => "Bài học chấm luyện nói" , 
+                      1 => "Bài học thường(không chấm)" ,
+                      2 => "Bài học chấm luyện nói" ,
                       3 => "Bài học chấm viết thường" ,
                       4 => "Bài học chấm viết email" ,
                       5 => "Bài học chấm luyện phát âm");
@@ -29,15 +29,15 @@
    /*
    $lev_slct	= new db_query("SELECT lev_id, lev_name FROM levels" );
    $arr_selectlev[''] = "--Chọn Level--";
-   while( $newarr = mysql_fetch_assoc($lev_slct->result)){
+   while( $newarr = mysqli_fetch_assoc($lev_slct->result)){
      $arr_selectlev[$newarr['lev_id']]= $newarr['lev_name'];
    };
-   */  
-     
+   */
+
     /*
 	Call class form:
 	1). Ten truong
-	2). Ten form 
+	2). Ten form
 	3). Kieu du lieu , 0 : string , 1 : kieu int, 2 : kieu email, 3 : kieu double, 4 : kieu hash password
 	4). Noi luu giu data  0 : post(sẽ tìm trong form ở dưới có cotrol nào có name đc khai báo ở (2)), 1 : variable (sẽ tìm những biến nào có tên đã đc khai báo ở (2) )
 	5). Gia tri mac dinh, neu require thi phai lon hon hoac bang default
@@ -46,11 +46,11 @@
 	8). Chi co duy nhat trong database (0: cho phép trùng ; 1: ko cho phép)
 	9). Loi dua ra man hinh neu co duplicate
 	*/
-   $skl_les_time = time();  
-   //tạo mới class generate_form 
+   $skl_les_time = time();
+   //tạo mới class generate_form
    $myform = new generate_form();
-   
-   $myform->add("skl_les_cat_id","cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,""); 
+
+   $myform->add("skl_les_cat_id","cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,"");
    //$myform->add("cou_lev_id", "lev_select",1,0,0,1,"Bạn chưa chọn level",0,"");
    //$myform->add("cou_form", "cou_form",1,0,1,1,"Bạn chưa chọn level",0,"");
    $myform->add("skl_les_name", "skl_les_name", 0, 0, "", 1, "Bạn chưa nhập tên của bài học", 0, "");
@@ -59,16 +59,16 @@
    $myform->add("skl_les_desc", "skl_les_desc", 0, 0, "",0, "", 0, "");
    $myform->add("skl_les_active","skl_les_active",1,0,0,0,"",0,"");
    $myform->add("skl_les_type","skl_les_type",1,0,1,0,"",0,"");
-   
+
    $myform->add("meta_title","meta_title",0,0,"",0,"",0,"");
    $myform->add("meta_description","meta_description",0,0,"",0,"",0,"");
    $myform->add("meta_keywords","meta_keywords",0,0,"",0,"",0,"");
    $myform->add("skl_les_tags","skl_les_tags",0,0,"",0,"",0,"");
    $myform->addTable($fs_table);
 
-   $action			= getValue("action", "str", "POST", ""); 
+   $action			= getValue("action", "str", "POST", "");
    if($action == "execute"){
-   	$fs_errorMsg .= $myform->checkdata();      
+   	$fs_errorMsg .= $myform->checkdata();
       if($fs_errorMsg == ""){
          $upload		= new upload("skl_les_img", $imgpath, $fs_extension, $fs_filesize);
          $filename	= $upload->file_name;
@@ -80,7 +80,7 @@
    		}else{
    		   $fs_errorMsg .= "Bạn chưa chọn ảnh đại diện cho bài học ! </br>";
    		}
-        
+
          $fs_errorMsg .= $upload->show_warning_error();
          if($fs_errorMsg == ""){
          	$myform->removeHTML(0);
@@ -116,7 +116,7 @@ $fs_errorMsg .= $myform->strErrorField;
 	<p align="center" style="padding-left:10px;">
 	<?
 	$form = new form();
-  
+
 	$form->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
    $form->create_table();
 	?>
@@ -132,7 +132,7 @@ $fs_errorMsg .= $myform->strErrorField;
    </tr>
    <?=$form->text("Tên bài học", "skl_les_name", "skl_les_name", $skl_les_name, "Tên bài học", 1, 250, "", 255, "", "", "")?>
    <?=$form->getFile("Ảnh đại diện", "skl_les_img", "skl_les_img", "Chọn hình ảnh", 1, 40, "", "")?>
-   
+
    <?=$form->text("Title", "meta_title", "meta_title", $meta_title, "Title", 0, 450, 24, 255, "", "", "")?>
    <?=$form->text("Description", "meta_description", "meta_description", $meta_description, "Description", 0, 450, 24, 255, "", "", "")?>
    <?=$form->text("Keywords", "meta_keywords", "meta_keywords", $meta_keywords, "Keywords", 0, 450,24, 255, "", "", "")?>

@@ -8,7 +8,7 @@ $listing				= "listing.php";
 
 $fs_redirect 	   = base64_decode(getValue("url","str","GET",base64_encode("listing.php")));
 $record_id 	      = getValue("record_id");
-$tags             = getValue("lib_game_tags","str","POST",""); 
+$tags             = getValue("lib_game_tags","str","POST","");
 
 //Khai báo biến khi thêm mới
 $fs_title			= "Edit Library Game";
@@ -53,23 +53,23 @@ $action				= getValue("action", "str", "POST", "");
 //Check $action for insert new data
 if($action == "execute"){
 	$use_active			= getValue("use_active", "int", "POST", 0);
-	
+
 	//Check form data
 	$fs_errorMsg .= $myform->checkdata();
-	
+
 	//Get $filename and upload
 	$filename	= "";
 	if($fs_errorMsg == ""){
       $upload_img = new upload("lib_game_image", $imgpath, $fs_extension, $fs_filesize);
       $upload_game = new upload("lib_game_url", $mediapath, $fs_extension, $fs_filesize);
-     
+
       $filename_img = $upload_img->file_name;
-      $filename_game = $upload_game->file_name;   
-      
+      $filename_game = $upload_game->file_name;
+
 		$fs_errorMsg	.= $upload_img->warning_error;
       $fs_errorMsg	.= $upload_game->warning_error;
 	}
-	
+
 	if($fs_errorMsg == ""){
 		if($filename_img != ""){
 	      delete_file("library_game","lib_game_id",$record_id,"lib_game_image",$imgpath);
@@ -78,12 +78,12 @@ if($action == "execute"){
    		resize_image($imgpath, $filename_img, $arr["width"], $arr["height"], $arr["quality"], $type);
          }
 		}//End if($filename != "")
-      
+
       if($filename_game != ""){
          delete_file("library_game","lib_game_id",$record_id,"lib_game_url",$mediapath);
 			$myform->add("lib_game_url","filename_game",0,1,0,0);
 		}//End if($filename != "")
-		
+
 		//Insert to database
 		$myform->removeHTML(0);
 		$db_update = new db_execute($myform->generate_update_SQL($id_field, $record_id));
@@ -92,9 +92,9 @@ if($action == "execute"){
       if($tags != '') save_tags($record_id,$tags,4,1);
 		//Redirect after insert complate
 		redirect($fs_redirect);
-		
+
 	}//End if($fs_errorMsg == "")
-	
+
 }//End if($action == "execute")
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -102,16 +102,16 @@ if($action == "execute"){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
+<?
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->addFormname("edit");
-$myform->checkjavascript(); 
+$myform->checkjavascript();
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM " . $fs_table . " WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}
@@ -132,7 +132,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
       <?=$form->text_note('<strong style="textalign:center;">-- Thêm mới thư viện Games --</strong>')?>
       <?=$form->text_note('Những ô dấu (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
       <?=$form->errorMsg($fs_errorMsg)?>
-      
+
       <?=$form->select_db_multi("Danh mục Game", "lib_cat_id", "lib_cat_id", $listAll, "lib_cat_id", "lib_cat_name", $row['lib_game_catid'], "Chọn danh mục", 1, "", 1, 0, "", "")?>
       <?=$form->text("Tên trò chơi", "lib_game_title", "lib_game_title", $lib_game_title, "Tên trò chơi", 1, 272, "", 255, "", "", "")?>
       <?=$form->textarea("Thông tin trò chơi","lib_game_info","lib_game_info",$lib_game_info,"Thông tin trò chơi",0,274,100,"","","")?>

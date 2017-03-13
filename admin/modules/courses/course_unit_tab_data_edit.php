@@ -86,7 +86,7 @@ if($action == "execute"){
 }
 
 $db_data = new db_query("SELECT * FROM courses_multi_tabs_content WHERE  cou_tab_cont_tabs_id=" . $iTab . " AND cou_tab_cont_id=".$record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -96,7 +96,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 /*$arrayBlock = array();
 $arrayBlock[0] = "Chọn Block để thêm nội dung";
 $i=1;
-while($row = mysql_fetch_assoc($db_block->result)){
+while($row = mysqli_fetch_assoc($db_block->result)){
 	$arrayBlock[$row['com_block_id']] = $row['com_block_data_name'];
 	$i++;
 }
@@ -147,7 +147,7 @@ $arrayMedia = array(
 			<script src="/../../js/tinymce/tinymce.min.js" type="text/javascript" charset="utf-8"></script>
 			<script type="text/javascript">
 		   	tinymce.init({
-				selector: "textarea",   
+				selector: "textarea",
 				plugins: [
 					"advlist autolink lists link image charmap print preview hr anchor pagebreak",
 					"searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -161,15 +161,15 @@ $arrayMedia = array(
 		      	templates: [
 		         	{title: 'Test template 1', content: 'Test 1'},
 		         	{title: 'Test template 2', content: 'Test 2'}
-		      	] 
+		      	]
 		   	});
-		   	</script>  
+		   	</script>
 		</td>
 	</tr>
 	<?=$form->select("Chọn Kiểu Media", "cou_tab_cont_media_type", "cou_tab_cont_media_type", $arrayMedia, 0 ,"Chọn Kiểu Media cho nội dung",1,"500",1,0,"","")?>
 	<?//=$form->select("Chọn Kiểu Media", "cou_tab_cont_media_type", "cou_tab_cont_media_type", $arrayMedia, 0 ,"Chọn Kiểu Media cho nội dung",1,"500",1,0,"","")?>
 	<?=$form->getFile("Upload Media", "cou_tab_cont_media", "cou_tab_cont_media", "Upload Media", 1, 30, "style='border:none;'", "")?>
-   	
+
 	<?=$form->text("Từ vựng", "cou_tab_cont_main_voca", "cou_tab_cont_main_voca", $cou_tab_cont_main_voca, "Từ vựng", 0, 489, 20, 255, "", "", "Nhập từ vựng nếu chọn phần từ vựng")?>
    	<?=$form->text("Phiên âm và dịch", "cou_tab_cont_phonetic_voca", "cou_tab_cont_phonetic_voca", $cou_tab_cont_phonetic_voca, "Phiên âm", 0, 489, 20, 255, "", "", "Nhập pheien âm nếu chọn phần từ vựng")?>
    	<?=$form->text("Ví dụ", "cou_tab_cont_exam_voca", "cou_tab_cont_exam_voca", $cou_tab_cont_exam_voca, "Ví dụ", 0, 489, 20, 255, "", "", "Nhập ví dụ nếu chọn phần từ vựng")?>
@@ -186,7 +186,7 @@ $arrayMedia = array(
 	unset($form);
 	?>
 	</div>
-	
+
    </body>
 </html>
 

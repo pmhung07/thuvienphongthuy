@@ -17,16 +17,16 @@ function lesson_write($unit,$unit_num,$unit_name){
     $var_head_lib2  .= '<script type="text/javascript" src="'.$var_path_media.'jwplayer.js"></script>';
     $var_head_lib2  .= '<script type="text/javascript">jwplayer.key="IyBF3HN/WxYyCXbdjRCOrUH3C4FJGuzHP9SQ6mz/YQcKlam8eP/Fvm6VM6g=";</script>';
     $var_head_lib2  .= '<script type="text/javascript" src="'.$var_path_js.'lesson_page.js"></script>';
-   
+
     //Lấy thông tin dạng bài học
     $sqlUnitMail = new db_query('SELECT * FROM lesson_details WHERE les_det_type = 1 AND les_com_id ='.$unit);
-    $rowUnitMail = mysql_fetch_assoc($sqlUnitMail->result);
+    $rowUnitMail = mysqli_fetch_assoc($sqlUnitMail->result);
     $iUnit       = $rowUnitMail['les_det_id'];
     unset($sqlUnitMail);
     //Lấy nội dung bài học và bài tập
     $sqlWri     = new db_query('SELECT * FROM learn_writing WHERE learn_unit_id = '.$unit);
-    $rowWri     = mysql_fetch_assoc($sqlWri->result);
-   
+    $rowWri     = mysqli_fetch_assoc($sqlWri->result);
+
 ?>
     <?=$var_head_lib2?>
     <div class="in_content_v2">
@@ -43,7 +43,7 @@ function lesson_write($unit,$unit_num,$unit_name){
                     <div class="bottom_right_lightbox" >
                         <form name="frm_wri" id="frm_wri">
                	            <input type="hidden" value="<?=$rowWri['learn_wr_id']?>" name="id_wr" id="id_wr" />
-               	            <textarea id="input_text" cols="48" rows="15"></textarea>                        
+               	            <textarea id="input_text" cols="48" rows="15"></textarea>
                         </form>
                         <div class="wri_send">
                             <a class="button_ht_wri pull-right" href="javascript:;">Gửi bài viết</a>
@@ -51,7 +51,7 @@ function lesson_write($unit,$unit_num,$unit_name){
                         <div class="pull-right script_btn_wr script">
               			    <div class="button button-cyan goi-y">Gợi ý</div>
               		    </div>
-                        <div class="bot_left_lightbox">    
+                        <div class="bot_left_lightbox">
                             <div id="ct_hint" class="ct_scrip" >
                	                <?php echo $rowWri['learn_wr_note'] ?>
                             </div>
@@ -64,11 +64,11 @@ function lesson_write($unit,$unit_num,$unit_name){
                                 $(".button-cyan").toggle(function(){
                               	$(".bot_left_lightbox").show(200);
                                 },function(){
-                           	        $(".bot_left_lightbox").hide(100);  					 			 
-                                });   
+                           	        $(".bot_left_lightbox").hide(100);
+                                });
                             })
-                           </script> 
-                        </div>   	
+                           </script>
+                        </div>
                          <div class="lesson-content-left">
                             <?php
                             $wripart = 'http://'.$base_url.'/data/learn_wr/';
@@ -80,12 +80,12 @@ function lesson_write($unit,$unit_num,$unit_name){
                             <?php }elseif($rowWri['learn_wr_mtype'] == 2){ ?>
                                 <?=get_media_library_v2($wripart.$rowWri['learn_wr_media'],'')?>
                             <?php } } ?>
-                        </div>  
+                        </div>
                     </div>
                     <div id="wri_load">&nbsp;</div>
                     <div id="error_wri"></div>
-                </div>      
-            </div>  		
+                </div>
+            </div>
    	    </div>
    	    <div class="clearfix"></div>
         <?//$link = signin_link();?>
@@ -97,10 +97,10 @@ function lesson_write($unit,$unit_num,$unit_name){
           		    var id_wri 	 = $('#id_wr').attr('value');
           		    var input_text = $('#input_text').attr('value');
                     $.ajax({
-                        type : 'POST',            		  
+                        type : 'POST',
                         data : {
-                            type : "write", 
-                            id   : id_wri, 
+                            type : "write",
+                            id   : id_wri,
                             input: input_text,
                         },
                         url  : 'http://<?=$base_url?>/ajax/mark_writing.php',
@@ -118,8 +118,8 @@ function lesson_write($unit,$unit_num,$unit_name){
                             }
                         }
                     });
-                <?php } ?>						  
-      	    });                
+                <?php } ?>
+      	    });
         });
         </script>
     </div>

@@ -2,7 +2,7 @@
 <?
    //-----------------------------------------------------------------------------------------------------------------
    //-----------------------------------------------------------------------------------------------------------------
-   $test_id = getValue("test_id","int","GET",0); 
+   $test_id = getValue("test_id","int","GET",0);
    //1.Kiem tra xem co ton tai bai thi nay khong
       //check_isset_ielts($test_id);
    //2.Kiem tra cac truong hop user truy cap bai thi
@@ -23,9 +23,9 @@
 
 <?
    // Variable tab - Default tab reading = 2
-   $db_select_cont = new db_query("SELECT * FROM ielt_content 
-                                   INNER JOIN ielt_type ON(iecon_iety_id = iety_id) 
-                                   WHERE iety_ielt_id	 = ".$test_id." AND iety_type = 4 AND iecon_order = 1");                         
+   $db_select_cont = new db_query("SELECT * FROM ielt_content
+                                   INNER JOIN ielt_type ON(iecon_iety_id = iety_id)
+                                   WHERE iety_ielt_id	 = ".$test_id." AND iety_type = 4 AND iecon_order = 1");
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -50,7 +50,7 @@
    <script language="javascript" type="text/javascript" src="../themes/js/jquery.media.js"></script>
 	<title>Main Test</title>
 </head>
-<script type="text/javascript">                                
+<script type="text/javascript">
    $(document).ready(function(){ $('a.media').media( { 'backgroundColor' : 'transparent' , width: 300, height: 20 } ); });
 </script>
 <body background="http://<?=$base_url?>/themes/images/ielts/bg.gif" onload="setCountDown()">
@@ -83,8 +83,8 @@
       </div>
       <!--CONTENT MAIN-->
       <div id="content_maintest">
-         <?while($row_cont = mysql_fetch_assoc($db_select_cont->result)){?>
-         <div id="maintest_listening"> 
+         <?while($row_cont = mysqli_fetch_assoc($db_select_cont->result)){?>
+         <div id="maintest_listening">
             <div id="listening_main_section">
                <span class="lms_title">SECTION <?=$row_cont['iecon_order']?>:</span>
             </div>
@@ -133,22 +133,22 @@ $('#next_test').click(function (){
          url:'act_writing.php',
          success:function(data){
       	if(data.err == ''){
-      		alert(data.msg);	
+      		alert(data.msg);
             window.location = "writing_task_second.php?test_id=<?=$test_id?>";
       	}else{
       		alert(data.err);
       	}}
       });
    }return false;
-});  
+});
 
 /*********************************************************************************
-*Append time 
+*Append time
 *********************************************************************************/
 
-var hours = <?=$remainingHour?>  
-var minutes = <?=$remainingMinutes?>  
-var seconds = <?=$remainingSeconds?> 
+var hours = <?=$remainingHour?>
+var minutes = <?=$remainingMinutes?>
+var seconds = <?=$remainingSeconds?>
 function setCountDown ()
 {
    seconds--;
@@ -173,6 +173,6 @@ function setCountDown ()
    SD=window.setTimeout( "setCountDown()", 1000 );
    if(minutes == '00' && seconds == '00') { seconds = "00"; window.clearTimeout(SD);
       window.location = "writing_task_second.php";
-   } 
+   }
 }
 </script>

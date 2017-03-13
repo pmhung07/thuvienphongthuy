@@ -16,10 +16,10 @@ function lesson_grammar($unit,$unit_num,$unit_name){
     $var_head_lib2  .= '<script type="text/javascript" src="'.$var_path_js.'slimScroll.min.js"></script>';
     $var_head_lib2  .= '<script type="text/javascript" src="'.$var_path_media.'jwplayer.js"></script>';
     $var_head_lib2  .= '<script type="text/javascript">jwplayer.key="IyBF3HN/WxYyCXbdjRCOrUH3C4FJGuzHP9SQ6mz/YQcKlam8eP/Fvm6VM6g=";</script>';
-    
+
     //Lấy thông tin dạng bài học
     $sqlUnitMail = new db_query('SELECT * FROM lesson_details WHERE les_det_type = 2 AND les_com_id ='.$unit);
-    $rowUnitMail = mysql_fetch_assoc($sqlUnitMail->result);
+    $rowUnitMail = mysqli_fetch_assoc($sqlUnitMail->result);
     $iUnit       = $rowUnitMail['les_det_id'];
     unset($sqlUnitMail);
     //Lấy nội dung bài học và bài tập
@@ -47,7 +47,7 @@ function lesson_grammar($unit,$unit_num,$unit_name){
            		    <div class="lesson-content-block">
                         <?php
                         $gram_path = 'http://'.$base_url.'/data/grammar/';
-                        while($rowGram  = mysql_fetch_assoc($sqlGram->result)){
+                        while($rowGram  = mysqli_fetch_assoc($sqlGram->result)){
                         ?>
                             <div class="gram_title">
                                 <?=$rowGram['gram_title']?>
@@ -57,7 +57,7 @@ function lesson_grammar($unit,$unit_num,$unit_name){
                                     <?php if($rowGram['gram_media_type'] == 1){ ?>
                                         <img src="<?=$gram_path?>medium_<?=$rowGram['gram_media_url']?>" alt="<?=$rowGram['gram_title']?>"/>
                                     <?php }else{
-                                        echo "<center><embed width='333' height='182' type='application/x-shockwave-flash' src='http://".$base_url."/mediaplayer/player.swf' flashvars='file=". $gram_path.$rowGram['gram_media_url'] ."'</embed></center>";       
+                                        echo "<center><embed width='333' height='182' type='application/x-shockwave-flash' src='http://".$base_url."/mediaplayer/player.swf' flashvars='file=". $gram_path.$rowGram['gram_media_url'] ."'</embed></center>";
                                     }
                                 }?>
                                 </div>
@@ -68,7 +68,7 @@ function lesson_grammar($unit,$unit_num,$unit_name){
                             <?php } ?>
                             <?php if(trim(removeHTML($rowGram['gram_exam'])) != ''){ ?>
                                 <div>
-                                    <?=$rowGram['gram_exam']?>  s                      
+                                    <?=$rowGram['gram_exam']?>  s
                                 </div>
                             <?php } ?>
                         <?php } ?>
@@ -81,38 +81,38 @@ function lesson_grammar($unit,$unit_num,$unit_name){
        		        <div class="gray-box1">
                     <?php
                     $in = 0;
-                    while($rowQuick  = mysql_fetch_assoc($sqlQuick->result)){								
+                    while($rowQuick  = mysqli_fetch_assoc($sqlQuick->result)){
        				$sqlQues     = new db_query('SELECT * FROM questions WHERE que_exe_id = '.$rowQuick["exe_id"]);
-       				    while($rowQues = mysql_fetch_assoc($sqlQues->result)){
+       				    while($rowQues = mysqli_fetch_assoc($sqlQues->result)){
     						$type = $rowQues['que_type'];
     						$in ++;
-    						    if($rowQues['que_type']== 3 ){ ?>   	            
+    						    if($rowQues['que_type']== 3 ){ ?>
     						        <?php
     							    $arrayAns  = getStringAns($rowQues['que_content']);
     							    $result    = count($arrayAns);
-    							    $rand_keys = array_random($arrayAns, $result);                                
+    							    $rand_keys = array_random($arrayAns, $result);
     						        ?>
     						    &nbsp;
     						    <ul class="menu_quiz">
        			                    <?php for($i=0;$i<$result;$i++){?>
        							        <a href="#" ><?=$i+1?>.<span id="draggable<?=$i+1?>"><?=trim($rand_keys[$i])?></span></a>
-       						        <?php } ?>   
-    						    </ul>						
+       						        <?php } ?>
+    						    </ul>
                                 <p class="text_content_lightbox">
                                 <?php
                                     $arrayCont  =  getMainC($rowQues['que_content']);
                                     $cArrayCont =  count($arrayCont);
                                     $j = 0;
                                     for($i=0;$i<$cArrayCont;$i++){
-                                        if($i%2 != 0) { 
+                                        if($i%2 != 0) {
                       	                    $j ++;
                       	                    echo '<span id="droppable'.@$j.'"><span class="dotset">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>';
                       	                }else{
                       		                echo $arrayCont[$i];
-                                        }     
+                                        }
                                     }
-                                ?>						   
-                                </p> 						
+                                ?>
+                                </p>
     						<?php
     						}elseif( $rowQues['que_type']== 1 ){
     						    echo '<div>'; ?>
@@ -122,44 +122,44 @@ function lesson_grammar($unit,$unit_num,$unit_name){
        							$sqlAns    = new db_query("SELECT * FROM answers WHERE ans_ques_id = ".$rowQues['que_id']);
        							$arrayT    = array(1=>'A',2=>'B',3=>'C',4=>'D',5=>'E');
        							$iA        = 0;
-       							while($rowAns = mysql_fetch_assoc($sqlAns->result)){
-          							$iA ++;	?>							
+       							while($rowAns = mysqli_fetch_assoc($sqlAns->result)){
+          							$iA ++;	?>
        						        <span class="check_box">
                                     <input id="checke<?=$in?>_<?=$iA?>" name="chec_box<?=$in?>" type="radio" value="<?=$rowAns['ans_id']?>" />
                                     <label for="checke<?=$in?>_<?=$iA?>"><?=$arrayT[$iA]?>. <?=$rowAns['ans_content']?></label>
-                                </span>   
+                                </span>
     				            <?php }
     						    echo '</div>';
     						}elseif( $rowQues['que_type']== 2 ){
        						    $arrayCont  =  getMainC($rowQues['que_content']);
        						    $cArrayCont =  count($arrayCont); ?>
-    						    <!--  bắt đầu hiển thị nội dung quick dạng điền từ -->					
+    						    <!--  bắt đầu hiển thị nội dung quick dạng điền từ -->
            						<div class="text_bot_right_vocabulary">
               						<h4 class="cau_hoi"><?=$in?>. Điền từ vào chỗ trống</h4>
-              						<br />						
+              						<br />
            						    <?php
                                     $j = 0;
                                     for($i=0;$i<$cArrayCont;$i++){
-                                        if($i%2 != 0) { 
+                                        if($i%2 != 0) {
                                             $j ++;
                                             echo '&nbsp;<span id="editme'.$j.'" style="color:red;font-weight: bold;">....................</span>&nbsp;&nbsp;';
                                         }else{
                                        	    echo $arrayCont[$i];
-                                        }     
+                                        }
                                     }?>
         						   </div>
     						<?php }
     					}unset($sqlQues);
     			    }unset($sqlQuick); ?>
-                    <script type="text/javascript">            
+                    <script type="text/javascript">
                         $(document).ready(function(){
                             var $urlPoint   =   "";
                             var baseurl     =  'http://<?=$base_url?>';
                             <?php
                         	    if($type == 3){
-                        	        for($i=1;$i<=$j;$i++){ ?>                                                             
+                        	        for($i=1;$i<=$j;$i++){ ?>
                                     var valuePoint= [];
-                                    $( "#draggable<?=$i?>" ).draggable({  appendTo: "body",helper: "clone"});                        
+                                    $( "#draggable<?=$i?>" ).draggable({  appendTo: "body",helper: "clone"});
                                     $( "#droppable<?=$i?>" ).droppable({
                               	        activeClass: "ui-state-hover",
                               	        hoverClass: "ui-state-active",
@@ -172,22 +172,22 @@ function lesson_grammar($unit,$unit_num,$unit_name){
                                  		    $( this ).find( ".text-ct" ).remove();
                                  		    $( "<span class='text-ct' style='padding: 2px 5px;border: 1px dotted #999;color:red;font-weight: bold;'></span>" ).text( ui.draggable.text() ).appendTo( this );
                              	        }
-                                    });          	
+                                    });
                                 <?php } ?>
                             <?php } ?>
                         });
-                    </script>         
-                    <div class="button button-orange pull-right_result">Xem kết quả bài đã làm</div>      
+                    </script>
+                    <div class="button button-orange pull-right_result">Xem kết quả bài đã làm</div>
            		    </div>
-                    <script type="text/javascript">                                
+                    <script type="text/javascript">
                		$(document).ready(function(){
                		    var $urlPoint = "";
                		    var baseurl = 'http://<?=$base_url?>';
                		    <?php
                			if($type == 3){
-               				for($i=1;$i<=$j;$i++){ ?>                                                             
+               				for($i=1;$i<=$j;$i++){ ?>
                   			var valuePoint= [];
-                  			$( "#draggable<?=$i?>" ).draggable({  appendTo: "body",helper: "clone"});         	
+                  			$( "#draggable<?=$i?>" ).draggable({  appendTo: "body",helper: "clone"});
                   			$( "#droppable<?=$i?>" ).droppable({
                   				activeClass: "ui-state-hover",
                   				hoverClass: "ui-state-active",
@@ -200,15 +200,15 @@ function lesson_grammar($unit,$unit_num,$unit_name){
                   					$( this ).find( ".text-ct" ).remove();
                   					$( "<span class='text-ct' style='padding: 2px 5px;border: 1px dotted #999;color:red;font-weight: bold;'></span>" ).text( ui.draggable.text() ).appendTo( this );
                   				}
-                  			});      			
+                  			});
                			<?php	} } ?>
-                        
+
                         /*
-                        *Tính điểm 
+                        *Tính điểm
                         */
                         $(document).ready(function() {
                             var baseurl =  'http://<?=$base_url?>';
-                            $('.pull-right_result').click(function(){ 
+                            $('.pull-right_result').click(function(){
                                 <?php
                   				if($type == 1){
                   					for($ii = 1; $ii<= $in ; $ii ++){ ?>
@@ -218,17 +218,17 @@ function lesson_grammar($unit,$unit_num,$unit_name){
                   				}elseif($type == 2){
                   					for($i=1;$i<=$j;$i++){
                   					$javaStr .= '#editme'.$i.','; ?>
-                  					var str<?=$i?>    = $('#editme<?=$i?>').text().replace(/\s+/g, '_');		
+                  					var str<?=$i?>    = $('#editme<?=$i?>').text().replace(/\s+/g, '_');
                   					$urlPoint += "value<?=$i?>=" + str<?=$i?> + "&";
-                  				<?php } } ?>  
+                  				<?php } } ?>
                                 $.fancybox({
                                     'type'   : 'ajax',
                                     'href'   :  baseurl+ '/ajax/mark_grammar.php?iunit=<?=$iUnit?>&unit=<?=$unit?>&nAns=<?php if ($type == 1) { echo $in; }else{ echo @$j; }?>&type=<?=$type?>&' + $urlPoint,
                                 });
-                            });      
-                        });        
+                            });
+                        });
                		});
-               		</script>	
+               		</script>
         	    </div>
             </div>
         </div>
@@ -245,13 +245,13 @@ function lesson_grammar($unit,$unit_num,$unit_name){
                 }
             });
         });
-        </script>     
-          
+        </script>
+
         <script type="text/javascript">
         function focusFoo(){
             document.getElementById('gray-box1_focus').focus();
         }
-        </script> 
+        </script>
 
    </div>
 <div id="fade" class="black_overlay"></div>

@@ -5,7 +5,7 @@ $list = new fsDataGird($id_field,$name_field,translate_text("Exercises Listing")
 //Get courses
 $array_course[""] = "Choose Lessons";
 $course_select = new db_query("SELECT skl_les_id,skl_les_name FROM skill_lesson");
-while($row_cou = mysql_fetch_assoc($course_select->result)){
+while($row_cou = mysqli_fetch_assoc($course_select->result)){
    $array_course[$row_cou["skl_les_id"]] = $row_cou["skl_les_name"];
 }unset($course_select);
 
@@ -14,7 +14,7 @@ $sql_filter = "";
 $id_course = getValue("skl_les_id","int","GET","");
 if($id_course > 0){
    $sql_filter = " AND skl_cont_les_id =" . $id_course;
-} 
+}
 /*
 1: Ten truong trong bang
 2: Tieu de header
@@ -34,16 +34,16 @@ $list->add("","Delete","delete");
 //$list->quickEdit = false;
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
-$total			= new db_count(" SELECT count(*) AS count FROM 	" .$fs_table. " 
+$total			= new db_count(" SELECT count(*) AS count FROM 	" .$fs_table. "
                                 INNER JOIN skill_content ON exe_skl_cont_id = skl_cont_id
                                 INNER JOIN skill_lesson ON skl_cont_les_id = skl_les_id WHERE 1 AND exe_type = 0". $list->sqlSearch() . $sql_filter);
-//câu lệnh select dữ liêu										 
-$db_listing 	= new db_query("SELECT * FROM " . $fs_table . 
+//câu lệnh select dữ liêu
+$db_listing 	= new db_query("SELECT * FROM " . $fs_table .
 							 			" INNER JOIN skill_content ON exe_skl_cont_id = skl_cont_id
-                                INNER JOIN skill_lesson ON skl_cont_les_id = skl_les_id WHERE 1 AND exe_type = 0". $list->sqlSearch() . $sql_filter                                                  
+                                INNER JOIN skill_lesson ON skl_cont_les_id = skl_les_id WHERE 1 AND exe_type = 0". $list->sqlSearch() . $sql_filter
 								    . " ORDER BY " . $list->sqlSort() . "exe_id DESC "
-                            .	$list->limit($total->total));                     
-$total_row = mysql_num_rows($db_listing->result);
+                            .	$list->limit($total->total));
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -60,9 +60,9 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    //thực hiện lênh select csdl
    $i = 0;
-	while($row	=	mysql_fetch_assoc($db_listing->result)){
-   $i++; 
-	?> 
+	while($row	=	mysqli_fetch_assoc($db_listing->result)){
+   $i++;
+	?>
    	<?=$list->start_tr($i, $row[$id_field])?>
    	<td width="320" align="center">
          <table width="310px">
@@ -89,7 +89,7 @@ $total_row = mysql_num_rows($db_listing->result);
       </td>
    	<?=$list->showDelete($row['exe_id'])?>
    	<?=$list->end_tr()?>
-	<?}?>  
+	<?}?>
   <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>

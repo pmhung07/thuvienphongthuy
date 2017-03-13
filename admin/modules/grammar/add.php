@@ -18,26 +18,26 @@ checkAddEdit("add");
    //if($com_c_id != "") $sqlUnit = new db_query("SELECT * FROM courses_multi WHERE com_cou_id = ".$com_c_id);
    $array_unit = array();
    if($com_cou_id > 0){
-      $unit_select = new db_query("SELECT com_id,com_name FROM courses_multi 
+      $unit_select = new db_query("SELECT com_id,com_name FROM courses_multi
                                     WHERE com_cou_id =" .$com_cou_id. " AND com_active = 1");
-      while($row_unit = mysql_fetch_assoc($unit_select->result)){
+      while($row_unit = mysqli_fetch_assoc($unit_select->result)){
          $array_unit[$row_unit["com_id"]] = $row_unit["com_name"];
       }unset($unit_select);
    }
-	
+
    $arr_check = array();
-   $db_select_unit = new db_query("SELECT * FROM courses_multi 
-                                    INNER JOIN lesson_details ON courses_multi.com_id = lesson_details.les_com_id 
+   $db_select_unit = new db_query("SELECT * FROM courses_multi
+                                    INNER JOIN lesson_details ON courses_multi.com_id = lesson_details.les_com_id
                                     WHERE les_det_type = 2");
    $i = 0;
-   while($row_a = mysql_fetch_assoc($db_select_unit->result)){
+   while($row_a = mysqli_fetch_assoc($db_select_unit->result)){
       $arr_check[$i] = $row_a["com_id"];
       $i++;
    }
     //Call Class generate_form();
- 
+
 	if($cat_parent_id != "") $sqlCourse = new db_query("SELECT cou_id,cou_name,cou_lev_id FROM courses WHERE cou_cat_id = ".$cat_parent_id );
-    
+
     $myform = new generate_form();
 	//Loại bỏ chuc nang thay the Tag Html
 	$myform->removeHTML(0);
@@ -53,9 +53,9 @@ checkAddEdit("add");
 	$action	= getValue("action", "str", "POST", "");
     if($action == "execute"){
         if($fs_errorMsg == ""){
-    			//Insert to database         
-    			$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi 
-                //thực hiện insert 
+    			//Insert to database
+    			$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi
+                //thực hiện insert
     			$db_insert = new db_execute($myform->generate_insert_SQL());
     			//unset biến để giải phóng bộ nhớ.
                 unset($db_insert);
@@ -63,7 +63,7 @@ checkAddEdit("add");
     			//$fs_redirect = "add.php?order=" . (getValue("cur_order","int","POST") + 1);
     			redirect("add.php");
     	}//End if($fs_errorMsg == "")
-    	
+
     }//End if($action == "insert")
 	//add form for javacheck
 	$myform->addFormname("add_new");
@@ -96,7 +96,7 @@ checkAddEdit("add");
             <select name="com_cou_id" id="com_cou_id"  class="form_control" style="width: 200px;" onChange="window.location.href='add.php?com_cou_id='+this.value+'&cat_parent_id=<?php echo $cat_parent_id; ?>'">
 				<option value="-1">- <?=translate_text("Chọn Course")?> - </option>
 				<?
-				while($row = mysql_fetch_assoc($sqlCourse->result)){
+				while($row = mysqli_fetch_assoc($sqlCourse->result)){
 				?>
 				<option value="<?=$row['cou_id']?>" <?php if($row['cou_id'] == $com_c_id ) echo "selected='selected'" ;   ?>  ><? echo nameLevel($row['cou_lev_id']).' -- '.$row['cou_name']?></option>
 				<? } ?>

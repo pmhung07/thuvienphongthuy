@@ -59,7 +59,7 @@ class user{
 								   FROM users
 								  WHERE use_email = '" . $this->removequote($login_name) . "'");
 
-		if ($row=mysql_fetch_array($db_user->result)){
+		if ($row=mysqli_fetch_array($db_user->result)){
 			//kiem tra password va use_active
 			if($checkcookie == 0)	$password = md5($password . $row["use_security"]);
 
@@ -157,7 +157,7 @@ class user{
 	 								   WHERE (use_email = "' . $email . '") AND use_openid = 1 LIMIT 1');
 		//dump($db_select->resultArray());die();
 
-		if($row = mysql_fetch_assoc($db_select->result)){
+		if($row = mysqli_fetch_assoc($db_select->result)){
 			$this->logged = 1;
 			$timeCookie = 30*24*3600;
 			setcookie("login_name", $email, time() + $timeCookie,"/");
@@ -171,7 +171,7 @@ class user{
 		 	unset($db_ex);
 
         	$db_user = new db_query("SELECT use_id FROM users WHERE use_email = '".$email."';");
-         	$row_user = mysql_fetch_assoc($db_user->result);
+         	$row_user = mysqli_fetch_assoc($db_user->result);
          	unset($db_user);
 		 	$timeCookie = 30*24*3600;
 		 	setcookie("login_name", $email, time()+$timeCookie,"/");
@@ -200,7 +200,7 @@ class user{
 								    AND use_active=1
 								    AND use_login = '" . $this->removequote($this->login_name) . "'");
 
-		if ($row=mysql_fetch_array($db_user->result)){
+		if ($row=mysqli_fetch_array($db_user->result)){
 			$password=md5($password . $row["use_security"]);
 			if($password==$row["use_password"]) return 1;
 		}
@@ -234,7 +234,7 @@ class user{
 		//kiem tra query
 		$db_check_level = new db_query($level);
 		//Check record > 0
-		if (mysql_num_rows($db_check_level->result) > 0){
+		if (mysqli_num_rows($db_check_level->result) > 0){
 			unset($db_check_level);
 			return 1;
 		}
@@ -265,7 +265,7 @@ class user{
 		//kiem tra query
 		$db_check = new db_query($my_query);
 		//neu ton tai record do thi` tra ve gia tri 1, neu ko thi` tra ve gia tri 0
-		if (mysql_num_rows($db_check->result) > 0){
+		if (mysqli_num_rows($db_check->result) > 0){
 			unset($db_check);
 			return 1;
 		}
@@ -349,7 +349,7 @@ class user{
 
 					//Execute SQL
 					$db_sum = new db_query($sql);
-					$row = mysql_fetch_array($db_sum->result);
+					$row = mysqli_fetch_array($db_sum->result);
 					unset($db_sum);
 
 					//Kiem tra count neu nho hon gia tri cho phep thi` return 1

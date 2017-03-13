@@ -12,13 +12,13 @@
    $sql			= " scat_type = 0";
    $menu = new menu();
    $listAll = $menu->getAllChild("support_category","scat_id","scat_parent_id","0",$sql . " AND lang_id = " . $lang_id . $sqlcategory,"scat_id,scat_name,scat_order,scat_type,scat_parent_id,scat_has_child","scat_order ASC, scat_name ASC","scat_has_child");
-   
-   
-     
+
+
+
     /*
 	Call class form:
 	1). Ten truong
-	2). Ten form 
+	2). Ten form
 	3). Kieu du lieu , 0 : string , 1 : kieu int, 2 : kieu email, 3 : kieu double, 4 : kieu hash password
 	4). Noi luu giu data  0 : post(sẽ tìm trong form ở dưới có cotrol nào có name đc khai báo ở (2)), 1 : variable (sẽ tìm những biến nào có tên đã đc khai báo ở (2) )
 	5). Gia tri mac dinh, neu require thi phai lon hon hoac bang default
@@ -27,25 +27,25 @@
 	8). Chi co duy nhat trong database (0: cho phép trùng ; 1: ko cho phép)
 	9). Loi dua ra man hinh neu co duplicate
 	*/
-   $post_time = time();  
-   //tạo mới class generate_form 
+   $post_time = time();
+   //tạo mới class generate_form
    $myform = new generate_form();
    $date = time();
-   $myform->add("ssha_cat_id","ssha_cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,""); 
+   $myform->add("ssha_cat_id","ssha_cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,"");
    $myform->add("ssha_title", "ssha_title", 0, 0, "", 1, "Bạn chưa nhập tiêu đề câu hỏi", 0, "");
    $myform->add("ssha_content","ssha_content", 0, 0,"", 1, "Bạn chưa nhập nội dung câu hỏi", 0, "");
    $myform->add("ssha_time","date", 1, 1,"", 0, "", 0, "");
    $myform->add("ssha_active","ssha_active",1,0,0,0,"",0,"");
    $myform->addTable($fs_table);
-   $action			= getValue("action", "str", "POST", ""); 
+   $action			= getValue("action", "str", "POST", "");
    if($action == "execute"){
-   	$fs_errorMsg .= $myform->checkdata();      
+   	$fs_errorMsg .= $myform->checkdata();
       if($fs_errorMsg == ""){
-            $email      = getValue('by_email','str','POST',""); 
+            $email      = getValue('by_email','str','POST',"");
             $db_user_id = new db_query("SELECT use_id
-                                       FROM users 
+                                       FROM users
                                        WHERE 1 AND use_email = '".$email."'");
-            $user_id    = mysql_fetch_assoc($db_user_id->result);
+            $user_id    = mysqli_fetch_assoc($db_user_id->result);
             unset($db_user_id);
             if($user_id){
                $ssha_user_id = $user_id['use_id'];
@@ -53,7 +53,7 @@
                $fs_errorMsg .= 'Email này chưa đăng ký hoặc sai định dạng email';
             }
             $myform->add("ssha_user_id","ssha_user_id",1,1,"",1,"Bạn chưa nhập email",0,"");
-            $fs_errorMsg .= $myform->checkdata();   
+            $fs_errorMsg .= $myform->checkdata();
             if($fs_errorMsg == ""){
              	$myform->removeHTML(1);
              	$db_insert = new db_execute($myform->generate_insert_SQL());
@@ -82,7 +82,7 @@ $fs_errorMsg .= $myform->strErrorField;
 	<p align="center" style="padding-left:10px;">
 	<?
 	$form = new form();
-  
+
 	$form->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
    $form->create_table();
 	?>

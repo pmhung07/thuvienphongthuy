@@ -9,7 +9,7 @@ $fs_action			= getURL();
 $fs_errorMsg		= "";
 $after_save_data  = getValue("after_save_data", "str", "POST", "add_exercises.php");
 $fs_redirect      = $after_save_data;
-$teque_content    = "Where would the sentence best fit?"; 
+$teque_content    = "Where would the sentence best fit?";
 $action				= getValue("action", "str", "POST", "");
 //----------------------------------
 
@@ -17,7 +17,7 @@ if($action == "execute"){
    $myform_ques = new generate_form();
    $myform_ques->add("teque_tec_id	" , "iPara" , 1 , 1 , 0 , 1,"" , 0 , "");
    $myform_ques->add("teque_content" , "teque_content" , 0 , 1 , "Where would the sentence best fit" , 1,"Bạn chưa nhập câu hỏi" , 0 , "");
-   $myform_ques->add("teque_type" , "teque_type" , 1 , 1 , 3 , 1,"Bạn chưa nhập câu hỏi" , 0 , "");   
+   $myform_ques->add("teque_type" , "teque_type" , 1 , 1 , 3 , 1,"Bạn chưa nhập câu hỏi" , 0 , "");
    if($fs_errorMsg == ""){
       $myform_ques->addTable("test_questions");
       $myform_ques->removeHTML(0);
@@ -25,7 +25,7 @@ if($action == "execute"){
       $last_exe_id = $db_insert->db_execute($myform_ques->generate_insert_SQL());
       if($last_exe_id>0){
          $exe_id = $last_exe_id;
-         $myform = new generate_form();  
+         $myform = new generate_form();
          $myform->add("fil_phrases", "fil_phrases", 0, 0, "", 1, "Bạn chưa nhập câu", 1, "");
          $myform->add("fil_paragraph", "fil_paragraph", 0, 0, "",1, "Bạn chưa nhập đoạn văn", 0, "");
          $myform->add("fil_position","fil_position",1,0,0,1,"Bạn chưa nhập vị trí",0,"");
@@ -72,8 +72,8 @@ if($action == "execute"){
          <td width="" class="form_name">Tách đoạn :</td>
          <td width="800">
             <?
-            $db_para_select = new db_query("SELECT * FROM test_content WHERE tec_id = " . $iPara);  
-            if($row_para = mysql_fetch_assoc($db_para_select->result)){
+            $db_para_select = new db_query("SELECT * FROM test_content WHERE tec_id = " . $iPara);
+            if($row_para = mysqli_fetch_assoc($db_para_select->result)){
             $para = $row_para["tec_content"];
             ?>
             <?=$form->wysiwyg("<font class='form_asterisk'>*</font> Thông tin đề thi", "fil_paragraph", $para , "../../resource/wysiwyg_editor/", 800, 450)?>
@@ -92,7 +92,7 @@ if($action == "execute"){
       $form->close_form();
       unset($form);
       ?>
-   </p>   
+   </p>
    <?=template_bottom() ?>
 </body>
 </html>

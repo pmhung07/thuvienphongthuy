@@ -32,16 +32,16 @@ $list->add("",translate_text("Delete"),"delete");
 //$list->quickEdit = false;
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
-$total			= new db_count("SELECT 	count(*) AS count 
-										 FROM slides 
+$total			= new db_count("SELECT 	count(*) AS count
+										 FROM slides
                                WHERE 1".$list->sqlSearch());
-//câu lệnh select dữ liêu										 
-$db_listing 	= new db_query("SELECT * FROM slides 
+//câu lệnh select dữ liêu
+$db_listing 	= new db_query("SELECT * FROM slides
 								 		 WHERE 1".$list->sqlSearch()
 									   . " ORDER BY " . $list->sqlSort() . "slide_type ASC "
                               .	$list->limit($total->total));
-                                 
-$total_row = mysql_num_rows($db_listing->result);
+
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -57,16 +57,16 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
       <td align="center">
 		   <img style="height: 20px;width: 30px;" src="<?=$imgpath . "small_" . $row['slide_img'] ?>" />
 		</td>
       <td class="bold" align="center">
          <input type="text" style="width: 300px;color: red;" value="<?=$row[$name_field]?>" />
-      </td>      
+      </td>
       <td class="bold" align="center">
             <?
             switch($row['slide_type']){
@@ -84,10 +84,10 @@ $total_row = mysql_num_rows($db_listing->result);
                break;
             }
             ?>
-      </td>   
+      </td>
       <td class="bold" align="center">
          <input type="text" style="width: 50px;color: red;text-align: center;" value="<?=format_number($row['slide_order'])?>" />
-      </td> 
+      </td>
       <?=$list->showCheckbox("slide_active", $row["slide_active"], $row[$id_field])?>
       <?=$list->showCheckbox("slide_content_invi", $row["slide_content_invi"], $row[$id_field])?>
       <?=$list->showEdit($row['slide_id'])?>
@@ -95,7 +95,7 @@ $total_row = mysql_num_rows($db_listing->result);
       <?=$list->end_tr()?>
    <?
      }
-   ?>  
+   ?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>

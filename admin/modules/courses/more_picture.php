@@ -38,7 +38,7 @@ if($action == "execute"){
           resize_image($imgpath, $filename, $arr["width"], $arr["height"], $arr["quality"], $type);
       }
 
-	
+
 	//Check form data
 	$fs_errorMsg .= $myform->checkdata();
 	$fs_errorMsg	.= $upload->warning_error;
@@ -48,9 +48,9 @@ if($action == "execute"){
         $db_insert = new db_execute($myform->generate_update_SQL($id_field_com, $record_id));
      	unset($db_insert);
 		redirect($_SERVER['REQUEST_URI']);
-		
+
 	}//End if($fs_errorMsg == "")
-	
+
 }//End if($action == "execute")
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -64,15 +64,15 @@ margin:5px;
 }
 </style>
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 ?>
 </head>
 <body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
-	<a style="background: #A0007F;text-decoration: none;color: white;padding: 10px 20px;display: -webkit-inline-box;text-transform: uppercase;" href="course_unit.php?iCourses=<?=$coursesid?>">Back</a>	
+	<a style="background: #A0007F;text-decoration: none;color: white;padding: 10px 20px;display: -webkit-inline-box;text-transform: uppercase;" href="course_unit.php?iCourses=<?=$coursesid?>">Back</a>
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<?
 	$form = new form();
@@ -90,7 +90,7 @@ $fs_errorMsg .= $myform->strErrorField;
 	$form->close_form();
 	unset($form);
 	?>
-	
+
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<div style="padding-left:3px; padding-right:3px;">
 	<table cellpadding="5" cellspacing="0" width="100%" style="border-collapse:collapse;" bordercolor="#CCCCCC" border="1">
@@ -101,13 +101,13 @@ $fs_errorMsg .= $myform->strErrorField;
 		<?
 		$sql = '';
 		//if($temp_key != '') $sql .= " AND ppic_temp_key = '" . $temp_key . "'";
-		$db_picture = new db_query("SELECT * 
+		$db_picture = new db_query("SELECT *
 											 FROM courses_multi
 											 WHERE  com_id=" . $record_id . $sql);
 		?>
 		<?
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){
+		while($row = mysqli_fetch_assoc($db_picture->result)){
 			$i++;
 		?>
 			<tr <?=$fs_change_bg?>>

@@ -29,16 +29,16 @@ $score            = getValue("score","int","GET",0);
    		?>
    		<?
    		$i=0;
-   		while($row = mysql_fetch_assoc($db_picture->result)){
+   		while($row = mysqli_fetch_assoc($db_picture->result)){
    			$i++;
    		?>
    			<tr <?=$fs_change_bg?>>
                <td align="" width="">
                   <div style="color: #164989;font-size: 11px;text-align: justify;padding-left: 10px;font-weight: bold;"><?=$row["ielt_user_writing_first"];?></div><br />
-               </td>		
+               </td>
                <td align="" width="">
                   <div style="color: #164989;font-size: 11px;text-align: justify;padding-left: 10px;font-weight: bold;"><?=$row["ielt_user_writing_first"];?></div><br />
-               </td>		
+               </td>
             </tr>
             <tr>
                <td colspan="2">
@@ -57,7 +57,7 @@ $score            = getValue("score","int","GET",0);
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 <style>
 .a_detail{padding: 2px 15px;border: solid 1px;background: #EEE;text-decoration: none;color: #164989;cursor: pointer;}
-</style>  
+</style>
 <script>
 function score_writing(record_id){
    var score = $('#score_writing_'+record_id).val();
@@ -75,7 +75,7 @@ function score_writing(record_id){
 		url:'ajax_score_writing.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);

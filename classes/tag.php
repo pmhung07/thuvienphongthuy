@@ -1,6 +1,6 @@
 <?
 class tag{
-	
+
 	var $store_term	= array();
 	var $array_term	= array();
 	var $id				= 0;
@@ -9,7 +9,7 @@ class tag{
 	var $teaser			= "";
    var $group_type   = 0;
    var $type         = 0;
-	
+
 	function tag($id, $text, $title, $teaser, $group_type, $type){
 		$this->id		      = 	intval($id);
 		$this->text 	      = 	$text;
@@ -18,7 +18,7 @@ class tag{
       $this->group_type    = $group_type;
       $this->type          = $type;
 	}
-	
+
 	/*
 	Function insert tag to database
 	*/
@@ -38,7 +38,7 @@ class tag{
 				$this->array_term[] = $array_text[$i];
 			}
 		}
-		
+
 		$num_arr = count($this->array_term);
 		for($i=0; $i<$num_arr; $i++){
 			// Lưu Term 2
@@ -60,12 +60,12 @@ class tag{
 				}
 			}
 		}
-		
+
 		$array_count	= array_count_values($this->store_term);
 		$array_remove	= array(1);
 		$array_temp	= array_diff($array_count, $array_remove);
 		//print_r($array_temp);
-		
+
 		$new_array = array();
 		foreach($array_temp as $key => $value){
 			$arr_exp = explode(" ", $key);
@@ -78,20 +78,20 @@ class tag{
 			}
 			$new_array[$key] = $num;
 		}
-		
+
 		arsort($new_array);
-	
-		
+
+
 		//print_r($new_array);
 		if(!$no_insert){
 			array_splice($new_array, 10);
 			foreach($new_array as $key => $value){
-				
+
 				$key = replaceMQ($key);
             //dump($key);
 				// Check xem tag này đã tồn tại chưa
 				$db_check = new db_query("SELECT tag_id, tag_name FROM tags WHERE tag_name = '" . $key  . "' LIMIT 1");
-				if($check = mysql_fetch_array($db_check->result)){
+				if($check = mysqli_fetch_array($db_check->result)){
 					$tag_id		= $check["tag_id"];
 				}
 				else{
@@ -100,7 +100,7 @@ class tag{
 					unset($db_insert);
 				}
 				unset($db_check);
-				
+
 				// Insert vào bảng news_tag
 				$post_id		  = $this->id;
             $group_type   = $this->group_type;
@@ -115,7 +115,7 @@ class tag{
 		}
 		return $new_array;
 	}
-	
+
 }
 /*
 require_once("../classes/database.php");

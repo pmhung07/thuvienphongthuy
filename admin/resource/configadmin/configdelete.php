@@ -1,11 +1,11 @@
-<? 
-include("config_security.php"); 
+<?
+include("config_security.php");
 
 $returnurl 		= base64_decode(getValue("url","str","GET",base64_encode("listingtable.php")));
 $record_id		= getValue("record_id","str","GET");
 
 $db_select 	= new db_query("SELECT * FROM  config_table WHERE conf_id = " . $record_id);
-if($row		=	mysql_fetch_assoc($db_select->result)){	
+if($row		=	mysqli_fetch_assoc($db_select->result)){
 	$db_del = new db_execute("ALTER TABLE `" . $row["conf_table"] ."` DROP `" . $row["conf_field"] . "` ");
 	unset($db_del);
 }

@@ -45,7 +45,7 @@ $myform->add("sg_ques_order" , "sg_ques_order" , 1 , 0 , 0 , 0,"" , 0 , "");
 $myform->add("sg_ques_part" , "part" , 1 , 1 , 0 , 1,"" , 0 , "");
 $myform->addTable("sg_test_questions");
    //Get action variable for add new data
-   $action = getValue("action", "str", "POST", ""); 
+   $action = getValue("action", "str", "POST", "");
    if($action == "execute"){
       $fs_errorMsg .= $myform->checkdata();
       if($fs_errorMsg == ""){
@@ -53,9 +53,9 @@ $myform->addTable("sg_test_questions");
          $filename	= $upload->file_name;
          if($filename != ""){
          	$myform->add("sg_ques_audio","filename",0,1,0,0);
-         }	
+         }
          $fs_errorMsg .= $upload->show_warning_error();
-         
+
          $upload_img	= new upload("sg_ques_image", $image_path, $fs_extension_img, $fs_filesize);
          //img
          $filename_img	= $upload_img->file_name;
@@ -75,7 +75,7 @@ $myform->addTable("sg_test_questions");
                for($i=0;$i<4;$i++){
                   $ans_form = new generate_form();
                   $ans_form->add("sg_ans_ques_id" , "exe_id" , 1 , 1 , 0 , 1,"" , 0 , "");
-                  $ans = $arr_ans[$i]; 
+                  $ans = $arr_ans[$i];
                   $true = $arr_true[$i];
                   $ans_form->add("sg_ans_content" , "ans" , 0 , 1 , "" , 1,"Bạn chưa nhập câu trả lời" , 0 , "");
 
@@ -96,13 +96,13 @@ $myform->addTable("sg_test_questions");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 ?>
 </head>
-<body> 
+<body>
    <?
    $form = new form();
    $form->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
@@ -121,73 +121,73 @@ $fs_errorMsg .= $myform->strErrorField;
       <td>
          <ul style="list-style: none;padding: 0px 6px;">
             <li style="margin: 5px 0px;"><b>A. </b>
-               <input type="text" name="ans_1" id="ans_1" class="form_control" style="width:205px;" value=""/>              
+               <input type="text" name="ans_1" id="ans_1" class="form_control" style="width:205px;" value=""/>
             </li>
             <li style="margin: 5px 0px;"><b>B. </b>
                <input type="text" name="ans_2" id="ans_2" class="form_control" style="width:205px;" value=""/>
             </li>
             <li style="margin: 5px 0px;"><b>C. </b>
-               <input type="text" name="ans_3" id="ans_3" class="form_control" style="width:205px;" value=""/>             
+               <input type="text" name="ans_3" id="ans_3" class="form_control" style="width:205px;" value=""/>
             </li>
             <li style="margin: 5px 0px;"><b>D. </b>
                <input type="text" name="ans_4" id="ans_4" class="form_control" style="width:205px;" value=""/>
             </li>
-         </ul>                 
+         </ul>
       </td>
    </tr>
    <?=$form->getFile("Tải Ảnh", "sg_ques_image", "sg_ques_image", "Tải ảnh", 0, 30, "", "")?>
    <?=$form->getFile("Tải Audio", "sg_ques_audio", "sg_ques_audio", "Tải ảnh", 0, 30, "", "")?>
    <?=$form->text("Thứ tự", "sg_ques_order", "sg_ques_order", $sg_ques_order, "Thứ tự", 0, 40, "", 255, "", "", "")?>
 	<?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Đóng cửa sổ", "Cập nhật" . $form->ec . "Đóng cửa sổ", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)" onclick="window.parent.tb_remove()"', "");?>
-	<?=$form->hidden("action", "action", "execute", "");?>  
+	<?=$form->hidden("action", "action", "execute", "");?>
    <?
    $form->close_table();
    $form->close_form();
    unset($form);
    ?>
    <?//=======================================List ques===============================================?>
-   <div id="wr_list_answer">       
+   <div id="wr_list_answer">
       <div id="list_title">Danh sách câu hỏi - Dạng Multichoice</div>
       <table class="table_info_exe">
          <tr style="background-color: #eee;">
             <th width="30">STT</th>
             <th width="500">Nội dung câu hỏi</th>
             <th width="500">Nội dung câu trả lời</th>
-         </tr>            
+         </tr>
          <?
          $db_ques_select   = new db_query("SELECT * FROM  sg_test_questions WHERE sg_ques_part = ". $part ." ORDER BY sg_ques_order");
          $i = 0;
-         while($row_ques = mysql_fetch_assoc($db_ques_select->result)){
+         while($row_ques = mysqli_fetch_assoc($db_ques_select->result)){
          $i++;
          ?>
          <tr style="background: #A9BAD0;">
-            <td align="center"><?=$i?></td>               
+            <td align="center"><?=$i?></td>
             <td>
                <input size="30" class="ans_content" id="ques_tit_<?=$row_ques['sg_ques_id']?>" name="ans_content" value="<?=$row_ques['sg_ques_title']?>"/>
                <a class="ans_edit" onclick="save_del_ques_tit(<?=$row_ques['sg_ques_id']?>,1)">Save</a>
                <a class="ans_del" onclick="save_del_ques_tit(<?=$row_ques['sg_ques_id']?>,2)">Delete</a>
-               
+
                <input size="30" class="ans_content" id="ques_content_<?=$row_ques['sg_ques_id']?>" name="ans_content" value="<?=$row_ques['sg_ques_content']?>"/>
                <a class="ans_edit" onclick="save_question(<?=$row_ques['sg_ques_id']?>)">Save</a>
                <a class="ans_del" onclick="del_question(<?=$row_ques['sg_ques_id']?>)">Delete</a>
                <input id="order_ques_<?=$row_ques['sg_ques_id']?>" style="text-align: center;width: 30px;background: #eee;margin: 7px 0px 5px 6px;height: 12px;float: left;;color: red;font-weight: bold;" type="text" value="<?=$row_ques['sg_ques_order']?>" />
-               <a onclick="order_ques(<?=$row_ques['sg_ques_id']?>)" class="a_score" style="float: left;cursor: pointer;">Order</a>  		
+               <a onclick="order_ques(<?=$row_ques['sg_ques_id']?>)" class="a_score" style="float: left;cursor: pointer;">Order</a>
                <a style="padding:5px 0px 5px 6px;text-decoration:none;float:left;" title="Add audio" class="thickbox noborder a_detail" href="ques_audio.php?iQues=<?=$row_ques['sg_ques_id']?>'&url=<?=base64_encode(getURL())?>'&TB_iframe=true&amp;height=350&amp;width=1000">
                   <b style="background: none repeat scroll 0 0 <?=$row_ques['sg_ques_audio'] == "" ? '#1D5691' : "blueviolet"; ?>;color: white;padding: 2px 10px;">Update Audio & Image</b>
                </a>
             </td>
             <td>
                <?
-               $db_ans_select = new db_query("SELECT * FROM sg_test_answers 
-                                              INNER JOIN sg_test_questions ON sg_ans_ques_id = sg_ques_id	 
-                                              WHERE sg_ans_ques_id  = ". $row_ques["sg_ques_id"]);  
-               while($row_ans = mysql_fetch_assoc($db_ans_select->result)){
+               $db_ans_select = new db_query("SELECT * FROM sg_test_answers
+                                              INNER JOIN sg_test_questions ON sg_ans_ques_id = sg_ques_id
+                                              WHERE sg_ans_ques_id  = ". $row_ques["sg_ques_id"]);
+               while($row_ans = mysqli_fetch_assoc($db_ans_select->result)){
                ?>
                   <input style="width: 325px!important;" size="30" id="ans_content_<?=$row_ans['sg_ans_id']?>" class="ans_content" name="ans_content" value="<?=$row_ans['sg_ans_content']?>"/>
                   <input type="radio" <?=($row_ans['sg_ans_true'] == 1)? "checked=''":""?> class="rdo_check_true" onclick="set_true(<?=$row_ans['sg_ans_id']?>,<?=$row_ques['sg_ques_id']?>)" id="ans_ques_<?=$row_ans['sg_ans_id']?>" name="ans_<?=$row_ques['sg_ques_id']?>" value=""/>
                   <a class="ans_edit" onclick="save_answers(<?=$row_ans['sg_ans_id']?>)">Save</a>
-               <?}unset($db_ans_select);?>           
-            </td>        
+               <?}unset($db_ans_select);?>
+            </td>
          </tr>
          <?}unset($db_ques_select);?>
       </table>

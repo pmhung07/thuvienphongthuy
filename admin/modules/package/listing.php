@@ -25,15 +25,15 @@ $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
 $total			= new db_count("SELECT count(*) AS count FROM package
                             WHERE 1 ".$list->sqlSearch());
-//câu lệnh select dữ liêu										 
+//câu lệnh select dữ liêu
 $db_listing 	= new db_query("SELECT * FROM package
-                              -- INNER JOIN categories_multi 
+                              -- INNER JOIN categories_multi
                               -- ON(cat_id  = pack_cat_id)
                               WHERE 1 ".$list->sqlSearch()
 									            . " ORDER BY " . $list->sqlSort() . " pack_id DESC "
                               . $list->limit($total->total));
-                                 
-$total_row = mysql_num_rows($db_listing->result);
+
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -49,9 +49,9 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
       <td width="150" class="bold" align="center">
          <input type="text" style="width: 150px;color: red;" value="<?=$row[$name_field]?>" />
@@ -67,7 +67,7 @@ $total_row = mysql_num_rows($db_listing->result);
             <option value="<?=$row['pack_cat_id']?>" <? if($value['cat_id'] == $cat_parent) echo "selected='selected'";?>><?=$value['cat_name']?></option>
             <? } ?>
           </select>
-      </td>  
+      </td>
       <td width="200" align="center">
           <input style="width: 120px;" value="<?=truncateString_(removeHTML(($row['pack_description'])),120)?>"/>
       </td>
@@ -85,7 +85,7 @@ $total_row = mysql_num_rows($db_listing->result);
       <?=$list->end_tr()?>
    <?
      }
-   ?>  
+   ?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>

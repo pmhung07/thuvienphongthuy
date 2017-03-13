@@ -5,11 +5,11 @@ checkAddEdit("edit");
    $fs_title			= $module_name . " | Sửa đổi";
    $fs_action			= getURL();
    $fs_errorMsg		= "";
-   
+
    $fs_redirect 	= base64_decode(getValue("url","str","GET",base64_encode("listing.php")));
    $record_id 		= getValue("record_id");
    $story_id      = getValue("story_id","int","GET",0);
-   $id_field      = "img_id"; 
+   $id_field      = "img_id";
 
 //Call class menu - lay ra danh sach Category
 
@@ -36,9 +36,9 @@ checkAddEdit("edit");
    //Check $action for insert new data
    if($action == "execute"){
    	//Check form data
-   	$fs_errorMsg .= $myform->checkdata();      
+   	$fs_errorMsg .= $myform->checkdata();
    	if($fs_errorMsg == ""){
-   	  
+
    		$upload = new upload("img_url", $imgpath_more_pic, $fs_extension, $fs_filesize );
    		$filename = $upload->file_name;
    		if($filename != ""){
@@ -52,11 +52,11 @@ checkAddEdit("edit");
    		$myform->removeHTML(0);
    		$db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
          echo("<script>alert('Sửa thành công');	window.location.reload();</script>");
-   		
+
    	}//End if($fs_errorMsg == "")
-   	
+
    }//End if($action == "insert")
-   
+
    $myform->addFormname("add_new");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -64,14 +64,14 @@ checkAddEdit("edit");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM images_story WHERE img_id = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }

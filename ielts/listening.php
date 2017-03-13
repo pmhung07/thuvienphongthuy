@@ -2,7 +2,7 @@
 <?
    //-----------------------------------------------------------------------------------------------------------------
    //-----------------------------------------------------------------------------------------------------------------
-   $test_id = getValue("test_id","int","GET",0); 
+   $test_id = getValue("test_id","int","GET",0);
    //1.Kiem tra xem co ton tai bai thi nay khong
       //check_isset_ielts($test_id);
    //2.Kiem tra cac truong hop user truy cap bai thi
@@ -18,7 +18,7 @@
    $remainingHour    = floor(($time_diff-($remainingDay*60*60*24))/60/60);
    $remainingMinutes = floor(($time_diff-($remainingDay*60*60*24)-($remainingHour*60*60))/60);
    $remainingSeconds = floor(($time_diff-($remainingDay*60*60*24)-($remainingHour*60*60))-($remainingMinutes*60));
-   
+
    //------------------------------------------------------------------------------------------------------------------
 
    if($myuser->logged == 1){
@@ -30,18 +30,18 @@
 
 <?
    // Variable tab - Default tab reading = 2
-   $db_select_cont = new db_query("SELECT * FROM ielt_content 
-                                   INNER JOIN ielt_type ON(iecon_iety_id = iety_id) 
+   $db_select_cont = new db_query("SELECT * FROM ielt_content
+                                   INNER JOIN ielt_type ON(iecon_iety_id = iety_id)
                                    WHERE iety_ielt_id	 = ".$test_id." AND iety_type = 2 ORDER BY iecon_order");
 
    // Variable tab - Default tab reading = 2
-   $db_select_ques = new db_query("SELECT * FROM ielt_questions 
+   $db_select_ques = new db_query("SELECT * FROM ielt_questions
                                    INNER JOIN ielt_content ON (ieque_iecon_id = iecon_id)
-                                   INNER JOIN ielt_type ON(iecon_iety_id = iety_id) 
+                                   INNER JOIN ielt_type ON(iecon_iety_id = iety_id)
                                    WHERE iety_ielt_id	 = ".$test_id." AND iety_type = 2 ORDER BY ieque_order");
-   
+
    // Total record of question
-   $total_row_ques = mysql_num_rows($db_select_ques->result);
+   $total_row_ques = mysqli_num_rows($db_select_ques->result);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -67,7 +67,7 @@
    <script language="javascript" type="text/javascript" src="../themes/js/deny_operations.js"></script>
 	<title>Main Test</title>
 </head>
-<script type="text/javascript">                                
+<script type="text/javascript">
    $(document).ready(function(){ $('a.media').media( { 'backgroundColor' : 'transparent' , width: 300, height: 20 } ); });
 </script>
 <body background="http://<?=$base_url?>/themes/images/ielts/bg.gif" onload="setCountDown()">
@@ -96,8 +96,8 @@
       </div>
       <!--CONTENT MAIN-->
       <div id="content_maintest">
-         <?while($row_cont = mysql_fetch_assoc($db_select_cont->result)){?>
-         <div id="maintest_listening"> 
+         <?while($row_cont = mysqli_fetch_assoc($db_select_cont->result)){?>
+         <div id="maintest_listening">
             <div id="listening_main_section">
                <span class="lms_title">SECTION <?=$row_cont['iecon_order']?>:</span>
             </div>
@@ -110,14 +110,14 @@
                </div>
                <div id="left_sheet">Answer Sheet :</div>
                <div id="left_answer_sr_<?=$row_cont['iecon_id']?>" class="left_answer">
-                  <ul class="ul_left_answer"> 
+                  <ul class="ul_left_answer">
                      <?
-                     if($row_cont['iecon_order'] == 1){ $count_start = 1 ; $count_end = 10;} 
+                     if($row_cont['iecon_order'] == 1){ $count_start = 1 ; $count_end = 10;}
                       elseif($row_cont['iecon_order'] == 2){ $count_start = 11 ; $count_end = 20; }
                        elseif($row_cont['iecon_order'] == 3){ $count_start = 21 ; $count_end = 30; }
                         elseif($row_cont['iecon_order'] == 4){ $count_start = 31 ; $count_end = 40; }
                         for($i = $count_start;$i <= $count_end;$i++){
-                        ?> 
+                        ?>
                         <li class="li_left_answer">
                            <span class="num_left_ans"><?=$i?>.</span>
                            <input id="ip_user_ans_<?=$i?>" class="ip_left_ans" type="text" />
@@ -134,7 +134,7 @@
                <?if($user_act != 0){?>
                   <?
                   $db_select_ques_sub = new db_query("SELECT * FROM ielt_questions WHERE ieque_iecon_id = ".$row_cont['iecon_id']." ORDER BY ieque_order");
-                  while($row_ques_ord = mysql_fetch_assoc($db_select_ques_sub->result)){
+                  while($row_ques_ord = mysqli_fetch_assoc($db_select_ques_sub->result)){
                   ?>
                   <div id="content_question">
                      <span style="color: #6A6A6A;"><?if($row_ques_ord['ieque_content'] != ""){echo $row_ques_ord['ieque_content'];}?></span>
@@ -170,8 +170,8 @@ $('#next_test').click(function (){
       var str_ans = "";
       for(i = 1;i <= 40 ; i++){
          if($('#ip_user_ans_'+i).val() == ""){
-            str_ans += "Answer_"+i+" : Not Answer | ";  
-         }else{  
+            str_ans += "Answer_"+i+" : Not Answer | ";
+         }else{
             str_ans += "Answer_"+i+" : "+$('#ip_user_ans_'+i).val()+" | ";
          }
       }
@@ -184,25 +184,25 @@ $('#next_test').click(function (){
          url:'act_listening.php',
          success:function(data){
       	if(data.err == ''){
-      		alert(data.msg);	
+      		alert(data.msg);
             window.location = "direct_reading.php?test_id=<?=$test_id?>";
       	}else{
       		alert(data.err);
       	}}
       });
    }return false;
-});  
-$('#back_test').click(function (){ 
+});
+$('#back_test').click(function (){
    window.location = "direct_listening.php?test_id=<?=$test_id?>";
-}); 
+});
 
 /*********************************************************************************
-*Append time 
+*Append time
 *********************************************************************************/
 
-var hours = <?=$remainingHour?>  
-var minutes = <?=$remainingMinutes?>  
-var seconds = <?=$remainingSeconds?> 
+var hours = <?=$remainingHour?>
+var minutes = <?=$remainingMinutes?>
+var seconds = <?=$remainingSeconds?>
 function setCountDown ()
 {
    seconds--;
@@ -222,13 +222,13 @@ function setCountDown ()
    }
    document.getElementById("ap_clock").innerHTML = "<p class='p_remain'>"+minutes+" : "+seconds+"</p>";
    SD=window.setTimeout( "setCountDown()", 1000 );
-   if(minutes == '00' && seconds == '00') { 
+   if(minutes == '00' && seconds == '00') {
       seconds = "00"; window.clearTimeout(SD);
       var str_ans = "";
       for(i = 1;i <= 40 ; i++){
          if($('#ip_user_ans_'+i).val() == ""){
-            str_ans += "Answer_"+i+" : Not Answer | ";  
-         }else{  
+            str_ans += "Answer_"+i+" : Not Answer | ";
+         }else{
             str_ans += "Answer_"+i+" : "+$('#ip_user_ans_'+i).val()+" | ";
          }
       }
@@ -241,13 +241,13 @@ function setCountDown ()
          url:'act_listening.php',
          success:function(data){
       	if(data.err == ''){
-      		alert(data.msg);	
+      		alert(data.msg);
             window.location = "direct_reading.php?test_id=<?=$test_id?>";
       	}else{
       		alert(data.err);
       	}}
       });
       //window.location = "direct_reading.php?test_id=<?//=$test_id?>";
-   } 
+   }
 }
 </script>

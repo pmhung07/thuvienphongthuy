@@ -12,7 +12,7 @@ $iParent = getValue("iParent");
 $sql_filter = "";
 if($iParent !=""){
    if($iCat !="") $sql_filter .= " AND cat_parent_id = '".$iParent."'";
-   else $sql_filter .= " AND cat_id = '".$iParent."'"; 
+   else $sql_filter .= " AND cat_id = '".$iParent."'";
 }
 if($iCat !="") $sql_filter  .= " AND cat_id = '" . $iCat . "'";
 //if($iLev !="") $sql_filter  .= " AND lev_id = '" . $iLev . "'";
@@ -23,7 +23,7 @@ $arrayParent[''] = "Chọn Danh mục cha";
 $db_parent = new db_query("SELECT cat_name,cat_id
                              FROM categories_multi
                              WHERE cat_parent_id = 0 AND cat_type = 0");
-while($row = mysql_fetch_array($db_parent->result)){
+while($row = mysqli_fetch_array($db_parent->result)){
    $arrayParent[$row["cat_id"]] = $row["cat_name"];
 }unset($db_parent);
 
@@ -34,7 +34,7 @@ if($iParent > 0){
    $db_cateogry = new db_query("SELECT cat_name,cat_id
                                 FROM categories_multi
                                 WHERE cat_parent_id =".$iParent);
-   while($row = mysql_fetch_array($db_cateogry->result)){
+   while($row = mysqli_fetch_array($db_cateogry->result)){
       $arrayCat[$row["cat_id"]] = $row["cat_name"];
    }unset($db_cateogry);
 }
@@ -44,7 +44,7 @@ if($iParent > 0){
 $arr_lev = array();
 $arr_lev[''] = "Chọn Level";
 $lev_db = new db_query("SELECT * FROM levels");
-while($row_lev = mysql_fetch_array($lev_db->result)){
+while($row_lev = mysqli_fetch_array($lev_db->result)){
    $arr_lev[$row_lev["lev_id"]] = $row_lev["lev_name"];
 }unset($lev_db);
 */
@@ -73,18 +73,18 @@ $list->add("",translate_text("Delete"),"delete");
 //$list->quickEdit = false;
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
-$total			= new db_count("SELECT 	count(*) AS count 
-										 FROM skill_lesson 
-                               INNER JOIN categories_multi ON skill_lesson.skl_les_cat_id=categories_multi.cat_id 
+$total			= new db_count("SELECT 	count(*) AS count
+										 FROM skill_lesson
+                               INNER JOIN categories_multi ON skill_lesson.skl_les_cat_id=categories_multi.cat_id
                                WHERE 1".$list->sqlSearch().$sql_filter);
-//câu lệnh select dữ liêu										 
-$db_listing 	= new db_query("SELECT * FROM skill_lesson 
-                               INNER JOIN categories_multi ON skill_lesson.skl_les_cat_id=categories_multi.cat_id 
+//câu lệnh select dữ liêu
+$db_listing 	= new db_query("SELECT * FROM skill_lesson
+                               INNER JOIN categories_multi ON skill_lesson.skl_les_cat_id=categories_multi.cat_id
 								 		 WHERE 1".$list->sqlSearch().$sql_filter
 									   . " ORDER BY " . $list->sqlSort() . "skl_les_id DESC "
                               .	$list->limit($total->total));
-                                 
-$total_row = mysql_num_rows($db_listing->result);
+
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -100,9 +100,9 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
       <td align="center">
 		   <img style="height: 40px;" src="<?=$imgpath . "small_" . $row['skl_les_img'] ?>" />
@@ -110,7 +110,7 @@ $total_row = mysql_num_rows($db_listing->result);
       <td class="bold" align="center">
          <input type="text" style="width: 95%;color: red;" value="<?=$row[$name_field]?>" />
          <!--<a style="text-decoration: none;" class="thickbox noborder a_detail" title="Xem chi tiết" href="<?//=$fs_redirect?>?record_id=<?//=$row[$id_field]?>&TB_iframe=true&amp;height=450&amp;width=950">Details</a>-->
-      </td>      
+      </td>
       <td align="center">
           <input style="width: 95%;color: #1C3E7F;" type="text" readonly="true" value="<?=$row['cat_name']?>" />
       </td>
@@ -123,7 +123,7 @@ $total_row = mysql_num_rows($db_listing->result);
       <?=$list->end_tr()?>
    <?
      }
-   ?>  
+   ?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>

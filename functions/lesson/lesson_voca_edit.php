@@ -16,13 +16,13 @@ function lesson_vocabulary_edit($unit,$unit_num,$unit_name){
 
     $var_head_lib2  .= '<script type="text/javascript" src="'.$var_path_media.'jwplayer.js"></script>';
     $var_head_lib2  .= '<script type="text/javascript">jwplayer.key="IyBF3HN/WxYyCXbdjRCOrUH3C4FJGuzHP9SQ6mz/YQcKlam8eP/Fvm6VM6g=";</script>';
-   
+
     //Lấy nội dung bài học và bài tập
     $iUnit      = getValue("iunit","int","POST","");
     $unit       = getValue("unit","int","POST","");
     $url        = getValue("url","str","POST","");
     $sqlCou     = new db_query('SELECT * FROM courses,courses_multi WHERE courses.cou_id = courses_multi.com_cou_id AND courses_multi.com_id = '.$unit);
-    $rowCou     = mysql_fetch_assoc($sqlCou->result);
+    $rowCou     = mysqli_fetch_assoc($sqlCou->result);
     $iCou       = $rowCou['cou_id'];
     $nCou       = $rowCou['cou_name'];
     unset($sqlCou);
@@ -43,7 +43,7 @@ function lesson_vocabulary_edit($unit,$unit_num,$unit_name){
                 $ans[$i]         = 0;
                 if($idAns[$i]!=0){
                     $sqlAns          = new db_query('SELECT * FROM answers WHERE ans_id ='.$idAns[$i]);
-                    while($rowAns    = mysql_fetch_assoc($sqlAns->result)){
+                    while($rowAns    = mysqli_fetch_assoc($sqlAns->result)){
                         $ans[$i]     = $rowAns["ans_true"];
                     }
                 }
@@ -60,7 +60,7 @@ function lesson_vocabulary_edit($unit,$unit_num,$unit_name){
     $sqlQuick    = new db_query('SELECT * FROM exercises WHERE exe_type = 1 AND exe_type_lesson = 3 AND exe_com_id = '.$unit);
 	//Lay thong tin Unit
     $db_unit     = new db_query('SELECT * FROM courses_multi WHERE com_id = '.$unit);
-    $row_unit    = mysql_fetch_assoc($db_unit->result);
+    $row_unit    = mysqli_fetch_assoc($db_unit->result);
     unset($db_unit);
 
     $type    = "";
@@ -78,10 +78,10 @@ function lesson_vocabulary_edit($unit,$unit_num,$unit_name){
        		<div class="gray-box1" style="">
                 <?php
                 $in = 0;
-                while($rowQuick  = mysql_fetch_assoc($sqlQuick->result)){ 
+                while($rowQuick  = mysqli_fetch_assoc($sqlQuick->result)){
                     echo '<form name="quiz" id="frm_quiz">';
                     $sqlQues     = new db_query('SELECT * FROM questions WHERE que_exe_id = '.$rowQuick["exe_id"]);
-                    while($rowQues = mysql_fetch_assoc($sqlQues->result)){
+                    while($rowQues = mysqli_fetch_assoc($sqlQues->result)){
                         $type = $rowQues['que_type'];
                         $in ++;
                         if($rowQues['que_type']== 1 ){
@@ -95,86 +95,86 @@ function lesson_vocabulary_edit($unit,$unit_num,$unit_name){
                                     $ans[$i]         = 0;
                                     if($idAns[$i]!=0){
                                         $sqlAns          = new db_query('SELECT * FROM answers WHERE ans_id ='.$idAns[$i]);
-                                        while($rowAns    = mysql_fetch_assoc($sqlAns->result)){
+                                        while($rowAns    = mysqli_fetch_assoc($sqlAns->result)){
                                             $ans[$i]     = $rowAns["ans_true"];
                                         }
                                     }
                                 }
-                            }    
-                            echo '<div'; ?>                                   
+                            }
+                            echo '<div'; ?>
                             <h4 class="cau_hoi"><?=$in?>.<?php echo $rowQues['que_content'] =   str_replace ('&&', '<br />', $rowQues['que_content']);  ?></h4>
                             <?php
                                 $sqlAns    = new db_query('SELECT * FROM answers WHERE ans_ques_id = '.$rowQues["que_id"]);
                                 $arrayT    = array(1=>'A',2=>'B',3=>'C',4=>'D',5=>'E');
                                 $iA        = 0;
-                                while($rowAns = mysql_fetch_assoc($sqlAns->result)){
-                                $iA ++; ?>  
+                                while($rowAns = mysqli_fetch_assoc($sqlAns->result)){
+                                $iA ++; ?>
                                 <span class="check_box">
                                     <input id="checke<?=$in?>_<?=$iA?>" name="chec_box<?=$in?>" type="radio" value="<?=$rowAns['ans_id']?>" />
                                     <label style="<?php if($rowAns['ans_id'] == $idAns[$in]) {echo 'color:red;font-weight: bold;';} if($rowAns['ans_true'] == '1'){ echo 'color:#33B3A6;font-weight: bold;';} ?>" for="checke<?=$in?>_<?=$iA?>"><?=$arrayT[$iA]?>.<?=$rowAns['ans_content']?></label>
                                 </span>
-                            <?php } echo '</div>'; 
-                        }elseif ($rowQues['que_type']== 3){ ?>    
-                        <!--  bắt đầu hiển thị nội dung quiz dạng kéo thả -->				    	            
+                            <?php } echo '</div>';
+                        }elseif ($rowQues['que_type']== 3){ ?>
+                        <!--  bắt đầu hiển thị nội dung quiz dạng kéo thả -->
     						<?php
     						$arrayAns  = getStringAns($rowQues['que_content']);
     						$result    = count($arrayAns);
-    						$rand_keys = array_random($arrayAns, $result);                                
+    						$rand_keys = array_random($arrayAns, $result);
     						?>
     						&nbsp;
     						<ul class="menu_quiz">
     							<?php for($i=0;$i<$result;$i++){?>
     								<a href="#" ><?=$i+1?>.<span id="draggable<?=$i+1?>"><?=trim($rand_keys[$i])?></span></a>
-    							<?php } ?>   
+    							<?php } ?>
     						</ul>
-    							
+
     					    <p class="text_content_lightbox">
     					        <?php
     						    $arrayCont  =  getMainC($rowQues['que_content']);
     						    $cArrayCont =  count($arrayCont);
     						    $j = 0;
     						    for($i=0;$i<$cArrayCont;$i++){
-                                    if($i%2 != 0) { 
+                                    if($i%2 != 0) {
                                         $j ++;
                                         $value[$j] = str_replace ('_', ' ', $value[$j]);
                                         echo '<span id="droppable'.@$j.'"><span class="ans">'.$value[$j].'</span>..<span class="anstrue">('.$arrayAns[$j-1].')</span></span>';
                                     }else{
                            	            echo $arrayCont[$i];
-                                    }     
-    						    } ?>						   
-    						</p> 
+                                    }
+    						    } ?>
+    						</p>
                         <?}elseif( $rowQues['que_type']== 2 ){
                             $arrayCont  =  getMainC($rowQues['que_content']);
-    						$cArrayCont =  count($arrayCont); ?>      
+    						$cArrayCont =  count($arrayCont); ?>
                             <div class="text_bot_right_vocabulary">
                                 <h4 class="cau_hoi"><?=$in?>. Điền từ vào chỗ trống</h4>
-                                <br />                    
+                                <br />
                                 <?php
                                 $j = 0;
                                 for($i=0;$i<$cArrayCont;$i++){
-                                    if($i%2 != 0) { 
+                                    if($i%2 != 0) {
                                         $j ++;
                                         $value[$j] = str_replace ('_', ' ', $value[$j]);
                                         echo '&nbsp;<span style="color:red;font-weight: bold;">'.$value[$j].'</span>&nbsp;&nbsp;<span style="color:#33B3A6;font-weight: bold;">('.$arrayCont[$i].')</span>&nbsp;&nbsp;';
                                     }else{
                                     	echo $arrayCont[$i];
-                                    }     
+                                    }
                                 } ?>
                             </div>
-                        <?}?>    
+                        <?}?>
                         <?php }unset($sqlQues); ?>
-                    <?php echo '</form>'; ?>    
-                <?php }unset($sqlQuick); ?>            
+                    <?php echo '</form>'; ?>
+                <?php }unset($sqlQuick); ?>
        		</div>
-            <script type="text/javascript">                                
+            <script type="text/javascript">
        		$(document).ready(function(){
        		    var $urlPoint = "";
        		    var baseurl = 'http://<?=$base_url?>';
        		    <?php
        			if($type == 3){
-       				for($i=1;$i<=$j;$i++){ ?>                                                             
+       				for($i=1;$i<=$j;$i++){ ?>
           			var valuePoint= [];
-          			$( "#draggable<?=$i?>" ).draggable({  appendTo: "body",helper: "clone"});         	
+          			$( "#draggable<?=$i?>" ).draggable({  appendTo: "body",helper: "clone"});
           			$( "#droppable<?=$i?>" ).droppable({
           				activeClass: "ui-state-hover",
           				hoverClass: "ui-state-active",
@@ -187,9 +187,9 @@ function lesson_vocabulary_edit($unit,$unit_num,$unit_name){
           					$( this ).find( ".text-ct" ).remove();
           					$( "<span class='text-ct' style='padding: 2px 5px;border: 1px dotted #999;color:red;font-weight: bold;'></span>" ).text( ui.draggable.text() ).appendTo( this );
           				}
-          			});      			
+          			});
        			<?php	} } ?>
-                
+
                 <?php
     			if($type == 1){
     				for($ii = 1; $ii<= $in ; $ii ++){ ?>
@@ -199,13 +199,13 @@ function lesson_vocabulary_edit($unit,$unit_num,$unit_name){
     			}elseif($type == 2){
     				for($i=1;$i<=$j;$i++){
     				$javaStr .= '#editme'.$i.','; ?>
-    				var str<?=$i?>    = $('#editme<?=$i?>').text().replace(/\s+/g, '_');	
+    				var str<?=$i?>    = $('#editme<?=$i?>').text().replace(/\s+/g, '_');
     				$urlPoint += "value<?=$i?>=" + str<?=$i?> + "&";
     			<?php } } ?>
-                
+
                 $(document).ready(function() {
                     var baseurl =  'http://<?=$base_url?>';
-                    $('.pull-right').click(function(){                   
+                    $('.pull-right').click(function(){
                         <?php
                         if($type == 1){
                       	    for($ii = 1; $ii<= $in ; $ii ++){ ?>
@@ -215,17 +215,17 @@ function lesson_vocabulary_edit($unit,$unit_num,$unit_name){
                          	$javaStr = '';
                          	for($i=1;$i<=$j;$i++){
                          	$javaStr .= '#editme'.$i.','; ?>
-                      	    var str<?=$i?>   = $('#editme<?=$i?>').text().replace(/\s+/g, '_');               		
+                      	    var str<?=$i?>   = $('#editme<?=$i?>').text().replace(/\s+/g, '_');
                       	    $urlPoint += "value<?=$i?>=" + str<?=$i?> + "&";
                         <?php } } ?>
                         $.fancybox({
                             'type'   : 'ajax',
                             'href'   :  baseurl+ '/ajax/voca_mark.php?iunit=<?=$iUnit?>&unit=<?=$unit?>&nAns=<?php if ($type == 1) { echo $in; }else{ echo @$j; }?>&type=<?=$type?>&' + $urlPoint,
                         });
-                    });      
-                });        
+                    });
+                });
        		});
-       		</script>	
+       		</script>
        	</div>
         <?php if ($type == 2 ){ ?>
             <script type="text/javascript">
@@ -240,8 +240,8 @@ function lesson_vocabulary_edit($unit,$unit_num,$unit_name){
                     }
              	});
             });
-            </script>  
-        <?php } ?>     
+            </script>
+        <?php } ?>
     </div>
 <div id="fade" class="black_overlay"></div>
 <?php } ?>

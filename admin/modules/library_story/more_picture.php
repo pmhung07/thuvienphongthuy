@@ -39,18 +39,18 @@ if($action == "execute"){
          resize_image($imgpath_more_pic, $$fs_fieldupload, $arr["width"], $arr["height"], $arr["quality"], $type);
       }
 	}//End if($filename != "")
-	
+
 	//Check form data
 	$fs_errorMsg .= $myform->checkdata();
 	$fs_errorMsg	.= $upload->warning_error;
 	if($fs_errorMsg == ""){
-		
+
 		//Insert to database
 		$db_insert		= new db_execute($myform->generate_insert_SQL());
 		redirect($_SERVER['REQUEST_URI']);
-		
+
 	}//End if($fs_errorMsg == "")
-	
+
 }//End if($action == "execute")
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -64,8 +64,8 @@ margin:5px;
 }
 </style>
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
@@ -91,7 +91,7 @@ $fs_errorMsg .= $myform->strErrorField;
 	$form->close_form();
 	unset($form);
 	?>
-	
+
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<div style="padding-left:3px; padding-right:3px;">
 	<table cellpadding="5" cellspacing="0" width="100%" style="border-collapse:collapse;" bordercolor="#CCCCCC" border="1">
@@ -106,13 +106,13 @@ $fs_errorMsg .= $myform->strErrorField;
 		<?
 		$sql = '';
 		//if($temp_key != '') $sql .= " AND ppic_temp_key = '" . $temp_key . "'";
-		$db_picture = new db_query("SELECT * 
+		$db_picture = new db_query("SELECT *
 											 FROM images_story
 											 WHERE  img_story_id=" . $record_id . $sql);
 		?>
 		<?
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){
+		while($row = mysqli_fetch_assoc($db_picture->result)){
 			$i++;
 		?>
 			<tr <?=$fs_change_bg?>>

@@ -6,40 +6,40 @@ $returnurl = base64_decode(getValue("returnurl","str","GET",base64_encode("listi
 
 function add_package_num_day($user_id,$day){
    $db_select = new db_query("SELECT ucp_id,ucp_end_time FROM user_courses_pack WHERE ucp_cou_id = 0 AND ucp_use_id=".$user_id);
-   $row = mysql_fetch_assoc($db_select->result); 
+   $row = mysqli_fetch_assoc($db_select->result);
    if(!$row) {
       $cur_time = time();
       $ucp_end_time = $cur_time + (60 * 60 * 24 * $day);
       $sql_money = "INSERT INTO user_courses_pack(ucp_use_id,ucp_cou_id,ucp_end_time,ucp_status) VALUES(".$user_id.",0,".$ucp_end_time.",1)";
       $db_money = new db_execute($sql_money);
-      unset($db_money); 
+      unset($db_money);
    } else {
       $end_time = $row["ucp_end_time"];
       $ucp_end_time = $end_time + (60 * 60 * 24 * $day);
       //Set money
       $sql_money = "UPDATE user_courses_pack SET ucp_end_time = ".$ucp_end_time.",ucp_status = 1 WHERE ucp_id=".$row["ucp_id"];
       $db_money = new db_execute($sql_money);
-      unset($db_money); 
+      unset($db_money);
    }
    unset($db_select);
 }
 // --
 function sub_package_num_day($user_id,$day){
    $db_select = new db_query("SELECT ucp_id,ucp_end_time FROM user_courses_pack WHERE ucp_cou_id = 0 AND ucp_use_id=".$user_id);
-   $row = mysql_fetch_assoc($db_select->result); 
+   $row = mysqli_fetch_assoc($db_select->result);
    if(!$row) {
       $cur_time = time();
       $ucp_end_time = $cur_time - (60 * 60 * 24 * $day);
       $sql_money = "INSERT INTO user_courses_pack(ucp_use_id,ucp_cou_id,ucp_end_time,ucp_status) VALUES(".$user_id.",0,".$ucp_end_time.",1)";
       $db_money = new db_execute($sql_money);
-      unset($db_money); 
+      unset($db_money);
    } else {
       $end_time = $row["ucp_end_time"];
       $ucp_end_time = $end_time - (60 * 60 * 24 * $day);
       //Set money
       $sql_money = "UPDATE user_courses_pack SET ucp_end_time = ".$ucp_end_time.",ucp_status = 1 WHERE ucp_id=".$row["ucp_id"];
       $db_money = new db_execute($sql_money);
-      unset($db_money); 
+      unset($db_money);
    }
    unset($db_select);
 }
@@ -50,11 +50,11 @@ function add_user_money($user_id,$money_type,$money_add){
     if($money_type == 1){
         // Get money
         $db_select = new db_query("SELECT umoney_money FROM user_money WHERE umoney_user_id=".$user_id);
-        $row = mysql_fetch_assoc($db_select->result); 
+        $row = mysqli_fetch_assoc($db_select->result);
         if(!$row) {
             $sql_money = "INSERT INTO user_money(umoney_user_id,umoney_money,umoney_promotion) VALUES(".$user_id.",".$money_add.",0)";
             $db_money = new db_execute($sql_money);
-            unset($db_money); 
+            unset($db_money);
         } else {
             $cur_money = $row["umoney_money"];
             // Add money
@@ -62,7 +62,7 @@ function add_user_money($user_id,$money_type,$money_add){
             //Set money
             $sql_money = "UPDATE user_money SET umoney_money = ".$user_money." WHERE umoney_user_id=".$user_id;
             $db_money = new db_execute($sql_money);
-            unset($db_money); 
+            unset($db_money);
         }
         unset($db_select);
       }
@@ -73,11 +73,11 @@ function sub_user_money($user_id,$money_type,$money_add){
     if($money_type == 1){
         // Get money
         $db_select = new db_query("SELECT umoney_money FROM user_money WHERE umoney_user_id=".$user_id);
-        $row = mysql_fetch_assoc($db_select->result); 
+        $row = mysqli_fetch_assoc($db_select->result);
         if(!$row) {
             $sql_money = "INSERT INTO user_money(umoney_user_id,umoney_money,umoney_promotion) VALUES(".$user_id.",".$money_add.",0)";
             $db_money = new db_execute($sql_money);
-            unset($db_money); 
+            unset($db_money);
         } else {
             $cur_money = $row["umoney_money"];
             // Add money
@@ -85,7 +85,7 @@ function sub_user_money($user_id,$money_type,$money_add){
             //Set money
             $sql_money = "UPDATE user_money SET umoney_money = ".$user_money." WHERE umoney_user_id=".$user_id;
             $db_money = new db_execute($sql_money);
-            unset($db_money); 
+            unset($db_money);
         }
         unset($db_select);
       }
@@ -96,20 +96,20 @@ $iQuick = getValue("iQuick","str","POST","");
 if ($iQuick == 'update'){
 	$record_id = getValue("record_id", "arr", "POST", "");
 	if($record_id != ""){
-      $add_date = getValue('add_date','arr','POST',0);	
+      $add_date = getValue('add_date','arr','POST',0);
       $val_date = getValue('val_date','arr','POST',0);
       //=============//
       $add_money = getValue('add_money','arr','POST',0);
       $val_money = getValue('val_money','arr','POST',0);
       //=============//
-      $sub_date = getValue('sub_date','arr','POST',0);	
+      $sub_date = getValue('sub_date','arr','POST',0);
       $sub_val_date = getValue('sub_val_date','arr','POST',0);
       //=============//
       $sub_money = getValue('sub_money','arr','POST',0);
       $sub_val_money = getValue('sub_val_money','arr','POST',0);
       // Lấy ra khóa trọn gói của user
       //-----------------------------------
-      
+
       for($i=0; $i<count($record_id); $i++){
          if(@$add_date[$i] != 0) {
           $add_date_val = $add_date[$i];

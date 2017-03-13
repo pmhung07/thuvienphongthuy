@@ -12,10 +12,10 @@ $fs_redirect		= $after_save_data;
 $ielt_date        = time();
 $sql = '1';
 
-$action		 	 = getValue("action", "str", "POST", ""); 
-$code_vou_uni	 = getValue("code_vou_uni", "str", "POST", ""); 
-$code_vou_time	 = getValue("code_vou_time", "int", "POST", ""); 
-$sum_voucher	 = getValue("sum_voucher", "int", "POST", ""); 
+$action		 	 = getValue("action", "str", "POST", "");
+$code_vou_uni	 = getValue("code_vou_uni", "str", "POST", "");
+$code_vou_time	 = getValue("code_vou_time", "int", "POST", "");
+$sum_voucher	 = getValue("sum_voucher", "int", "POST", "");
 $cur_tume       = time();
 
 //Check $action for insert new data
@@ -24,18 +24,18 @@ if($action == "execute"){
       for($i = 1; $i <= $sum_voucher; $i++){
          $seri =  strtoupper($code_vou_uni.substr(md5(microtime()),rand(0,26),12));
          $db_listing 	= new db_query("SELECT code_vou_id FROM code_voucher WHERE code_vou_seri ='$seri'");
-         if(!$row =	mysql_fetch_assoc($db_listing->result)){
+         if(!$row =	mysqli_fetch_assoc($db_listing->result)){
             $sql  =  "INSERT INTO `code_voucher` (`code_vou_seri`, `code_vou_time`, `code_vou_uni` , `code_vou_creat`) VALUES ( '$seri', '$code_vou_time', '$code_vou_uni', $cur_tume);";
             $db_insert  =  new db_execute($sql);
             unset($db_insert);
          }
-      } 
+      }
       redirect($fs_redirect);
    }else{
       $fs_errorMsg .= "Yêu cầu nhập đầy đủ thông tin!";
    }
 }
-   
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

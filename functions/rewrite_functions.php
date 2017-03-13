@@ -165,7 +165,7 @@ function generate_detail_tour_url($nCou, $nTs, $nData, $nTab=""){
 	$nTs		= replace_rewrite_url($nTs, "_");
 	$nData	= replace_rewrite_url($nData, "-");
 	$nTab		= replace_rewrite_url($nTab, "-");
-	
+
 	$link		= lang_path();
 	if($con_mod_rewrite == 0){
 		$link	.= "detail_tour.php?nData=" . $nData;
@@ -188,7 +188,7 @@ function generate_detail_hotel_url($nCou, $nCity, $nData, $nTab=""){
 	$nCity	= replace_rewrite_url($nCity, "_");
 	$nData	= replace_rewrite_url($nData, "-");
 	$nTab		= replace_rewrite_url($nTab, "-");
-	
+
 	$link		= lang_path();
 	if($con_mod_rewrite == 0){
 		$link	.= "detail_hotel.php?nData=" . $nData;
@@ -331,7 +331,7 @@ function generate_cate_lib($type,$iCate){
          $name = "songs"; break;
       case 4:
       case 14:
-         $name = "videos"; break;         
+         $name = "videos"; break;
    }
    $link = "http://".$base_url."/".$name."/".$type."/".$iCate.".html";
    return $link;
@@ -440,8 +440,8 @@ function gen_sk_les($iLes,$nLes){
 	$link	=  'http://'.$base_url."/skill/lesson/" .$iLes . "/" . removeTitle($nLes)	.	".html";
 	return $link;
 }
-/* 
- * Function rewrite Hochayv2 
+/*
+ * Function rewrite Hochayv2
  */
 function gen_sk_cate_v2($iCate,$nCate){
    global	$base_url;
@@ -459,22 +459,22 @@ function gen_sk_les_v3($iLes){
 	global	$base_url;
 	//query skill lesson info
 	$db_query = new db_query("SELECT * FROM skill_lesson WHERE skl_les_id = ".$iLes." AND skl_les_active = 1");
-	$db_result = mysql_fetch_assoc($db_query->result);
+	$db_result = mysqli_fetch_assoc($db_query->result);
 		$lesson_info = $db_result;
 	unset($db_result);
 	unset($db_query);
-	
+
 	$category_nodes = array();
 	$cat_trails = db_find_parents_trail($lesson_info['skl_les_cat_id'],'0','categories_multi','cat_id','cat_parent_id');
 	foreach($cat_trails as $trail){
 		array_unshift($category_nodes,$trail['cat_name']);
 	}
-	
+
 	$category_name_part = removeTitle(implode('-',$category_nodes));
 	$lesson_name_part = removeTitle($lesson_info['skl_les_name']);
-	
+
 	$link = 'http://'.$base_url.'/ky-nang/'.$category_name_part."/".$lesson_info['skl_les_id']."-".$lesson_name_part.".html";
-	
+
 	return $link;
 }
 
@@ -506,32 +506,32 @@ function gen_course_cate_v3($iCate){
 		array_unshift($nodes,$trail['cat_name']);
 	}
 	$category_name_part = removeTitle(implode('-',$nodes));
-	
+
 	$type = $cat_trails[0]['cat_type'];
-	
+
 	if($type==1){
 		$link	= 'http://'.$base_url."/khoa-hoc/".$iCate."-".$category_name_part.".html";
 	} elseif($type==0){
 		$link	= 'http://'.$base_url."/ky-nang/".$iCate."-".$category_name_part.".html";
 	}
-	
-	
-	
+
+
+
 	return $link;
 }
 
 function gen_first_les_v3 ($iCourse){
 	global $base_url;
 	$link = '';
-	
+
 	$db_query = new db_query("SELECT * FROM courses_multi WHERE com_cou_id = ".$iCourse." ORDER BY com_num_unit ASC");
-	$db_result = mysql_fetch_assoc($db_query->result);
+	$db_result = mysqli_fetch_assoc($db_query->result);
 		$first_lesson_info = $db_result;
 	unset($db_result);
 	unset($db_query);
-	
+
 	$link.=gen_course_les_v3($first_lesson_info['com_id']);
-	
+
 	return $link;
 }
 
@@ -541,27 +541,27 @@ function gen_course_les_v3($iCourse = 0,$iLes = 0){//actually it lead to the fir
 	if($iCourse != 0 && $iLes == 0){
 		// GET ILES DEFAULT
 		$db_query_com_degault = new db_query('SELECT * FROM courses_multi WHERE com_cou_id = '.$iCourse.' LIMIT 1');
-		$arr_result_com_degault = mysql_fetch_assoc($db_query->result);
+		$arr_result_com_degault = mysqli_fetch_assoc($db_query->result);
 			$iLes = $arr_result_com_degault['com_id'];
 		unset($db_query_com_degault);
 	}
 
 	//select the lesson info
 	$db_query = new db_query('SELECT * FROM courses_multi WHERE com_id = '.$iLes);
-	$db_result = mysql_fetch_assoc($db_query->result);
+	$db_result = mysqli_fetch_assoc($db_query->result);
 		$lesson_info = $db_result;
 	unset($db_query);
-	
+
 	//get the course info
 	$db_query = new db_query('SELECT * FROM courses WHERE cou_id = '.$lesson_info["com_cou_id"]);
-	$db_result = mysql_fetch_assoc($db_query->result);
+	$db_result = mysqli_fetch_assoc($db_query->result);
 		$course_info = $db_result;
 	unset($db_query);
-	
+
 	$course_name_part = removeTitle($course_info['cou_name']);
 	if($course_info['cou_form'] == 3){
 	  	if(checkLesson($lesson_info['com_id'],'main') == 1){
-	     	$cou_df = "strategy"; 
+	     	$cou_df = "strategy";
 	  	}else if(checkLesson($lesson_info['com_id'],'grammar') == 1){
 	     	$cou_df = "grammar";
 	  	}else if(checkLesson($lesson_info['com_id'],'vocabulary') == 1){
@@ -569,18 +569,18 @@ function gen_course_les_v3($iCourse = 0,$iLes = 0){//actually it lead to the fir
 	  	}else{
 	     	$cou_df = "practice";
 	  	}
-   	}  
-   	else{ 
+   	}
+   	else{
       	$cou_df = "main";
    	}
-	
+
 	$link	= 'http://'.$base_url."/khoa-hoc/".$course_name_part."/".$course_info['cou_id']."-".$lesson_info['com_id']."-".$cou_df.".html";
 	return $link;
 }
 
 function gen_course_les_v2($nCate,$iLes,$unit,$nLes){
    $db_cou = new db_query("SELECT cou_form FROM courses INNER JOIN courses_multi ON cou_id = com_cou_id WHERE com_id = ".$unit);
-   $row_unit = mysql_fetch_assoc($db_cou->result);
+   $row_unit = mysqli_fetch_assoc($db_cou->result);
    $cou_form = $row_unit['cou_form'];
    if($cou_form == 3){ $cou_df = "strategy"; }  else{ $cou_df = "main";}
    unset($db_unit);
@@ -597,7 +597,7 @@ function gen_course_les_edit_v2($str_cate,$type,$iCou,$unit,$nLes){
 
 function gen_lib_cat_v2($iCate,$nCate){
 	global	$base_url;
-	
+
 	$link = '';
 	$slug = '';
 	if($iCate>0){
@@ -615,13 +615,13 @@ function gen_lib_cat_v2($iCate,$nCate){
 		}
 		$link = 'http://'.$base_url."/thu-vien/".$slug.".html";
 	}
-	
+
 	return $link;
 }
 
 function gen_lib_post_v2($lib_type,$id,$name){
 	global	$base_url;
-		
+
 	switch($lib_type){
 		case 1:
 			$slug = 'tro-choi';
@@ -642,30 +642,30 @@ function gen_lib_post_v2($lib_type,$id,$name){
 	}
 	//get the parent catgories
 	$db_query = new db_query("SELECT * FROM library_".$db_slug." WHERE lib_".$db_slug."_id = ".$id);
-	$result = mysql_fetch_assoc($db_query->result);
+	$result = mysqli_fetch_assoc($db_query->result);
 		$db_query2 = new db_query("SELECT * FROM library_cate WHERE lib_cat_id = ".$result["lib_".$db_slug."_catid"]);
-		$result2 = mysql_fetch_assoc($db_query2->result);
+		$result2 = mysqli_fetch_assoc($db_query2->result);
 			$catid = $result2["lib_cat_id"];
 			$catname = $result2["lib_cat_name"];
 		unset($db_query2);
 	unset($db_query);
-	
-	
+
+
 	$link = 'http://'.$base_url.'/thu-vien/'.$slug.'/'.removeTitle($catname).'/'.$id.'/'.removeTitle($name).'.html';
-	
+
 	return $link;
 }
 
 function gen_news_detail($id,$title){
    global	$base_url;
    $link = 'http://'.$base_url.'/tin-tuc/'.$id.'/'.removeTitle($title).'.html';
-   
+
    return $link;
 }
 function gen_commu_page_dt($name,$id,$title){
    global	$base_url;
    $link = 'http://'.$base_url.'/'.removeTitle($name).'/'.$id.'/'.removeTitle($title).'.html';
-   
+
    return $link;
 }
 function gen_commnu_page_dtchild($id,$title,$id_child,$titlechild){
@@ -676,7 +676,7 @@ function gen_commnu_page_dtchild($id,$title,$id_child,$titlechild){
 function gen_topic_detail($id,$title){
    global	$base_url;
    $link = 'http://'.$base_url.'/chu-de/'.$id.'/'.removeTitle($title).'.html';
-   
+
    return $link;
 }
 function gen_page_teacher($name){
@@ -691,7 +691,7 @@ function gen_comm_details($name,$id,$title){
 function gen_commu_news_edit($id,$cat_title,$title){
 	global	$base_url;
 	$link = 'http://'.$base_url.'/cong-dong/'.$id.'/'.removeTitle($cat_title).'/'.removeTitle($title).'/edit.html';
-	
+
 	return $link;
 }
 
@@ -708,7 +708,7 @@ function gen_commu_cat_newdt($titlecat,$idcat,$title,$id){
 function gen_commu_news($id,$cat_title,$title){
 	global	$base_url;
 	$link = 'http://'.$base_url.'/cong-dong/'.$id.'/'.removeTitle($cat_title).'/'.removeTitle($title).'.html';
-	
+
 	return $link;
 }
 ?>
@@ -779,9 +779,9 @@ function gen_url_category($iCate){
 		array_unshift($nodes,$trail['cat_name']);
 	}
 	$category_name_part = removeTitle(implode('-',$nodes));
-	
+
 	$type = $cat_trails[0]['cat_type'];
-	
+
 	if($type==1){
 		$link	= 'http://'.$base_url."/khoa-hoc/".$iCate."/".$category_name_part.".html";
 	} elseif($type==0){

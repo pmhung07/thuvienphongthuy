@@ -12,7 +12,7 @@ $iLev    = getValue("iLev");
 $sql_filter = "";
 if($iParent !=""){
    if($iCat !="") $sql_filter .= " AND cat_parent_id = '".$iParent."'";
-   else $sql_filter .= " AND cat_id = '".$iParent."'"; 
+   else $sql_filter .= " AND cat_id = '".$iParent."'";
 }
 if($iCat !="") $sql_filter  .= " AND cat_id = '" . $iCat . "'";
 if($iLev !="") $sql_filter  .= " AND lev_id = '" . $iLev . "'";
@@ -23,7 +23,7 @@ $arrayParent[''] = "Chọn Danh mục cha";
 $db_parent = new db_query("SELECT cat_name,cat_id
                              FROM categories_multi
                              WHERE cat_parent_id = 0");
-while($row = mysql_fetch_array($db_parent->result)){
+while($row = mysqli_fetch_array($db_parent->result)){
    $arrayParent[$row["cat_id"]] = $row["cat_name"];
 }unset($db_parent);
 
@@ -34,7 +34,7 @@ if($iParent > 0){
    $db_cateogry = new db_query("SELECT cat_name,cat_id
                                 FROM categories_multi
                                 WHERE cat_parent_id =".$iParent);
-   while($row = mysql_fetch_array($db_cateogry->result)){
+   while($row = mysqli_fetch_array($db_cateogry->result)){
       $arrayCat[$row["cat_id"]] = $row["cat_name"];
    }unset($db_cateogry);
 }
@@ -59,18 +59,18 @@ $list->add("",translate_text("Delete"),"delete");
 //$list->quickEdit = false;
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
-$total      = new db_count("SELECT  count(*) AS count 
-                     FROM courses 
-                               INNER JOIN categories_multi ON courses.cou_cat_id=categories_multi.cat_id 
+$total      = new db_count("SELECT  count(*) AS count
+                     FROM courses
+                               INNER JOIN categories_multi ON courses.cou_cat_id=categories_multi.cat_id
                                WHERE 1".$list->sqlSearch().$sql_filter);
-//câu lệnh select dữ liêu                    
-$db_listing   = new db_query("SELECT * FROM courses 
-                               INNER JOIN categories_multi ON courses.cou_cat_id=categories_multi.cat_id 
+//câu lệnh select dữ liêu
+$db_listing   = new db_query("SELECT * FROM courses
+                               INNER JOIN categories_multi ON courses.cou_cat_id=categories_multi.cat_id
                      WHERE 1".$list->sqlSearch().$sql_filter
                      . " ORDER BY " . $list->sqlSort() . "cou_id DESC "
                               . $list->limit($total->total));
-                                 
-$total_row = mysql_num_rows($db_listing->result);
+
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -86,16 +86,16 @@ $total_row = mysql_num_rows($db_listing->result);
     <?
     $i = 0;
     //thực hiện lênh select csdl
-    while($row = mysql_fetch_assoc($db_listing->result)){
+    while($row = mysqli_fetch_assoc($db_listing->result)){
     $i++;
-    ?>    
+    ?>
         <?=$list->start_tr($i, $row[$id_field])?>
         <td align="center">
             <img style="height: 40px;" src="<?=$imgpath . "small_" . $row['cou_avatar'] ?>" />
         </td>
         <td class="bold" align="center">
             <input type="text" style="width: 200px;color: red;" value="<?=$row[$name_field]?>" />
-        </td>      
+        </td>
         <td align="center">
             <input type="text" style="width: 200px;color: red;" value="<?=$row['cat_name']?>" />
         </td>
@@ -109,7 +109,7 @@ $total_row = mysql_num_rows($db_listing->result);
         <?=$list->showEdit($row['cou_id'])?>
         <?=$list->showDelete($row['cou_id'])?>
         <?=$list->end_tr()?>
-    <? } ?>  
+    <? } ?>
     <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>

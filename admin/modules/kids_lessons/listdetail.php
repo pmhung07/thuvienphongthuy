@@ -8,19 +8,19 @@ checkAddEdit("add");
 	$record_id = getValue("record_id");
    $db_Main = new db_query("SELECT * FROM  kids_lessons
 									 WHERE  kunit_id = ".$record_id." ORDER BY kles_id");
-                                    
+
    $db_Lesson = new db_query("SELECT kunit_title,kunit_id
       							   FROM  kids_units
       							   WHERE  kids_units.kunit_id = ".$record_id);
-                              
-   while($row_lesson = mysql_fetch_assoc($db_Lesson->result)){
+
+   while($row_lesson = mysqli_fetch_assoc($db_Lesson->result)){
       $nLesson = $row_lesson['kunit_title'];
    }; unset($db_Lesson);
    echo $record_id;
 
-   //Khai bao mang kieu bai hoc chinh 
+   //Khai bao mang kieu bai hoc chinh
    $kles_media_type = getValue("kles_media_type","int","POST",0);
-   
+
    $myform 	= new generate_form();
    //Loại bỏ chuc nang thay the Tag Html
    $myform->removeHTML(0);
@@ -40,8 +40,8 @@ checkAddEdit("add");
     if($action == "execute"){
       $fs_errorMsg .= $myform->checkdata();
       if($fs_errorMsg == ""){
-         $upload1		    = new upload("kles_media_content", $imgpath, $fs_extension, $fs_filesize);       
-      	$filename1	= $upload1->file_name;    
+         $upload1		    = new upload("kles_media_content", $imgpath, $fs_extension, $fs_filesize);
+      	$filename1	= $upload1->file_name;
          $arr_file = array('content' => $filename1);
          $get_ar_filename = json_encode($arr_file);
          if($filename1 != ""){
@@ -52,12 +52,12 @@ checkAddEdit("add");
          }
          $fs_errorMsg .= $upload1->show_warning_error();
          if($fs_errorMsg == ""){
-      		$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi 
+      		$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi
       		$db_insert = new db_execute($myform->generate_insert_SQL());
-            unset($db_insert);       			
+            unset($db_insert);
       		redirect("listdetail.php?url=".base64_encode(getURL())."&record_id=".$record_id);
       	}
-      } 
+      }
    }
 	$myform->addFormname("add_new");
 	$myform->evaluate();
@@ -72,7 +72,7 @@ checkAddEdit("add");
    <body>
    <? /*------------------------------------------------------------------------------------------------*/ ?>
       <p class="head">- Thêm Bài học chính trong Unit : <span style="color: red;"><?=$nLesson?></span></p>
-      <p class="head head_cate"> 
+      <p class="head head_cate">
       </p>
       <table border="0" cellpadding="3" cellspacing="0" class="tablelist formdetail" width="90%">
       <?php $form = new form();
@@ -96,25 +96,25 @@ checkAddEdit("add");
       ?>
       </table>
       <p class="head_cate"></p>
-      
+
       <p class="head">- Danh sách Bài học có trong Lesson</p>
       <table border="1" cellpadding="3" cellspacing="0" class="tablelist" width="90%" bordercolor="#E3E3E3">
-      <tr class="head"> 
+      <tr class="head">
          <td class="bold bg" align="center" width="20">STT</td>
          <td class="bold bg" width="150">Tiêu đề</td>
          <td class="bold bg" width="150">Mô tả</td>
          <td class="bold bg" align="center" width="100">Media</td>
          <td class="bold bg" align="center" width="20" >Sửa</td>
-         <td class="bold bg" align="center" width="20" >Xóa</td>			
+         <td class="bold bg" align="center" width="20" >Xóa</td>
       </tr>
       <form action="quickedit.php?returnurl=<?=base64_encode(getURL())?>" method="post" name="form_listing" id="form_listing" enctype="multipart/form-data">
       <input type="hidden" name="iQuick" value="update" />
-       <? 
-   		
+       <?
+
    	$i=0;
       $j = 0;
-   	while($row = mysql_fetch_array($db_Main->result)){ $i++;
-       
+   	while($row = mysqli_fetch_array($db_Main->result)){ $i++;
+
    	?>
       <tr <? if($i%2==0) echo ' bgcolor="#FAFAFA"';?>>
          <td width="20"><?php echo $i ?></td>
@@ -131,13 +131,13 @@ checkAddEdit("add");
             }elseif($row['kles_media_type'] == 0){
                echo "Not Found";
             }else{
-               $json = $row['kles_media_content'];    
+               $json = $row['kles_media_content'];
                $obj = json_decode($json);
                $url_file =  $obj->{'content'};
-               $url = $imgpath.$url_file;         
+               $url = $imgpath.$url_file;
                checkmedia_les($row['kles_media_type'],$url);
             }
-            ?>               
+            ?>
          </td>
          <td align="center"><a class="text" href="editdetail.php?record_id=<?=$row["kles_id"]?>&returnurl=<?=base64_encode(getURL())?>"><img src="<?=$fs_imagepath?>edit.png" alt="EDIT" border="0"></a></td>
          <td align="center"><img src="<?=$fs_imagepath?>delete.gif" alt="DELETE" border="0" onClick="if (confirm('Are you sure to delete?')){ window.location.href='deletedetail.php?record_id=<?=$row["kles_id"]?>&returnurl=<?=base64_encode(getURL())?>'}" style="cursor:pointer"></td>

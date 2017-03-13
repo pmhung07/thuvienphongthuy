@@ -7,7 +7,7 @@ checkAddEdit("add");
 	$fs_redirect = "add.php";
 	$after_save_data = getValue("after_save_data", "str", "POST", "add.php");
 	$com_active = 1;
-	
+
 	$myform = new generate_form();
 
 	$myform -> removeHTML(0);
@@ -15,13 +15,13 @@ checkAddEdit("add");
 	$myform -> add("com_name","com_name",0,0,"",1,translate_text("Vui lòng nhập tên Unit"),0,"");
 	$myform -> add("com_num_unit","com_num_unit",1,0,"",1,translate_text("Vui lòng nhập số thứ tự cho Unit"),0,"");
 	$myform -> add("com_active", "com_active", 1, 1, 0, 0, "", 0, "");
-	
+
 	$myform->addTable("courses_multi");
 	$fs_errorMsg = "";
 	$action	= getValue("action", "str", "POST", "");
    	if($action == "execute"){
-		$fs_errorMsg .= $myform->checkdata(); 
-		if($fs_errorMsg == ""){     
+		$fs_errorMsg .= $myform->checkdata();
+		if($fs_errorMsg == ""){
 			$myform->removeHTML(0);
 			$db_insert = new db_execute_return();
 		  	$last_test_id = $db_insert->db_execute($myform->generate_insert_SQL());
@@ -43,7 +43,7 @@ checkAddEdit("add");
    	<? /*------------------------------------------------------------------------------------------------*/ ?>
    	<?=template_top($fs_title)?>
    	<? /*------------------------------------------------------------------------------------------------*/ ?>
-   	<a style="background: #A0007F;text-decoration: none;color: white;padding: 10px 20px;display: -webkit-inline-box;text-transform: uppercase;" href="course_unit.php?iCourses=<?=$record_id?>">Refresh</a>	
+   	<a style="background: #A0007F;text-decoration: none;color: white;padding: 10px 20px;display: -webkit-inline-box;text-transform: uppercase;" href="course_unit.php?iCourses=<?=$record_id?>">Refresh</a>
    	<p align="center" style="padding-left:10px;">
 
    	<?
@@ -83,12 +83,12 @@ checkAddEdit("add");
 		</tr>
 		<?
 		$sql = '';
-		$db_picture = new db_query("SELECT * 
+		$db_picture = new db_query("SELECT *
 									  FROM courses_multi a , courses b
-									 WHERE a.com_cou_id = b.cou_id 
+									 WHERE a.com_cou_id = b.cou_id
 									   AND com_cou_id=" . $record_id." ORDER BY com_num_unit");
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){
+		while($row = mysqli_fetch_assoc($db_picture->result)){
 			$i++;
 		?>
 			<tr <?=$fs_change_bg?>>
@@ -114,10 +114,10 @@ checkAddEdit("add");
 		        </td>
             	<td align="center"><a onclick="if (confirm('Bạn muốn xóa bản ghi?')){ window.location.href='course_unit_delete.php?record_id=<?=$row["com_id"]?>&url=<?=base64_encode($_SERVER['REQUEST_URI'])?>' }" href="#" class="delete"><img border="0" src="<?=$fs_imagepath?>delete.gif"></a></td>
 			</tr>
-			<?  
+			<?
 			$db_tabs = new db_query("SELECT * FROM courses_multi_tabs WHERE cou_tab_com_id=" . $row["com_id"]." ORDER BY cou_tab_order");
 			$j=0;
-			while($rowtab = mysql_fetch_assoc($db_tabs->result)){
+			while($rowtab = mysqli_fetch_assoc($db_tabs->result)){
 			$j++;
 			?>
 			<tr class="trinvi trinvi_<?=$row["com_id"]?>" style="background:rgb(221, 223, 255);">
@@ -152,7 +152,7 @@ checkAddEdit("add");
 
 
 function invitr(com_id){
-	$(".trinvi").css("display","none");	
+	$(".trinvi").css("display","none");
    	$(".trinvi_"+com_id).fadeIn(300); //css("display","table-row");
 }
 
@@ -169,7 +169,7 @@ function addtabs(com_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Thêm Tab thành công');	
+				alert('Thêm Tab thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');
@@ -191,7 +191,7 @@ function update_unitname(com_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Update Tên bài học thành công');	
+				alert('Update Tên bài học thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');
@@ -213,7 +213,7 @@ function update_tabname(cou_tab_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Update Tên Tabs học thành công');	
+				alert('Update Tên Tabs học thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');
@@ -235,7 +235,7 @@ function update_orderunit(com_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Update Thứ tự Bài học thành công');	
+				alert('Update Thứ tự Bài học thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');
@@ -257,7 +257,7 @@ function update_ordertab(com_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Update Thứ tự Tabs thành công');	
+				alert('Update Thứ tự Tabs thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');

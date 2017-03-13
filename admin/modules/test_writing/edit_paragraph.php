@@ -5,11 +5,11 @@ checkAddEdit("edit");
    $fs_title			= $module_name . " | Sửa đổi";
    $fs_action			= getURL();
    $fs_errorMsg		= "";
-   
+
    $fs_redirect 	= base64_decode(getValue("url","str","GET",base64_encode("listing.php")));
    $record_id 		= getValue("record_id");
    $id_field      = "tec_id";
-   $tec_typ_id    = getValue("tec_typ_id"); 
+   $tec_typ_id    = getValue("tec_typ_id");
 //Call class menu - lay ra danh sach Category
 
 	/*
@@ -25,17 +25,17 @@ checkAddEdit("edit");
 	9). Loi dua ra man hinh neu co duplicate
 	*/
    //$datetime =  date("Y-m-d g:i:s");
-   
+
    $time_ques_minute	= getValue("time_ques_minute", "int", "POST", 0);
    $time_ques_second	= getValue("time_ques_second", "int", "POST", 0);
    $time_ques_minute_cv = $time_ques_minute * 60;
    $total_ques_time = $time_ques_minute_cv + $time_ques_second;
-   
+
    $time_audio_minute	= getValue("time_audio_minute", "int", "POST", 0);
    $time_audio_second	= getValue("time_audio_second", "int", "POST", 0);
    $time_audio_minute_cv = $time_audio_minute * 60;
    $total_audio_time = $time_audio_minute_cv + $time_audio_second;
-   
+
    $myform = new generate_form();
    $myform->add("tec_name", "tec_name", 0, 0, "", 1, "Bạn chưa nhập tiêu đề đoạn văn", 0, "");
    $myform->add("tec_content", "tec_content", 0, 0, "", 0, "", 0, "");
@@ -51,28 +51,28 @@ checkAddEdit("edit");
    //Check $action for insert new data
    if($action == "execute"){
    	//Check form data
-   	$fs_errorMsg .= $myform->checkdata();      
+   	$fs_errorMsg .= $myform->checkdata();
    	if($fs_errorMsg == ""){
    	   $upload		= new upload("tec_audio", $data_path, $fs_extension, $fs_filesize);
          $filename	= $upload->file_name;
          if($filename != ""){
             delete_file("test_content",$id_field,$record_id,"tec_audio",$data_path);
-      		$myform->add("tec_audio","filename",0,1,0,0);  
+      		$myform->add("tec_audio","filename",0,1,0,0);
    		}
          $fs_errorMsg .= $upload->show_warning_error();
          $fs_errorMsg .= $myform->checkdata();
-      	$fs_errorMsg .= $upload->warning_error;  
+      	$fs_errorMsg .= $upload->warning_error;
    		$myform->removeHTML(0);
    		$db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
-        
+
    		//echo($fs_redirect);
    		//Redirect to:
    		redirect($fs_redirect);
-   		
+
    	}//End if($fs_errorMsg == "")
-   	
+
    }//End if($action == "insert")
-   
+
    $myform->addFormname("add_new");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -80,14 +80,14 @@ checkAddEdit("edit");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM test_content WHERE tec_id = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }

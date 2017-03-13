@@ -6,8 +6,8 @@ $fs_redirect	= base64_decode(getValue("returnurl","str","GET",base64_encode("lis
 $record_id		= getValue("record_id","str","POST","0");
 
 $db_data 	    = new db_query("SELECT * FROM learn_speak_result WHERE " . $id_field . " = " . $record_id);
-$row            = mysql_fetch_assoc($db_data ->result);
-$audio = $row['lsr_audio'];															
+$row            = mysqli_fetch_assoc($db_data ->result);
+$audio = $row['lsr_audio'];
 unlink($data_path.trim($audio));
 
 $db_del = new db_execute("DELETE FROM ". $fs_table ." WHERE " . $id_field . " IN(" . $record_id . ")");

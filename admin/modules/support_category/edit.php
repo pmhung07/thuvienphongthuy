@@ -27,8 +27,8 @@ checkAddEdit("edit");
 	//Get Action.
 	$action	= getValue("action", "str", "POST", "");
 	if($action == "execute"){
-		
-		if($array_config["image"]==1){ 
+
+		if($array_config["image"]==1){
 			$upload_pic = new upload("picture", $fs_filepath, $extension_list, $limit_size);
 			if ($upload_pic->file_name != ""){
 				$picture = $upload_pic->file_name;
@@ -59,13 +59,13 @@ checkAddEdit("edit");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
+<?
 $myform->checkjavascript();
 $errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM " . $fs_table . " WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}
@@ -86,7 +86,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 	?>
 	<?=$form->text_note('Những ô dấu (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
 	<?=$form->errorMsg($errorMsg)?>
-	<tr> 
+	<tr>
 		<td align="right" nowrap class="form_name" width="200"><font class="form_asterisk">* </font> <?=translate_text("Loại danh mục")?> :</td>
 		<td>
 			<select name="scat_type" id="scat_type"  class="form_control" onChange="window.location.href='add.php?scat_type='+this.value">
@@ -98,7 +98,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 				<? } ?>
 			</select>
 		</td>
-	</tr>	
+	</tr>
 	<?=($array_config["upper"] != 0) ? $form->select_db_multi("Danh mục cha", "scat_parent_id", "scat_parent_id", $listAll, "scat_id", "scat_name", $scat_parent_id, "Chọn cấp cha", 1, "", 1, 0, "", "") : ''?>
 	<?=$form->text("Tên danh mục", "scat_name", "scat_name", $scat_name, "Tên danh mục", 1, 250, "", 255, "", "", "")?>
 	<?=($array_config['order'] == 1) ? $form->text("Thứ tự", "scat_order", "scat_order", $scat_order, "Thứ tự hiển thị", 0, 50, "") : ''?>

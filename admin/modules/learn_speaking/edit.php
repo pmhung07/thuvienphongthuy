@@ -8,7 +8,7 @@ $fs_title = $module_name . " | Sửa";
    $fs_redirect = base64_decode(getValue("returnurl","str","GET",base64_encode("listdetail.php")));
    $record_id = getValue("record_id");
    $myform = new generate_form();
-    
+
 	//Loại bỏ chuc nang thay the Tag Html
    $myform->removeHTML(0);
    $myform->add("lec_text","lec_text",0,0,"",0,translate_text("Vui lòng nhập nghĩa tiếng việt của ngữ pháp"),0,"");
@@ -33,7 +33,7 @@ $fs_title = $module_name . " | Sửa";
                $myform->add("lec_media","filename",0,1,0,0);
             }
          $fs_errorMsg .= $upload->show_warning_error();
-         //kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database	
+         //kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database
          if($fs_errorMsg == ""){
             $myform->removeHTML(0);
             $db_ex = new db_execute_return();
@@ -53,13 +53,13 @@ $fs_title = $module_name . " | Sửa";
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
+<?
 $myform->checkjavascript();
 $errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM learn_content WHERE lec_id = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}

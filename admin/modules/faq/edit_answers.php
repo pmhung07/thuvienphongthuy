@@ -1,4 +1,4 @@
-<? 
+<?
   include "inc_security.php";
   checkAddEdit("add");
   //Cac bien su dung
@@ -21,11 +21,11 @@
         redirect('listing.php');
     }
   }
-  
+
     $myform->addFormname("add_new");
-    $myform->evaluate();  
+    $myform->evaluate();
     $db_data = new db_query('SELECT * FROM faq_answers WHERE ans_id = '.$record_id);
-    if($row     = mysql_fetch_assoc($db_data->result)){
+    if($row     = mysqli_fetch_assoc($db_data->result)){
     foreach($row as $key=>$value){
       if($key!='lang_id' && $key!='admin_id') $$key = $value;
     }
@@ -53,7 +53,7 @@ $fs_errorMsg  .=  $myform->strErrorField;
     <?
     $form = new form();
     $form->create_form("add_new",$fs_action,"post","multipart/form-data","onsubmit='validateForm(); return false;'");
-    $form->create_table();    
+    $form->create_table();
     ?>
     <?=$form->text_note('Những ô dấu sao (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
     <? //Khai bao thong bao loi ?>

@@ -12,7 +12,7 @@ $fs_action			= getURL();
 $fs_redirect		= $after_save_data;
 $fs_errorMsg		= "";
 
-//Get course id 
+//Get course id
 $iCourse          = "";
 $iCourse          = getValue("iCourse","int","GET",0);
 
@@ -21,31 +21,31 @@ $iUnit            = "";
 $iUnit            = getValue("iUnit","int","GET",0);
 
 //Set type_of_lesson
-$type_of_lesson   = array(1 => "Content Main Lesson" , 2 => "Grammar Lesson" , 3 => "Vocabulary Lesson"); 
+$type_of_lesson   = array(1 => "Content Main Lesson" , 2 => "Grammar Lesson" , 3 => "Vocabulary Lesson");
 
 //Array for checkout type lesson execises
 $arr_get_typeless = array();
    //Get Test
    $db_select_type = new db_query("SELECT * FROM courses_multi STRAIGHT_JOIN exercises ON com_id = exe_com_id WHERE com_id = ".$iUnit." GROUP BY exe_type_lesson");
    $i = 0;
-   while($row_a = mysql_fetch_assoc($db_select_type->result)){
+   while($row_a = mysqli_fetch_assoc($db_select_type->result)){
       $arr_get_typeless[$i] = $row_a["exe_type_lesson"];
       $i++;
    }
 unset($db_select_type);
 //Display information of course
 if($iCourse > 0){
-   $db_course_select = new db_query("SELECT cou_name,cat_name 
-                                     FROM courses INNER JOIN categories_multi 
+   $db_course_select = new db_query("SELECT cou_name,cat_name
+                                     FROM courses INNER JOIN categories_multi
                                      ON cou_cat_id = cat_id WHERE cou_id = ". $iCourse ."");
-} 
+}
 
 //Display all Unit of Courses
 if($iCourse > 0){
-   $sql_get_unit = new db_query("SELECT com_id,com_name 
-                                 FROM courses_multi 
+   $sql_get_unit = new db_query("SELECT com_id,com_name
+                                 FROM courses_multi
                                  WHERE com_active = 1 AND com_cou_id = ". $iCourse ."");
-   while($row_unit = mysql_fetch_assoc($sql_get_unit->result)){
+   while($row_unit = mysqli_fetch_assoc($sql_get_unit->result)){
       $arr_get_unit[$row_unit["com_id"]] = $row_unit["com_name"];
    }unset($sql_get_unit);
 }
@@ -102,9 +102,9 @@ $myform ->evaluate();
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <?=$load_header?>
-<? 
+<?
 //add form for javacheck
-$myform->checkjavascript(); 
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $fs_errorMsg .= $myform->strErrorField;
 ?>
@@ -141,21 +141,21 @@ $fs_errorMsg .= $myform->strErrorField;
    	$form = new form();
    	$form->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
    	$form->create_table();
-      ?>    
+      ?>
          <?=$form->text_note('<strong style="textalign:center;">----------- Thêm mới Quiz --------------</strong>')?>
       	<?=$form->text_note('Những ô có dấu sao (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
       	<?=$form->errorMsg($fs_errorMsg)?>
          <?
          if($iCourse > 0){
-            if($row_course = mysql_fetch_assoc($db_course_select->result)){?>
+            if($row_course = mysqli_fetch_assoc($db_course_select->result)){?>
                <tr>
                   <td class="form_name">Danh mục :</td>
                   <td class="form_text"><p class="p_name_course"><?=$row_course["cat_name"]?></p></td>
-               </tr>    
+               </tr>
                <tr>
                   <td class="form_name">Khóa học :</td>
                   <td class="form_text"><p class="p_name_course"><?=$row_course["cou_name"]?></p></td>
-               </tr>  
+               </tr>
          <?}unset($db_course_select);}?>
          <?//=$form->select_db_multi("Chọn Unit", "exe_com_id", "exe_com_id", $arrCource, "com_id", "com_name", $exe_com_id, "Danh mục bài học", 0, 256, 1, 0, "", "")?>
          <?//=$form->select("Chọn Units","com_select","com_select",$arr_get_unit,$com_select,"Chọn [Unit] để thêm [Quiz]",1,186,"","","");?>
@@ -176,7 +176,7 @@ $fs_errorMsg .= $myform->strErrorField;
                <select class="form_control" style="width: 186px;" name="les_type" id="les_type">
                   <option value="-1"> - Phân loại trong bài học - </option>
                   <?foreach($type_of_lesson as $id=>$name){
-                    if(in_array($id,$arr_get_typeless)) continue;    
+                    if(in_array($id,$arr_get_typeless)) continue;
                   ?>
    						<option value="<?=$id?>" <?=($id == $type_les) ? "selected='selected'" : ""?>><?=$name?></option>
    					<?}?>
@@ -194,7 +194,7 @@ $fs_errorMsg .= $myform->strErrorField;
    	unset($form);
    	?>
    </div>
-   
+
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 <?=template_bottom() ?>
 <? /*------------------------------------------------------------------------------------------------*/ ?>

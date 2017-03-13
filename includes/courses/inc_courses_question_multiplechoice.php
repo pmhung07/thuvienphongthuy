@@ -51,12 +51,12 @@ foreach($arrContentQues as $keyContentQuest => $valueContentQuest){ $in++;?>
 			$sqlAns    = new db_query("SELECT * FROM courses_multi_tab_answers WHERE cou_tab_answer_question_id = ".$valueContentQuest['cou_tab_question_id']);
 			$arrayT    = array(1=>'A',2=>'B',3=>'C',4=>'D',5=>'E');
 			$iA        = 0;
-			while($rowAns = mysql_fetch_assoc($sqlAns->result)){
-				$iA ++;	?>							
+			while($rowAns = mysqli_fetch_assoc($sqlAns->result)){
+				$iA ++;	?>
 		            <div class="check_box-muc">
                     <input class="ip_valuecheck_<?=$valueBlock['com_block_id']?>_<?=$in?>_<?=$iA?>" id="checke<?=$in?>_<?=$iA?>" name="chec_box<?=$in?>" type="radio" value="<?=$rowAns['cou_tab_answer_true']?>" />
                     <label class="lb_valuecheck_<?=$valueBlock['com_block_id']?>_<?=$in?>_<?=$iA?>" for="checke<?=$in?>_<?=$iA?>"><?=$arrayT[$iA]?>. <?=$rowAns['cou_tab_answer_content']?></label>
-                </div>   
+                </div>
         	<?php } ?>
         	<input type="hidden" class="totalansmultiplechoice_<?=$valueBlock['com_block_id']?>_<?=$in?>" value="<?=$iA?>">
 		<?php } ?>
@@ -69,14 +69,14 @@ foreach($arrContentQues as $keyContentQuest => $valueContentQuest){ $in++;?>
 		$(".result_ques").hide();
 		var i = 1;
 		var j = 1;
-		var totalques = <?=$countquesmultiplechoi?>; 
+		var totalques = <?=$countquesmultiplechoi?>;
 		for(i = 1; i <= totalques; i++){
 			var totalansinques = $(".totalansmultiplechoice_"+block_id+"_"+i).val();
 			for(j = 1;j<= totalansinques;j++ ){
 				$(".lb_valuecheck_"+block_id+"_"+i+"_"+j).css("color","rgb(102, 102, 102)");
 				if($(".ip_valuecheck_"+block_id+"_"+i+"_"+j).val() == 1){
 					$(".lb_valuecheck_"+block_id+"_"+i+"_"+j).css("color","rgb(9, 199, 179)");
-				}				
+				}
 				if($(".ip_valuecheck_"+block_id+"_"+i+"_"+j).prop('checked')){
 					var ucheck = $(".ip_valuecheck_"+block_id+"_"+i+"_"+j+":checked").val();
 					if(ucheck != 1){

@@ -14,7 +14,7 @@ $iCat			= getValue("iCat");
 
 // Xác định module khi user đã chọn category
 $db_module	= new db_query("SELECT cat_type FROM categories_multi WHERE cat_id = " . $iCat . " AND lang_id = " . $lang_id);
-$module		= ($row = mysql_fetch_array($db_module->result)) ? $row["cat_type"] : "";
+$module		= ($row = mysqli_fetch_array($db_module->result)) ? $row["cat_type"] : "";
 $db_module->close();
 unset($db_module);
 
@@ -27,7 +27,7 @@ $array_data["static"]	= array("statics", "sta_id", "sta_category", "sta_title", 
 $array_data["product"]	= array("products", "pro_id", "pro_category", "pro_name", "pro_date", "iData");
 $array_data["nonproduct"]	= array("products", "pro_id", "pro_category", "pro_name", "pro_date", "iData");
 foreach($array_data as $key => $value){
-	
+
 	if($module == $key){
 		$sql_count	= "SELECT COUNT(*) AS count
 							FROM categories_multi, " . $value[0] . "
@@ -39,7 +39,7 @@ foreach($array_data as $key => $value){
 		$arrayData	= array(0 => $value[1], 1 => $value[3], 2 => $value[4]);
 		break;
 	}
-	
+
 }
 ?>
 <html>
@@ -52,7 +52,7 @@ foreach($array_data as $key => $value){
 <?
 //---------------------------- Create link to Category -----------------------------------
 $db_category = new db_query("SELECT * FROM categories_multi WHERE cat_id = " . $iCat);
-$row=mysql_fetch_array($db_category->result);
+$row=mysqli_fetch_array($db_category->result);
 $link_category	= ($iCat == 0) ? "" : createLink("category",$row);
 
 $form = new form();
@@ -102,7 +102,7 @@ if(isset($arrayData)){
 	if($id > 0)			$sqlWhere .= " AND " . $arrayData[0] . " = " . $id . " ";
 	//Tìm theo keyword
 	if($keyword != "")$sqlWhere .= " AND (" . $arrayData[1] . " LIKE '%" . $keyword . "%') ";
-	
+
 	//Sort data
 	$sort	= getValue("sort");
 	switch($sort){
@@ -114,7 +114,7 @@ if(isset($arrayData)){
 		case 6: $sqlOrderBy = $arrayData[2] . " DESC"; break;
 		default:$sqlOrderBy = $arrayData[0] . " DESC"; break;
 	}
-	
+
 	//Get page break params
 	$page_size		= 5;
 	$page_prefix	= "Trang: ";
@@ -127,7 +127,7 @@ if(isset($arrayData)){
 	$break_type		= 1;//"1 => << < 1 2 [3] 4 5 > >>", "2 => < 1 2 [3] 4 5 >", "3 => 1 2 [3] 4 5", "4 => < >"
 	$url				= getURL(0,0,1,1,"page");
 	$db_count		= new db_query($sql_count . $sqlWhere);
-	$listing_count	= mysql_fetch_array($db_count->result);
+	$listing_count	= mysqli_fetch_array($db_count->result);
 	$total_record	= $listing_count["count"];
 	$current_page	= getValue("page", "int", "GET", 1);
 	if($total_record % $page_size == 0) $num_of_page = $total_record / $page_size;
@@ -195,7 +195,7 @@ if(isset($arrayData)){
 	<?
 	// Đếm số thứ tự
 	$No = ($current_page - 1) * $page_size;
-	while($listing = mysql_fetch_array($db_listing->result)){
+	while($listing = mysqli_fetch_array($db_listing->result)){
 		$No++;
 		$link= createLink("detail",array('module'=>strtolower($module),"Rcat"=>$listing["cat_rewrite"],"title"=>$listing["dat_title"],"iCat"=>$iCat,"iData"=>$listing["dat_id"]));
 	?>
@@ -206,7 +206,7 @@ if(isset($arrayData)){
 			</td>
 			<td>
 				<div><a style="text-decoration:none" href="<?=$link?>" target="_blank"><?=$listing["dat_title"]?></a></div>
-				<div id="link_<?=$listing["dat_id"]?>"><?=$link?></div>	
+				<div id="link_<?=$listing["dat_id"]?>"><?=$link?></div>
 			</td>
 			<td align="center">
 				<div><?=(isset($listing["dat_date"]) ? date("d/m/Y", $listing["dat_date"]) : "No update !")?></div>

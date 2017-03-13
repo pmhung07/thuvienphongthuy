@@ -41,9 +41,9 @@ if($action == "execute"){
    $filename	= $upload->file_name;
    if($filename != ""){
    	$myform->add("tec_audio","filename",0,1,0,0);
-   }	
+   }
    $fs_errorMsg .= $upload->show_warning_error();
- 
+
    //up image
    $upload_img	= new upload("tec_image", $image_path, $fs_extension_img, $fs_filesize);
    $filename_img	= $upload_img->file_name;
@@ -54,19 +54,19 @@ if($action == "execute"){
    	}
    }
    $fs_errorMsg .= $upload_img->show_warning_error();
-   
+
 	//Check form data
 	$fs_errorMsg .= $myform->checkdata();
 	$fs_errorMsg .= $upload->warning_error;
    $fs_errorMsg .= $upload_img->warning_error;
-   
-	if($fs_errorMsg == ""){		
+
+	if($fs_errorMsg == ""){
 		//Insert to database
 		$db_insert		= new db_execute($myform->generate_insert_SQL());
 		redirect($_SERVER['REQUEST_URI']);
-		
+
 	}//End if($fs_errorMsg == "")
-	
+
 }//End if($action == "execute")
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -80,8 +80,8 @@ margin:5px;
 }
 </style>
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
@@ -120,7 +120,7 @@ $fs_errorMsg .= $myform->strErrorField;
 	$form->close_form();
 	unset($form);
 	?>
-	
+
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<div style="padding-left:3px; padding-right:3px;padding-top: 30px;">
 	<table cellpadding="5" cellspacing="0" width="100%" style="border-collapse:collapse;" bordercolor="#CCCCCC" border="1">
@@ -141,7 +141,7 @@ $fs_errorMsg .= $myform->strErrorField;
 		?>
 		<?
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){
+		while($row = mysqli_fetch_assoc($db_picture->result)){
 			$i++;
 		?>
 			<tr <?=$fs_change_bg?>>
@@ -160,7 +160,7 @@ $fs_errorMsg .= $myform->strErrorField;
             </td>
             <td width="50" align="center"><?=$row["tec_order"]?></td>
 				<td align="center"><a href="edit_paragraph.php?record_id=<?=$row["tec_id"]?>&tec_typ_id=<?=$record_id?>&url=<?=base64_encode($_SERVER['REQUEST_URI'])?>" href="#" class="edit"><img border="0" src="<?=$fs_imagepath?>edit.gif"/></a></td>
-  		      <td align="center"><img src="<?=$fs_imagepath?>delete.gif" alt="DELETE" border="0" onClick="if (confirm('Are you sure to delete?')){ window.location.href='del_paragraph.php?record_id=<?=$row["tec_id"]?>&returnurl=<?=base64_encode(getURL())?>'}" style="cursor:pointer"></td>   
+  		      <td align="center"><img src="<?=$fs_imagepath?>delete.gif" alt="DELETE" border="0" onClick="if (confirm('Are you sure to delete?')){ window.location.href='del_paragraph.php?record_id=<?=$row["tec_id"]?>&returnurl=<?=base64_encode(getURL())?>'}" style="cursor:pointer"></td>
           </tr>
 		<?
 		}

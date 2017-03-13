@@ -47,14 +47,14 @@ $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
 $total			= new db_count("SELECT count(*) AS count FROM code_voucher
                                WHERE 1 ".$fil_search." ORDER BY code_vou_creat DESC");
-//câu lệnh select dữ liêu			
+//câu lệnh select dữ liêu
 $db_listing 	= new db_query("SELECT * FROM code_voucher
                                WHERE 1 ".$fil_search." ORDER BY code_vou_creat DESC "
                               . $list->limit($total->total));
-$total_row = mysql_num_rows($db_listing->result);
+$total_row = mysqli_num_rows($db_listing->result);
 
 //$list->addSearch("---Payment----","Payment_search","array",$arrayPayment,$iPayment);
-?>	
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -70,9 +70,9 @@ $total_row = mysql_num_rows($db_listing->result);
    $i = 0;
    $sum_money = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row["code_vou_id"])?>
       <td align="center" width="300">
          <input style="width: 150px;color: red;" type="text" value="<?=$row["code_vou_seri"]?>" />
@@ -90,7 +90,7 @@ $total_row = mysql_num_rows($db_listing->result);
          <?
          if($row["code_vou_uid"] != 0){
             $db_listing_mail 	= new db_query("SELECT use_email FROM users WHERE use_id = ".$row["code_vou_uid"]);
-            if($row_mail = mysql_fetch_assoc($db_listing_mail->result)){ $email = $row_mail['use_email']; }
+            if($row_mail = mysqli_fetch_assoc($db_listing_mail->result)){ $email = $row_mail['use_email']; }
          }else { $email = "Chưa sử dụng";}
          ?>
          <input style="width: 100px;color: blue;" type="text" value="<?=$email?>" />
@@ -99,7 +99,7 @@ $total_row = mysql_num_rows($db_listing->result);
          <input style="width: 100px;color: blue;" type="text" value="<?=($row["code_vou_status"] == 0)?"Chưa sử dụng":"Đã sử dụng"?>" />
       </td>
       <?=$list->end_tr()?>
-   <?}?>  
+   <?}?>
    <?=$list->showFooter($total_row,'<a class="file_exel" style="font-weight: bold; float: right;" href="javascript:void(0);">Xuất file</a>')?>
 </div>
 <div>

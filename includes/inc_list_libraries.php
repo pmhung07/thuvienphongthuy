@@ -55,11 +55,11 @@ switch ($catType) {
 }
 
 // COUNT ITEM LIB BY CATID
-$dbItemLibCount = new db_query('SELECT COUNT('.$idLibrary.') 
-                                    AS count_lib_item 
-                                  FROM '.$tableLibrary.' 
+$dbItemLibCount = new db_query('SELECT COUNT('.$idLibrary.')
+                                    AS count_lib_item
+                                  FROM '.$tableLibrary.'
                                  WHERE '.$idLibraryCat.' = '.$iCategory);
-$rowCount       = mysql_fetch_assoc($dbItemLibCount->result);
+$rowCount       = mysqli_fetch_assoc($dbItemLibCount->result);
 $countItemLib   = $rowCount['count_lib_item'];
 
 // GET CATE OR ITEM LIB
@@ -76,7 +76,7 @@ if($countItemLib == 0){
                                                       b.lib_cat_id,
                                                       b.lib_cat_name
                                             FROM '.$tableLibrary.' a,library_cate b
-                                           WHERE a.'.$idLibraryCat.' = b.lib_cat_id 
+                                           WHERE a.'.$idLibraryCat.' = b.lib_cat_id
                                              AND '.$idLibraryCat.' = '.$iCategory);
 
     $arrLibItem              =   $dbLibItem->resultArray();
@@ -135,7 +135,7 @@ unset($dbLibItem);
                 <div class="list-courses-main-content">
                     <div class="list-courses-main-content-show">
                         <?php
-                            // $countItemLib == 0 : Get Cate 
+                            // $countItemLib == 0 : Get Cate
                         ?>
                         <?php if($countItemLib == 0){ ?>
                             <?php foreach($arrInfoCategoryChild as $key => $value){ ?>
@@ -170,7 +170,7 @@ unset($dbLibItem);
                                $page = 1;
                             }
                             $pageCount = (int)($total/$num_new_list);
-                            $div = $total % $num_new_list;          
+                            $div = $total % $num_new_list;
                             if($div!= 0){
                                $pageCount = $pageCount + 1;
                             }
@@ -184,7 +184,7 @@ unset($dbLibItem);
 
                             <!--GET CONTENT-->
 
-                            <?php 
+                            <?php
                                 $start  = 1;
                                 $end    = 9;
                             ?>
@@ -240,13 +240,13 @@ unset($dbLibItem);
                                                     }
                                                 }
                                                 $str .= '<a>…</a>';
-                                                for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+                                                for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
                                                     $str .= '<a class="a_paging" title="'.$j.'">'.$j.'</a>';
                                                 }
                                             }else{
                                                 $go_page = $page + 4;
                                                 if($pageCount - $page > 8 && $go_page < $pageCount - 3){
-                                                    for ($i=1; $i<=2; $i++) { 
+                                                    for ($i=1; $i<=2; $i++) {
                                                         $str .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                                                     }
                                                     $str .= '<a>…</a>';
@@ -259,12 +259,12 @@ unset($dbLibItem);
                                                         }
                                                     }
                                                     $str .= '<span>…</span>';
-                                                    for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+                                                    for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
                                                         $str .= '<a class="a_paging" title="'.$j.'">'.$j.'</a>';
                                                     }
                                                 }else{
                                                     if($pageCount-$page < 6) {
-                                                        for ($i=1; $i<=2; $i++) { 
+                                                        for ($i=1; $i<=2; $i++) {
                                                            $str .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                                                         }
                                                         $str .= '<span>…</span>';
@@ -276,7 +276,7 @@ unset($dbLibItem);
                                                             }
                                                         }
                                                     }else{
-                                                        for ($i=1; $i<=2; $i++) { 
+                                                        for ($i=1; $i<=2; $i++) {
                                                             $str .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                                                         }
                                                         $str .= '<span>…</span>';

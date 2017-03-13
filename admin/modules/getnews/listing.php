@@ -6,7 +6,7 @@ $iParent = getValue("iParent");
 $sql_filter = "";
 if($iParent !=""){
    if($iCat !="") $sql_filter .= " AND pcat_parent_id = '".$iParent."'";
-   else $sql_filter .= " AND pcat_id = '".$iParent."'"; 
+   else $sql_filter .= " AND pcat_id = '".$iParent."'";
 }
 if($iCat !="") $sql_filter  .= " AND pcat_id = '" . $iCat . "'";
 //if($iLev !="") $sql_filter  .= " AND lev_id = '" . $iLev . "'";
@@ -30,15 +30,15 @@ $list->add("",translate_text("Delete"),"delete");
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
 $total			= new db_count("SELECT 	count(*) AS count
-                              FROM ".$fs_table." 
+                              FROM ".$fs_table."
                               WHERE 1 AND gen_move = 0".$list->sqlSearch().$sql_filter);
-//câu lệnh select dữ liêu										 
-$db_listing 	= new db_query("SELECT * FROM ".$fs_table." 
+//câu lệnh select dữ liêu
+$db_listing 	= new db_query("SELECT * FROM ".$fs_table."
  								 		WHERE 1 AND gen_move = 0 ".$list->sqlSearch().$sql_filter
  									   . " ORDER BY " . $list->sqlSort() . "gen_date DESC "
                                .	$list->limit($total->total));
-                                 
-$total_row = mysql_num_rows($db_listing->result);
+
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -54,11 +54,11 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
-      <td width="225" class="bold" align="center"><?=$row[$name_field]?></td>   
+      <td width="225" class="bold" align="center"><?=$row[$name_field]?></td>
       <td align="center" width="30"><?=$row['gen_name_face']?></td>
       <td align="center" width="30"><?=date("d/m/Y",$row['gen_date'])?></td>
       <td width="60px" align="center">
@@ -75,7 +75,7 @@ $total_row = mysql_num_rows($db_listing->result);
       <?=$list->end_tr()?>
    <?
      }
-   ?>  
+   ?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>

@@ -7,16 +7,16 @@ $fs_title = $module_name . " | Sửa";
    //Khai bao Bien
    $errorMsg = "";
    $fs_redirect   = base64_decode(getValue("url","str","GET",base64_encode("listing.php")));
-   $record_id     = getValue("record_id");     
+   $record_id     = getValue("record_id");
    //$cat_parent_id = getValue("cat_parent_id","str","GET","");
    $cat_parent_id = 18 ;
    $com_cou_id    = getValue("com_cou_id","str","GET","");
    $learn_unit_id = getValue("learn_unit_id","str","GET","");
    $db_dataSpea   = new db_query("SELECT learn_unit_id,learn_sp_id,com_cou_id,com_id
-                                FROM learn_speaking,courses_multi 
+                                FROM learn_speaking,courses_multi
                                 WHERE learn_speaking.learn_unit_id = courses_multi.com_id
                                 AND learn_speaking.learn_sp_id = ".$record_id);
-   while($rowC = mysql_fetch_array($db_dataSpea->result)){
+   while($rowC = mysqli_fetch_array($db_dataSpea->result)){
       $sp_com_id = $rowC['learn_unit_id'];
       $com_cou_id = $rowC['com_cou_id'];
 
@@ -40,10 +40,10 @@ $fs_title = $module_name . " | Sửa";
    $fs_errorMsg = "";
 	//Get Action.
 	$action	= getValue("action", "str", "POST", "");
-   if($action == "execute"){  
+   if($action == "execute"){
       //Check form data : kiêm tra lỗi
-      $fs_errorMsg .= $myform->checkdata(); 
-      //kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database	
+      $fs_errorMsg .= $myform->checkdata();
+      //kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database
       if($fs_errorMsg == ""){
       $myform->removeHTML(0);
       $db_ex 	= new db_execute_return();
@@ -61,13 +61,13 @@ $fs_title = $module_name . " | Sửa";
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
+<?
 $myform->checkjavascript();
 $errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data = new db_query("SELECT * FROM learn_speaking WHERE learn_sp_id = " . $record_id);
-if($row = mysql_fetch_assoc($db_data->result)){
+if($row = mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -94,7 +94,7 @@ if($row = mysql_fetch_assoc($db_data->result)){
                 <select name="com_cou_id" id="com_cou_id"  class="form_control" style="width: 200px;" onChange="window.location.href='add.php?com_cou_id='+this.value+'&cat_parent_id=<?php echo $cat_parent_id; ?>'">
     				<option value="-1">- <?=translate_text("Chọn Course")?> - </option>
     				<?
-    				while($row = mysql_fetch_assoc($sqlCourse->result)){
+    				while($row = mysqli_fetch_assoc($sqlCourse->result)){
     				?>
     				<option value="<?=$row['cou_id']?>" <?php if($row['cou_id'] == $com_c_id ) echo "selected='selected'" ;   ?>  ><? echo nameLevel($row['cou_lev_id']).' -- '.$row['cou_name']?></option>
     				<? } ?>
@@ -107,7 +107,7 @@ if($row = mysql_fetch_assoc($db_data->result)){
                   <select name="learn_unit_id" id="learn_unit_id"  class="form_control" style="width: 200px;" >
                       <option value="-1">- <?=translate_text("Chọn Unit")?> - </option>
                       <?
-                      while($rowUnit = mysql_fetch_assoc($sqlUnit->result)){
+                      while($rowUnit = mysqli_fetch_assoc($sqlUnit->result)){
                           ?>
                           <option value="<?=$rowUnit['com_id']?>" <?php if($rowUnit['com_id'] == $sp_com_id ) echo "selected='selected'" ;   ?>  ><? echo $rowUnit['com_name']?></option>
                           <? } ?>

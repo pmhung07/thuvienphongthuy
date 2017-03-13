@@ -14,7 +14,7 @@ $db_listAll = new db_query('SELECT cou_id,cou_name
                            FROM courses
                            WHERE cou_cat_id = '.$pack_cat_id.'
                            ORDER BY cou_time ASC');
-            
+
 $listAll    = $db_listAll->resultArray();
 /*
 Call class form:
@@ -39,13 +39,13 @@ $add_couid	   = getValue("add_couid","int","POST","");
    $myform = new generate_form();
    $myform->addTable('package_data');
    $myform->add('padt_data_id','add_couid',1,0,$add_couid,1,'Chưa chọn khóa');
-   $action = getValue("action", "str", "POST", ""); 
+   $action = getValue("action", "str", "POST", "");
    $fs_errorMsg = '';
    if($action == "execute"){
-      $db_check_package = new db_query('SELECT count(*) as total_data 
+      $db_check_package = new db_query('SELECT count(*) as total_data
                                   FROM package_data
                                   WHERE padt_pack_id ='.$record_id.' AND padt_data_id ='.$add_couid);
-      $checkAll = mysql_fetch_assoc($db_check_package->result);
+      $checkAll = mysqli_fetch_assoc($db_check_package->result);
       $total    = $checkAll['total_data'];
       $fs_errorMsg = $myform->checkdata();
       if($total != 0){
@@ -66,13 +66,13 @@ $myform->addFormname("add_new");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 ?>
 </head>
-<body> 
+<body>
    <?
    $form = new form();
    $form->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
@@ -96,7 +96,7 @@ $fs_errorMsg .= $myform->strErrorField;
       </td>
    </tr>
 	<?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Sửa khóa" . $form->ec . "Đóng cửa sổ", "Thêm khóa" . $form->ec . "Đóng cửa sổ", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)" onclick="window.parent.tb_remove()"', "");?>
-	<?=$form->hidden("action", "action", "execute", "");?>  
+	<?=$form->hidden("action", "action", "execute", "");?>
    <?
    $form->close_table();
    $form->close_form();

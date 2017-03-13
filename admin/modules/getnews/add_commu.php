@@ -9,10 +9,10 @@
    $tags          = getValue("postcom_tag","str","POST","");
    $title         = getValue("postcom_title","str","POST","");
    $content       = getValue("postcom_content","str","POST","");
-   $db_new        = new db_query('SELECT * 
+   $db_new        = new db_query('SELECT *
                                   FROM '.$fs_table.'
                                   WHERE 1 AND gen_id = '.$record_id);
-   $list_new = mysql_fetch_assoc($db_new->result);
+   $list_new = mysqli_fetch_assoc($db_new->result);
    unset($db_new);
    //Lisr Danh muc
    $fs_title = $module_name . " | Thêm mới";
@@ -28,7 +28,7 @@
     /*
 	Call class form:
 	1). Ten truong
-	2). Ten form 
+	2). Ten form
 	3). Kieu du lieu , 0 : string , 1 : kieu int, 2 : kieu email, 3 : kieu double, 4 : kieu hash password
 	4). Noi luu giu data  0 : post(sẽ tìm trong form ở dưới có cotrol nào có name đc khai báo ở (2)), 1 : variable (sẽ tìm những biến nào có tên đã đc khai báo ở (2) )
 	5). Gia tri mac dinh, neu require thi phai lon hon hoac bang default
@@ -37,26 +37,26 @@
 	8). Chi co duy nhat trong database (0: cho phép trùng ; 1: ko cho phép)
 	9). Loi dua ra man hinh neu co duplicate
 	*/
-   $post_time  = time(); 
-   //tạo mới class generate_form 
-   
-   $myform = new generate_form(); 
+   $post_time  = time();
+   //tạo mới class generate_form
+
+   $myform = new generate_form();
    $myform->addTable('post_community');
    $myform->add("postcom_title", "postcom_title", 0, 0, "", 1, "Bạn chưa nhập tiêu đề bài viết", 0, "");
    $myform->add("postcom_cat_id","postcom_cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,"");
    $myform->add("postcom_content", "postcom_content", 0, 0, "", 0, "",0, "");
    $myform->add("postcom_tag", "postcom_tag", 0, 0, "", 0, "",0, "");
-   
+
    $myform->add("postcom_time","post_time", 0, 1,"", 0, "", 0, "");
    $myform->add("postcom_active","postcom_active",0,1,1,0,"");
    $action	  = getValue("action", "str", "POST", "");
    if($action == "execute"){
    	$fs_errorMsg .= $myform->checkdata();
-      $email      = getValue('post_email','str','POST',""); 
+      $email      = getValue('post_email','str','POST',"");
       $db_user_id = new db_query("SELECT use_id
-                                 FROM users 
+                                 FROM users
                                  WHERE 1 AND use_email = '".$email."'");
-      $user_id    = mysql_fetch_assoc($db_user_id->result);
+      $user_id    = mysqli_fetch_assoc($db_user_id->result);
       unset($db_user_id);
       if($user_id){
          $postcom_user_id = $user_id['use_id'];
@@ -102,7 +102,7 @@ $fs_errorMsg .= $myform->strErrorField;
 	<p align="center" style="padding-left:10px;">
 	<?
 	$form = new form();
-  
+
 	$form->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
    $form->create_table();
 	?>
@@ -119,17 +119,17 @@ $fs_errorMsg .= $myform->strErrorField;
    <script src="/../../js/tinymce/tinymce.min.js" type="text/javascript" charset="utf-8"></script>
    <script type="text/javascript">
    tinymce.init({
-      selector: "textarea",   
+      selector: "textarea",
       plugins: [
          "advlist autolink lists link charmap print preview anchor",
          "searchreplace visualblocks code fullscreen",
          "insertdatetime media table contextmenu paste jbimages image",
       ],
-      toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image jbimages",  
-      relative_urls: false , 
-      theme_advanced_buttons1: "forecolor,backcolor,fontselect,fontsizeselect",  
+      toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image jbimages",
+      relative_urls: false ,
+      theme_advanced_buttons1: "forecolor,backcolor,fontselect,fontsizeselect",
    });
-   </script>          
+   </script>
    <?=$form->create_table();?>
    <?=$form->checkbox("Kích hoạt", "postcom_active", "postcom_active", 0 ,1, "",0, "", "")?>
    <?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>

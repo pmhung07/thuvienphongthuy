@@ -10,16 +10,16 @@ $iLesson    = getValue("iLesson","int","GET","");
 //Get courses
 $array_course[""] = "Choose Courses";
 $course_select = new db_query("SELECT cou_id,cou_name FROM courses");
-while($row_cou = mysql_fetch_assoc($course_select->result)){
+while($row_cou = mysqli_fetch_assoc($course_select->result)){
    $array_course[$row_cou["cou_id"]] = $row_cou["cou_name"];
 }unset($course_select);
 
 //Get Unit
 $array_unit[""] = "Choose Unit";
 if($iCourse > 0){
-   $unit_select = new db_query("SELECT com_id,com_name FROM courses_multi 
+   $unit_select = new db_query("SELECT com_id,com_name FROM courses_multi
                                   WHERE com_cou_id =" .$iCourse. " AND com_active = 1");
-   while($row_unit = mysql_fetch_assoc($unit_select->result)){
+   while($row_unit = mysqli_fetch_assoc($unit_select->result)){
       $array_unit[$row_unit["com_id"]] = $row_unit["com_name"];
    }unset($unit_select);
 }
@@ -28,7 +28,7 @@ if($iCourse > 0){
 $sql_filter = "";
 if($iCourse > 0){
    $sql_filter.= " AND com_cou_id =" . $iCourse;
-} 
+}
 
 if($iUnit > 0){
    $sql_filter.= " AND exe_com_id =" . $iUnit;
@@ -53,16 +53,16 @@ $list->add("","Delete","delete");
 //$list->quickEdit = false;
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
-$total			= new db_count(" SELECT count(*) AS count FROM 	" .$fs_table. " 
+$total			= new db_count(" SELECT count(*) AS count FROM 	" .$fs_table. "
                                 INNER JOIN courses_multi ON exe_com_id = com_id
                                 INNER JOIN courses ON com_cou_id = cou_id WHERE 1 AND exe_type = 1 ". $list->sqlSearch() . $sql_filter);
-//câu lệnh select dữ liêu										 
-$db_listing 	= new db_query(" SELECT * FROM " . $fs_table . 
+//câu lệnh select dữ liêu
+$db_listing 	= new db_query(" SELECT * FROM " . $fs_table .
 							 			" INNER JOIN courses_multi ON exe_com_id = com_id
-                                INNER JOIN courses ON com_cou_id = cou_id WHERE 1 AND exe_type = 1 ". $list->sqlSearch() . $sql_filter                                                  
+                                INNER JOIN courses ON com_cou_id = cou_id WHERE 1 AND exe_type = 1 ". $list->sqlSearch() . $sql_filter
 								    . " ORDER BY " . $list->sqlSort() . "exe_id ASC "
-                            .	$list->limit($total->total));                  
-$total_row = mysql_num_rows($db_listing->result);
+                            .	$list->limit($total->total));
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -80,10 +80,10 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    //thực hiện lênh select csdl
    $i = 0;
-	while($row	=	mysql_fetch_assoc($db_listing->result)){
-   $i++; 
+	while($row	=	mysqli_fetch_assoc($db_listing->result)){
+   $i++;
    $les_name = $row['com_name'];
-	?> 
+	?>
    	<?=$list->start_tr($i, $row[$id_field])?>
    	<td width="300" align="center">
          <table width="300px">
@@ -91,7 +91,7 @@ $total_row = mysql_num_rows($db_listing->result);
    				<td align="right"> Unit Name : </td>
                <?
                $db_listing_unit 	= new db_query("SELECT com_id,com_name FROM courses_multi WHERE com_id = ". $row['exe_com_id'] ."");
-               if($row_unit = mysql_fetch_assoc($db_listing_unit->result)){
+               if($row_unit = mysqli_fetch_assoc($db_listing_unit->result)){
                   $iUnit = $row_unit['com_id'];
                   $unit_name = $row_unit['com_name'];
                ?>
@@ -128,7 +128,7 @@ $total_row = mysql_num_rows($db_listing->result);
       </td>
    	<?=$list->showDelete($row['exe_id'])?>
    	<?=$list->end_tr()?>
-	<?}unset($db_listing);?>  
+	<?}unset($db_listing);?>
   <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>
@@ -157,7 +157,7 @@ $(document).ready(function() {
       var iLesson		   =	$("#lesson_select").val();
       window.location	=	"listing.php?iCourse="+ iCourse +"&iUnit="+ iUnit +"&iLesson="+ iLesson;
    });
-}); 
+});
 </script>
 
 

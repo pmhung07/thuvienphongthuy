@@ -15,20 +15,20 @@ function lesson_main_toeic($unit,$unit_num,$unit_name){
     $var_head_lib2  .= '<script type="text/javascript" src="'.$var_path_js.'slimScroll.min.js"></script>';
     $var_head_lib2  .= '<script type="text/javascript" src="'.$var_path_media.'jwplayer.js"></script>';
     $var_head_lib2  .= '<script type="text/javascript">jwplayer.key="IyBF3HN/WxYyCXbdjRCOrUH3C4FJGuzHP9SQ6mz/YQcKlam8eP/Fvm6VM6g=";</script>';
-   
+
     //Lấy thông tin dạng bài học
     $sqlUnitMail = new db_query('SELECT * FROM lesson_details WHERE les_det_type = 2 AND les_com_id ='.$unit);
-    $rowUnitMail = mysql_fetch_assoc($sqlUnitMail->result);
+    $rowUnitMail = mysqli_fetch_assoc($sqlUnitMail->result);
     $iUnit       = $rowUnitMail['les_det_id'];
     unset($sqlUnitMail);
     //Lấy nội dung bài học và bài tập
     $sqlLes     =  new db_query('SELECT * FROM courses_multi,lesson_details WHERE lesson_details.les_com_id = courses_multi.com_id AND lesson_details.les_det_type = 1 AND courses_multi.com_id = '.$unit);
-    $rowLes     = mysql_fetch_assoc($sqlLes->result);
+    $rowLes     = mysqli_fetch_assoc($sqlLes->result);
     $sqlMain    = new db_query("SELECT * FROM main_lesson WHERE main_det_id = ".$rowLes['les_det_id'] ." ORDER BY main_order");
     $type       = array();
     //Lay thong tin Unit
     $db_unit = new db_query("SELECT * FROM courses_multi WHERE com_id = ".$unit);
-    $row_unit = mysql_fetch_assoc($db_unit->result);
+    $row_unit = mysqli_fetch_assoc($db_unit->result);
     unset($db_unit);
 
     $type    = "";
@@ -46,20 +46,20 @@ function lesson_main_toeic($unit,$unit_num,$unit_name){
             <div class="gram_detail">
             <?php
             $mainpart = 'http://'.$base_url.'/data/main_content/';
-            $i = 0; 
-            while($rowMain  = mysql_fetch_assoc($sqlMain->result)){
+            $i = 0;
+            while($rowMain  = mysqli_fetch_assoc($sqlMain->result)){
             $i++;
             ?>
                 <?if($rowMain['main_media_type'] == 1){ ?>
                     <img src="<?=$mainpart?><?=$rowMain['main_media_url1']?>"/>
-                <?}else if($rowMain['main_media_type'] == 2){ ?>			     
+                <?}else if($rowMain['main_media_type'] == 2){ ?>
                     <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="25" height="20"
                     codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab">
                     <param name="movie" value="http://<?=$base_url?>/themes/media/singlemp3player.swf?file=http://<?=$base_url?>/data/main_content/<?=$rowMain['main_media_url1']?>&backColor=990000&frontColor=ddddff&repeatPlay=false&songVolume=90" />
                     <param name="wmode" value="transparent" />
                     <embed wmode="transparent" width="25" height="20" src="http://<?=$base_url?>/themes/media/singlemp3player.swf?file=http://<?=$base_url?>/data/main_content/<?=$rowMain['main_media_url1']?>&backColor=990000&frontColor=ddddff&repeatPlay=false&songVolume=90"
                     type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
-                    </object>    
+                    </object>
                 <?}?>
                 <div class="notrans" >
                     <div id="scroll_ct_<?=$i?>">

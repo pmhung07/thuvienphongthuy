@@ -9,25 +9,25 @@ $iLes       = $arrSkill[0]['skl_les_id'];
 
             <?php
             $dbCont = new db_query('SELECT * FROM skill_content WHERE skl_cont_les_id = '.$iLes.' AND skl_cont_pos = 1 AND skl_cont_active = 1 ORDER BY skl_cont_order ASC');
-            while($rowCont = mysql_fetch_assoc($dbCont->result)){
+            while($rowCont = mysqli_fetch_assoc($dbCont->result)){
                 $content = trim($rowCont['skl_content']);
                 if($content != ''){
                     echo '<div class="guide">'.removeHTML($content).'</div>';
                 }else{
                     echo '<div class="guide">'.removeHTMl($arrSkill[0]['skl_les_desc']).'</div>';
-                } 
+                }
                 $sqlMain = new db_query("SElECT * FROM main_lesson WHERE main_skl_cont_id = ".$rowCont['skl_cont_id']." ORDER BY main_order");
                 $mainpart = 'http://'.$base_url.'/data/skill_content/';
                 $i = 0;
-                while($rowMain  = mysql_fetch_assoc($sqlMain->result)){
+                while($rowMain  = mysqli_fetch_assoc($sqlMain->result)){
                     $i++;
                     if($rowMain['main_media_type'] == 2){
                     ?>
                     <div class="video_lesson">
-                        
-                        <?php 
+
+                        <?php
                         $file   = $mainpart.$rowMain['main_media_url1'];
-                        get_media_skill_v2($file,$i); 
+                        get_media_skill_v2($file,$i);
                         ?>
 
                         <div class="script_box">
@@ -38,7 +38,7 @@ $iLes       = $arrSkill[0]['skl_les_id'];
                                 </div>
                                 <div class="lib-trans">
                                     <?=getMainCTran($rowMain['main_content_en'],$rowMain['main_content_vi'])?>
-                                </div>   
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@ $iLes       = $arrSkill[0]['skl_les_id'];
                         <div class="tb btn_stop_record"></div>
                         <div class="tb btn_start_play"></div>
                         <div class="tb btn_stop_play"></div>
-                     
+
                         <div class="speaker"></div>
                         <div class="list_au">
                             <div class="au au5">05</div>

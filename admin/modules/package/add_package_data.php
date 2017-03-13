@@ -11,10 +11,10 @@ $add					= "add.php";
 $listing				= "listing.php";
 $db_listAll = new db_query('SELECT cou_id,cou_name
                             FROM courses a, package_data b
-                            WHERE a.cou_id = b.padt_data_id 
+                            WHERE a.cou_id = b.padt_data_id
                             AND padt_id = '.$record_id.'
                             ORDER BY padt_id ASC');
-            
+
 $listAll    = $db_listAll->resultArray();
 
 $cat_parent_id	= getValue("cat_parent_id","str","GET","");
@@ -49,13 +49,13 @@ $add_couid	   = getValue("add_couid","int","POST","");
    $myform->addTable('package_data');
    $myform->add('padt_data_id','add_couid',1,0,$add_couid,1,'Chưa chọn khóa');
    $myform->add('padt_pack_id','record_id',1,1,0,0,"");
-   $action = getValue("action", "str", "POST", ""); 
+   $action = getValue("action", "str", "POST", "");
    $fs_errorMsg = '';
    if($action == "execute"){
-      $db_check_package = new db_query('SELECT count(*) as total_data 
+      $db_check_package = new db_query('SELECT count(*) as total_data
                                   FROM package_data
                                   WHERE padt_pack_id ='.$record_id.' AND padt_data_id ='.$add_couid);
-      $checkAll = mysql_fetch_assoc($db_check_package->result);
+      $checkAll = mysqli_fetch_assoc($db_check_package->result);
       $total    = $checkAll['total_data'];
       $fs_errorMsg = $myform->checkdata();
       if($total != 0){
@@ -74,13 +74,13 @@ $myform->addFormname("add_new");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 ?>
 </head>
-<body> 
+<body>
    <?
    $form = new form();
    $form->create_form("add", $_SERVER["REQUEST_URI"], "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
@@ -97,8 +97,8 @@ $fs_errorMsg .= $myform->strErrorField;
          <select name="add_couid" id="add_couid"  class="form_control" style="width: 200px;">
    		<option value="-1">- <?=translate_text("Chọn Course")?> - </option>
    		<?
-   		while($row = mysql_fetch_assoc($sqlCourse->result)){
-   		   
+   		while($row = mysqli_fetch_assoc($sqlCourse->result)){
+
    		?>
    		<option value="<?=$row['cou_id']?>" ><? echo nameLevel($row['cou_lev_id']).' -- '.$row['cou_name']?></option>
    		<? } ?>
@@ -110,32 +110,32 @@ $fs_errorMsg .= $myform->strErrorField;
    </tr>
    <input type="hidden" name="$record_id" value="<?=$record_id?>" />
 	<?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Thêm khóa" . $form->ec . "Đóng cửa sổ", "Thêm khóa" . $form->ec . "Đóng cửa sổ", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)" onclick="window.parent.tb_remove()"', "");?>
-	<?=$form->hidden("action", "action", "execute", "");?>  
+	<?=$form->hidden("action", "action", "execute", "");?>
    <?
    $form->close_table();
    $form->close_form();
    unset($form);
    ?>
    <?//=======================================List ques===============================================?>
-   <div id="">       
+   <div id="">
       <table class="table_info_exe">
          <tr style="background-color: #eee;">
             <th width="30">STT</th>
             <th width="500" algin="center">Khóa học</th>
             <th width="50">Xóa</th>
-         </tr>            
+         </tr>
          <?
          $db_ques_select   = new db_query('SELECT cou_id,cou_name,padt_id
                                            FROM courses a, package_data b
-                                           WHERE a.cou_id = b.padt_data_id 
+                                           WHERE a.cou_id = b.padt_data_id
                                            AND padt_pack_id = '.$record_id.'
                                            ORDER BY padt_id ASC');
          $i = 0;
-         while($row_ques = mysql_fetch_assoc($db_ques_select->result)){
+         while($row_ques = mysqli_fetch_assoc($db_ques_select->result)){
          $i++;
          ?>
          <tr style="">
-            <td align="center"><?=$i?></td>               
+            <td align="center"><?=$i?></td>
             <td align="center">
                <input type="text" value="<?=$row_ques['cou_name']?>" style="width: 400px;" />
             </td>

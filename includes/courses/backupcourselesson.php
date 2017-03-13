@@ -1,7 +1,7 @@
 <?php
-$var_path_libjs  = '/js/';   
+$var_path_libjs  = '/js/';
 $var_path_js     = '/themes/js/';
-$iCourses = getValue('iCourses','int','GET',0);	
+$iCourses = getValue('iCourses','int','GET',0);
 $iUnit = getValue('iUnit','int','GET',0);
 $iTab = getValue('iTab','int','GET',0);
 
@@ -16,14 +16,14 @@ $arrUnit = $dbUnit->resultArray();
 <script type="text/javascript" src="<?=$var_path_libjs?>recorder.js"></script>
 <script type="text/javascript" src="<?=$var_path_libjs?>swfobject.js"></script>
 <script type="text/javascript" src="<?=$var_path_libjs?>gui.js"></script>
-<script type="text/javascript" src="<?=$var_path_js?>duration_bar.js"></script> 
+<script type="text/javascript" src="<?=$var_path_js?>duration_bar.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {
         var baseurl =  'http://<?=$base_url?>';
         setup();
     });
-</script> 
+</script>
 
 <div class="list-courses">
 	<div class="list-courses-main">
@@ -79,7 +79,7 @@ $arrUnit = $dbUnit->resultArray();
 					<div class="learn_right_bot">
 						<ul class="nav nav-tabs">
 				    		<?php
-				    		$dbTab = new db_query("SELECT * FROM courses_multi_tabs a,courses_multi b 
+				    		$dbTab = new db_query("SELECT * FROM courses_multi_tabs a,courses_multi b
 				    							   WHERE a.cou_tab_com_id = b.com_id AND cou_tab_com_id=".$iUnit." ORDER BY cou_tab_order");
 				    		$arrTab = $dbTab->resultArray();
 				    		$z = 3;
@@ -97,7 +97,7 @@ $arrUnit = $dbUnit->resultArray();
 
 								<!--Hiển thị nội dung học-->
 
-								<?php 
+								<?php
 								$db_query_block = new db_query("SELECT * FROM courses_multi_tabs_block WHERE com_block_tab_id=".$iTab." ORDER BY com_block_data_order");
 								$arrBlock = $db_query_block->resultArray();
 								foreach($arrBlock as $keyBlock=>$valueBlock){
@@ -150,7 +150,7 @@ $arrUnit = $dbUnit->resultArray();
 										<?}
 									}else if($valueBlock['com_block_data_type'] == 'question_matching'){ ?>
 										<div class="guideques"><?=$valueBlock['com_block_data_name']?></div>
-										<?php 
+										<?php
 										$db_query_content_ques = new db_query("SELECT * FROM courses_multi_tab_questions WHERE cou_tab_question_block_id=".$valueBlock['com_block_id']." AND cou_tab_question_type = 'matching' ORDER BY cou_tab_question_order");
 										$arrContentQues = $db_query_content_ques->resultArray();
 										foreach($arrContentQues as $keyContentQuest => $valueContentQuest){ ?>
@@ -170,18 +170,18 @@ $arrUnit = $dbUnit->resultArray();
 													<?php
 			                                        $j = 0;
 			                                        for($i=0;$i<$cArrayCont;$i++){
-			                                            if($i%2 != 0) { 
+			                                            if($i%2 != 0) {
 			                                                $j ++;
 			                                                echo '<input type=text value=""/>';
 			                                            }else{
 			                                   	            echo $arrayCont[$i];
-			                                            }                 
+			                                            }
 			                                        } ?>
 			                                        </div>
 
 												</div>
 											<?php } ?>
-										<?php } ?>	
+										<?php } ?>
 
 									<?php }else if($valueBlock['com_block_data_type'] == 'question_multiplechoice'){ ?>
 										<div class="guideques">Hãy chọn đáp án đúng trong mỗi câu hỏi</div>
@@ -199,12 +199,12 @@ $arrUnit = $dbUnit->resultArray();
 			           							$sqlAns    = new db_query("SELECT * FROM courses_multi_tab_answers WHERE cou_tab_answer_question_id = ".$valueContentQuest['cou_tab_question_id']);
 			           							$arrayT    = array(1=>'A',2=>'B',3=>'C',4=>'D',5=>'E');
 			           							$iA        = 0;
-			           							while($rowAns = mysql_fetch_assoc($sqlAns->result)){
-			              							$iA ++;	?>							
+			           							while($rowAns = mysqli_fetch_assoc($sqlAns->result)){
+			              							$iA ++;	?>
 			           						            <div class="check_box-muc">
 			                                                <input id="checke<?=$in?>_<?=$iA?>" name="chec_box<?=$in?>" type="radio" value="<?=$rowAns['cou_tab_answer_true']?>" />
 			                                                <label for="checke<?=$in?>_<?=$iA?>"><?=$arrayT[$iA]?>. <?=$rowAns['cou_tab_answer_content']?></label>
-			                                            </div>   
+			                                            </div>
 			        				            <?php } ?>
 											<?php } ?>
 											</div>

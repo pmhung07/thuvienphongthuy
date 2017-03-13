@@ -20,16 +20,16 @@ $list->add("",translate_text("Delete"),"delete");
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
 $total			= new db_count("SELECT count(*) AS count FROM type_test
-                               INNER JOIN test ON typ_test_id = test_id     
+                               INNER JOIN test ON typ_test_id = test_id
                                WHERE typ_type = 1 ".$list->sqlSearch());
-//câu lệnh select dữ liêu										 
-$db_listing 	= new db_query("SELECT * FROM type_test 
+//câu lệnh select dữ liêu
+$db_listing 	= new db_query("SELECT * FROM type_test
                                INNER JOIN test ON typ_test_id = test_id
                                WHERE typ_type = 1 ".$list->sqlSearch()
 									   . " ORDER BY " . $list->sqlSort() . "typ_id DESC "
                               . $list->limit($total->total));
-                                 
-$total_row = mysql_num_rows($db_listing->result);
+
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -45,9 +45,9 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
       <td width="300px" style="color: red;">
          <table>
@@ -77,7 +77,7 @@ $total_row = mysql_num_rows($db_listing->result);
       <?=$list->end_tr()?>
    <?
      }
-   ?>  
+   ?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>

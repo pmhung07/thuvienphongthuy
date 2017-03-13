@@ -1,5 +1,5 @@
-<? 
-include ("inc_security.php"); 
+<?
+include ("inc_security.php");
 //check quyền them sua xoa
 checkAddEdit("edit");
 $record_id = getValue("record_id");
@@ -10,7 +10,7 @@ $url = base64_decode(getValue("url", "str", "GET", base64_encode("publisher.php"
 $db_select = new db_query("SELECT " . $field . "
 								   FROM	" . $fs_table . "
 								   WHERE	" . $id_field . " = " . $record_id);
-if($row = mysql_fetch_assoc($db_select->result)){
+if($row = mysqli_fetch_assoc($db_select->result)){
 	$value = abs($row[$field] - 1);
 	$db_active = new db_execute("UPDATE " . $fs_table . "
 										  SET " . $field . " = " . $value . "

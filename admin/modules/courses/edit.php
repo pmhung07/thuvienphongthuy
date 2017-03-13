@@ -41,8 +41,8 @@ $listAll   = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",
    }
 
    $myform = new generate_form();
-   $myform->add("cou_cat_id","cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,""); 
-   $myform->add("cou_cat_parent_id","cou_cat_parent_id",1,1,0,0,"Bạn chưa chọn danh mục",0,""); 
+   $myform->add("cou_cat_id","cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,"");
+   $myform->add("cou_cat_parent_id","cou_cat_parent_id",1,1,0,0,"Bạn chưa chọn danh mục",0,"");
    $myform->add("cou_time","cou_time", 0, 1,"", 0, "", 0, "");
    $myform->add("cou_name", "cou_name", 0, 0, "", 1, "Bạn chưa nhập tên của khóa học", 0, "");
    $myform->add("cou_info", "cou_info", 0, 0, "",1, "Bạn chưa nhập thông tin cho khóa học", 0, "");
@@ -57,12 +57,12 @@ $listAll   = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",
    $myform->add("description", "description", 0, 0, "", 0, "", 0, "");
    $myform->add("cou_tags", "cou_tags", 0, 0, "", 0, "", 0, "");
    $myform->add("cou_active","cou_active",1,0,0,0,"",0,"");
-   
+
    $myform->addTable($fs_table);
    $action = getValue("action", "str", "POST", "");
    if($action == "execute"){
       $fs_errorMsg .= $myform->checkdata();
-      if($fs_errorMsg == ""){       
+      if($fs_errorMsg == ""){
          $upload = new upload("cou_avatar", $imgpath, $fs_extension, $fs_filesize );
          $filename = $upload->file_name;
          if($filename != ""){
@@ -73,11 +73,11 @@ $listAll   = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",
             }
          }
          $fs_errorMsg .= $upload->show_warning_error();
-         if($fs_errorMsg == ""){     
+         if($fs_errorMsg == ""){
             $myform->removeHTML(0);
             $db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
-            redirect($fs_redirect); 
-         }         
+            redirect($fs_redirect);
+         }
       }
    }
    $myform->addFormname("add_new");
@@ -87,16 +87,16 @@ $listAll   = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
-$db_data    = new db_query("SELECT * FROM courses 
-                            INNER JOIN categories_multi ON courses.cou_cat_id=categories_multi.cat_id 
+$db_data    = new db_query("SELECT * FROM courses
+                            INNER JOIN categories_multi ON courses.cou_cat_id=categories_multi.cat_id
                             WHERE " . $id_field . " = " . $record_id);
-if($row     = mysql_fetch_assoc($db_data->result)){
+if($row     = mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
       if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -119,7 +119,7 @@ if($row     = mysql_fetch_assoc($db_data->result)){
       <?=$form->text_note('<strong style="text-align:center;">----------Sửa đổi khóa học-----------</strong>')?>
       <?=$form->text_note('Những ô có dấu sao (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
       <?=$form->errorMsg($fs_errorMsg)?>
-      
+
       <?=$form->select_db_multi("Danh mục", "cat_id", "cat_id", $listAll, "cat_id", "cat_name", $cat_id, "Chọn danh mục", 1, "", 1, 0, "", "")?>
       <?=$form->text("Tên khóa học", "cou_name", "cou_name", $cou_name, "Tên khóa học", 1, 250, "", 255, "", "", "")?>
       <?=$form->getFile("Hình ảnh đại diện", "cou_avatar", "cou_avatar", "Chọn hình ảnh", 1, 40, "", "")?>
@@ -134,7 +134,7 @@ if($row     = mysql_fetch_assoc($db_data->result)){
       <?=$form->text("Keywords", "keywords", "keywords", $keywords, "Keywords", 0, 450, 24, 255, "", "", "")?>
       <?=$form->text("Description", "description", "description", $description, "Description", 0, 450,24, 255, "", "", "")?>
       <?=$form->text("Tags", "cou_tags", "cou_tags", $cou_tags, "Tags", 0, 450,24, 255, "", "", "<span  style=\"color: red;padding-left: 10px;\" >(Các từ khóa viết thường, cách nhau bằng dấu \",\")</span>")?>
-      <?=$form->checkbox("Kích hoạt", "cou_active", "cou_active", 1 ,$cou_active, "",0, "", "")?>  
+      <?=$form->checkbox("Kích hoạt", "cou_active", "cou_active", 1 ,$cou_active, "",0, "", "")?>
       <?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>
       <?=$form->hidden("action", "action", "execute", "");?>
       <?

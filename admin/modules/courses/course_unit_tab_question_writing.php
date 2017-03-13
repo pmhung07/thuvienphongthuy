@@ -60,7 +60,7 @@ $db_block = new db_query("SELECT * FROM courses_multi_tabs_block WHERE  com_bloc
 $arrayBlock = array();
 $arrayBlock[0] = "Chọn Block để thêm nội dung";
 $i=1;
-while($row = mysql_fetch_assoc($db_block->result)){
+while($row = mysqli_fetch_assoc($db_block->result)){
 	$arrayBlock[$row['com_block_id']] = $row['com_block_data_name'];
 	$i++;
 }
@@ -114,7 +114,7 @@ $arrayMedia = array(
 			<script src="/../../js/tinymce/tinymce.min.js" type="text/javascript" charset="utf-8"></script>
 			<script type="text/javascript">
 		   	tinymce.init({
-				selector: "textarea",   
+				selector: "textarea",
 				plugins: [
 					"advlist autolink lists link image charmap print preview hr anchor pagebreak",
 					"searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -128,9 +128,9 @@ $arrayMedia = array(
 		      	templates: [
 		         	{title: 'Test template 1', content: 'Test 1'},
 		         	{title: 'Test template 2', content: 'Test 2'}
-		      	] 
+		      	]
 		   	});
-		   	</script>  
+		   	</script>
 		</td>
 	</tr>
    	<?=$form->text("Thứ tự", "cou_tab_question_order", "cou_tab_question_order", "", "Thứ tự", 0, 40, "", 255, "", "", "")?>
@@ -143,7 +143,7 @@ $arrayMedia = array(
 	unset($form);
 	?>
 	</div>
-	
+
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<div style="width:100%;">
 	<table cellpadding="5" cellspacing="0" width="100%" style="border-collapse:collapse;" bordercolor="#CCCCCC" border="1">
@@ -160,7 +160,7 @@ $arrayMedia = array(
 
 		<<?
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){ $i++;
+		while($row = mysqli_fetch_assoc($db_picture->result)){ $i++;
 		?>
 			<tr style="background:#FDD5D5;">
 				<td align="center"><?=$i?></td>
@@ -170,11 +170,11 @@ $arrayMedia = array(
 	            </td>
 	            <td width="50" align="center"><img src="<?=$fs_imagepath?>delete.gif" alt="DELETE" border="0" onClick="if (confirm('Are you sure to delete?')){ window.location.href='course_unit_data_block_delete.php?record_id=<?=$row["com_block_id"]?>&returnurl=<?=base64_encode(getURL())?>'}" style="cursor:pointer"></td>
 	        </tr>
-			<? 
+			<?
 			$db_content = new db_query("SELECT * FROM courses_multi_tab_questions WHERE cou_tab_question_tabs_id =".$iTab." AND cou_tab_question_block_id=".$row["com_block_id"]." ORDER BY cou_tab_question_order");
-			$countarrContent = $db_content->resultArray(); 
+			$countarrContent = $db_content->resultArray();
 			$j = 0;
-			if(count($countarrContent) > 0){ 
+			if(count($countarrContent) > 0){
 				foreach($countarrContent as $key=>$value){ $j++;
 			?>
 			<tr style="background:rgb(179, 218, 200);border-bottom: solid 1px white;">
@@ -212,7 +212,7 @@ function addblockintab(tab_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Add Block thành công');	
+				alert('Add Block thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');
@@ -233,7 +233,7 @@ function update_blockname(cou_block_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Update Tên Block thành công');	
+				alert('Update Tên Block thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');

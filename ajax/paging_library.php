@@ -64,11 +64,11 @@ switch ($catType) {
 }
 
 // COUNT ITEM LIB BY CATID
-$dbItemLibCount = new db_query('SELECT COUNT('.$idLibrary.') 
-                                    AS count_lib_item 
-                                  FROM '.$tableLibrary.' 
+$dbItemLibCount = new db_query('SELECT COUNT('.$idLibrary.')
+                                    AS count_lib_item
+                                  FROM '.$tableLibrary.'
                                  WHERE '.$idLibraryCat.' = '.$iCategory);
-$rowCount       = mysql_fetch_assoc($dbItemLibCount->result);
+$rowCount       = mysqli_fetch_assoc($dbItemLibCount->result);
 $countItemLib   = $rowCount['count_lib_item'];
 
 // GET CATE OR ITEM LIB
@@ -84,7 +84,7 @@ if($countItemLib == 0){
                                                       b.lib_cat_id,
                                                       b.lib_cat_name
                                             FROM '.$tableLibrary.' a,library_cate b
-                                           WHERE a.'.$idLibraryCat.' = b.lib_cat_id 
+                                           WHERE a.'.$idLibraryCat.' = b.lib_cat_id
                                              AND '.$idLibraryCat.' = '.$iCategory);
 
     $arrLibItem              =   $dbLibItem->resultArray();
@@ -102,15 +102,15 @@ $end              = getValue('end','int','POST',0);
 $num_new_list     = 9;
 if($page != 1){
     $startPage        = (($page-1) * $num_new_list) + 1;
-    $endPage          = (($page-1) * $num_new_list) + $num_new_list;  
+    $endPage          = (($page-1) * $num_new_list) + $num_new_list;
 }else{
     $startPage        = 1;
-    $endPage          = 9;  
+    $endPage          = 9;
 }
 
 $countItemNews = 1;
-for($start = $startPage;$start <= $endPage;$start++){ 
-    if(isset($arrLibItem[($start-1)][$idLibrary])){ 
+for($start = $startPage;$start <= $endPage;$start++){
+    if(isset($arrLibItem[($start-1)][$idLibrary])){
         $list_cou .= '<div class="content-show-courses">';
             $list_cou .= '<div class="content-show-courses-img">';
                 $list_cou .= '<a href="http://'.$base_url.'/thu-vien/'.$arrLibItem[($start-1)]["lib_cat_id"].'/'.removeTitle($arrLibItem[($start-1)]["lib_cat_name"]).'/'.$arrLibItem[($start-1)][$idLibrary].'/'.removeTitle($arrLibItem[($start-1)][$nameItem]).'.html">';
@@ -140,7 +140,7 @@ if($pageCount > 1){
   if($page > 1){
      $list_cou .= '<a title="'.($page - 1).'" class="a_paging listing_page_pre"> < </a>';
   }
-  
+
   if($pageCount > 10){
         if($page < 9){
            if($page < 6){
@@ -161,13 +161,13 @@ if($pageCount > 1){
               }
            }
            $list_cou .= '<a>…</a>';
-           for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+           for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
               $list_cou .= '<a class="a_paging" title="'.$j.'">'.$j.'</a>';
            }
         }else{
            $go_page = $page + 4;
            if($pageCount - $page > 8 && $go_page < $pageCount - 3){
-              for ($i=1; $i<=2; $i++) { 
+              for ($i=1; $i<=2; $i++) {
                  $list_cou .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
               }
               $list_cou .= '<a>…</a>';
@@ -180,12 +180,12 @@ if($pageCount > 1){
                  }
               }
               $list_cou .= '<a>…</a>';
-              for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+              for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
                  $list_cou .= '<a class="a_paging" title="'.$j.'">'.$j.'</a>';
               }
            }else{
               if($pageCount-$page < 6){
-                 for ($i=1; $i<=2; $i++) { 
+                 for ($i=1; $i<=2; $i++) {
                     $list_cou .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                  }
                  $list_cou .= '<a>…</a>';
@@ -198,7 +198,7 @@ if($pageCount > 1){
                  }
               }
               else{
-                 for ($i=1; $i<=2; $i++) { 
+                 for ($i=1; $i<=2; $i++) {
                     $list_cou .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                  }
                  $list_cou .= '<a>…</a>';
@@ -210,7 +210,7 @@ if($pageCount > 1){
                     }
                  }
               }
-  
+
            }
         }}else{
            for ($i= 1;$i<=$pageCount; $i++) {
@@ -221,7 +221,7 @@ if($pageCount > 1){
               }
            }
         }
-  
+
   if($page < $pageCount){
      $list_cou .= '<a title="'.($page + 1).'" class="a_paging listing_page_next"> > </a>';
   }

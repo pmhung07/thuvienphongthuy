@@ -16,9 +16,9 @@ $record_id 		= getValue("record_id");
 <?=$load_header?>
 <?
 //lay du lieu cua record can sua doi
-$db_data 	= new db_query("SELECT * FROM get_new_db 
+$db_data 	= new db_query("SELECT * FROM get_new_db
                             WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }

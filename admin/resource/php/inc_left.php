@@ -11,15 +11,15 @@ if($isAdmin != 1){
 
 $db_order = new db_query("SELECT * FROM admin_menu_order WHERE amo_admin = " . $user_id . " ORDER BY amo_order ASC");
 
-$db_menu = new db_query("SELECT * 
-								 FROM modules 
+$db_menu = new db_query("SELECT *
+								 FROM modules
 								 " . $sql . "
 								 ORDER BY mod_order ASC");
 $arrayTemp = array();
 $arrayModule = array();
-while($row = mysql_fetch_assoc($db_menu->result))  $arrayTemp[$row["mod_id"]] = $row;
+while($row = mysqli_fetch_assoc($db_menu->result))  $arrayTemp[$row["mod_id"]] = $row;
 
-while($ord=mysql_fetch_assoc($db_order->result)){
+while($ord=mysqli_fetch_assoc($db_order->result)){
 	if(isset($arrayTemp[$ord["amo_module"]])){
 		$arrayModule[$ord["amo_module"]] = $arrayTemp[$ord["amo_module"]];
 		unset($arrayTemp[$ord["amo_module"]]);
@@ -28,10 +28,10 @@ while($ord=mysql_fetch_assoc($db_order->result)){
 foreach($arrayTemp as $key=>$ord){
 	$arrayModule[$ord["mod_id"]] = $arrayTemp[$ord["mod_id"]];
 	$db_ex = new db_execute("REPLACE INTO admin_menu_order(amo_admin,amo_module) VALUES(" . $user_id . "," . $ord["mod_id"] . ")");
-}						 
+}
 unset($arrayTemp);
 unset($db_menu);
-unset($db_order);								 
+unset($db_order);
 ?>
 <ul id="test-list">
 	<?

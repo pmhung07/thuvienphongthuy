@@ -33,8 +33,8 @@ if($iCategory != 0){
                                                 cat_id,
                                                 cat_name
                                            FROM skill_lesson a,
-                                                categories_multi b 
-                                          WHERE a.skl_les_cat_id = b.cat_id 
+                                                categories_multi b
+                                          WHERE a.skl_les_cat_id = b.cat_id
                                             AND skl_les_cat_id = ".$value." AND skl_les_active = 1 ORDER BY skl_les_order");
         $arrCoursesChild    =   $dbCourses->resultArray();
         $countSkill         +=   count($arrCoursesChild);
@@ -43,16 +43,16 @@ if($iCategory != 0){
     }
 
     // LIST ITEM
-    $countItemSkill = 1; 
+    $countItemSkill = 1;
     for($i = 0;$i < count($arrSkill);$i++){
-        for($j = 0;$j < count($arrSkill[$i]);$j++){ 
+        for($j = 0;$j < count($arrSkill[$i]);$j++){
 
             // COUNT LESSON SKILL
-            $dbLessonCount = new db_query('SELECT COUNT(skl_cont_id) 
-                                               AS count_lesson 
-                                             FROM skill_content 
+            $dbLessonCount = new db_query('SELECT COUNT(skl_cont_id)
+                                               AS count_lesson
+                                             FROM skill_content
                                             WHERE skl_cont_les_id = '.$arrSkill[$i][$j]['skl_les_id']);
-            $row_count = mysql_fetch_assoc($dbLessonCount->result);
+            $row_count = mysqli_fetch_assoc($dbLessonCount->result);
 
             $arrItemSkill[$countItemSkill] = array(
                 'skl_les_id'        => $arrSkill[$i][$j]['skl_les_id'],
@@ -61,8 +61,8 @@ if($iCategory != 0){
                 'cat_id'            => $arrSkill[$i][$j]['cat_id'],
                 'cat_name'          => $arrSkill[$i][$j]['cat_name'],
                 'count_lesson'      => $row_count['count_lesson']
-            ); 
-            $countItemSkill++; } 
+            );
+            $countItemSkill++; }
             unset($dbLessonCount);
     }
 
@@ -84,7 +84,7 @@ if(intval($start) == 0){
    $page = 1;
 }
 $pageCount = (int)($total/$num_new_list);
-$div = $total % $num_new_list;          
+$div = $total % $num_new_list;
 if($div!= 0){
    $pageCount = $pageCount + 1;
 }
@@ -146,7 +146,7 @@ unset($dbCourses);
 			<div class="content-main">
 				<div class="list-courses-main-content">
 					<div class="list-courses-main-content-show">
-                        <?php 
+                        <?php
                             $start  = 1;
                             $end    = 9;
                         ?>
@@ -206,13 +206,13 @@ unset($dbCourses);
                                                 }
                                             }
                                             $str .= '<a>…</a>';
-                                            for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+                                            for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
                                                 $str .= '<a class="a_paging" title="'.$j.'">'.$j.'</a>';
                                             }
                                         }else{
                                             $go_page = $page + 4;
                                             if($pageCount - $page > 8 && $go_page < $pageCount - 3){
-                                                for ($i=1; $i<=2; $i++) { 
+                                                for ($i=1; $i<=2; $i++) {
                                                     $str .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                                                 }
                                                 $str .= '<a>…</a>';
@@ -225,12 +225,12 @@ unset($dbCourses);
                                                     }
                                                 }
                                                 $str .= '<span>…</span>';
-                                                for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+                                                for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
                                                     $str .= '<a class="a_paging" title="'.$j.'">'.$j.'</a>';
                                                 }
                                             }else{
                                                 if($pageCount-$page < 6) {
-                                                    for ($i=1; $i<=2; $i++) { 
+                                                    for ($i=1; $i<=2; $i++) {
                                                        $str .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                                                     }
                                                     $str .= '<span>…</span>';
@@ -242,7 +242,7 @@ unset($dbCourses);
                                                         }
                                                     }
                                                 }else{
-                                                    for ($i=1; $i<=2; $i++) { 
+                                                    for ($i=1; $i<=2; $i++) {
                                                         $str .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                                                     }
                                                     $str .= '<span>…</span>';

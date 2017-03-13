@@ -29,10 +29,10 @@ $record_id 		= getValue("record_id");
    $action = getValue("action", "str", "POST", "");
    if($action == "execute"){
    	$fs_errorMsg .= $myform->checkdata();
-   	if($fs_errorMsg == ""){	   	                        
+   	if($fs_errorMsg == ""){
       	$myform->removeHTML(0);
       	$db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
-     		redirect($fs_redirect);	       
+     		redirect($fs_redirect);
    	}
    }
    $myform->addFormname("add_new");
@@ -42,15 +42,15 @@ $record_id 		= getValue("record_id");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
-$db_data 	= new db_query("SELECT * FROM get_new_db 
+$db_data 	= new db_query("SELECT * FROM get_new_db
                             WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -72,7 +72,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
    <?=$form->text_note('<strong style="text-align:center;">----------Sửa đổi bài viết-----------</strong>')?>
    <?=$form->text_note('Những ô có dấu sao (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
    <?=$form->errorMsg($fs_errorMsg)?>
-   <?=$form->text("Tiêu đề bài viết", "gen_title", "gen_title", $gen_title, "Tiêu đề", 1, 250, "", 255, "", "", "")?>   
+   <?=$form->text("Tiêu đề bài viết", "gen_title", "gen_title", $gen_title, "Tiêu đề", 1, 250, "", 255, "", "", "")?>
    <?=$form->close_table();?>
    <?//=$form->wysiwyg("<font class='form_asterisk'>*</font> Nội dung bài viết ", "gen_details", gen_details, "../../resource/wysiwyg_editor/", "99%", 450)?>
    <div class="form_name" style="text-align:left; padding:5px; width:99%"><font class="form_asterisk">*</font> Nội dung bài viết </div>
@@ -80,17 +80,17 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
    <script src="/../../js/tinymce/tinymce.min.js" type="text/javascript" charset="utf-8"></script>
    <script type="text/javascript">
    tinymce.init({
-      selector: "textarea",	
+      selector: "textarea",
       plugins: [
          "advlist autolink lists link charmap print preview anchor",
          "searchreplace visualblocks code fullscreen",
          "insertdatetime media table contextmenu paste jbimages image",
       ],
-      toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image jbimages",	
-      relative_urls: false , 
-      theme_advanced_buttons1: "forecolor,backcolor,fontselect,fontsizeselect",	
+      toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image jbimages",
+      relative_urls: false ,
+      theme_advanced_buttons1: "forecolor,backcolor,fontselect,fontsizeselect",
    });
-   </script>          
+   </script>
    <?=$form->create_table();?>
    <?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>
    <?=$form->hidden("action", "action", "execute", "");?>

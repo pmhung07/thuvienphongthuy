@@ -16,27 +16,27 @@ $sql_search = "1";
 <? /*---------Body------------*/ ?>
 <div id="listing">
 	<table border="1" cellpadding="3" cellspacing="0" class="table" width="100%" bordercolor="<?=$fs_border?>">
-   	<tr> 
+   	<tr>
    		<td class="bold bg" width="5">STT</td>
-   		<td class="bold bg" ><?=translate_text("Name")?></td>	
-         <td colspan="5" align="center">Thông tin chi tiết</td>			
+   		<td class="bold bg" ><?=translate_text("Name")?></td>
+         <td colspan="5" align="center">Thông tin chi tiết</td>
    	</tr>
 		<form action="quickedit.php?returnurl=<?=base64_encode(getURL())?>" method="post" name="form_listing" id="form_listing" enctype="multipart/form-data">
-		<input type="hidden" name="iQuick" value="update" />	
-		   <? 
+		<input type="hidden" name="iQuick" value="update" />
+		   <?
          $i=0;
          $j = 0;
          $m = 0;
-         $n = 0;   
+         $n = 0;
          $db_course = new db_query("SELECT * FROM kids_vcb_lessons ORDER BY kvcb_id");
-         while($rowCourse = mysql_fetch_array($db_course->result)){
+         while($rowCourse = mysqli_fetch_array($db_course->result)){
          $i++;
          $m++;
          $n++;
          $dlUnut = '';
          $db_unit = new db_query("SELECT kvcb_ent_id,kvcb_ent_title,kvcb_ent_examples
    					  	             FROM kids_vcb_entries
-                                  WHERE kids_vcb_entries.kvcb_id = ".$rowCourse["kvcb_id"]); 
+                                  WHERE kids_vcb_entries.kvcb_id = ".$rowCourse["kvcb_id"]);
          ?>
             <tr <? if($m%2==0) echo ' bgcolor="#FAFAFA"';?>>
                <td align="center"><?php echo $i ?></td>
@@ -49,7 +49,7 @@ $sql_search = "1";
             </tr>
             <?php
             if($cou_id == $rowCourse['kvcb_id']){
-               while($rowUnit = mysql_fetch_array($db_unit->result)){
+               while($rowUnit = mysqli_fetch_array($db_unit->result)){
                $j++;
                $n++;
                $dlUnut .= '<tr';
@@ -65,10 +65,10 @@ $sql_search = "1";
                $dlUnut .= '</tr>';
                }
                echo $dlUnut;
-            }   
+            }
             ?>
-      
-         <?php 
+
+         <?php
          }
          unset($db_unit);
          unset($dlUnut);
@@ -116,5 +116,5 @@ $(document).ready(function() {
       var iCourse		   =	$("#Course_search").val();
       window.location	=	"listing.php?iCate=" +iCate+"&iParent="+iParent+"&iCourse="+ iCourse;
    });
-}); 
+});
 </script>

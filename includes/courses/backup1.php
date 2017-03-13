@@ -1,6 +1,6 @@
 ﻿<?php
 
-$iCourses = getValue('iCourses','int','GET',0);	
+$iCourses = getValue('iCourses','int','GET',0);
 $iUnit = getValue('iUnit','int','GET',0);
 $iTab = getValue('iTab','int','GET',0);
 
@@ -70,7 +70,7 @@ $arrUnit = $dbUnit->resultArray();
 				    		<li class="<?=($iTab == 0)?'active':'';?> li1"><a href="#tab1" data-toggle="tab">Questions</a></li>
 				    		<li class="li2"><a href="#tab2" data-toggle="tab">Tip & Thanks</a></li>
 				    		<?php
-				    		$dbTab = new db_query("SELECT * FROM courses_multi_tabs a,courses_multi b 
+				    		$dbTab = new db_query("SELECT * FROM courses_multi_tabs a,courses_multi b
 				    							   WHERE a.cou_tab_com_id = b.com_id AND cou_tab_com_id=".$iUnit);
 				    		$arrTab = $dbTab->resultArray();
 				    		$z = 3;
@@ -88,7 +88,7 @@ $arrUnit = $dbUnit->resultArray();
 
 								<!--Hiển thị nội dung học-->
 
-								<?php 
+								<?php
 								$db_query_block = new db_query("SELECT * FROM courses_multi_tabs_block WHERE com_block_tab_id=".$iTab." ORDER BY com_block_data_order");
 								$arrBlock = $db_query_block->resultArray();
 								foreach($arrBlock as $keyBlock=>$valueBlock){
@@ -139,7 +139,7 @@ $arrUnit = $dbUnit->resultArray();
 										<?}
 									}else if($valueBlock['com_block_data_type'] == 'question_matching'){ ?>
 
-										<?php 
+										<?php
 										$db_query_content_ques = new db_query("SELECT * FROM courses_multi_tab_questions WHERE cou_tab_question_block_id=".$valueBlock['com_block_id']." AND cou_tab_question_type = 'matching' ORDER BY cou_tab_question_order");
 										$arrContentQues = $db_query_content_ques->resultArray();
 										foreach($arrContentQues as $keyContentQuest => $valueContentQuest){ ?>
@@ -159,20 +159,20 @@ $arrUnit = $dbUnit->resultArray();
 													<?php
 			                                        $j = 0;
 			                                        for($i=0;$i<$cArrayCont;$i++){
-			                                            if($i%2 != 0) { 
+			                                            if($i%2 != 0) {
 			                                                $j ++;
 			                                                echo '<input type=text value=""/>';
 			                                            }else{
 			                                   	            echo $arrayCont[$i];
-			                                            }                 
+			                                            }
 			                                        } ?>
 			                                        </div>
 
 												</div>
 											<?php } ?>
-										<?php } ?>	
+										<?php } ?>
 
-										<?php 
+										<?php
 										$db_query_content_ques = new db_query("SELECT * FROM courses_multi_tab_questions WHERE cou_tab_question_block_id=".$valueBlock['com_block_id']." AND cou_tab_question_type = 'draganddrop' ORDER BY cou_tab_question_order");
 										$arrContentQues = $db_query_content_ques->resultArray();
 										foreach($arrContentQues as $keyContentQuest => $valueContentQuest){ ?>
@@ -183,17 +183,17 @@ $arrUnit = $dbUnit->resultArray();
 											<?php } ?>
 
 											<?php if($valueContentQuest['cou_tab_question_content'] != ""){ ?>
-			     	            
+
 			        						<?php
 			        						$arrayAns  = getStringAns(removeHTML($valueContentQuest['cou_tab_question_content']));
 			        						$result    = count($arrayAns);
-			        						$rand_keys = array_random($arrayAns, $result);                                
+			        						$rand_keys = array_random($arrayAns, $result);
 			        						?>
 			        						&nbsp;
 			        						<ul class="menu_quiz">
 			        							<?php for($i=0;$i<$result;$i++){?>
 			        								<a href="#" ><?=$i+1?>.<span id="draggable<?=$i+1?>"><?=trim($rand_keys[$i])?></span></a>
-			        							<?php } ?>   
+			        							<?php } ?>
 			        						</ul>
 			        						<div class="tip_learn_main_content_title">
 												Chọn đáp án thich hợp ở trên và điền vào chỗ trống
@@ -207,12 +207,12 @@ $arrUnit = $dbUnit->resultArray();
 												<?php
 		                                        $j = 0;
 		                                        for($i=0;$i<$cArrayCont;$i++){
-		                                            if($i%2 != 0) { 
+		                                            if($i%2 != 0) {
 		                                                $j ++;
 		                                                echo '<input type=text value=""/>';
 		                                            }else{
 		                                   	            echo $arrayCont[$i];
-		                                            }                 
+		                                            }
 		                                        } ?>
 		                                        </div>
 
@@ -240,12 +240,12 @@ $arrUnit = $dbUnit->resultArray();
 			           							$sqlAns    = new db_query("SELECT * FROM courses_multi_tab_answers WHERE cou_tab_answer_question_id = ".$valueContentQuest['cou_tab_question_id']);
 			           							$arrayT    = array(1=>'A',2=>'B',3=>'C',4=>'D',5=>'E');
 			           							$iA        = 0;
-			           							while($rowAns = mysql_fetch_assoc($sqlAns->result)){
-			              							$iA ++;	?>							
+			           							while($rowAns = mysqli_fetch_assoc($sqlAns->result)){
+			              							$iA ++;	?>
 			           						            <div class="check_box-muc">
 			                                                <input id="checke<?=$in?>_<?=$iA?>" name="chec_box<?=$in?>" type="radio" value="<?=$rowAns['cou_tab_answer_true']?>" />
 			                                                <label for="checke<?=$in?>_<?=$iA?>"><?=$arrayT[$iA]?>. <?=$rowAns['cou_tab_answer_content']?></label>
-			                                            </div>   
+			                                            </div>
 			        				            <?php }
 			        						    echo '</div>';?>
 
@@ -317,7 +317,7 @@ $arrUnit = $dbUnit->resultArray();
 					    				<textarea placeholder="Viết câu trả lời"></textarea>
 					    			</div>
 					    		</div>
-							
+
 				    		</div>
 				            <div class="tab-pane" id="tab2">
 				              	<div class="question-learn-here">

@@ -7,36 +7,36 @@ checkAddEdit("edit");
    $fs_redirect = base64_decode(getValue("returnurl","str","GET",base64_encode("listing.php")));
    $record_id = getValue("record_id");
    $cat_parent_id = getValue("cat_parent_id","str","GET","");
-   $com_cou_id = getValue("com_cou_id","str","GET","");   
+   $com_cou_id = getValue("com_cou_id","str","GET","");
    $les_com_id = getValue("les_com_id","str","GET","");
    $media_type = getValue("main_media_type");
    $main_type = getValue("main_type");
-   
+
    //Lay ra ID cua Content hien tai
    $db_skill = new db_query("SELECT * FROM skill_content,learn_writing
                                WHERE learn_writing.learn_skl_cont_id = skill_content.skl_cont_id
                                AND   learn_writing.learn_wr_id = ".$record_id);
-   while($row_skill = mysql_fetch_assoc($db_skill->result)){
+   while($row_skill = mysqli_fetch_assoc($db_skill->result)){
       $idContent = $row_skill['skl_cont_id'];
       $learn_skl_cont_id = $idContent ;
    }
    unset($db_skill);
-   
+
    //Lay ra ID cua danh muc va bai hoc hien tai
    $db_info = new db_query("SELECT * FROM skill_lesson,skill_content
                             WHERE skill_content.skl_cont_les_id = skill_lesson.skl_les_id
                             AND   skill_content.skl_cont_id = ".$idContent);
-   $row_info = mysql_fetch_assoc($db_info->result);
+   $row_info = mysqli_fetch_assoc($db_info->result);
    $idLesson = $row_info['skl_les_id'];
    $cat_parent_id = $row_info['skl_les_cat_id'];
-   unset($db_info);                           
-   
+   unset($db_info);
+
    //List danh muc
    $menu = new menu();
    $sql = '1';
    $sql = ' cat_type = 0';
    $listAll = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",$sql . " AND lang_id = " . $lang_id . $sqlcategory,"cat_id,cat_name,cat_order,cat_type,cat_parent_id,cat_has_child","cat_order ASC, cat_name ASC","cat_has_child");
-   
+
    //List bai hoc
    $db_lesson = new db_query("SELECT skl_les_id, skl_les_name
                               FROM skill_lesson
@@ -44,12 +44,12 @@ checkAddEdit("edit");
    //List Content
    $db_content = new db_query("SELECT skl_cont_id, skl_cont_title, skl_cont_order
                                FROM skill_content
-                               WHERE skl_cont_les_id = ".$idLesson." ORDER BY skl_cont_order ASC");                           
-                              
+                               WHERE skl_cont_les_id = ".$idLesson." ORDER BY skl_cont_order ASC");
+
    //Khai bao mang kieu bai hoc chinh
    $array_main_type 		= array(0 => translate_text("Ẩn phần text nội dung")
                                ,1 => translate_text("Hiển thị text nội dung")
-                                );  
+                                );
    $myform = new generate_form();
    //Loại bỏ chuc nang thay the Tag Html
    $myform->removeHTML(0);
@@ -66,31 +66,31 @@ checkAddEdit("edit");
 	$fs_errorMsg = "";
 	//Get Action.
 	$action	= getValue("action", "str", "POST", "");
-   if($action == "execute"){  
+   if($action == "execute"){
       //Check form data : kiêm tra lỗi
-      $fs_errorMsg .= $myform->checkdata();    
+      $fs_errorMsg .= $myform->checkdata();
       if($fs_errorMsg == ""){
          $upload1		    = new upload("learn_wr_media", $mediapath, $fs_extension, $fs_filesize);
-         $filename1	= $upload1->file_name;               
+         $filename1	= $upload1->file_name;
          if($filename1 != ""){
             delete_file("learn_writing","learn_wr_id",$record_id,"learn_wr_media",$mediapath);
             $myform->add("learn_wr_media","filename1",0,1,0,0);
-            
+
          }
          $fs_errorMsg .= $upload1->show_warning_error();
-         
-      //kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database	
+
+      //kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database
          if($fs_errorMsg == ""){
             $myform->removeHTML(0);
     		   $db_ex 	= new db_execute_return();
 			   $last_id = $db_ex->db_execute($myform->generate_update_SQL("learn_wr_id", $record_id));
-			
+
             echo 'Đã cập nhật xong';
             redirect($fs_redirect);
 		    exit();
     		}
     	}//End if($fs_errorMsg == "")
-    	
+
     }//End if($action == "insert")
 	//add form for javacheck
 	$myform->addFormname("add_new");
@@ -101,13 +101,13 @@ checkAddEdit("edit");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
+<?
 $myform->checkjavascript();
 $errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM learn_writing  WHERE learn_wr_id = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}
@@ -129,18 +129,18 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 	<?=$form->text_note('Những ô dấu (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
 	<?=$form->errorMsg($fs_errorMsg)?>
 	<?=$form->select_db_multi("Chọn danh mục", "cat_parent_id", "cat_parent_id", $listAll, "cat_id", "cat_name", $cat_parent_id, "Chọn chuyên mục cha", 1, "", 1, 0, "onChange=\"window.location.href='add.php?cat_parent_id='+this.value\"", "")?>
-   
+
    <tr>
       <td align="right" style="font-size: 13px; color:#004000;">Chọn bài học :</td>
       <td align="left">
          <select id="skl_cont_les_id" name="skl_cont_les_id" class="form_control" onChange="window.location.href='add.php?skl_cont_les_id='+this.value+'&cat_parent_id=<?php echo $cat_parent_id; ?>'">
             <option value="">Chọn bài học</option>
             <?
-               while($row_lesson = mysql_fetch_assoc($db_lesson->result)){
+               while($row_lesson = mysqli_fetch_assoc($db_lesson->result)){
             ?>
                   <option value="<?=$row_lesson['skl_les_id']?>" <? if($row_lesson['skl_les_id'] == $idLesson) echo "selected = 'selected'"?>><?=$row_lesson['skl_les_name']?></option>
-            <?      
-              }unset($db_lesson); 
+            <?
+              }unset($db_lesson);
             ?>
          </select>
       </td>
@@ -152,24 +152,24 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
          <select id="main_type" name="main_type" class="form_control">
             <option value="">Chọn Content</option>
             <?
-               while($row_content = mysql_fetch_assoc($db_content->result)){
+               while($row_content = mysqli_fetch_assoc($db_content->result)){
             ?>
                   <option value="<?=$row_content['skl_cont_id']?>" <? if($row_content['skl_cont_id'] == $idContent) echo "selected = 'selected'";?>><?echo "Content số ".$row_content['skl_cont_order'];?></option>
-            <?      
-              }unset($db_content); 
+            <?
+              }unset($db_content);
             ?>
          </select>
       </td>
       <td></td>
    </tr>
-   
+
    <td align="right" nowrap class="form_name" width="200"><font class="form_asterisk">* </font> <?=translate_text("Chọn kiểu media")?> :</td>
    <td>
    	<input type="radio" name="learn_wr_mtype" value="1" <? if($learn_wr_mtype == 1) echo 'checked="checked"' ?>  />Ảnh<br/>
       <input type="radio" name="learn_wr_mtype" value="2" <? if($learn_wr_mtype == 2) echo 'checked="checked"' ?> />Video<br/>
       <input type="radio" name="learn_wr_mtype" value="3" <? if($learn_wr_mtype == 3) echo 'checked="checked"' ?> />Flash<br/>
    </td>
-   </tr>	
+   </tr>
    <?=$form->getFile("Upload Media", "learn_wr_media", "learn_wr_media", "Media cho Content", 0, 30, "", "")?>
    <?//=$form->getFile("Media 2", "main_media_url2", "main_media_url2", "Media cho Bài học chính", 0, 30, "", "")?>
    <?//=$form->getFile("Media 3", "main_media_url3", "main_media_url3", "Media cho Bài học chính", 0, 30, "", "")?>

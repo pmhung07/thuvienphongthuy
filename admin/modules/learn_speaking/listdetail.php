@@ -15,34 +15,34 @@ checkAddEdit("add");
     $db_Speaking = new db_query("SELECT *
 									FROM  learn_content
 									WHERE  lec_learn_id = ".$record_id ." AND lec_learn_type = 0 ORDER BY lec_order");
-                                    
+
     $db_unit = new db_query("SELECT com_name,learn_unit_id,com_cou_id,com_id
 									FROM  courses_multi,learn_speaking
 									WHERE courses_multi.com_id = learn_speaking.learn_unit_id
                                     AND   learn_speaking.learn_sp_id = ".$record_id);
-                                    
-    while($row_unit = mysql_fetch_assoc($db_unit->result)){
+
+    while($row_unit = mysqli_fetch_assoc($db_unit->result)){
       $nUnit    = $row_unit['com_name'];
       $nCourse  = $row_unit['com_cou_id'];
       $iCourse  = $row_unit['com_id'];
 
     }; unset($db_unit);
-    
+
     $db_course = new db_query("SELECT cou_id,cou_cat_id,cou_name,cou_lev_id
 									FROM  courses
 									WHERE  cou_id = ".$nCourse);
-                                    
-    while($row_course = mysql_fetch_assoc($db_course->result)){
+
+    while($row_course = mysqli_fetch_assoc($db_course->result)){
       $nCourse    = $row_course['cou_name'];
       $nLever     = nameLevel($row_course['cou_lev_id']);
       $nCate      = $row_course['cou_cat_id'];
       $iCour      = $row_course['cou_id'];
     }; unset($db_course);
-    
+
     $db_cate = new db_query("SELECT cat_name,cat_id
 									FROM   categories_multi
 									WHERE  cat_id = ".$nCate);
-    while($row_cate = mysql_fetch_assoc($db_cate->result)){
+    while($row_cate = mysqli_fetch_assoc($db_cate->result)){
       $nCate    = $row_cate['cat_name'];
     }; unset($db_cate);
     $link = generate_preview_link($nCate,$nLever,$nUnit,$iCour,$iCourse,'speak');
@@ -62,7 +62,7 @@ checkAddEdit("add");
 	$fs_errorMsg = "";
 	//Get Action.
 	$action	= getValue("action", "str", "POST", "");
-    if($action == "execute"){     
+    if($action == "execute"){
          //Check form data : kiêm tra lỗi
          $fs_errorMsg .= $myform->checkdata();
          if($fs_errorMsg == ""){
@@ -73,9 +73,9 @@ checkAddEdit("add");
             }
             $fs_errorMsg .= $upload->show_warning_error();
             if($fs_errorMsg == ""){
-            //Insert to database            
-            $myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi 
-            //thực hiện insert 
+            //Insert to database
+            $myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi
+            //thực hiện insert
             $db_insert = new db_execute($myform->generate_insert_SQL());
             //unset biến để giải phóng bộ nhớ.
             unset($db_insert);
@@ -84,7 +84,7 @@ checkAddEdit("add");
             redirect($url);
             }
   	      }//End if($fs_errorMsg == "")
-    	
+
     }//End if($action == "insert")
 	//add form for javacheck
 	$myform->addFormname("add_new");
@@ -100,10 +100,10 @@ checkAddEdit("add");
 <body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 <? /*------------------------------------------------------------------------------------------------*/ ?>
     <p class="head">- Thêm Speaking trong UNIT : <span style="color: red;"><?=$nUnit?></span></p>
-    <p class="head head_cate"> 
-        <span style="padding: 0 12px;">- Thuộc Chuyên mục  : <span style="color: red;"><?=$nCate?></span></span> 
+    <p class="head head_cate">
+        <span style="padding: 0 12px;">- Thuộc Chuyên mục  : <span style="color: red;"><?=$nCate?></span></span>
         <span style="padding: 0 12px;">- Level             : <span style="color: red;"><?=$nLever?></span></span>
-        <span style="padding: 0 12px;">- Course            : <span style="color: red;"><?=$nCourse?></span></span> 
+        <span style="padding: 0 12px;">- Course            : <span style="color: red;"><?=$nCourse?></span></span>
     </p>
     <table border="0" cellpadding="3" cellspacing="0" class="tablelist formdetail" width="90%">
         <?php $form = new form();
@@ -136,10 +136,10 @@ checkAddEdit("add");
         ?>
     </table>
     <p class="head_cate"></p>
-    
+
     <p class="head">- Danh sách Speaking có trong UNIT</p>
     <table border="1" cellpadding="3" cellspacing="0" class="tablelist" width="90%" bordercolor="#E3E3E3">
-    <tr class="head"> 
+    <tr class="head">
         <td class="bold bg" width="2%" nowrap="nowrap" align="center" style="background: none;"><img src="<?=$fs_imagepath?>save.png" border="0"/></td>
 		<td class="bold bg" width="30%"><?=translate_text("Đoạn văn")?></td>
         <td class="bold bg" width="30%"><?=translate_text("Hướng dẫn")?></td>
@@ -151,10 +151,10 @@ checkAddEdit("add");
 	</tr>
    <form action="quickedit.php?returnurl=<?=base64_encode(getURL())?>" method="post" name="form_listing" id="form_listing" enctype="multipart/form-data">
 	<input type="hidden" name="iQuick" value="update" />
-    <? 		
+    <?
 	$i=0;
    $j = 0;
-	while($row = mysql_fetch_array($db_Speaking->result)){ $i++;
+	while($row = mysqli_fetch_array($db_Speaking->result)){ $i++;
 	?>
    <tr <? if($i%2==0) echo ' bgcolor="#FAFAFA"';?>>
       <td></td>
@@ -167,11 +167,11 @@ checkAddEdit("add");
       <td nowrap="nowrap">
    	   <textarea style="width: 240px;height: 60px;"><?php echo $row['lec_note'] ?></textarea>
       </td>
-      <td nowrap="nowrap">            
-         <?php 
+      <td nowrap="nowrap">
+         <?php
          $url = $mediapath.$row['lec_media'];
          checkmedia_les($row['lec_media_type'],$url);
-         ?>   
+         ?>
       </td>
       <td align="center" width="30">
          <input style="width:30px;background: #eee;" type="text" readonly="" value="<?=$row["lec_order"]?>" />

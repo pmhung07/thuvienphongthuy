@@ -31,18 +31,18 @@ $list->add("tesr_teach_success","Complete","int", 0, 1);
 //$list->quickEdit = false;
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
-$total			= new db_count("SELECT 	count(*) AS count 
-										 FROM test_result 
+$total			= new db_count("SELECT 	count(*) AS count
+										 FROM test_result
                                INNER JOIN test ON (tesr_id = test_id)
                                WHERE 1".$list->sqlSearch().$sql_filter." AND tesr_user_success = 1");
-//câu lệnh select dữ liêu										 
-$db_listing 	= new db_query("SELECT * FROM  test_result 
+//câu lệnh select dữ liêu
+$db_listing 	= new db_query("SELECT * FROM  test_result
                                INNER JOIN test ON (tesr_test_id = test_id)
 								 		 WHERE 1".$list->sqlSearch().$sql_filter ." AND tesr_user_success = 1"
 									   . " ORDER BY " . $list->sqlSort() . "tesr_user_success DESC "
                               .	$list->limit($total->total));
-                                 
-$total_row = mysql_num_rows($db_listing->result);
+
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -58,9 +58,9 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
       <td width="50" align="center">
 		   <? echo'<a title="Thông tin chi tiết" class="thickbox noborder a_detail" href="confirmation.php?url='. base64_encode(getURL()) . '&record_id=' . $row["tesr_id"] .'&TB_iframe=true&amp;height=450&amp;width=1000" /><b>'.$row['tesr_id'].'</b></a>';?>
@@ -70,26 +70,26 @@ $total_row = mysql_num_rows($db_listing->result);
       </td>
       <td width="30" align="center">
          <input style="width: 30px;background: #eee;" type="text" readonly="" value="<?=$row["tesr_reading"]?>" />
-      </td>      
+      </td>
       <td width="30" align="center">
          <input style="width: 30px;background: #eee;" type="text" readonly="" value="<?=$row["tesr_listening"]?>" />
       </td>
       <td width="70" align="center">
-         <input style="width: 30px;background: #eee;" type="text" readonly="" value="<?=$row["tesr_speaking"]?>" />  
-         <? 
+         <input style="width: 30px;background: #eee;" type="text" readonly="" value="<?=$row["tesr_speaking"]?>" />
+         <?
             if($row['tesr_teach_success'] == 0){
                echo'<a title="Thông tin chi tiết" class="thickbox noborder a_detail" href="speaking_score.php?url='. base64_encode(getURL()) . '&record_id=' . $row["tesr_id"] .'&score=' . $row["tesr_speaking"] . '&TB_iframe=true&amp;height=450&amp;width=1000" /><b>Scores</b></a>';
             }
-         ?>        
-      </td> 
+         ?>
+      </td>
       <td width="70" align="center">
          <input style="width: 30px;background: #eee;" type="text" readonly="" value="<?=$row["tesr_writing"]?>" />
-         <? 
+         <?
             if($row['tesr_teach_success'] == 0){
                echo'<a title="Thông tin chi tiết" class="thickbox noborder a_detail" href="writing_score.php?url='. base64_encode(getURL()) . '&record_id=' . $row["tesr_id"] .'&score=' . $row["tesr_writing"] . '&TB_iframe=true&amp;height=450&amp;width=1000" /><b>Scores</b></a>';
             }
          ?>
-      </td> 
+      </td>
       <td width="50" align="center">
          <?if($row['tesr_teach_success'] == 0){?>
             <input id="bt_send_mail" style="width: 76px;background: #EEE;text-align: center;font-weight: bold;color: red;cursor: pointer;" type="text" readonly="" value="Send Mail" onclick="send_mail_multi(<?=$row['tesr_id']?>)" />
@@ -100,14 +100,14 @@ $total_row = mysql_num_rows($db_listing->result);
       <?=$list->end_tr()?>
    <?
      }
-   ?>  
+   ?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>
 </body>
 </html>
 <script>
-   function send_mail_multi(record_id){   
+   function send_mail_multi(record_id){
       $("#bt_send_mail").hide();
    	$.ajax({
    		type:'POST',
@@ -119,7 +119,7 @@ $total_row = mysql_num_rows($db_listing->result);
    		success:function(data){
    		   $("#bt_send_mail").show();
    			if(data.err == ''){
-   				alert(data.msg);	
+   				alert(data.msg);
                window.location.reload();
    			}else{
    				alert(data.err);

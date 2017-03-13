@@ -16,7 +16,7 @@ $iCom = getValue("iCom","int","GET",0);
 //Get active
 $exe_active    	= getValue("exe_active", "int", "POST", 0);
 
-//Get unit - lesson 
+//Get unit - lesson
 if($iCourse > 0){
    $sql = "com_cou_id = ". $iCourse ."";
 }else {$sql=1;}
@@ -25,22 +25,22 @@ $arrCource 			= $menu->getAllChild("courses_multi","com_id","com_parent_id",0,$s
 
 //Display information of course
 if($iCourse > 0){
-   $db_course_select = new db_query("SELECT cou_name,cat_name 
-                                     FROM courses INNER JOIN categories_multi 
+   $db_course_select = new db_query("SELECT cou_name,cat_name
+                                     FROM courses INNER JOIN categories_multi
                                      ON cou_cat_id = cat_id WHERE cou_id = ". $iCourse ."");
 }
 
 //get unit:
 if($iCourse > 0){
-   $sql_get_unit = new db_query("SELECT com_id,com_name 
-                                 FROM courses_multi 
+   $sql_get_unit = new db_query("SELECT com_id,com_name
+                                 FROM courses_multi
                                  WHERE com_active = 1 AND com_parent_id = 0 AND com_cou_id = ". $iCourse ."");
    $count_unit = 1;
-   while($row_unit = mysql_fetch_assoc($sql_get_unit->result)){
+   while($row_unit = mysqli_fetch_assoc($sql_get_unit->result)){
       $arr_get_unit[$row_unit["com_id"]] = $row_unit["com_name"];
       $count_unit++;
    }unset($sql_get_unit);
-} 
+}
 
 /*
 Call class form:
@@ -77,16 +77,16 @@ if($action == "execute"){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <?=$load_header?>
-<? 
+<?
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->addFormname("edit");
-$myform->checkjavascript(); 
+$myform->checkjavascript();
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM " . $fs_table . " WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}
@@ -124,21 +124,21 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
    	$form = new form();
    	$form->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
    	$form->create_table();
-      ?>    
+      ?>
          <?=$form->text_note('<strong style="textalign:center;">----------- Sửa thông tin Quiz ---------</strong>')?>
       	<?=$form->text_note('Những ô có dấu sao (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
       	<?=$form->errorMsg($fs_errorMsg)?>
          <?
          if($iCourse > 0){
-            if($row_course = mysql_fetch_assoc($db_course_select->result)){?>
+            if($row_course = mysqli_fetch_assoc($db_course_select->result)){?>
                <tr>
                   <td class="form_name">Danh mục :</td>
                   <td class="form_text"><p class="p_name_course"><?=$row_course["cat_name"]?></p></td>
-               </tr>    
+               </tr>
                <tr>
                   <td class="form_name">Khóa học :</td>
                   <td class="form_text"><p class="p_name_course"><?=$row_course["cou_name"]?></p></td>
-               </tr>  
+               </tr>
          <?}unset($db_course_select);}?>
          <?//=$form->select_db_multi("Chọn Unit", "exe_com_id", "exe_com_id", $arrCource, "com_id", "com_name", $exe_com_id, "Danh mục bài học", 0, 256, 1, 0, "", "")?>
          <?//=$form->select("Chọn Units","com_select","com_select",$arr_get_unit,$com_select,"Chọn [Unit] để thêm [Quiz]",1,186,"");?>

@@ -1,23 +1,23 @@
 <?php
     require_once("../home/config.php");
-   
+
     $iUnit       = getValue("iunit","int","GET","");
-    $unit        = getValue("unit","int","GET","");	  
-    $sqlUnit     = new db_query('SELECT b.cou_name,a.com_cou_id,a.com_id,a.com_name,a.com_num_unit 
+    $unit        = getValue("unit","int","GET","");
+    $sqlUnit     = new db_query('SELECT b.cou_name,a.com_cou_id,a.com_id,a.com_name,a.com_num_unit
                                   FROM courses_multi a,courses b
                                  WHERE a.com_cou_id = b.cou_id AND com_id = '.$unit);
-    while($rowUnit = mysql_fetch_assoc($sqlUnit->result)){
+    while($rowUnit = mysqli_fetch_assoc($sqlUnit->result)){
         $nUnit       = $rowUnit['com_name'];
         $iCou        = $rowUnit['com_cou_id'];
         $nCou        = $rowUnit['cou_name'];
     }
     unset($sqlUnit);
-   
+
     $num         = getValue("num","int","GET","");
     $nAns        = getValue("nAns","int","GET","");
     $point       = 0;
     $urlPoint    = "";
-   
+
     //======================================//
     if($nAns!=0){
         for($i = 1; $i <= $nAns; $i++){
@@ -25,7 +25,7 @@
             $urlPoint       .= $idAns[$i].'&';
             if($idAns[$i]!=0){
                 $sqlAns          = new db_query("SELECT * FROM answers WHERE ans_id =".$idAns[$i]);
-                while($rowAns    = mysql_fetch_assoc($sqlAns->result)){
+                while($rowAns    = mysqli_fetch_assoc($sqlAns->result)){
                     $ans[$i]     = $rowAns["ans_true"];
                     if ($ans[$i] == 1) $point++;
                 }
@@ -34,7 +34,7 @@
     }
     $sqlIunit         = "";
     $sqlIunit         = new db_query("SELECT * FROM lesson_details WHERE les_det_type = 2 AND les_com_id =".$unit);
-    while($rowIunit   = mysql_fetch_assoc($sqlIunit->result)){
+    while($rowIunit   = mysqli_fetch_assoc($sqlIunit->result)){
         $iUnitGram    = $rowIunit['les_det_id'];
     }
 ?>
@@ -62,7 +62,7 @@ $(document).ready(function() {
 <div id="result_lb">
     <div class="lb_top">Kết quả bài đã làm</div>
     <div class="middle_cont">
-        <div class="line">  
+        <div class="line">
             <span class="section">Bạn đã trả lời đúng</span> : <span class="result"> <?=$point?> / <?=$nAns?> câu .</span>
         </div>
     </div><!-- End .middle_cont -->

@@ -3,29 +3,29 @@
 $iCou    = getValue("iCourse","int","GET",""); //id khóa học
 
 $sqlForm    = new db_query('SELECT * FROM courses WHERE cou_id = '.$iCou);
-if($row_form     = mysql_fetch_assoc($sqlForm->result)){ 
+if($row_form     = mysqli_fetch_assoc($sqlForm->result)){
     $cou_form       = $row_form['cou_form'];
     $cou_id         = $row_form['cou_id'];
-    $cou_inf        = $row_form['cou_info']; 
-    $cou_condition  = $row_form['cou_condition']; 
-    $cou_goal       = $row_form['cou_goal']; 
-    $cou_object     = $row_form['cou_object']; 
+    $cou_inf        = $row_form['cou_info'];
+    $cou_condition  = $row_form['cou_condition'];
+    $cou_goal       = $row_form['cou_goal'];
+    $cou_object     = $row_form['cou_object'];
     $course_name    = $row_form['cou_name'];
     $course_avatar  = $row_form['cou_avatar'];
 }unset($sqlForm);
 
 $sqlcName = new db_query('SELECT com_id,com_name,com_num_unit FROM courses_multi WHERE com_cou_id = '.$iCou.' ORDER BY com_num_unit ASC');
-if($row_cName = mysql_fetch_assoc($sqlcName->result)){
+if($row_cName = mysqli_fetch_assoc($sqlcName->result)){
     $iUnit  = $row_cName['com_id'];
     $c_name = $row_cName['com_name'];
-    $c_num  = $row_cName['com_num_unit']; 
+    $c_num  = $row_cName['com_num_unit'];
 }unset($sqlcName);
 
 $sqlinfo = new db_query('SELECT cou_name,cat_name,cat_id,cat_parent_id,cou_lev_id FROM courses a,categories_multi b WHERE a.cou_cat_id = b.cat_id AND cou_id='.$iCou);
-$rowInfo   = mysql_fetch_assoc($sqlinfo->result);
-    $lev_id        = $rowInfo['cou_lev_id']; 
+$rowInfo   = mysqli_fetch_assoc($sqlinfo->result);
+    $lev_id        = $rowInfo['cou_lev_id'];
     $cat_id        = $rowInfo['cat_id'];
-    $cat_parent_id = $rowInfo['cat_parent_id'];  
+    $cat_parent_id = $rowInfo['cat_parent_id'];
     $cat_name_inf  = $rowInfo['cat_name'];
     $cou_name_inf  = $rowInfo['cou_name'];
 unset($sqlinfo);
@@ -37,12 +37,12 @@ $arrCateTest    = array(9,76,161,165,170,35);
 if($cou_form == 1 || $cou_form == 2){
     $urlCourse          =  "http://".$base_url."/khoa-hoc/". removeTitle($course_name) .   "/" . $iCou . "/" . $iUnit . "/main.html";
 }elseif($cou_form == 3){
-    $urlCourse          =  "http://".$base_url."/khoa-hoc/".removeTitle($course_name)  .   "/" . $iCou . "/" . $iUnit . "/strategy.html";  
+    $urlCourse          =  "http://".$base_url."/khoa-hoc/".removeTitle($course_name)  .   "/" . $iCou . "/" . $iUnit . "/strategy.html";
 }
 
 $dbSelectRandomCourse = new db_query('SELECT * FROM courses WHERE cou_active = 1 AND cou_cat_id = '.$cat_id.' ORDER BY RAND() DESC LIMIT 3');
 $arrRandomCourse = $dbSelectRandomCourse->resultArray();
-unset($dbSelectRandomCourse);   
+unset($dbSelectRandomCourse);
 
 ?>
 
@@ -117,7 +117,7 @@ unset($dbSelectRandomCourse);
                             window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));
                             </script>
                         </span>
-                    </div>    
+                    </div>
                     <div class="course-info-right-button">
                         <a href="<?=$urlCourse?>">Bắt đầu học</a>
                     </div>
@@ -205,13 +205,13 @@ unset($dbSelectRandomCourse);
                                     <?php
                                     $i = 0;
                                     $sqlUnitNum = new db_query("SELECT com_id,com_num_unit,com_name FROM courses_multi WHERE com_cou_id = ".$iCou." ORDER BY com_num_unit");
-                                    while($rowUnitNum = mysql_fetch_assoc($sqlUnitNum->result)){
+                                    while($rowUnitNum = mysqli_fetch_assoc($sqlUnitNum->result)){
                                     $i++;
                                     $com_id = $rowUnitNum['com_id'];
                                     $com_name = $rowUnitNum['com_name'];
                                     $com_num_unit = $rowUnitNum['com_num_unit'];
                                     if($myuser->logged == 1){
-                                        $checkCourseActive = check_course_active($myuser->u_id); 
+                                        $checkCourseActive = check_course_active($myuser->u_id);
                                         if($checkCourseActive == 1){
                                             $urlCourseActive = gen_course_details(0,$com_id);
                                             $confirmPay = '';
@@ -235,7 +235,7 @@ unset($dbSelectRandomCourse);
                                                 Bài <?=$rowUnitNum['com_num_unit']?> : <?=truncateString_($rowUnitNum['com_name'],25)?>
                                             </a>
                                         </li>
-                                    <?php }unset($sqlUnitNum);?>        
+                                    <?php }unset($sqlUnitNum);?>
                                 </ul>
                             </div>
                         </div>
@@ -248,7 +248,7 @@ unset($dbSelectRandomCourse);
     <div class="list-courses-main">
         <div class="content">
             <div class="content-main">
-                
+
             </div>
         </div>
     </div>

@@ -8,16 +8,16 @@
    $add = "add.php";
    $listing = "listing.php";
    $after_save_data = getValue("after_save_data", "str", "POST", "listing.php");
-   $fs_redirect = $after_save_data;     
-   $sqlCourse	= new db_query("SELECT * FROM kids_vcb_lessons");  
-   while($rowC = mysql_fetch_array($sqlCourse->result)){
+   $fs_redirect = $after_save_data;
+   $sqlCourse	= new db_query("SELECT * FROM kids_vcb_lessons");
+   while($rowC = mysqli_fetch_array($sqlCourse->result)){
       $cou_id = $rowC['kvcb_id'];
    }
    $record_id = getValue("record_id");
     /*
 	Call class form:
 	1). Ten truong
-	2). Ten form 
+	2). Ten form
 	3). Kieu du lieu , 0 : string , 1 : kieu int, 2 : kieu email, 3 : kieu double, 4 : kieu hash password
 	4). Noi luu giu data  0 : post(sẽ tìm trong form ở dưới có cotrol nào có name đc khai báo ở (2)), 1 : variable (sẽ tìm những biến nào có tên đã đc khai báo ở (2) )
 	5). Gia tri mac dinh, neu require thi phai lon hon hoac bang default
@@ -26,7 +26,7 @@
 	8). Chi co duy nhat trong database (0: cho phép trùng ; 1: ko cho phép)
 	9). Loi dua ra man hinh neu co duplicate
 	*/
-   //tạo mới class generate_form 
+   //tạo mới class generate_form
    $myform = new generate_form();
    $myform -> removeHTML(0);
    $myform->add("kvcb_ent_title", "kvcb_ent_title", 0, 0, "", 1, "Bạn chưa nhập tên của Unit", 0, "");
@@ -34,12 +34,12 @@
    $fs_errorMsg = "";
    $action	= getValue("action", "str", "POST", "");
 	if($action == "execute"){
-   	$fs_errorMsg .= $myform->checkdata();      
+   	$fs_errorMsg .= $myform->checkdata();
       if($fs_errorMsg == ""){
-         $upload		= new upload("kvcb_ent_audio", $mediapath, $fs_extension, $fs_filesize);  
+         $upload		= new upload("kvcb_ent_audio", $mediapath, $fs_extension, $fs_filesize);
          $filename	= $upload->file_name;
 		 $myform->add("kvcb_ent_audio","filename",0,1,0,0);
-         $fs_errorMsg .= $upload->show_warning_error(); 	     
+         $fs_errorMsg .= $upload->show_warning_error();
          if($fs_errorMsg == ""){
          	$myform->removeHTML(0);
          	$db_update = new db_execute($myform->generate_update_SQL("kvcb_ent_id", $record_id));
@@ -61,7 +61,7 @@ $myform->checkjavascript();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM kids_vcb_entries WHERE kvcb_ent_id = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}
@@ -77,13 +77,13 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 	<p align="center" style="padding-left:10px;">
 	<?
 	$form = new form();
-  
+
 	$form->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
    $form->create_table();
 	?>
    <?=$form->text_note('<strong style="text-align:center;">----------Thêm mới Unit-----------</strong>')?>
    <?=$form->text_note('Những ô có dấu sao (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
-   <?=$form->errorMsg($fs_errorMsg)?>	 
+   <?=$form->errorMsg($fs_errorMsg)?>
    <?=$form->text("Ví dụ", "kvcb_ent_title", "kvcb_ent_title", $kvcb_ent_title, "Ví dụ", 1, 250, 24, 255, "", "", "")?>
    <?=$form->getFile("Audio", "kvcb_ent_audio", "kvcb_ent_audio", "Chọn audio", 1, 40, "", "")?>
    <tr>

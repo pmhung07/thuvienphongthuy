@@ -3,7 +3,7 @@
    $iUnit = getValue("iunit","int","GET","");
    $med = getValue("med","str","GET","");
    $sqlCou = new db_query("SELECT * FROM courses,courses_multi WHERE courses.cou_id = courses_multi.com_cou_id AND courses_multi.com_id = ".$iUnit);
-   $rowCou = mysql_fetch_assoc($sqlCou->result);
+   $rowCou = mysqli_fetch_assoc($sqlCou->result);
    $iCou = $rowCou['cou_id'];
    unset($sqlCou);
 	if($act == 0){
@@ -13,21 +13,21 @@
 	if ($med == 'edit'){
       switch($type) {
       	case "main" :
-      		include_once("../includes/lesson/lesson_main_edit.php"); 
-      		break;	
+      		include_once("../includes/lesson/lesson_main_edit.php");
+      		break;
       	case "grammar" :
       		include_once("../includes/lesson/lesson_gram_edit.php");
-      		break;	
+      		break;
       	case "vocabulary" :
       		include_once("../includes/lesson/lesson_voca_edit.php");
-      		break;	
+      		break;
       	case "quiz" :
       		include_once("../includes/lesson/lesson_quiz_edit.php");
-      		break;	
+      		break;
       	default :
       		redirect("http://".$base_url."/error404.html");
-      		break;		
-      }			
+      		break;
+      }
 	}else{
 		switch($type) {
 			case "main" :
@@ -35,7 +35,7 @@
 				break;
 			case "strategy" :
 				include_once("../includes/lesson/lesson_main_toeic.php");
-				break;	
+				break;
 			case "practice" :
 				if(checkUnit($iUnit) == 1) {
 					include_once("../includes/lesson/lesson_quiz.php");
@@ -46,26 +46,26 @@
 				if (checkLearn($iUnit,'speaking') == 1) {
 					include_once("../includes/lesson/lesson_speak.php");
 				}
-				break;	
+				break;
 			case "grammar" :
 				include_once("../includes/lesson/lesson_gram.php");
-				break;	
+				break;
 			case "vocabulary" :
 				include_once("../includes/lesson/lesson_voca.php");
-				break;	
+				break;
 			case "quiz" :
 				include_once("../includes/lesson/lesson_quiz.php");
-				break;	
+				break;
 			case "speak" :
 				include_once("../includes/lesson/lesson_speak.php");
-				break;	
+				break;
 			case "write" :
 				include_once("../includes/lesson/lesson_write.php");
-				break;	
+				break;
 			default :
-				include_once("../includes/lesson/lesson_detail.php"); 
-				break;		
-		}	
+				include_once("../includes/lesson/lesson_detail.php");
+				break;
+		}
 	}
-	
+
 ?>

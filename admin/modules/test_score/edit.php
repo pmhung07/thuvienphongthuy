@@ -30,7 +30,7 @@ $listAll 								= $menu->getAllChild("post_category","pcat_id","pcat_parent_id"
 	9). Loi dua ra man hinh neu co duplicate
 	*/
    $myform = new generate_form();
-   $myform->add("post_pcat_id","post_pcat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,""); 
+   $myform->add("post_pcat_id","post_pcat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,"");
    $myform->add("post_title", "post_title", 0, 0, "", 1, "Bạn chưa nhập tiêu đề bài viết", 0, "");
    $myform->add("post_description","post_description", 0, 0,"", 0, "", 0, "");
    $myform->add("post_content", "post_content", 0, 0, "", 0, "",0, "");
@@ -39,11 +39,11 @@ $listAll 								= $menu->getAllChild("post_category","pcat_id","pcat_parent_id"
    $action = getValue("action", "str", "POST", "");
    if($action == "execute"){
    	$fs_errorMsg .= $myform->checkdata();
-   	if($fs_errorMsg == ""){	   	
+   	if($fs_errorMsg == ""){
          $upload = new upload("post_picture", $imgpath, $fs_extension, $fs_filesize );
-         
+
          $filename = $upload->file_name;
-         
+
    		if($filename != ""){
             delete_file($fs_table,$id_field,$record_id,"post_picture",$imgpath);
    			$myform->add("post_picture","filename", 0, 1, "", 0);
@@ -51,14 +51,14 @@ $listAll 								= $menu->getAllChild("post_category","pcat_id","pcat_parent_id"
    				resize_image($imgpath, $filename, $arr["width"], $arr["height"], $arr["quality"], $type);
    			}
    		}
-         
+
          $fs_errorMsg .= $upload->show_warning_error();
-         
-         if($fs_errorMsg == ""){                  
+
+         if($fs_errorMsg == ""){
          	$myform->removeHTML(0);
          	$db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
-        		redirect($fs_redirect);	
-         }         
+        		redirect($fs_redirect);
+         }
    	}
    }
    $myform->addFormname("add_new");
@@ -68,16 +68,16 @@ $listAll 								= $menu->getAllChild("post_category","pcat_id","pcat_parent_id"
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
-$db_data 	= new db_query("SELECT * FROM posts 
-                            INNER JOIN post_category ON posts.post_pcat_id=post_category.pcat_id 
+$db_data 	= new db_query("SELECT * FROM posts
+                            INNER JOIN post_category ON posts.post_pcat_id=post_category.pcat_id
                             WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -104,7 +104,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
       <?=$form->text("Tiêu đề bài viết", "post_title", "post_title", $post_title, "Tiêu đề", 1, 250, "", 255, "", "", "")?>
       <?=$form->textarea("Mô tả","post_description","post_description",$post_description,"Mô tả",0,255,100,"","","")?>
       <?=$form->getFile("Ảnh đại diện", "post_picture", "post_picture", "Chọn hình ảnh", 1, 40, "", "")?>
-      
+
       <?=$form->close_table();?>
       <?=$form->wysiwyg("<font class='form_asterisk'>*</font> Nội dung bài viết ", "post_content", $post_content, "../../resource/wysiwyg_editor/", "99%", 450)?>
       <?=$form->create_table();?>

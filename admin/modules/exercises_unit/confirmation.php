@@ -23,40 +23,40 @@ $arr_type_question = array(-1 => "- Chọn dạng câu hỏi -" , 1 => "|-- Mult
 /*
    QUEMEDIA: 1. Video
              2. Audio
-             3. Flash    
-   
+             3. Flash
+
 */
 $arr_type_media = array(1 => "Video" , 2 => "Audio" , 3 => "Flash" , 5 => "Images");
 
-//=====Get information 
+//=====Get information
 $sql_course = "";
 if($record_id >0){
-   $sql_course = "SELECT * FROM " . $fs_table . " 
+   $sql_course = "SELECT * FROM " . $fs_table . "
                   INNER JOIN courses_multi ON exe_com_id = com_id
-                  INNER JOIN courses ON com_cou_id = cou_id 
+                  INNER JOIN courses ON com_cou_id = cou_id
                   WHERE exe_id = ".$record_id;
    $db_course_select = new db_query($sql_course);
-   $db_course = mysql_fetch_assoc($db_course_select->result);
+   $db_course = mysqli_fetch_assoc($db_course_select->result);
 }
 $db_cate       = new db_query('SELECT cat_name,cat_id
                                  FROM categories_multi
                                  WHERE cat_id='.$db_course['cou_cat_id']);
-$dbcate        = mysql_fetch_assoc($db_cate->result);
+$dbcate        = mysqli_fetch_assoc($db_cate->result);
 unset($db_cate);
 $db_level      = new db_query('SELECT lev_name
                                  FROM levels
                                  WHERE lev_id='.$db_course['cou_lev_id']);
-$dblevel       = mysql_fetch_assoc($db_level->result);
+$dblevel       = mysqli_fetch_assoc($db_level->result);
 unset($db_level);
 $link = generate_preview_link($dbcate['cat_name'],$dblevel['lev_name'],$db_course['com_name'],$db_course['cou_id'],$db_course['com_id'],'practice');
 //=====Get list question=====/
 $total			   = new db_count("SELECT 	count(*) AS count FROM questions WHERE que_exe_id = ".$record_id);
 $db_ques_select   = new db_query("SELECT * FROM questions WHERE que_type = 1 AND que_exe_id = ".$record_id ." ORDER BY que_order ASC");
-$total_row        = mysql_num_rows($db_ques_select->result);
+$total_row        = mysqli_num_rows($db_ques_select->result);
 
 //=====Get media=====/
-$db_media_select = new db_query("SELECT * FROM media_exercies WHERE media_exe_id = " . $record_id);  
-while($row_media = mysql_fetch_assoc($db_media_select->result)){
+$db_media_select = new db_query("SELECT * FROM media_exercies WHERE media_exe_id = " . $record_id);
+while($row_media = mysqli_fetch_assoc($db_media_select->result)){
    $arr_list_media[$row_media['media_id']] = $row_media['media_des'];
 }unset($db_media_select);
 
@@ -73,19 +73,19 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
    <div id="confirm_order">
       <div id="wr_detail">
          <?//======================================INFO====================================================?>
-         
+
          <div id="wr_detail_info">
-            <?if($row =	mysql_fetch_assoc($db_course_select->result)){?>
+            <?if($row =	mysqli_fetch_assoc($db_course_select->result)){?>
             <p class="p_info">
                <b>Khóa học : </b><b class="b_info"><?=$row["cou_name"]?></b>
                <b> -  Unit : </b><b class="b_info"><?=$row["com_name"]?></b>
                <? echo'<a style="text-decoration:none" title="Hướng dẫn" class="thickbox noborder" href="tutorial.php?url='. base64_encode(getURL()) . '&TB_iframe=true&amp;height=300&amp;width=300" /><b> - Hướng dẫn</b></a>';?>
-            </p>     
+            </p>
             <?}unset($db_course_select)?>
          </div>
-          
+
          <?//======================================ANSWER==================================================?>
-        
+
          <div id="wr_detail_answer">
             <div id="detail_title">
                <select class="form_control" style="width: 450px;" name="unit_select" id="unit_select">
@@ -94,7 +94,7 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
    					<?}?>
                </select>
             </div>
-            
+
             <?//=================================MULTI CHOICE==============================================?>
             <div id="multi_choice" style="display: none;">
                <?
@@ -126,7 +126,7 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
                            <input type="text" name="ans_4" id="ans_4" class="form_control" style="width:205px;" value=""/>
                            <input type="radio" name="rdo" id="rdo_4" class="form_control" value="0" onclick="check_rdo_true(4)" />
                         </li>
-                     </ul>                 
+                     </ul>
                   </td>
                </tr>
                 <tr>
@@ -139,9 +139,9 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
             	unset($form);
             	?>
             </div>
-            
+
             <?//===================================Drag & Fillword==========================================?>
-            
+
             <div id="fill_word" style="display: none;">
                <? echo'<a style="padding:5px 0px 5px 6px;text-decoration:underline;float:left;" title="Nhập đoạn văn" class="thickbox noborder" href="fill_word.php?&record_id='. $record_id .'&que_type	= 2&url='. base64_encode(getURL()) . '&TB_iframe=true&amp;height=350&amp;width=950" /><b style="padding-left:6px;">Nhập đoạn văn</b></a>';?>
                <?/*
@@ -173,7 +173,7 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
             	unset($form);
             	?>
                <hr />
-               <?/*  Nhập theo đoạn văn 
+               <?/*  Nhập theo đoạn văn
                <?
                $form = new form();
             	$form->create_form("add_v", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
@@ -200,30 +200,30 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
             	?>
                */?>
             </div>
-            
+
             <?/*//Drag and Drop*/?>
             <div id="drag" style="display: none;">
                <? echo'<a style="padding:5px 0px 5px 6px;text-decoration:underline;float:left;" title="Nhập đoạn văn" class="thickbox noborder" href="fill_word.php?&record_id='. $record_id .'&que_type	= 3&url='. base64_encode(getURL()) . '&TB_iframe=true&amp;height=350&amp;width=950" /><b style="padding-left:6px;">Nhập đoạn văn</b></a>';?>
             </div>
-            
+
             <!--<div id="im_note">
                <p>• Mỗi bài tập chỉ được nhập một dạng câu hỏi .</p>
                <p>• Không sửa "_____" khi sửa nội dung câu hỏi .</p>
             </div>-->
          </div>
-         
+
          <?//=========================================Media====================================================?>
-         
+
          <?
          $type_id	   = getValue("med_select","int","POST",0);
-         $type_des	= getValue("med_des","str","POST","");         
-         
+         $type_des	= getValue("med_des","str","POST","");
+
          $myform_med = new generate_form();
          $myform_med->add("media_exe_id" , "record_id" , 1 , 1 , 0 , 1,"" , 0 , "");
          $myform_med->add("media_type" , "type_id" , 1 , 1 , 0 , 1,"Bạn chưa chọn kiểu media" , 0 , "");
          $myform_med->add("media_des" , "type_des" , 0 , 1 , "" , 1,"Bạn chưa nhập mô tả" , 0 , "");
          $myform_med->addTable("media_exercies");
-         $action  = getValue("action", "str", "POST", ""); 
+         $action  = getValue("action", "str", "POST", "");
          if($action == "execute_media"){
             $fs_errorMsg .= $myform_med->checkdata();
             if($fs_errorMsg == ""){
@@ -235,7 +235,7 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
                	resize_image($fs_filepath_data, $filename, $arr["width"], $arr["height"], $arr["quality"], $type);
                   }
             	}
-            	$fs_errorMsg .= $upload->show_warning_error();       
+            	$fs_errorMsg .= $upload->show_warning_error();
             	if($fs_errorMsg == ""){
             		//Insert to database
             		$myform_med->removeHTML(0);
@@ -244,12 +244,12 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
             		echo("<script>alert('Thêm dữ liệu thành công');window.location.reload();</script>");
             	}
             }
-         }     
+         }
          $myform_med ->addFormname("add_new");
          $myform_med ->evaluate();
-         $myform_med ->checkjavascript(); 
+         $myform_med ->checkjavascript();
          $fs_errorMsg .= $myform_med->strErrorField;
-         ?>   
+         ?>
          <div id="wr_detail_media">
             <div id="detail_title">
                <p class="p_dt_title">Upload Media cho câu hỏi</p>
@@ -260,9 +260,9 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
                $form_med = new form();
                $form_med->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
             	$form_med->create_table();
-               ?>    
+               ?>
                	<?=$form_med->errorMsg($fs_errorMsg)?>
-                  <?=$form_med->select("Chọn kiểu media ","med_select","med_select",$arr_type_media,"","Chọn dạng câu hỏi",0,"","");?> 
+                  <?=$form_med->select("Chọn kiểu media ","med_select","med_select",$arr_type_media,"","Chọn dạng câu hỏi",0,"","");?>
                   <?=$form_med->text("Nhập mô tả","med_des","med_des","","Tên Video",0,204,"",255,"","","")?>
                   <?=$form_med->getFile("Chọn file upload","media_name","media_name","Chọn file upload",0,30,"multiple='multiple'", "")?>
                   <?=$form_med->button("submit" . $form_med->ec . "reset", "submit" . $form_med->ec . "reset", "submit" . $form_med->ec . "reset", "Cập nhật" . $form_med->ec . "Làm lại", "Cập nhật" . $form_med->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form_med->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>
@@ -275,9 +275,9 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
                <? echo'<a style="padding:5px 0px 5px 6px;text-decoration:underline;float:left;" title="Nhập đoạn văn" class="thickbox noborder" href="fill_word_media.php?&record_id='. $record_id .'&url='. base64_encode(getURL()) . '&TB_iframe=true&amp;height=350&amp;width=950" /><b style="padding-left:6px;">Nhập đoạn văn</b></a>';?>
             </div>
          </div>
-         
+
          <?//=======================================List Media===============================================?>
-         <div id="wr_list_answer"> 
+         <div id="wr_list_answer">
             <div id="list_title">Danh sách Media</div>
             <table class="table_info_exe">
                <tr style="background-color: #eee;">
@@ -289,22 +289,22 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
                   <th width="30">Xóa</th>
                </tr>
                <?
-               $db_media_select = new db_query("SELECT * FROM media_exercies WHERE media_exe_id = " . $record_id);  
+               $db_media_select = new db_query("SELECT * FROM media_exercies WHERE media_exe_id = " . $record_id);
                $i = 0;
-               while($row_media = mysql_fetch_assoc($db_media_select->result)){
+               while($row_media = mysqli_fetch_assoc($db_media_select->result)){
                $i++;
                ?>
                <tr>
-                  <td style="background: #A9BAD0;" align="center"><?=$i?></td>     
-                  <td style="background: #A9BAD0;" align="center"><b style="color: red;"><?=$row_media['media_id']?></b></td>    
-                  <td style="background: #A9BAD0;" align="center"><?=$row_media['media_des']?></td> 
+                  <td style="background: #A9BAD0;" align="center"><?=$i?></td>
+                  <td style="background: #A9BAD0;" align="center"><b style="color: red;"><?=$row_media['media_id']?></b></td>
+                  <td style="background: #A9BAD0;" align="center"><?=$row_media['media_des']?></td>
                   <td style="background: #A9BAD0;" align="center">
                      <?if($row_media['media_type'] == 1){echo "Video";}?>
                      <?if($row_media['media_type'] == 2){echo "Audio";}?>
                      <?if($row_media['media_type'] == 3){echo "Flash";}?>
                      <?if($row_media['media_type'] == 4){echo "Paragraph";}?>
                      <?if($row_media['media_type'] == 5){echo "Images";}?>
-                  </td>   
+                  </td>
                   <td style="background: #A9BAD0;" align="center">
                      <?/*
                         if($row_media['media_type'] == 1 || $row_media['media_type'] == 2){
@@ -318,32 +318,32 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
                      $url = $fs_filepath_data.$row_media['media_name'];
                      checkmedia_exe_para($row_media['media_type'],$url,$row_media['media_id']);
                      ?>
-                  </td>   
-                  <td style="background: #A9BAD0;" align="center"><a class="media_deny" onclick="deny_media(<?=$row_media['media_id']?>)">Xóa</a></td>       
+                  </td>
+                  <td style="background: #A9BAD0;" align="center"><a class="media_deny" onclick="deny_media(<?=$row_media['media_id']?>)">Xóa</a></td>
                </tr>
                <?}unset($db_media_select)?>
-         </table>    
+         </table>
          </div>
-         
+
          <?//===============================================List Question=====================================?>
-         
-         <div id="wr_list_answer">       
+
+         <div id="wr_list_answer">
             <div id="list_title">Danh sách câu hỏi</div>
             <table class="table_info_exe">
                <tr style="background-color: #eee;">
                   <th width="30">STT</th>
                   <th width="500">Nội dung câu hỏi</th>
                   <th width="500">Nội dung câu trả lời</th>
-               </tr>            
+               </tr>
                <?
                $i = 0;
-               while($row_ques = mysql_fetch_assoc($db_ques_select->result)){
+               while($row_ques = mysqli_fetch_assoc($db_ques_select->result)){
                $i++;
                $media_id = $row_ques['que_media_id'];
-         
+
                ?>
                <tr style="">
-                  <td style="background: #A9BAD0;" align="center"><?=$i?></td>               
+                  <td style="background: #A9BAD0;" align="center"><?=$i?></td>
                   <td style="background: #A9BAD0;">
                      <input size="30" class="ans_content" id="ques_content_<?=$row_ques['que_id']?>" name="ans_content" value="<?=$row_ques['que_content']?>"/>
                      <a class="ans_edit" onclick="save_question(<?=$row_ques['que_id']?>)">Save</a>
@@ -356,11 +356,11 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
                      <!---->
                      <div class="chk_media_box_<?=$row_ques['que_id']?>" style="padding-left: 1px;height: 45px;">
                      <input type="text" id="choose_media_<?=$row_ques['que_id']?>" value="<?=$row_ques['que_media_id']?>" />
-                     <a onclick="choose_med_1(<?=$row_ques['que_id']?>)" class="a_score" style="margin-left: 5px;cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Choose media</a>  		
+                     <a onclick="choose_med_1(<?=$row_ques['que_id']?>)" class="a_score" style="margin-left: 5px;cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Choose media</a>
                      <?/*
                      $i = 0;
                      foreach($arr_list_media as $id=>$name){
-                     $i++;   
+                     $i++;
                      ?>
                         <input class="count_check" type="checkbox" id="true_mul_<?=$row_ques['que_id']?>_<?=$i?>" name="radio_ans_<?=$row_ques['que_id']?>_<?=$i?>" value="<?=$id?>"/> <?=cut_string($name,8)?>
                         <input id="hd_media_<?=$i?>" type="hidden" value="<?=$id?>" />
@@ -368,39 +368,39 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
                      </div>
                      <!----->
                      <input id="order_ques_<?=$row_ques['que_id']?>" style="margin-left: 4px;text-align: center;width: 20px;background: #eee;height: 13px;color: red;font-weight: bold;" type="text" value="<?=$row_ques['que_order']?>" />
-                     <a onclick="order_ques(<?=$row_ques['que_id']?>)" class="a_score" style=";cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Order</a>  		
+                     <a onclick="order_ques(<?=$row_ques['que_id']?>)" class="a_score" style=";cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Order</a>
                   </td>
                   <td style="background: #A9BAD0;">
                      <?
-                     $db_ans_select = new db_query("SELECT * FROM answers 
-                                                    INNER JOIN questions ON ans_ques_id = que_id 
-                                                    WHERE ans_ques_id  = ". $row_ques["que_id"]);  
-                     while($row_ans = mysql_fetch_assoc($db_ans_select->result)){
+                     $db_ans_select = new db_query("SELECT * FROM answers
+                                                    INNER JOIN questions ON ans_ques_id = que_id
+                                                    WHERE ans_ques_id  = ". $row_ques["que_id"]);
+                     while($row_ans = mysqli_fetch_assoc($db_ans_select->result)){
                      ?>
                         <input size="30" id="ans_content_<?=$row_ans['ans_id']?>" class="ans_content" name="ans_content" value="<?=$row_ans['ans_content']?>"/>
                         <input type="radio" <?=($row_ans['ans_true'] == 1)? "checked=''":""?> class="rdo_check_true" onclick="set_true(<?=$row_ans['ans_id']?>,<?=$row_ques['que_id']?>)" id="ans_ques_<?=$row_ans['ans_id']?>" name="ans_<?=$row_ques['que_id']?>" value=""/>
                         <a class="ans_edit" onclick="save_answers(<?=$row_ans['ans_id']?>)">Save</a>
                         <a class="ans_del" onclick="del_answers(<?=$row_ans['ans_id']?>)">Delete</a>
-                     <?}unset($db_ans_select);?> 
-                     
+                     <?}unset($db_ans_select);?>
+
                      <?if($row_ques['que_type'] == 1){?>
-                        <div id="dv_add_action">  
-                           <div id="dv_add_action_invi_<?=$row_ques['que_id']?>" class="dv_add_action_invi"> 
+                        <div id="dv_add_action">
+                           <div id="dv_add_action_invi_<?=$row_ques['que_id']?>" class="dv_add_action_invi">
                               <input size="30" id="add_ans_content_<?=$row_ques['que_id']?>" class="ans_content" name="ans_content" value="<?=$row_ans['ans_content']?>"/>
                               <a class="ans_add" onclick="add_ans_multi(<?=$row_ques['que_id']?>)">Add</a>
-                              <a class="ans_close" onclick="">Close</a>  
+                              <a class="ans_close" onclick="">Close</a>
                            </div>
                            <a onclick="add_show(<?=$row_ques['que_id']?>)" class="add_action">+</a>
-                        </div> 
-                     <?}?>           
-                  </td>        
+                        </div>
+                     <?}?>
+                  </td>
                </tr>
                <?}unset($db_ques_select);?>
             </table>
-         </div>        
-         
-         <?//Question list Fillword?>         
-         <div id="wr_list_answer">       
+         </div>
+
+         <?//Question list Fillword?>
+         <div id="wr_list_answer">
             <div id="list_title">Danh sách câu hỏi - Dạng Fill word</div>
             <table class="table_info_exe">
                <tr style="background-color: #eee;">
@@ -409,23 +409,23 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
                   <th width="20">Edit</th>
                   <th width="20">Delete</th>
                </tr>
-               <? 
-               $db_ans_select = new db_query("SELECT * FROM questions WHERE que_type = 2 AND que_exe_id  = ". $record_id ." ORDER BY que_order ASC");  
+               <?
+               $db_ans_select = new db_query("SELECT * FROM questions WHERE que_type = 2 AND que_exe_id  = ". $record_id ." ORDER BY que_order ASC");
                $i = 0;
-               while($row_ans = mysql_fetch_assoc($db_ans_select->result)){
+               while($row_ans = mysqli_fetch_assoc($db_ans_select->result)){
                $i++;
                ?>
                <tr>
                   <td colspan="4">
                   <input type="text" id="choose_media_<?=$row_ans['que_id']?>" value="<?=$row_ans['que_media_id']?>" />
-                  <a onclick="choose_med_1(<?=$row_ans['que_id']?>)" class="a_score" style="margin-left: 5px;cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Choose media</a>  		
+                  <a onclick="choose_med_1(<?=$row_ans['que_id']?>)" class="a_score" style="margin-left: 5px;cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Choose media</a>
                   <a class="med_deny" onclick="deny_med(<?=$row_ans['que_id']?>)">Hủy</a>
                   <input id="order_ques_<?=$row_ans['que_id']?>" style="text-align: center;width: 20px;height: 15px;margin: 0px 5px;background: #eee;height: 13px;color: red;font-weight: bold;" type="text" value="<?=$row_ans['que_order']?>" />
-                  <a onclick="order_ques(<?=$row_ans['que_id']?>)" class="a_score" style=";cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Order</a>  		
+                  <a onclick="order_ques(<?=$row_ans['que_id']?>)" class="a_score" style=";cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Order</a>
                   </td>
                </tr>
                <tr>
-                  <td style="background: #A9BAD0;" align="center"><?=$i?></td> 
+                  <td style="background: #A9BAD0;" align="center"><?=$i?></td>
                   <td bgcolor="white" style="background:white;">
                      <?=str_replace("|","___",$row_ans["que_content"])?>
                   </td>
@@ -434,10 +434,10 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
                </tr>
                <?}unset($db_ans_select)?>
             </table>
-         </div>    
-         
-         <?//Question list Fillword?>         
-         <div id="wr_list_answer">       
+         </div>
+
+         <?//Question list Fillword?>
+         <div id="wr_list_answer">
             <div id="list_title">Danh sách câu hỏi - Dạng Drag and drop</div>
             <table class="table_info_exe">
                <tr style="background-color: #eee;">
@@ -446,22 +446,22 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
                   <th width="20">Edit</th>
                   <th width="20">Delete</th>
                </tr>
-               <? 
-               $db_ans_select = new db_query("SELECT * FROM questions WHERE que_type = 3 AND que_exe_id  = ". $record_id ." ORDER BY que_order ASC");  
+               <?
+               $db_ans_select = new db_query("SELECT * FROM questions WHERE que_type = 3 AND que_exe_id  = ". $record_id ." ORDER BY que_order ASC");
                $i = 0;
-               while($row_ans = mysql_fetch_assoc($db_ans_select->result)){
+               while($row_ans = mysqli_fetch_assoc($db_ans_select->result)){
                $i++;
                ?>
                <tr>
                   <td colspan="4">
                   <input type="text" id="choose_media_<?=$row_ans['que_id']?>" value="<?=$row_ans['que_media_id']?>" />
-                  <a onclick="choose_med_1(<?=$row_ans['que_id']?>)" class="a_score" style="margin-left: 5px;cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Choose media</a>  		
+                  <a onclick="choose_med_1(<?=$row_ans['que_id']?>)" class="a_score" style="margin-left: 5px;cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Choose media</a>
                   <input id="order_ques_<?=$row_ans['que_id']?>" style="text-align: center;width: 20px;background: #eee;height: 15px;margin: 0px 5px;color: red;font-weight: bold;" type="text" value="<?=$row_ans['que_order']?>" />
-                  <a onclick="order_ques(<?=$row_ans['que_id']?>)" class="a_score" style=";cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Order</a>  		
+                  <a onclick="order_ques(<?=$row_ans['que_id']?>)" class="a_score" style=";cursor: pointer;background: green;color: white;font-size: 11px;padding: 3px;">Order</a>
                   </td>
                </tr>
                <tr>
-                  <td style="background: #A9BAD0;" align="center"><?=$i?></td> 
+                  <td style="background: #A9BAD0;" align="center"><?=$i?></td>
                   <td bgcolor="white" style="background: white;">
                      <?=str_replace("|","___",$row_ans["que_content"])?>
                   </td>
@@ -472,7 +472,7 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
             </table>
          </div>
          <div id="wr_list_answer" style="margin: none; border: none; margin-left: 11px; text-align: center; "><a target="_black" href="<?=$link?>" style="padding: 7px; background: #ddd; border-radius: 2px; text-decoration: none;">Preview</a></div>
-         
+
       </div>
    </div>
 </body>
@@ -534,13 +534,13 @@ while($row_media = mysql_fetch_assoc($db_media_select->result)){
    	url:'add_media_ques.php',
    	success:function(data){
    		if(data.err == ''){
-   			alert(data.msg);	
+   			alert(data.msg);
    			window.location.reload();
    		}else{
    			alert(data.err);
    		}
       }
-   }); 
+   });
    alert(size_media);
 }*/
 function choose_med_1(ques_id){
@@ -555,7 +555,7 @@ function choose_med_1(ques_id){
    	url:'add_media_ques.php',
    	success:function(data){
    		if(data.err == ''){
-   			alert(data.msg);	
+   			alert(data.msg);
    			window.location.reload();
    		}else{
    			alert(data.err);
@@ -575,10 +575,10 @@ $('.ans_close').click(function (){
 
 $('#unit_select').change(function (){
    var iUnit =	$("#unit_select").val();
-   if(iUnit == 1){$('#multi_choice').show();$('#drag').hide();$('#fill_word').hide();} 
-   if(iUnit == 2){$('#fill_word').show();$('#multi_choice').hide();$('#drag').hide();} 
-   if(iUnit == 3){$('#drag').show();$('#multi_choice').hide();$('#fill_word').hide();} 
-});   
+   if(iUnit == 1){$('#multi_choice').show();$('#drag').hide();$('#fill_word').hide();}
+   if(iUnit == 2){$('#fill_word').show();$('#multi_choice').hide();$('#drag').hide();}
+   if(iUnit == 3){$('#drag').show();$('#multi_choice').hide();$('#fill_word').hide();}
+});
 
 //=============================================================
 
@@ -598,31 +598,31 @@ function inout(){
       $("#break").addClass("hide");
       $(".a_close").html("Open");
    }
-}   
+}
 
 //======================MULTI CHOICE===========================
 
-function add_multi_choice(exe_id){ 
+function add_multi_choice(exe_id){
    if($('#question').val() == ""){
          alert("Bạn chưa nhập câu hỏi");
          return false;
-   } 
+   }
    if($('#ans_1').val() == ""){
       alert("Bạn chưa nhập câu trả lời : A");
       return false;
-   } 
+   }
    if($('#ans_2').val() == ""){
       alert("Bạn chưa nhập câu trả lời : B");
       return false;
-   } 
+   }
    if($('#ans_3').val() == ""){
       alert("Bạn chưa nhập câu trả lời : C");
       return false;
-   } 
+   }
    if($('#ans_4').val() == ""){
       alert("Bạn chưa nhập câu trả lời : D");
       return false;
-   } 
+   }
 
    var ans_1 = $('#ans_1').val();
    var ans_2 = $('#ans_2').val();
@@ -655,7 +655,7 @@ function add_multi_choice(exe_id){
       url:'multi_choice.php',
       success:function(data){
       	if(data.err == ''){
-      		alert(data.msg);	
+      		alert(data.msg);
       		window.location.reload();
       	}else{
       		alert(data.err);
@@ -669,12 +669,12 @@ function add_drag(exe_id){
    if($('#ques_drag_head').val() == ""){
       alert("Bạn chưa nhập câu hỏi");
       return false;
-   }  
+   }
    if($('#ans_drag').val() == ""){
       alert("Bạn chưa nhập câu trả lời");
       return false;
-   }  
-   
+   }
+
    var ans_drag = $('#ans_drag').val();
    var ques_head = $('#ques_drag_head').val();
    var ques_end = $('#ques_drag_end').val();
@@ -692,7 +692,7 @@ function add_drag(exe_id){
       url:'drag.php',
       success:function(data){
       	if(data.err == ''){
-      		alert(data.msg);	
+      		alert(data.msg);
       		window.location.reload();
       	}else{
       		alert(data.err);
@@ -706,12 +706,12 @@ function add_drag_v(exe_id){
    if($('#ques_drag_v').val() == ""){
       alert("Bạn chưa nhập câu hỏi");
       return false;
-   }  
+   }
    if($('#ans_drag_v').val() == ""){
       alert("Bạn chưa nhập câu trả lời");
       return false;
-   }  
-   
+   }
+
    var ans_drag = $('#ans_drag_v').val();
    var ques_drag = $('#ques_drag_v').val();
    var type_ques = $('#unit_select').val();
@@ -727,7 +727,7 @@ function add_drag_v(exe_id){
       url:'drag_v.php',
       success:function(data){
       	if(data.err == ''){
-      		alert(data.msg);	
+      		alert(data.msg);
       		window.location.reload();
       	}else{
       		alert(data.err);
@@ -749,7 +749,7 @@ function save_question(que_id){
 		url:'edit_ans_ques.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -771,7 +771,7 @@ function save_explain(que_id){
 		url:'edit_explain.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -795,7 +795,7 @@ function save_answers(ans_id){
 		url:'edit_ans_ques.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -817,7 +817,7 @@ function deny_media(media_id){
 		url:'delete_media.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -839,7 +839,7 @@ function set_true(ans_id,ans_ques_id){
       url:'set_true.php',
       success:function(data){
    	if(data.err == ''){
-   		alert(data.msg);	
+   		alert(data.msg);
    		window.location.reload();
    	}else{
    		alert(data.err);
@@ -858,7 +858,7 @@ function del_question(que_id){
 		url:'del_ans_ques.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -878,7 +878,7 @@ function del_answers(ans_id){
 		url:'del_ans_ques.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -898,7 +898,7 @@ function deny_med(med_id){
 		url:'denymed.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -919,7 +919,7 @@ $.ajax({
    url:'add_ans_ques.php',
    success:function(data){
    	if(data.err == ''){
-   		alert(data.msg);	
+   		alert(data.msg);
    		window.location.reload();
    	}else{
    		alert(data.err);
@@ -942,7 +942,7 @@ function add_media(que_id){
    		url:'add_media_ques.php',
    		success:function(data){
    			if(data.err == ''){
-   				alert(data.msg);	
+   				alert(data.msg);
    				window.location.reload();
    			}else{
    				alert(data.err);
@@ -971,7 +971,7 @@ function order_ques(record_id){
 		url:'order_ques.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);

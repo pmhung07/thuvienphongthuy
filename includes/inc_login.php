@@ -29,7 +29,7 @@
         $usePassword  = getValue('password','str','POST');
         if($useEmail != '' && $usePhone != '' && $useName != '' && $usePassword != ''){
             $dbCheckMail = new db_query('SELECT * FROM users WHERE use_email = "'.$useEmail.'"');
-            $numRowMail  = mysql_num_rows($dbCheckMail->result);
+            $numRowMail  = mysqli_num_rows($dbCheckMail->result);
             if($numRowMail <= 0){
                 $useSecurity  =  random();
                 //Code activate email

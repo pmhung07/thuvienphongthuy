@@ -14,21 +14,21 @@ checkAddEdit("add");
    $record_id 	   = getValue("record_id");
    $db_vocabulary = new db_query("SELECT * FROM  vocabulary_lesson
    							          WHERE  voc_det_id = ".$record_id);
-   
+
    $db_unit = new db_query("SELECT com_name,les_com_id,com_cou_id,com_id
    							    FROM courses_multi,lesson_details
    							    WHERE courses_multi.com_id = lesson_details.les_com_id
                             AND lesson_details.les_det_id = ".$record_id);
-   while($row_unit = mysql_fetch_assoc($db_unit->result)){
+   while($row_unit = mysqli_fetch_assoc($db_unit->result)){
    $nUnit    = $row_unit['com_name'];
    $nCourse  = $row_unit['com_cou_id'];
-   $iCoirse  = $row_unit['com_id']; 
+   $iCoirse  = $row_unit['com_id'];
    };
    $iCourse = $nCourse;
    $db_course = new db_query("SELECT cou_id,cou_cat_id,cou_name,cou_lev_id
          							FROM  courses
          							WHERE  cou_id = ".$nCourse);
-   while($row_course = mysql_fetch_assoc($db_course->result)){
+   while($row_course = mysqli_fetch_assoc($db_course->result)){
    $nCourse    = $row_course['cou_name'];
    $ilever     = $row_course['cou_lev_id'];
    $nLever     = nameLevel($row_course['cou_lev_id']);
@@ -37,11 +37,11 @@ checkAddEdit("add");
     $db_cate = new db_query("SELECT cat_name,cat_id
 									FROM   categories_multi
 									WHERE  cat_id = ".$nCate);
-    while($row_cate = mysql_fetch_assoc($db_cate->result)){
+    while($row_cate = mysqli_fetch_assoc($db_cate->result)){
       $nCate    = $row_cate['cat_name'];
     }; unset($db_cate);
    $link = generate_preview_link($nCate,$nLever,$nUnit,$iCourse,$iCoirse,'vocabulary');
-    
+
         $myform 								= new generate_form();
 	//Loại bỏ chuc nang thay the Tag Html
    $myform->removeHTML(0);
@@ -59,12 +59,12 @@ checkAddEdit("add");
 	//Get Action.
 	$action	= getValue("action", "str", "POST", "");
     if($action == "execute"){
-       
+
        //Check form data : kiêm tra lỗi
    	   $fs_errorMsg .= $myform->checkdata();
          if($fs_errorMsg == ""){
          $upload		    = new upload("voc_media_url", $mediapath, $fs_extension, $fs_filesize);
-         $uploadAudio	= new upload("voc_audio_url", $mediapath, $fs_extension, $fs_filesize);                
+         $uploadAudio	= new upload("voc_audio_url", $mediapath, $fs_extension, $fs_filesize);
          $filename	    = $upload->file_name;
          $filenameAudio  = $uploadAudio->file_name;
 
@@ -73,17 +73,17 @@ checkAddEdit("add");
           	foreach($arr_resize as $type => $arr){
          	resize_image($mediapath, $filename, $arr["width"], $arr["height"], $arr["quality"], $type);
             }
-         }	
+         }
          if($filenameAudio != ""){
             $myform->add("voc_audio_url","filenameAudio",0,1,0,0);
          }
        	$fs_errorMsg .= $upload->show_warning_error();
-         
-       	//kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database	
+
+       	//kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database
          if($fs_errorMsg == ""){
- 			//Insert to database            
- 			$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi 
-         //thực hiện insert 
+ 			//Insert to database
+ 			$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi
+         //thực hiện insert
  			$db_insert = new db_execute($myform->generate_insert_SQL());
  			//unset biến để giải phóng bộ nhớ.
          unset($db_insert);
@@ -92,7 +92,7 @@ checkAddEdit("add");
  			redirect("listdetail.php?url=".base64_encode(getURL())."&record_id=".$record_id);
  		   }
     	}//End if($fs_errorMsg == "")
-    	
+
     }//End if($action == "insert")
 	//add form for javacheck
 	$myform->addFormname("add_new");
@@ -108,8 +108,8 @@ checkAddEdit("add");
 <body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 <? /*------------------------------------------------------------------------------------------------*/ ?>
    <p class="head">- Thêm từ mới trong Lesson : <span style="color: red;"><?=$nUnit?></span></p>
-   <p class="head head_cate"> 
-     <span style="padding: 0 12px;">- Thuộc Chuyên mục  : <span style="color: red;"><?=$nCate?></span></span> 
+   <p class="head head_cate">
+     <span style="padding: 0 12px;">- Thuộc Chuyên mục  : <span style="color: red;"><?=$nCate?></span></span>
      <span style="padding: 0 12px;">- Level             : <span style="color: red;"><?=$nLever?></span></span>
      <span style="padding: 0 12px;">- Course            : <span style="color: red;"><?=$nCourse?></span></span>
    </p>
@@ -139,7 +139,7 @@ checkAddEdit("add");
    <p class="head_cate"></p>
    <p class="head">- Danh sách Vocabulary có trong Lesson</p>
    <table border="1" cellpadding="3" cellspacing="0" class="tablelist" width="90%" bordercolor="#E3E3E3">
-   <tr class="head"> 
+   <tr class="head">
       <td class="bold bg" width="2%" nowrap="nowrap" align="center" style="background: none;"><img src="<?=$fs_imagepath?>save.png" border="0"/></td>
       <td class="bold bg" width="100"><?=translate_text("Nội dung tiếng anh")?></td>
       <td class="bold bg" width="100">Phiên âm</td>
@@ -148,37 +148,37 @@ checkAddEdit("add");
       <td class="bold bg" align="center" width="100">Audio</td>
       <td class="bold bg" align="center" width="30" >Sửa</td>
       <td class="bold bg" align="center" width="30" >Xóa</td>
-      <td class="bold bg" align="center" width="20" >Preview</td> 			
+      <td class="bold bg" align="center" width="20" >Preview</td>
    </tr>
    <form action="quickedit.php?returnurl=<?=base64_encode(getURL())?>" method="post" name="form_listing" id="form_listing" enctype="multipart/form-data">
    	<input type="hidden" name="iQuick" value="update" />
-       <? 
+       <?
       $i=0;
       $j = 0;
-      while($row = mysql_fetch_array($db_vocabulary->result)){ $i++; 
+      while($row = mysqli_fetch_array($db_vocabulary->result)){ $i++;
    	?>
       <tr <? if($i%2==0) echo ' bgcolor="#FAFAFA"';?>>
          <td><?=$i?></td>
          <td nowrap="nowrap">
-            <input type="text" readonly="" value="<?echo $row['voc_content_en'] ?>"/>  
+            <input type="text" readonly="" value="<?echo $row['voc_content_en'] ?>"/>
          </td>
          <td nowrap="nowrap">
-            <input type="text" readonly="" value="<?echo $row['voc_phonetic'] ?>"/>             
+            <input type="text" readonly="" value="<?echo $row['voc_phonetic'] ?>"/>
          </td>
          <td nowrap="nowrap">
-            <input type="text" readonly="" value="<?echo $row['voc_content_vi'] ?>"/>  
+            <input type="text" readonly="" value="<?echo $row['voc_content_vi'] ?>"/>
          </td>
-         <td nowrap="nowrap">  
-            <?php 
-            $url = $mediapath.$row['voc_media_url'];         
+         <td nowrap="nowrap">
+            <?php
+            $url = $mediapath.$row['voc_media_url'];
             checkmedia_les($row['voc_media_type'],$url);
-            ?>   
+            ?>
          </td>
          <td nowrap="nowrap">
          <?
             $url =  $mediapath.$row['voc_audio_url'];
             checkmedia_les(2,$url);
-         ?>      
+         ?>
          </td>
          <td align="center"><a class="text" href="edit.php?record_id=<?=$row["voc_id"]?>&returnurl=<?=base64_encode(getURL())?>"><img src="<?=$fs_imagepath?>edit.png" alt="EDIT" border="0"></a></td>
          <td align="center"><img src="<?=$fs_imagepath?>delete.gif" alt="DELETE" border="0" onClick="if (confirm('Are you sure to delete?')){ window.location.href='delete.php?record_id=<?=$row["voc_id"]?>&returnurl=<?=base64_encode(getURL())?>'}" style="cursor:pointer"></td>

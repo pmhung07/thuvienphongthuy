@@ -11,21 +11,21 @@ $after_save_data  = getValue("after_save_data", "str", "POST", "add_exercises.ph
 $fs_redirect      = $after_save_data;
 
 
-$myform = new generate_form();  
+$myform = new generate_form();
 $myform->addTable("toeic_questions");
 //Get action variable for add new data
-$action	  = getValue("action", "str", "POST", ""); 
+$action	  = getValue("action", "str", "POST", "");
 //Check $action for insert new datac
 
-if($action == "execute"){      
-   if($fs_errorMsg == ""){    	
-   	$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi 
+if($action == "execute"){
+   if($fs_errorMsg == ""){
+   	$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi
       $upload		= new upload("toque_audio", $data_path, $fs_extension, $fs_filesize);
       $filename	= $upload->file_name;
       if($filename != ""){
          $myform->add("toque_audio","filename",0,1,0,0);
       }
-      
+
       $upload_img	= new upload("toque_image", $image_path, $fs_extension_img, $fs_filesize);
       $filename_img	= $upload_img->file_name;
       if($filename_img != ""){
@@ -35,7 +35,7 @@ if($action == "execute"){
       	}
       }
 
-      //thực hiện insert 
+      //thực hiện insert
       $db_ex = new db_execute($myform->generate_update_SQL("toque_id", $iQues));
       unset($db_ex);
    	//redirect("add_exercises.php?iPara=".$iPara."&record_id=".$record_id);
@@ -49,7 +49,7 @@ $fs_errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM toeic_questions WHERE toque_id =".$iQues);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -84,9 +84,9 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
       $form->close_form();
       unset($form);
       ?>
-   </p>   
+   </p>
    <?=template_bottom() ?>
-   
+
    <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<div style="padding-left:3px; padding-right:3px;">
 	<table cellpadding="5" cellspacing="0" width="450px" style="border-collapse:collapse;" bordercolor="#CCCCCC" border="1">
@@ -98,7 +98,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 		<?
       $db_picture = new db_query("SELECT * FROM toeic_questions WHERE  toque_id=".$iQues);
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){
+		while($row = mysqli_fetch_assoc($db_picture->result)){
 			$i++;
 		?>
 			<tr <?=$fs_change_bg?>>
@@ -115,6 +115,6 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 	</div>
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 
-   
+
 </body>
 </html>

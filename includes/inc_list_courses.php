@@ -39,9 +39,9 @@ if($iCategory != 0){
                                                     cat_id,
                                                     cat_name
                                                FROM courses a,
-                                                    categories_multi b 
-                                              WHERE a.cou_cat_id = b.cat_id 
-                                                AND cou_cat_id = '.$value.' 
+                                                    categories_multi b
+                                              WHERE a.cou_cat_id = b.cat_id
+                                                AND cou_cat_id = '.$value.'
                                                 AND cou_active = 1 ORDER BY cou_order');
             $arrCoursesChild    =   $dbCourses->resultArray();
             $countCourses       +=  count($arrCoursesChild);
@@ -80,8 +80,8 @@ if($iCategory != 0){
                                                       cat_id,
                                                       cat_name
                                                FROM '.$table.' a,
-                                                      categories_multi b 
-                                              WHERE   a.'.$catTable.' = b.cat_id  
+                                                      categories_multi b
+                                              WHERE   a.'.$catTable.' = b.cat_id
                                                 AND '.$activeTable.' = 1');
             $arrCoursesChild    =   $dbCourses->resultArray();
             $countCourses       +=  count($arrCoursesChild);
@@ -92,16 +92,16 @@ if($iCategory != 0){
     }
 
     // LIST ITEM
-    $countItemCount = 1; 
+    $countItemCount = 1;
     for($i = 0;$i < count($arrCourses);$i++){
-        for($j = 0;$j < count($arrCourses[$i]);$j++){ 
+        for($j = 0;$j < count($arrCourses[$i]);$j++){
             if(!in_array($iCategory, $arrCateTest)){
                 // COUNT LESSON SKILL
-                $dbLessonCount = new db_query('SELECT COUNT(com_id) 
-                                                   AS count_lesson 
-                                                 FROM courses_multi 
+                $dbLessonCount = new db_query('SELECT COUNT(com_id)
+                                                   AS count_lesson
+                                                 FROM courses_multi
                                                 WHERE com_cou_id = '.$arrCourses[$i][$j]['cou_id']);
-                $row_count = mysql_fetch_assoc($dbLessonCount->result);
+                $row_count = mysqli_fetch_assoc($dbLessonCount->result);
 
                 $arrItemCourses[$countItemCount] = array(
                     'cou_id'        => $arrCourses[$i][$j]['cou_id'],
@@ -109,8 +109,8 @@ if($iCategory != 0){
                     'cou_image'     => $arrCourses[$i][$j]['cou_avatar'],
                     'cat_id'        => $arrCourses[$i][$j]['cat_id'],
                     'cat_name'      => $arrCourses[$i][$j]['cat_name'],
-                    'count_lesson'  => $row_count['count_lesson'] 
-                ); 
+                    'count_lesson'  => $row_count['count_lesson']
+                );
             }else{
                 $arrItemCourses[$countItemCount] = array(
                     'cou_id'        => $arrCourses[$i][$j][$idTable],
@@ -118,10 +118,10 @@ if($iCategory != 0){
                     'cou_image'     => $arrCourses[$i][$j][$imgTable],
                     'cat_id'        => $arrCourses[$i][$j]['cat_id'],
                     'cat_name'      => $arrCourses[$i][$j]['cat_name'],
-                ); 
+                );
             }
 
-        $countItemCount++; } 
+        $countItemCount++; }
         unset($dbLessonCount);
         //dump($arrItemCourses);exit();
     }
@@ -144,7 +144,7 @@ if(intval($start) == 0){
    $page = 1;
 }
 $pageCount = (int)($total/$num_new_list);
-$div = $total % $num_new_list;          
+$div = $total % $num_new_list;
 if($div!= 0){
    $pageCount = $pageCount + 1;
 }
@@ -206,9 +206,9 @@ unset($dbCourses);
 			<div class="content-main">
 				<div class="list-courses-main-content">
 					<div class="list-courses-main-content-show">
-                        <?php 
+                        <?php
                             $start  = 1;
-                            if(!in_array($iCategory, $arrCateTest)){   
+                            if(!in_array($iCategory, $arrCateTest)){
                                 $end    = 9;
                             }else{
                                 $end    = 20;
@@ -223,7 +223,7 @@ unset($dbCourses);
 
                                 <?php
 
-                                if(!in_array($iCategory, $arrCateTest)){   
+                                if(!in_array($iCategory, $arrCateTest)){
                                     $url    = gen_course_details($arrItemCourses[$start]['cou_id'],0);
                                     $name   = truncateString_($arrItemCourses[$start]['cou_name'],20);
                                 }else{
@@ -283,13 +283,13 @@ unset($dbCourses);
                                                 }
                                             }
                                             $str .= '<a>…</a>';
-                                            for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+                                            for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
                                                 $str .= '<a class="a_paging" title="'.$j.'">'.$j.'</a>';
                                             }
                                         }else{
                                             $go_page = $page + 4;
                                             if($pageCount - $page > 8 && $go_page < $pageCount - 3){
-                                                for ($i=1; $i<=2; $i++) { 
+                                                for ($i=1; $i<=2; $i++) {
                                                     $str .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                                                 }
                                                 $str .= '<a>…</a>';
@@ -302,12 +302,12 @@ unset($dbCourses);
                                                     }
                                                 }
                                                 $str .= '<span>…</span>';
-                                                for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+                                                for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
                                                     $str .= '<a class="a_paging" title="'.$j.'">'.$j.'</a>';
                                                 }
                                             }else{
                                                 if($pageCount-$page < 6) {
-                                                    for ($i=1; $i<=2; $i++) { 
+                                                    for ($i=1; $i<=2; $i++) {
                                                        $str .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                                                     }
                                                     $str .= '<span>…</span>';
@@ -319,7 +319,7 @@ unset($dbCourses);
                                                         }
                                                     }
                                                 }else{
-                                                    for ($i=1; $i<=2; $i++) { 
+                                                    for ($i=1; $i<=2; $i++) {
                                                         $str .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                                                     }
                                                     $str .= '<span>…</span>';

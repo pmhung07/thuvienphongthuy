@@ -28,7 +28,7 @@ $score            = getValue("score","int","GET",0);
    		?>
    		<?
    		$i=0;
-   		while($row = mysql_fetch_assoc($db_picture->result)){
+   		while($row = mysqli_fetch_assoc($db_picture->result)){
    			$i++;
    		?>
    			<tr <?=$fs_change_bg?>>
@@ -39,7 +39,7 @@ $score            = getValue("score","int","GET",0);
                   </div>
                   <textarea id="cmt_listening_<?=$record_id?>" style="width: 98%;height:300px;margin-bottom: 10px;"><?=$row["ielr_cmt_listening"]?></textarea>
                   <div><a onclick="score_listening(<?=$record_id?>)" class="a_detail">Scores</a></div>
-               </td>		
+               </td>
             </tr>
    		<?}?>
    	</table>
@@ -47,7 +47,7 @@ $score            = getValue("score","int","GET",0);
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 <style>
 .a_detail{padding: 2px 15px;border: solid 1px;background: #EEE;text-decoration: none;color: #164989;cursor: pointer;}
-</style>  
+</style>
 <script>
 function score_listening(record_id){
    var score = $('#score_listening_'+record_id).val();
@@ -64,7 +64,7 @@ function score_listening(record_id){
 		url:'ajax_score_listening.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);

@@ -7,7 +7,7 @@ $iLes       = $arrSkill[0]['skl_les_id'];
         <div class="main_sk_content white_tab" id="main_writing">
         <?php
         $dbChk = new db_query('SELECT * FROM skill_content WHERE skl_cont_les_id = '.$iLes.' AND skl_cont_pos = 1 AND skl_cont_active = 1 AND skl_cont_mark = 0 ORDER BY skl_cont_order ASC');
-        $num   = mysql_num_rows($dbChk->result);
+        $num   = mysqli_num_rows($dbChk->result);
         unset($dbChk);
         if($num > 0){
         ?>
@@ -24,10 +24,10 @@ $iLes       = $arrSkill[0]['skl_les_id'];
                         <div class="tab-pane" id="tab2">
                         <?php
                         $dbCont     = new db_query('SELECT * FROM skill_content WHERE skl_cont_les_id = '.$iLes.' AND skl_cont_pos = 1 AND skl_cont_active = 1 AND skl_cont_mark <> 0 ORDER BY skl_cont_order ASC');
-                        while($rowCont = mysql_fetch_assoc($dbCont->result)){
+                        while($rowCont = mysqli_fetch_assoc($dbCont->result)){
                             if($rowCont['skl_cont_type'] == 4){
                                 $sqlWri     = new db_query('SELECT * FROM learn_writing WHERE learn_skl_cont_id = '.$rowCont["skl_cont_id"]);
-                                $rowWri     = mysql_fetch_assoc($sqlWri->result);
+                                $rowWri     = mysqli_fetch_assoc($sqlWri->result);
                                 unset($sqlWri); ?>
                                 <div class="bot_left_lightbox">
                           		    <div>Câu hỏi</div>
@@ -43,13 +43,13 @@ $iLes       = $arrSkill[0]['skl_les_id'];
                   			            if($rowWri['learn_wr_mtype'] == 1){ ?>
                   		                    <center><img src="<?=$wripart.$rowWri['learn_wr_media']?>"/></center>
                   		                <?php }elseif($rowWri['learn_wr_mtype'] == 2){ ?>
-                                            <?php 
+                                            <?php
                                             $file   =   $wripart.$rowWri['learn_wr_media'];
-                                            get_media_library_v2($file,''); 
-                                            ?> 
+                                            get_media_library_v2($file,'');
+                                            ?>
                   		                <?php } ?>
                   			        <?php } ?>
-                  	            </div><!-- End .top_left_lightbox --> 
+                  	            </div><!-- End .top_left_lightbox -->
                         <?php } }unset($dbCont); ?>
 
                         <div class="lesson-content-block">
@@ -76,24 +76,24 @@ $iLes       = $arrSkill[0]['skl_les_id'];
                                   });
                                });
                             </script>
-                        <?php } ?> 
+                        <?php } ?>
                         </div><!-- End #tab2 -->
                     </div><!-- End .tab-content -->
                 </div>
             </div><!-- End .tab_m -->
-        
+
         <?php }else{ ?>
             <div class="content_bl no_border">
             <?php
             $dbCont = new db_query('SELECT * FROM skill_content WHERE skl_cont_les_id = '.$iLes.' AND skl_cont_pos = 1 AND skl_cont_active = 1 ORDER BY skl_cont_order ASC');
-            while($rowCont = mysql_fetch_assoc($dbCont->result)){
+            while($rowCont = mysqli_fetch_assoc($dbCont->result)){
                 if($rowCont['skl_cont_type'] == 4){
                     $sqlWri     = new db_query("SELECT * FROM learn_writing WHERE learn_skl_cont_id = ".$rowCont['skl_cont_id']);
-                    $rowWri     = mysql_fetch_assoc($sqlWri->result);
+                    $rowWri     = mysqli_fetch_assoc($sqlWri->result);
                     unset($sqlWri);
                     if($rowCont['skl_cont_type'] == 4){
                         $sqlWri     = new db_query("SELECT * FROM learn_writing WHERE learn_skl_cont_id = ".$rowCont['skl_cont_id']);
-                        $rowWri     = mysql_fetch_assoc($sqlWri->result);
+                        $rowWri     = mysqli_fetch_assoc($sqlWri->result);
                         unset($sqlWri);
                         ?>
                         <div class="bot_left_lightbox">
@@ -110,16 +110,16 @@ $iLes       = $arrSkill[0]['skl_les_id'];
                   			    if($rowWri['learn_wr_mtype'] == 1){ ?>
                   		            <center><img style="max-width:420px" src="<?=$wripart.$rowWri['learn_wr_media']?>"/></center>
                   		        <?php }elseif($rowWri['learn_wr_mtype'] == 2){ ?>
-                                    <?php 
+                                    <?php
                                     $file   = $wripart.$rowWri['learn_wr_media'];
-                                    get_media_library_v2($file,''); 
+                                    get_media_library_v2($file,'');
                                     ?>
                   		        <?php } ?>
                   			<?php } ?>
                   		?>
-                  	    </div><!-- End .top_left_lightbox --> 
+                  	    </div><!-- End .top_left_lightbox -->
                     <?php } ?>
-                <?php } ?>   
+                <?php } ?>
             <?php }unset($db_cont); ?>
             ?>
             <div class="lesson-content-block">
@@ -145,7 +145,7 @@ $iLes       = $arrSkill[0]['skl_les_id'];
                         });
                     });
                 </script>
-            <?php } ?> 
+            <?php } ?>
             </div><!-- End .content_bl -->
         <?php } ?>
         </div><!-- end .main_bl -->

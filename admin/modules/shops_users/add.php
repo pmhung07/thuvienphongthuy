@@ -1,34 +1,34 @@
-<? 
-	include "inc_security.php";	
+<?
+	include "inc_security.php";
 	//Kiem tra quyen them sua xoa
 	checkAddEdit("add");
-	
+
 	$fs_action		=	"";
 	$fs_errorMsg	=	"";
-	
+
     $db_shop = new db_query('SELECT * FROM shop WHERE 1');
     $listShop = array();
     $listShop[0] = '-- Chọn cửa hàng --';
-    while($shop = mysql_fetch_assoc($db_shop->result)) {
+    while($shop = mysqli_fetch_assoc($db_shop->result)) {
         $listShop[$shop['sho_id']] = $shop['sho_name'];
     }
     unset($db_shop);
-	
+
     $listRole = array();
     $listRole[0] = '-- Quyền quản trị --';
     $listRole[1] = 'Quản lý (Admin)';
     $listRole[2] = 'Nhân viên';
-    
-    
+
+
 	$use_date		=	time();
-	
+
 	$myform	=	new generate_form();
 	$myform->removeHTML(0);
-	
+
 	$pass        =  strtolower(getValue("use_pass", "str", "POST", "", 1));
     $security = rand(0000,9999);
     $use_pass = md5($pass.$security);
-	$myform->add("use_shop_id","sho_id",1,0,0,1,"Bạn chưa chọn cửa hàng",0,""); 
+	$myform->add("use_shop_id","sho_id",1,0,0,1,"Bạn chưa chọn cửa hàng",0,"");
 	$myform->add('use_name', 'use_name', 0, 0, '', 1, 'bạn chưa nhập username', 1, 'User này đã tồn tại !Xin vui lòng chọn User khác');
 	$myform->add('use_pass', 'use_pass', 0, 1, '', 1, 'Bạn chưa nhập password', 0, "");
     $myform->add('use_security', 'security', 0, 1, '', 1, '', 0, "");
@@ -37,12 +37,12 @@
 	$myform->add('use_phone','use_phone', 0, 0, '', 0, '', 0, '');
 	$myform->add('use_date','use_date', 1, 1, '', 0, '', 0, '');
 	$myform->add("use_active","use_active", 1, 0, 0, 0,"",0,"");
-    $myform->add("use_role","use_role",1,0,0,1,"Bạn chưa chọn cửa hàng",0,""); 
+    $myform->add("use_role","use_role",1,0,0,1,"Bạn chưa chọn cửa hàng",0,"");
     $myform->add('use_address','use_address', 0, 0, '', 0, '', 0, '');
-	
-	
+
+
 	$myform->addTable($fs_table);
-	
+
 	$action			= getValue("action","str","POST","");
 	if($action 		== 'execute'){
 		//Check form data
@@ -54,7 +54,7 @@
 			redirect("listing.php");
 		}
 	}
-	
+
 	$myform->addFormname("add_new");
 	$myform->evaluate();
 ?>
@@ -72,7 +72,7 @@
 		<?
 		$form = new form();
 		$form->create_form("add_new",$fs_action,"post","multipart/form-data","onsubmit='validateForm(); return false;'");
-		$form->create_table();		
+		$form->create_table();
 		?>
 		<?=$form->text_note('Những ô dấu sao (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
 		<? //Khai bao thong bao loi ?>
@@ -86,7 +86,7 @@
 		<?=$form->text("Địa chỉ", "use_address", "use_address", $use_address, "Địa chỉ", 0, 250)?>
         <?=$form->select("Quyền", "use_role", "use_role", $listRole, $use_role, "Chọn quyền quản lý", 1 , "", "", 0, "", "")?>
 		<?=$form->checkbox("", "use_active", "use_active", 1, 0, "Active")?>
-		
+
 		<?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>
 		<?=$form->hidden("action", "action", "execute", "");?>
 		<?

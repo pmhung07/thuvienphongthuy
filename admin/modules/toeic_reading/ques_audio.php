@@ -11,14 +11,14 @@ $after_save_data  = getValue("after_save_data", "str", "POST", "add_exercises.ph
 $fs_redirect      = $after_save_data;
 
 
-$myform = new generate_form();  
+$myform = new generate_form();
 $myform->addTable("toeic_questions");
 //Get action variable for add new data
-$action	  = getValue("action", "str", "POST", ""); 
+$action	  = getValue("action", "str", "POST", "");
 //Check $action for insert new datac
 
-if($action == "execute"){      
-   if($fs_errorMsg == ""){    	
+if($action == "execute"){
+   if($fs_errorMsg == ""){
       $myform->add("toque_para", "toque_para", 0, 0, "", 1, "Bạn chưa nhập nội dung cho đoạn văn", 0, "");
       $upload_img	= new upload("toque_image", $image_path, $fs_extension_img, $fs_filesize);
       $filename_img	= $upload_img->file_name;
@@ -28,7 +28,7 @@ if($action == "execute"){
       	  resize_image($image_path, $filename_img, $arr["width"], $arr["height"], $arr["quality"], $type);
       	}
       }
-      //thực hiện insert 
+      //thực hiện insert
       $db_ex = new db_execute($myform->generate_update_SQL("toque_id", $iQues));
       unset($db_ex);
    	//redirect("add_exercises.php?iPara=".$iPara."&record_id=".$record_id);
@@ -42,7 +42,7 @@ $fs_errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM toeic_questions WHERE toque_id =".$iQues);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -79,17 +79,17 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
             <script src="/../../js/tinymce/tinymce.min.js" type="text/javascript" charset="utf-8"></script>
             <script type="text/javascript">
             tinymce.init({
-               selector: ".toque_para",   
+               selector: ".toque_para",
                plugins: [
                   "advlist autolink lists link charmap print preview anchor",
                   "searchreplace visualblocks code fullscreen",
                   "insertdatetime media table contextmenu paste jbimages image",
                ],
-               toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image jbimages",  
-               relative_urls: false , 
-               theme_advanced_buttons1: "forecolor,backcolor,fontselect,fontsizeselect",  
+               toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image jbimages",
+               relative_urls: false ,
+               theme_advanced_buttons1: "forecolor,backcolor,fontselect,fontsizeselect",
             });
-            </script> 
+            </script>
          </td>
       </tr>
       <?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>
@@ -99,9 +99,9 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
       $form->close_form();
       unset($form);
       ?>
-   </p>   
+   </p>
    <?=template_bottom() ?>
-   
+
    <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<div style="padding-left:120px; padding-right:3px;">
 	<table cellpadding="5" cellspacing="0" width="440px" style="border-collapse:collapse;" bordercolor="#CCCCCC" border="1">
@@ -113,7 +113,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 		<?
       $db_picture = new db_query("SELECT * FROM toeic_questions WHERE  toque_id=".$iQues);
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){
+		while($row = mysqli_fetch_assoc($db_picture->result)){
 			$i++;
 		?>
 			<tr <?=$fs_change_bg?>>
@@ -131,6 +131,6 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 	</div>
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 
-   
+
 </body>
 </html>

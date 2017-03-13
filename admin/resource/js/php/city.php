@@ -3,7 +3,7 @@ require_once("../../../../classes/database.php");
 require_once("../../../../functions/functions.php");
 $lang_id = getValue("lang_id","int","GET",1);
 $db_country = new db_query("SELECT cit_id,cit_name
-										FROM city 
+										FROM city
 										WHERE cit_parent_id= 0 AND lang_id = " . $lang_id . "
 										ORDER BY cit_order ASC,cit_name ASC
 										");
@@ -16,34 +16,34 @@ $str = '';
 $strcit = 'citylist[0] = [{value:"a", text:"Chọn tỉnh/TP"}';
 $str .= 'regiondb["a"] = [{value:"", text:"Chọn Quận/Huyện"}];';
 $i=-1;
-while($row=mysql_fetch_array($db_country->result)){
+while($row=mysqli_fetch_array($db_country->result)){
 	$i++;
 	$db_quan = new db_query("SELECT cit_id,cit_name
-										FROM city 
+										FROM city
 										WHERE cit_parent_id= " . $row["cit_id"] . "
 										ORDER BY cit_order ASC,cit_name ASC");
-	
+
 		if($cit_id != 0){
 			 $str .= '];';
 		}
 		$strcit .= ',{value:"' . $row["cit_id"] . '", text:"' . $row["cit_name"] . '"}';
-		
+
 		$str .= 'regiondb[' . $row["cit_id"] . '] = [{value:"0", text:"Chọn Quận/Huyện"}';
 		$cit_id = $row["cit_id"];
-		
-		while($quan = mysql_fetch_array($db_quan->result)){
-		
+
+		while($quan = mysqli_fetch_array($db_quan->result)){
+
 			$str .= ',{value:"' . $quan["cit_id"] . '", text:"' . $quan["cit_name"] . '"}';
-			
+
 		}
-		
+
 	unset($db_quan);
 }
 $strcit .=  '];';
 $str .= '];';
 echo $str;
 echo $strcit;
-?>							 
+?>
 function setCities(thanpho,quan,valuequan) {
     var newElem;
 	 var chooser = document.getElementById(thanpho);
@@ -54,7 +54,7 @@ function setCities(thanpho,quan,valuequan) {
     }
     var choice = chooser.options[chooser.selectedIndex].value;
     var db = regiondb[choice];
-	 if(choice === "") choice = 0;	
+	 if(choice === "") choice = 0;
     if (choice != "") {
 	 	 if(choice == "a"){
 	 	  	cityChooser.disabled = true;

@@ -7,10 +7,10 @@ $iLes       = $arrSkill[0]['skl_les_id'];
 
         <?php
         $dbCont = new db_query('SELECT * FROM skill_content WHERE skl_cont_les_id = '.$iLes.' AND skl_cont_type = 3 AND skl_cont_active = 1 ORDER BY skl_cont_order ASC');
-        while($rowCont = mysql_fetch_assoc($dbCont->result)){
+        while($rowCont = mysqli_fetch_assoc($dbCont->result)){
             $sqlVoc     = new db_query("SELECT * FROM vocabulary_lesson WHERE voc_skl_cont_id = ".$rowCont['skl_cont_id']);
             $voc_path   = 'http://'.$base_url.'/data/skill_content/';
-            while($rowVoc  = mysql_fetch_assoc($sqlVoc->result)){    
+            while($rowVoc  = mysqli_fetch_assoc($sqlVoc->result)){
             ?>
                 <div class="single-item">
           	        <div class="pull-right">

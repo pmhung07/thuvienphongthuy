@@ -1,6 +1,6 @@
 <?
 require_once("inc_security.php");
-$db_admin_listing = new db_query ("SELECT * 
+$db_admin_listing = new db_query ("SELECT *
 											  FROM admin_user
 											  WHERE adm_loginname NOT IN('admin') AND adm_delete = 0
 											  ORDER BY adm_loginname ASC, adm_active DESC");
@@ -22,17 +22,17 @@ $db_admin_listing = new db_query ("SELECT *
 			<td align="center" class="bold bg"><?=translate_text("Email")?></td>
 			<td align="center" class="bold bg"><?=translate_text("Right module")?></td>
 			<td align="center" class="bold bg"><?=translate_text("Language")?></td>
-			<td width="10" align="center" class="bold bg"><?=translate_text("Active")?></td>			
+			<td width="10" align="center" class="bold bg"><?=translate_text("Active")?></td>
 			<td width="10" align="center" class="bold bg"><?=translate_text("Edit")?></td>
 			<td width="10" align="center" class="bold bg"><?=translate_text("Delete")?></td>
 			</tr>
 			<?
 			$countno = 0;
-			while ($row = mysql_fetch_array($db_admin_listing->result))
+			while ($row = mysqli_fetch_array($db_admin_listing->result))
 			{
 			  $countno++;
 			?>
-			  <tr <? if($countno%2==0) echo ' bgcolor="#FAFAFA"';?>> 
+			  <tr <? if($countno%2==0) echo ' bgcolor="#FAFAFA"';?>>
 				<td align="center" class="bold"><?=$countno;?></td>
 				<td class="bold">
                <input style="width: 300px;font-size: 11px;color: #15428B;" type="text" value="<?=$row["adm_loginname"];?>"/>
@@ -40,13 +40,13 @@ $db_admin_listing = new db_query ("SELECT *
 				<td class="bold">
                <input style="width: 300px;font-size: 11px;color: #15428B;" type="text" value="<?=$row["adm_email"];?>"/>
             </td>
-				
+
 				<td align="center" class="text">
 					<?
-					$db_access = new db_query("SELECT * 
+					$db_access = new db_query("SELECT *
 											   FROM admin_user, admin_user_right, modules
 											   WHERE adm_id = adu_admin_id AND mod_id = adu_admin_module_id AND adm_id =" . $row['adm_id']);
-					while ($row_access = mysql_fetch_array($db_access->result)){
+					while ($row_access = mysqli_fetch_array($db_access->result)){
 						echo $row_access['mod_name'] . ", ";
 					}
 					unset($db_access);
@@ -54,10 +54,10 @@ $db_admin_listing = new db_query ("SELECT *
 				</td>
 				<td align="center">
 					<?
-					$db_access = new db_query("SELECT * 
+					$db_access = new db_query("SELECT *
 											   FROM languages,admin_user_language
 											   WHERE lang_id = aul_lang_id AND aul_admin_id =" . $row['adm_id']);
-					while ($row_channel = mysql_fetch_array($db_access->result)){
+					while ($row_channel = mysqli_fetch_array($db_access->result)){
 						echo $row_channel['lang_name'] . ", ";
 					}
 					unset($db_access);

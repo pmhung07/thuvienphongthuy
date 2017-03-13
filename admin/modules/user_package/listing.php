@@ -25,13 +25,13 @@ $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
 $total			= new db_count("SELECT count(*) AS count FROM package a, package_user b ,users c
                                WHERE a.pack_id = b.pau_pack_id AND b.pau_user_id = c.use_id ".$list->sqlSearch());
-//câu lệnh select dữ liêu										 
+//câu lệnh select dữ liêu
 $db_listing 	= new db_query("SELECT * FROM package a, package_user b ,users c
                                WHERE a.pack_id = b.pau_pack_id AND b.pau_user_id = c.use_id ".$list->sqlSearch()
                                . " ORDER BY " . $list->sqlSort() . "pau_id ASC "
                               . $list->limit($total->total));
-                                 
-$total_row = mysql_num_rows($db_listing->result);
+
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,13 +47,13 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
       <td width="30" class="bold" align="center">
          <input type="text" style="width: 30px;color: red;" value="<?=$row['pau_id']?>" />
-      </td> 
+      </td>
       <td width="200" align="center">
           <input style="width: 200px;" value="<?=$row['use_email']?>"/>
       </td>
@@ -82,7 +82,7 @@ $total_row = mysql_num_rows($db_listing->result);
       <?=$list->end_tr()?>
    <?
      }
-   ?>  
+   ?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>

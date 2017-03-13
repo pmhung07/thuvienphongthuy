@@ -14,41 +14,41 @@ class form{
 	var $check_javascript			= '';						// Kiểm tra form với javascript
 	var $ec								= '{-----}';			// Explode character
 	var $tr_html						= '';
-	
+
 	// Create <table>
 	function create_table($cellpadding='3', $cellspacing='3', $add_html=''){
 		echo $create_table = '<table class="' . $this->class_table . '" cellpadding="' . $cellpadding . '" cellspacing="' . $cellspacing . '" ' . $add_html . '>';
 	}
-	
+
 	// Close </table>
 	function close_table($close_table='</table>'){
 		echo $close_table;
 	}
-	
+
 	// Create <form>
 	function create_form($name, $action, $method='get', $enctype='multipart/form-data', $add_html=''){
 		echo $create_form = '<form class="' . $this->class_form . '" name="' . $name . '" action="' . $action . '" method="' . $method . '" enctype="' . $enctype . '" ' . $add_html . '>';
 	}
-	
+
 	// Close </form>
 	function close_form($close_form='</form>'){
 		echo $close_form;
 	}
-	
+
 	// Generate control in table
 	function create_control($name, $control){
 		if($name != "") $name = $name . ' :';
 		else $name = "&nbsp;";
 		return '<tr' . $this->tr_html . '><td class="' . $this->class_form_name . '">' . $name . '</td><td class="' . $this->class_form_text . '">' . $control . '</td></tr>';
 	}
-	
+
 	// Add file javascript
 	function add_javascript($filepath, $java_code_add_on=''){
 		if($filepath != '') $src = 'src="' . $filepath . '"';
 		else $src = '';
 		echo '<script type="text/javascript" ' . $src . '>' . $java_code_add_on . '</script>';
 	}
-	
+
 	// Check data require
 	function data_require($require, $title, $object=''){
 		if($require != 0){
@@ -64,7 +64,7 @@ class form{
 		else $control_name = $title;
 		return $control_name;
 	}
-	
+
 	// Show error
 	function errorMsg($errorMsg){
 		if($errorMsg != ""){
@@ -72,7 +72,7 @@ class form{
 			return $this->create_control('', $control);
 		}
 	}
-	
+
 	//Replace " -> &quot; (chống phá ngoặc)
 	function replaceQ($string){
 		$string = str_replace('\"', '"', $string);
@@ -81,7 +81,7 @@ class form{
 		$string = str_replace("\\\\", "\\", $string);
 		return str_replace('"', "&quot;", $string);
 	}
-	
+
 	/*
 	--- Create text note ---
 	1. $text_note		: Chuỗi text ghi chú ở đầu Form	(Exp: "Fields marked with an asterisk (<font class="form_asterisk">*</font>) are required.")
@@ -92,7 +92,7 @@ class form{
 			return $this->create_control('', $control);
 		}
 	}
-	
+
 	/*
 	--- Create button control ---
 	1. $typeControl	: Loại button							(Exp: "submit|reset")
@@ -120,7 +120,7 @@ class form{
 		$control .= $add_text;
 		return $this->create_control('', $control);
 	}
-	
+
 	/*
 	--- Create checkbox control ---
 	1. $titleControl	: Tiêu đề của control				(Exp: "Option")
@@ -151,7 +151,7 @@ class form{
 		$control .= $add_text;
 		return $this->create_control($this->data_require($require, $titleControl), $control);
 	}
-	
+
 	/*
 	--- Create radio control ---
 	1. $titleControl	: Tiêu đề của control				(Exp: "Gender")
@@ -180,7 +180,7 @@ class form{
 		$control .= $add_text;
 		return $this->create_control($this->data_require($require, $titleControl), $control);
 	}
-	
+
 	/*
 	--- Create getFile control ---
 	1. $titleControl	: Tiêu đề của control				(Exp: "Image")
@@ -197,7 +197,7 @@ class form{
 		$control .= $add_text;
 		return $this->create_control($this->data_require($require, $titleControl), $control);
 	}
-	
+
 	/*
 	--- Create select control ---
 	1. $titleControl	: Tiêu đề của control				(Exp: "City")
@@ -236,7 +236,7 @@ class form{
 		}
 		return $this->create_control($this->data_require($require, $titleControl, $id), $control);
 	}
-	
+
 	/*
 	--- Create select_db control ---
 	1. $titleControl	: Tiêu đề của control				(Exp: "City")
@@ -259,7 +259,7 @@ class form{
 		if($multiple != 0) $select_multi = 'multiple="multiple"';
 		$control = '<select class="' . $this->class_form_control . '" title="' . $title . '" id="' . $id . '" name="' . $name . '" style="width:' . $width . 'px" size="' . $size . '" ' . $select_multi . ' ' . $add_html . '>';
 		if($title != "" && $multiple == 0) $control.= '<option value="">- ' . $title . ' -</option>';
-		while($row = mysql_fetch_array($db_query->result)){
+		while($row = mysqli_fetch_array($db_query->result)){
 			$selected = '';
 			if($multiple != 0){
 				if(strpos($currentValue, "[" . $row[$value_field] . "]") !== false) $selected = ' selected="selected"';
@@ -273,7 +273,7 @@ class form{
 		$control .= $add_text;
 		return $this->create_control($this->data_require($require, $titleControl, $id), $control);
 	}
-	
+
 	/*
 	--- Create select_db_2_level control ---
 	1. $titleControl		: Tiêu đề của control				(Exp: "City")
@@ -299,7 +299,7 @@ class form{
 		$control = '<select class="' . $this->class_form_control . '" title="' . $title . '" id="' . $id . '" name="' . $name . '" style="width:' . $width . 'px" size="' . $size . '" ' . $select_multi . ' ' . $add_html . '>';
 		if($title != "" && $multiple == 0) $control.= '<option value="">- ' . $title . ' -</option>';
 		$root_id	= 0;
-		while($row = mysql_fetch_array($db_query->result)){
+		while($row = mysqli_fetch_array($db_query->result)){
 			if($root_id != $row[$value_field_lv1]){
 				$root_id = $row[$value_field_lv1];
 				$control .= '<optgroup label="' . $this->replaceQ($row["root_name"]) . '"></optgroup>';
@@ -317,7 +317,7 @@ class form{
 		$control .= $add_text;
 		return $this->create_control($this->data_require($require, $titleControl, $id), $control);
 	}
-	
+
 	/*
 	--- Create select_db_multi control ---
 	1. $titleControl	: Tiêu đề của control				(Exp: "Category")
@@ -356,7 +356,7 @@ class form{
 		$control .= $add_text;
 		return $this->create_control($this->data_require($require, $titleControl, $id), $control);
 	}
-	
+
 	/*
 	--- Create text control ---
 	1. $titleControl	: Tiêu đề của control				(Exp: "Name")
@@ -396,7 +396,7 @@ class form{
 		$control .= $add_text;
 		return $this->create_control($this->data_require($require, $titleControl, $id), $control);
 	}
-	
+
 	/*
 	--- Create password control ---
 	1. $titleControl	: Tiêu đề của control				(Exp: "Password")
@@ -416,7 +416,7 @@ class form{
 		$control .= $add_text;
 		return $this->create_control($this->data_require($require, $titleControl, $id), $control);
 	}
-	
+
 	/*
 	--- Create textarea control ---
 	1. $titleControl	: Tiêu đề của control				(Exp: "Description")
@@ -438,7 +438,7 @@ class form{
 		$control .= $add_text;
 		return $this->create_control($this->data_require($require, $titleControl, $id), $control);
 	}
-	
+
 	/*
 	--- Create wysiwyg control ---
 	1. $titleControl	: Tiêu đề của control				(Exp: "Description")
@@ -464,7 +464,7 @@ class form{
 		echo '<div class="' . $this->class_form_name . '" style="text-align:left; padding:5px; width:' . $width . '">' . $titleControl . '</div>';
 		$oFCKeditor->Create();
 	}
-	
+
 	/*
 	--- Create hidden control ---
 	1. $id				: ID của control						(Exp: "action_id")

@@ -4,7 +4,7 @@
  * author: hieulvt128@gmail.com
  */
 Class category{
-   
+
    var $cat_id;
    var $cat_name;
    var $cat_desc;
@@ -16,11 +16,11 @@ Class category{
    var $cat_view_test;
    var $cat_active;
    var $cat_link = '';
-   
+
    function category($id = 0){
       $db_cat  = new db_query('SELECT * FROM categories_multi WHERE cat_id = '.$id.' AND cat_active = 1');
-      $row_cat = mysql_fetch_assoc($db_cat->result);
-      
+      $row_cat = mysqli_fetch_assoc($db_cat->result);
+
       $this->cat_id              = $row_cat['cat_id'];
       $this->cat_name            = $row_cat['cat_name'];
       $this->cat_desc            = $row_cat['cat_description'];
@@ -35,7 +35,7 @@ Class category{
       unset($row_cat);
       unset($db_cat);
    }
-   
+
    //Lấy ra thông tin của cate cha ( Ko có cha thì trả về rỗng );
    public function get_parent(){
       if($this->cat_parent_id == 0){
@@ -43,22 +43,22 @@ Class category{
       }else{
          $parent     = array();
          $db_parent  = new db_query('SELECT * FROM categories_multi WHERE cat_id = '.$this->cat_parent_id);
-         $row_parent = mysql_fetch_assoc($db_parent->result);
+         $row_parent = mysqli_fetch_assoc($db_parent->result);
          $parent['cat_id']           =  $row_parent['cat_id'];
          $parent['cat_name']         =  $row_parent['cat_name'];
          $parent['cat_desc']         =  $row_parent['cat_description'];
          $parent['cat_picture']      =  $row_parent['cat_picture'];
          $parent['link']             =  gen_course_cate_v3($row_parent['cat_id']);
-         
-         return $parent;    
+
+         return $parent;
       }
    }
-   
+
    //Lấy ra thông tin của danh sách cate con ( Ko có con thì trả về rỗng );
    public function get_children(){
       $children = array();
       $db_child = new db_query('SELECT * FROM categories_multi WHERE cat_parent_id = '.$this->cat_id.' AND cat_active = 1 ORDER BY cat_order ASC');
-      while($row_child = mysql_fetch_assoc($db_child->result)){
+      while($row_child = mysqli_fetch_assoc($db_child->result)){
          array_push($children,array('cat_id'       => $row_child['cat_id'],
                                     'cat_name'     => $row_child['cat_name'],
                                     'cat_desc'     => $row_child['cat_description'],
@@ -67,8 +67,8 @@ Class category{
       }
       unset($row_child);
       unset($db_child);
-      
+
       return $children;
    }
-} 
+}
 ?>

@@ -11,16 +11,16 @@ $after_save_data  = getValue("after_save_data", "str", "POST", "add_exercises.ph
 $fs_redirect      = $after_save_data;
 
 
-$myform = new generate_form();  
+$myform = new generate_form();
 $myform->addTable("uni_quest");
 //Get action variable for add new data
-$action	  = getValue("action", "str", "POST", ""); 
+$action	  = getValue("action", "str", "POST", "");
 //Check $action for insert new datac
 
-if($action == "execute"){      
-   if($fs_errorMsg == ""){    	
+if($action == "execute"){
+   if($fs_errorMsg == ""){
       $myform->add("uque_para", "uque_para", 0, 0, "", 1, "Bạn chưa nhập nội dung cho đoạn văn", 0, "");
-      //thực hiện insert 
+      //thực hiện insert
       $db_ex = new db_execute($myform->generate_update_SQL("uque_id", $iQues));
       unset($db_ex);
    	//redirect("add_exercises.php?iPara=".$iPara."&record_id=".$record_id);
@@ -34,7 +34,7 @@ $fs_errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM uni_quest WHERE uque_id =".$iQues);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -68,9 +68,9 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
       $form->close_form();
       unset($form);
       ?>
-   </p>   
+   </p>
    <?=template_bottom() ?>
-   
+
    <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<div style="padding-left:100px; padding-right:3px;">
 	<table cellpadding="5" cellspacing="0" width="440px" style="border-collapse:collapse;" bordercolor="#CCCCCC" border="1">
@@ -81,7 +81,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
 		<?
       $db_picture = new db_query("SELECT * FROM uni_quest WHERE uque_id=".$iQues);
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){
+		while($row = mysqli_fetch_assoc($db_picture->result)){
 			$i++;
 		?>
 			<tr <?=$fs_change_bg?>>

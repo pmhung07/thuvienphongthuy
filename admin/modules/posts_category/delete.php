@@ -10,7 +10,7 @@ checkRowUser($fs_table,$field_id,$record_id,$fs_redirect);
 //kiểm tra xóa hết cấp con chưa mới có thể xóa cấp cha
 $db_select = new db_query("SELECT pcat_id FROM " . $fs_table . " WHERE pcat_parent_id =" . $record_id);
 
-if($row=mysql_fetch_assoc($db_select->result)){
+if($row=mysqli_fetch_assoc($db_select->result)){
 	echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
 	echo '<script language="javascript">alert("' . translate_text("Bạn chưa xóa các danh mục con!") . '!");</script>';
 	redirect($fs_redirect);

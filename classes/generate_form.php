@@ -25,7 +25,7 @@ class generate_form{
 	var $border_form_ok			= "solid 1px #00FF00";
 	var $border_form_not			= "solid 1px #FF0000";
 	var $jAlert						= false;
-	
+
 	/**
 	1). $data_field			: Ten truong
 	2). $data_value			: Ten form
@@ -42,7 +42,7 @@ class generate_form{
 		/*
 		kiểm tra xem nếu add 2 lần thì đưa ra thông báo luôn
 		*/
-		
+
 		if(in_array($data_field,$this->array_data_field)) $this->strErrorField .= "&bull; add 2 lần trường <strong>" . $data_field . "</strong> <br>";
 
 		$this->number_of_field++;
@@ -59,19 +59,19 @@ class generate_form{
 			$this->strJavascript 											.= $this->checkTypeData($this->number_of_field);
 		}
 	}
-	
+
 	/*
 	table_name : Ten bang
 	*/
 	function addTable($table_name){
 		$this->table_name = $table_name;
-		
+
 		$arrayField = array_flip($this->array_data_field);
 		$arrayFieldIntable = array();
-		
+
 		//kiem tra xem cac truong co ton tai trong bang chua
 		$db_field = new db_query("SHOW FIELDS FROM " . $this->table_name);
-			while($row = mysql_fetch_array($db_field->result)){
+			while($row = mysqli_fetch_array($db_field->result)){
 				$arrayFieldIntable[$row["Field"]] = 0;
 			}
 		foreach($arrayField as $key=>$value){
@@ -83,14 +83,14 @@ class generate_form{
 		unset($arrayFieldIntable);
 
 	}
-	
+
 	/*
 	form_name : Ten Form
 	*/
 	function addFormname($form_name){
 		$this->form_name = $form_name;
 	}
-	
+
 	/*
 	Su dung khi update data
 	record_field : Ten truong can edit
@@ -100,7 +100,7 @@ class generate_form{
 		$this->record_field = $record_field;
 		$this->record_value = $record_value;
 	}
-	
+
 	/*
 	Remove HTML truoc khi add vao database
 	value  0: Not Remove, 1 : Remove
@@ -108,7 +108,7 @@ class generate_form{
 	function removeHTML($value){
 		$this->removeHTML = $value;
 	}
-	
+
 	/*
 	Remove HTML truoc khi add vao database
 	*/
@@ -118,19 +118,19 @@ class generate_form{
 		$str = str_replace($arrDenied, $arrReplace, $str);
 		return $str;
 	}
-	
+
 	/*
 	Generate Insert SQL
 	*/
 	function generate_insert_SQL($multi=0, $replace_into = false, $ignore = false){
-		
+
 		$str_field	= "(";
 		$str_data	= "(";
 		for($i=0; $i<=$this->number_of_field; $i++){
 			$str_field .= $this->array_data_field[$i] . ",";
 			//gan bien temp = gia tri mac dinh
 			$temp = $this->array_data_default_value[$i];
-			
+
 			//Read from method POST
 			if($this->array_data_store[$i] == 0){
 				if (isset($_POST[$this->array_data_value[$i]])) $temp = $_POST[$this->array_data_value[$i]];
@@ -146,13 +146,13 @@ class generate_form{
 			//remove quote;
 			$temp = str_replace("\'", "'", $temp);
 			$temp = str_replace("'", "''", $temp);
-			
+
 			//Lưu biến raw_temp để phục vụ những chỗ ko cần HTML specialbo
-			$raw_temp = $temp;			
-			
+			$raw_temp = $temp;
+
 			//Remove HTML tag if removeHTML = 1
 			if($this->removeHTML == 1) $temp = $this->htmlspecialbo($temp);
-			
+
 			switch($this->array_data_type[$i]){
 				case "0": $str_data .= "'" . $temp . "',"; break;
 				case "1": $str_data .= intval($temp) . ","; break;
@@ -162,25 +162,25 @@ class generate_form{
 				//Kiểu có new line -> chuyển xuống dòng thành <br>
 				case "5": $str_data .= "'" . nl2br($temp) . "',"; break;
 				//Kiểu ko remove HTML tag
-				case "6": $str_data .= "'" . $raw_temp . "',"; break;				
+				case "6": $str_data .= "'" . $raw_temp . "',"; break;
 			}
 		}
-		
+
 		//$str_field	= substr($str_field, 0, strlen($str_field)-1) . ")";
 		//$str_data	= substr($str_data, 0, strlen($str_data)-1) . ")";
 		//nếu tồn tại bến lang_id
 		$str_field	= substr($str_field, 0, strlen($str_field)-1) . ")";
 		$str_data	= substr($str_data, 0, strlen($str_data)-1) . ")";
-		
+
 		if($multi==1){
 			return $str_data;
 		}else{
 			$querystr	= (($replace_into) ? "REPLACE " : "INSERT ") . (($ignore) ? "IGNORE" : "") . " INTO " . $this->table_name . $str_field . " VALUES " . $str_data;
 			return $querystr;
 		}
-		
+
 	}
-	
+
 	/*
 	Generate Insert SQL nhiều record
 	*/
@@ -206,7 +206,7 @@ class generate_form{
 			$str_field = $this->array_data_field[$i] . "=";
 			//gan bien temp = gia tri mac dinh
 			$temp = $this->array_data_default_value[$i];
-			
+
 			//Read from method POST
 			if($this->array_data_store[$i]==0){
 				if(isset($_POST[$this->array_data_value[$i]])) $temp = $_POST[$this->array_data_value[$i]];
@@ -220,13 +220,13 @@ class generate_form{
 			//remove quote;
 			$temp = str_replace("\'","'",$temp);
 			$temp = str_replace("'","''",$temp);
-			
+
 			//Lưu biến raw_temp để phục vụ những chỗ ko cần HTML specialbo
-			$raw_temp = $temp;			
-			
+			$raw_temp = $temp;
+
 			//Remove HTML tag if removeHTML = 1
 			if($this->removeHTML == 1) $temp = $this->htmlspecialbo($temp);
-			
+
 			switch ($this->array_data_type[$i]){
 				case "0": $str_data = "'" . $temp . "',"; break;
 				case "1": $str_data = intval($temp) . ","; break;
@@ -236,24 +236,24 @@ class generate_form{
 				//Kiểu có new line -> chuyển xuống dòng thành <br>
 				case "5": $str_data = "'" . nl2br($temp) . "',"; break;
 				//Kiểu ko remove HTML tag
-				case "6": $str_data = "'" . $raw_temp . "',"; break;				
+				case "6": $str_data = "'" . $raw_temp . "',"; break;
 			}
 			$querystr .=  $str_field . $str_data;
 		}
-		
+
 		$querystr = substr($querystr, 0, strlen($querystr)-1);
 		$querystr = "UPDATE " . $this->table_name . " SET " . $querystr . " WHERE " . $update_field_name . " = " . $update_field_value . " LIMIT 1";
-	
+
 		return $querystr;
-	}	
-	
+	}
+
 	/*
 	Add them ma Javascript vao check
 	*/
 	function addjavasrciptcode($java_code_add_on){
 		$this->strJavascript  .= $java_code_add_on;
 	}
-	
+
 	/*
 	Kiem tra javascript
 	*/
@@ -280,11 +280,11 @@ class generate_form{
 			   ";
 					echo $this->strJavascript;
 					echo "document." . $this->form_name . ".submit();
-	    		}	
+	    		}
 		";
 		echo "</script>";
 	}
-	
+
 	/*
 	Kiem kiểm tra kiểu dữ liệu bằng javascript
 	*/
@@ -323,14 +323,14 @@ class generate_form{
 		}
 		return $strreturn;
 	}
-	
+
 	function checkTypeform($id,$type,$message){
 		$strreturn = '';
 		$str_alert	= "alert('" . htmlspecialchars($message) . "');";
 		if($this->jAlert){
 			$str_alert	= '$("#errMsg").jAlert("'. htmlspecialchars($message) . '", "fatal", "' . $id . '");';
 		}
-		
+
 		switch($type){
 			//String
 			case 0:
@@ -420,14 +420,14 @@ class generate_form{
 				$db_select = new db_query("SELECT " . $this->array_data_field[$i] . "
 													FROM " . $this->table_name . "
 													WHERE " . $this->array_data_field[$i] . " = '" . $temp . "' " . $add_sql . " LIMIT 1");
-				if(mysql_num_rows($db_select->result) > 0){
+				if(mysqli_num_rows($db_select->result) > 0){
 					$errormsg .= "&bull; " . $this->array_data_error_message2[$i] . "<br />";
 				}
 			}
 		}
 		return $errormsg;
 	}
-	
+
 	/*
 	evaluate variable for email
 	*/
@@ -471,17 +471,17 @@ class generate_form{
 		$temp 	= 	str_replace("\'", "'", $temp);
 		$temp 	= 	str_replace("'", "''", $temp);
 		$temp 	= 	$this->removeTagHtml($temp);
-		$temp		=	mb_strtolower($temp,"UTF-8");	
+		$temp		=	mb_strtolower($temp,"UTF-8");
 		$temp		= str_replace(chr(13),"",$temp);//bo dau tab
 		$temp		= str_replace("  "," ",$temp);//bo dau tab
 		$temp		= str_replace("  "," ",$temp);//bo dau tab
 		$temp		= str_replace("  "," ",$temp);//bo dau tab
 		$temp		= str_replace("  "," ",$temp);//bo dau tab
 		$temp		= str_replace("  "," ",$temp);//bo dau tab
-		$temp		= str_replace("  "," ",$temp);//bo dau ta	
+		$temp		= str_replace("  "," ",$temp);//bo dau ta
 		$temp		=  $temp . ' ' . removeAccent($temp);
-		
-		
+
+
 		$this->number_of_field++;
 		$this->array_data_field[$this->number_of_field]				= $field_name;
 		$this->array_data_value[$this->number_of_field]				= 'not from post';
@@ -495,12 +495,12 @@ class generate_form{
 		unset($temp);
 
 	}
-	
+
 	//loại bỏ các thẻ html
 	function removeTagHtml($string){
-		$string = preg_replace ('/<script.*?\>.*?<\/script>/si', ' ', $string); 
-		$string = preg_replace ('/<style.*?\>.*?<\/style>/si', ' ', $string); 
-		$string = preg_replace ('/<.*?\>/si', ' ', $string); 
+		$string = preg_replace ('/<script.*?\>.*?<\/script>/si', ' ', $string);
+		$string = preg_replace ('/<style.*?\>.*?<\/style>/si', ' ', $string);
+		$string = preg_replace ('/<.*?\>/si', ' ', $string);
 		$string = str_replace ('&nbsp;', ' ', $string);
 		$string = html_entity_decode ($string);
 		return $string;
@@ -508,7 +508,7 @@ class generate_form{
 	/*
 	gennerate form submit
 	*/
-	
+
 	/*
 	debug
 	*/
@@ -526,7 +526,7 @@ class generate_form{
 		echo "------------ End debug ------------<br />";
 		echo "</font>";
 	}
-	
+
 	/*
 	hàm tích hợp tooltip help
 	created by dinhtoan1905
@@ -539,13 +539,13 @@ class generate_form{
 		}
 		echo $strreturn;
 	}
-	
+
 	/*
 	ham copy record
 	created by dinhtoan1905
 	*/
 	function copyRecord($tableName,$field_id,$field_name,$record_id,$key='',$listFieldFile = '',$filePath = ''){
-			
+
 			$arrayFile 		= explode(",",$listFieldFile);
 			$strupdate 		= '';
 			global $medium_width;
@@ -555,9 +555,9 @@ class generate_form{
 			global $small_width;
 			global $small_heght;
 			if($listFieldFile!=''){
-				
+
 				$db_file 		= new db_query("SELECT " . $listFieldFile ." FROM " . $tableName . " WHERE " . $field_id . "=" . $record_id . " LIMIT 1");
-				if($row = mysql_fetch_array($db_file->result)){
+				if($row = mysqli_fetch_array($db_file->result)){
 					foreach($arrayFile as $key=>$value){
 						if($row[$value]!=''){
 							if(file_exists($filePath . $row[$value])){
@@ -579,7 +579,7 @@ class generate_form{
 			}
 			$db_record		=	new db_query("SELECT MAX(" . $field_id . ") AS idmax FROM " . $tableName);
 			$newid			=	0;
-			if($row=mysql_fetch_assoc($db_record->result)){
+			if($row=mysqli_fetch_assoc($db_record->result)){
 				$newid		=	intval($row["idmax"])+1;
 			}
 			$reFieldName	=	($field_name!='') ? "," . $field_name . " = CONCAT(''," . $field_name . ")" : '';

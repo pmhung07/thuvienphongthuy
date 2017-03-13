@@ -8,7 +8,7 @@ $iParent = getValue("iParent");
 $sql_filter = "";
 if($iParent !=""){
    if($iCat !="") $sql_filter .= " AND pcat_parent_id = '".$iParent."'";
-   else $sql_filter .= " AND pcat_id = '".$iParent."'"; 
+   else $sql_filter .= " AND pcat_id = '".$iParent."'";
 }
 if($iCat !="") $sql_filter  .= " AND pcat_id = '" . $iCat . "'";
 //if($iLev !="") $sql_filter  .= " AND lev_id = '" . $iLev . "'";
@@ -31,19 +31,19 @@ $list->add("",translate_text("Delete"),"delete");
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
 $total			= new db_count("SELECT 	count(*) AS count
-      										  FROM post_community 
-                            LEFT JOIN categories_multi 
-                            ON post_community.postcom_cat_id=categories_multi.cat_id 
+      										  FROM post_community
+                            LEFT JOIN categories_multi
+                            ON post_community.postcom_cat_id=categories_multi.cat_id
                             WHERE 1".$list->sqlSearch().$sql_filter);
-//câu lệnh select dữ liêu										 
-$db_listing 	= new db_query("SELECT * FROM post_community 
-                              LEFT JOIN categories_multi 
-                              ON post_community.postcom_cat_id=categories_multi.cat_id 
+//câu lệnh select dữ liêu
+$db_listing 	= new db_query("SELECT * FROM post_community
+                              LEFT JOIN categories_multi
+                              ON post_community.postcom_cat_id=categories_multi.cat_id
           								 		WHERE 1".$list->sqlSearch().$sql_filter
           									   . " ORDER BY " . $list->sqlSort() . "postcom_id DESC "
                                         .	$list->limit($total->total));
-                                 
-$total_row = mysql_num_rows($db_listing->result);
+
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -59,13 +59,13 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
       <td width="300" class="bold" align="center">
          <input type="text" style="width: 300px;color: #15428B;" value="<?=$row[$name_field]?>" />
-      </td>   
+      </td>
       <td width="300" align="center">
           <input style="width:190px; color: #15428B;" type="text" value="<?=$row['cat_name']?>" />
       </td>
@@ -77,7 +77,7 @@ $total_row = mysql_num_rows($db_listing->result);
       <?=$list->end_tr()?>
    <?
      }
-   ?>  
+   ?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>

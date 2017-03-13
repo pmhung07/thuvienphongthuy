@@ -1,22 +1,22 @@
 <?
 	require_once("inc_security.php");
-	          
+
     $db_shop = new db_query('SELECT * FROM shop WHERE 1');
     $listShop = array();
     $listShop[0] = '-- Chọn cửa hàng --';
-    while($shop = mysql_fetch_assoc($db_shop->result)) {
+    while($shop = mysqli_fetch_assoc($db_shop->result)) {
         $listShop[$shop['sho_id']] = $shop['sho_name'];
     }
     unset($db_shop);
-    
+
     $listRole = array();
     $listRole[0] = '-- Quyền quản trị --';
     $listRole[1] = 'Quản lý (Admin)';
     $listRole[2] = 'Nhân viên';
-    
+
 	//khoi tao object Datagird
 	$list = new fsDataGird($id_field, $name_field, translate_text("Listing"));
-	
+
 	$list->add("use_name", "Username", "string", 1, 1);
 	$list->add("use_email","Email","string", 1, 1);
 	$list->add("use_fullname","Tên đầy đủ","string", 1, 1);
@@ -37,8 +37,8 @@
 									    		FROM  "	.	$fs_table	.	"
 										 		WHERE 1 "	.	$list->sqlSearch() . "
 												ORDER BY " . $list->sqlSort() . " use_id DESC
-					 							" . $list->limit($total->total));	
-	$total_row					=	mysql_num_rows($db_listing->result);
+					 							" . $list->limit($total->total));
+	$total_row					=	mysqli_num_rows($db_listing->result);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -54,8 +54,8 @@
 <div id="listing">
   <?=$list->showHeader($total_row)?>
 	<?
-	$i=0; 
-	while($row  = mysql_fetch_assoc($db_listing->result)){
+	$i=0;
+	while($row  = mysqli_fetch_assoc($db_listing->result)){
 		$i++;
 		?>
   		<?=$list->start_tr($i, $row[$id_field])?>

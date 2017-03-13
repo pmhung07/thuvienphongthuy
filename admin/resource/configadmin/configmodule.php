@@ -44,7 +44,7 @@ $myform->checkjavascript();
 <title>Add New</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="<?=$fs_stype_css?>" rel="stylesheet" type="text/css">
-<link href="<?=$fs_template_css?>" rel="stylesheet" type="text/css"> 
+<link href="<?=$fs_template_css?>" rel="stylesheet" type="text/css">
 </head>
 <body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 <?=template_top("Cấu hình module")?>
@@ -89,8 +89,8 @@ $myform->checkjavascript();
 			?>
 			<?
 			$i=0;
-			while($mod=mysql_fetch_assoc($db_module->result)){
-			
+			while($mod=mysqli_fetch_assoc($db_module->result)){
+
 				if(file_exists("../../modules/" . $mod["mod_path"] . "/inc_security.php")){
 					require_once("../../modules/" . $mod["mod_path"] . "/inc_security.php");
 					$i++;
@@ -146,6 +146,6 @@ $myform->checkjavascript();
 		</table>
 		</form>
 	<? /*---------Body------------*/ ?>
-<?=template_bottom() ?>	
+<?=template_bottom() ?>
 </body>
 </html>

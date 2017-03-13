@@ -24,16 +24,16 @@ function delete_file($table_name,$id_field,$id_field_value,$field_select,$ff_ima
 									"FROM " . $table_name . " " .
 									"WHERE " . $id_field . "=" . $id_field_value
 									);
-	while($row=mysql_fetch_array($db_select->result)){
+	while($row=mysqli_fetch_array($db_select->result)){
 		if(file_exists($ff_imagepath . $row[$field_select])) @unlink($ff_imagepath . $row[$field_select]);
 		if(file_exists($ff_imagepath . "tiny_" . $row[$field_select])) @unlink($ff_imagepath . "tiny_" . $row[$field_select]);
 		if(file_exists($ff_imagepath . "small_" . $row[$field_select])) @unlink($ff_imagepath . "small_" . $row[$field_select]);
 		if(file_exists($ff_imagepath . "ssmall_" . $row[$field_select])) @unlink($ff_imagepath . "ssmall_" . $row[$field_select]);
 		if(file_exists($ff_imagepath . "medium_" . $row[$field_select])) @unlink($ff_imagepath . "medium_" . $row[$field_select]);
-	}	
+	}
 	unset($db_select);
 	$db_ex = new db_execute("UPDATE " . $table_name . " SET " . $field_select . " = null WHERE " . $id_field . "=" . $id_field_value);
-	unset($db_ex);					
+	unset($db_ex);
 }
 
 function delete_picture_more($type, $record_id, $multi=0, $path="../../"){
@@ -48,9 +48,9 @@ function delete_picture_more($type, $record_id, $multi=0, $path="../../"){
 	$fs_filepath_fullsize= $path . $type . "_pictures_more/fullsize/";
 	$fs_filepath_small	= $path . $type . "_pictures_more/small/";
 	$fs_filepath_normal	= $path . $type . "_pictures_more/normal/";
-	
+
 	$db_check = new db_query("SELECT " . $fs_fieldupload . " FROM " . $fs_table . " WHERE " . $id_field . " = " . $record_id . " AND lang_id = " . $lang_id);
-	while($check = mysql_fetch_array($db_check->result)){
+	while($check = mysqli_fetch_array($db_check->result)){
 		if($check[$fs_fieldupload] != ""){
 			delete_file($fs_filepath_fullsize, $check[$fs_fieldupload]);
 			delete_file($fs_filepath_small, $check[$fs_fieldupload]);
@@ -93,7 +93,7 @@ function showImageMap($markers, $center = "", $zoom = '14', $size = '480x450'){
 }
 function downloadFile($url_download, $save_as){
 	set_time_limit(0);
-	ini_set('display_errors',true);//Just in case we get some errors, let us know....	
+	ini_set('display_errors',true);//Just in case we get some errors, let us know....
 	$fp = fopen ($save_as, 'w');//This is the file where we save the information
 	$ch = curl_init($url_download);//Here is the file we are downloading
 	curl_setopt($ch, CURLOPT_TIMEOUT, 10);

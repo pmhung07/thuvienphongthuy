@@ -88,7 +88,7 @@ $db_block = new db_query("SELECT * FROM courses_multi_tabs_block WHERE  com_bloc
 $arrayBlock = array();
 $arrayBlock[0] = "Chọn Block để thêm nội dung";
 $i=1;
-while($row = mysql_fetch_assoc($db_block->result)){
+while($row = mysqli_fetch_assoc($db_block->result)){
 	$arrayBlock[$row['com_block_id']] = $row['com_block_data_name'];
 	$i++;
 }
@@ -142,7 +142,7 @@ $arrayMedia = array(
 			<script src="/../../js/tinymce/tinymce.min.js" type="text/javascript" charset="utf-8"></script>
 			<script type="text/javascript">
 		   	tinymce.init({
-				selector: "textarea",   
+				selector: "textarea",
 				plugins: [
 					"advlist autolink lists link image charmap print preview hr anchor pagebreak",
 					"searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -156,9 +156,9 @@ $arrayMedia = array(
 		      	templates: [
 		         	{title: 'Test template 1', content: 'Test 1'},
 		         	{title: 'Test template 2', content: 'Test 2'}
-		      	] 
+		      	]
 		   	});
-		   	</script>  
+		   	</script>
 		</td>
 	</tr>
 	<?=$form->select("Chọn Kiểu Media", "cou_tab_question_media_type", "cou_tab_question_media_type", $arrayMedia, 0 ,"Chọn Kiểu Media cho nội dung",1,"500",1,0,"","")?>
@@ -208,7 +208,7 @@ $arrayMedia = array(
 	unset($form);
 	?>
 	</div>
-	
+
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<div style="width:100%;">
 	<table cellpadding="5" cellspacing="0" width="100%" style="border-collapse:collapse;" bordercolor="#CCCCCC" border="1">
@@ -225,7 +225,7 @@ $arrayMedia = array(
 
 		<?
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){ $i++;
+		while($row = mysqli_fetch_assoc($db_picture->result)){ $i++;
 		?>
 			<tr style="background:#FDD5D5;">
 				<td align="center"><?=$i?></td>
@@ -235,37 +235,37 @@ $arrayMedia = array(
 	            </td>
 	            <td width="50" align="center"><img src="<?=$fs_imagepath?>delete.gif" alt="DELETE" border="0" onClick="if (confirm('Are you sure to delete?')){ window.location.href='course_unit_data_block_delete.php?record_id=<?=$row["com_block_id"]?>&returnurl=<?=base64_encode(getURL())?>'}" style="cursor:pointer"></td>
 			</tr>
-			<? 
+			<?
 			$db_content = new db_query("SELECT * FROM courses_multi_tab_questions WHERE cou_tab_question_tabs_id =".$iTab." AND cou_tab_question_block_id=".$row["com_block_id"]." ORDER BY cou_tab_question_order");
-			$countarrContent = $db_content->resultArray(); 
+			$countarrContent = $db_content->resultArray();
 			$j = 0;
-			if(count($countarrContent) > 0){ 
+			if(count($countarrContent) > 0){
 				foreach($countarrContent as $key=>$value){ $j++;
 			?>
 			<tr style="background: #A9BAD0;">
-	            <td align="center"><?=$j?></td>               
+	            <td align="center"><?=$j?></td>
 	            <td style="width:300px;">
 	               <input style="width:50%;" class="ans_content" id="ques_content_<?=$value['cou_tab_question_id']?>" name="ans_content" value="<?=$value['cou_tab_question_content']?>"/>
 	               <a class="ans_edit" onclick="save_question(<?=$value['cou_tab_question_id']?>)">Save</a>
 	               <a class="ans_del" onclick="del_question(<?=$value['cou_tab_question_id']?>)">Delete</a>
 	               <input id="order_ques_<?=$value['cou_tab_question_id']?>" style="text-align: center;width: 30px;background: #eee;margin: 7px 0px 5px 6px;height: 20px;color: red;font-weight: bold;" type="text" value="<?=$value['cou_tab_question_order']?>" />
-	               <a onclick="order_ques(<?=$value['cou_tab_question_id']?>)" class="a_score" style="cursor: pointer;cursor: pointer;height: 20px;display: -webkit-inline-box;padding-top: 2px;">Sắp xếp</a>  		
+	               <a onclick="order_ques(<?=$value['cou_tab_question_id']?>)" class="a_score" style="cursor: pointer;cursor: pointer;height: 20px;display: -webkit-inline-box;padding-top: 2px;">Sắp xếp</a>
 	               <a style="padding:5px 0px 5px 6px;text-decoration:none;" title="Add audio" class="thickbox noborder a_detail" href="course_unit_tab_question_multiple_choice_media.php?iQues=<?=$value['cou_tab_question_id']?>'&url=<?=base64_encode(getURL())?>'&TB_iframe=true&amp;height=350&amp;width=1000">
 	                  <b style="background: none repeat scroll 0 0;color: black;padding: 2px 10px;">Update Audio & Image &content</b>
 	               </a>
 	            </td>
 	            <td colspan="2">
 	               <?
-	               $db_ans_select = new db_query("SELECT * FROM courses_multi_tab_answers 
-	                                              INNER JOIN courses_multi_tab_questions ON cou_tab_answer_question_id = cou_tab_question_id	 
-	                                              WHERE cou_tab_answer_question_id  = ". $value["cou_tab_question_id"]);  
-	               while($row_ans = mysql_fetch_assoc($db_ans_select->result)){
+	               $db_ans_select = new db_query("SELECT * FROM courses_multi_tab_answers
+	                                              INNER JOIN courses_multi_tab_questions ON cou_tab_answer_question_id = cou_tab_question_id
+	                                              WHERE cou_tab_answer_question_id  = ". $value["cou_tab_question_id"]);
+	               while($row_ans = mysqli_fetch_assoc($db_ans_select->result)){
 	               ?>
 	                  <input style="width: 85%!important;" size="30" id="ans_content_<?=$row_ans['cou_tab_answer_id']?>" class="ans_content" name="ans_content" value="<?=$row_ans['cou_tab_answer_content']?>"/>
 	                  <input type="radio" <?=($row_ans['cou_tab_answer_true'] == 1)? "checked=''":""?> class="rdo_check_true" onclick="set_true_ans(<?=$row_ans['cou_tab_answer_id']?>,<?=$value['cou_tab_question_id']?>)" id="ans_ques_<?=$row_ans['cou_tab_answer_id']?>" name="ans_<?=$value['cou_tab_question_id']?>" value=""/>
 	                  <a class="ans_edit" onclick="save_answers(<?=$row_ans['cou_tab_answer_id']?>)">Save</a>
-	               <?}unset($db_ans_select);?>           
-	            </td>        
+	               <?}unset($db_ans_select);?>
+	            </td>
 	         </tr>
 			<? } } ?>
 		<? } ?>
@@ -290,7 +290,7 @@ function set_true_ans(ans_id,ques_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Update thành công');	
+				alert('Update thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');
@@ -312,7 +312,7 @@ function save_question(ques_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Update Question thành công');	
+				alert('Update Question thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');
@@ -334,7 +334,7 @@ function order_ques(ques_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Update Question thành công');	
+				alert('Update Question thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');
@@ -354,7 +354,7 @@ function del_question(ques_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Xóa thành công');	
+				alert('Xóa thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');
@@ -376,7 +376,7 @@ function save_answers(ans_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Update Answer thành công');	
+				alert('Update Answer thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');
@@ -398,7 +398,7 @@ function addblockintab(tab_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Add Block thành công');	
+				alert('Add Block thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');
@@ -420,7 +420,7 @@ function update_blockname(cou_block_id){
 		url:'ajax.php',
 		success:function(data){
 			if($.trim(data) == 1){
-				alert('Update Tên Block thành công');	
+				alert('Update Tên Block thành công');
 				window.location.reload();
 			}else{
 				alert('Xảy ra lỗi trong quá trình xử lý');

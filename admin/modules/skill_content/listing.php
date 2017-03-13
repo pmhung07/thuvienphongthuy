@@ -17,7 +17,7 @@ $arrayParent = array(0=>translate_text("Danh mục cha"));
 
 $db_Parent = new db_query("SELECT cat_type,cat_name,cat_id FROM categories_multi
                              WHERE cat_parent_id = 0 AND cat_type = 0" );
-while($row_parent = mysql_fetch_array($db_Parent->result)){
+while($row_parent = mysqli_fetch_array($db_Parent->result)){
 	$arrayParent[$row_parent["cat_id"]] = $row_parent["cat_name"];
 }unset($db_Parent);
 
@@ -27,7 +27,7 @@ if($iParent>0){
    $db_cateogry = new db_query("SELECT cat_type,cat_name,cat_id
                              FROM categories_multi
                              WHERE cat_parent_id = ".$iParent." AND cat_type = 0");
-   while($row = mysql_fetch_array($db_cateogry->result)){
+   while($row = mysqli_fetch_array($db_cateogry->result)){
    	$arrayCate[$row["cat_id"]]   = $row["cat_name"];
    }unset($db_cateogry);
 }
@@ -38,7 +38,7 @@ if($iParent>0){
    $db_sLesson = new db_query("SELECT skl_les_id, skl_les_name FROM categories_multi
                               INNER JOIN skill_lesson ON skill_lesson.skl_les_cat_id = categories_multi.cat_id
                               WHERE skl_les_cat_id = ".$iParent." OR categories_multi.cat_parent_id = ".$iParent);
-   while($row = mysql_fetch_array($db_sLesson->result)){
+   while($row = mysqli_fetch_array($db_sLesson->result)){
       $arrayLesson[$row["skl_les_id"]] = $row["skl_les_name"];
    }unset($db_sLesson);
 }
@@ -61,35 +61,35 @@ $list->addSearch(translate_text("Chọn bài học"),"Course_search","array",$ar
 <div id="listing">
    <?php echo $list->urlsearch(); ?>
 	<table border="1" cellpadding="3" cellspacing="0" class="table" width="100%" bordercolor="<?=$fs_border?>">
-   	<tr> 
+   	<tr>
    		<td class="bold bg" width="5">STT</td>
    		<td class="bold bg" ><?=translate_text("name")?></td>
             <td class="bold bg" align="center" width="200"><?=translate_text("Xem Chi tiết")?></td>
-            <td class="bold bg" align="center" width="180"><?=translate_text("Chuyên mục")?></td>				
-            <td class="bold bg" align="center" width="5"><?=translate_text("Dạng")?></td>		
+            <td class="bold bg" align="center" width="180"><?=translate_text("Chuyên mục")?></td>
+            <td class="bold bg" align="center" width="5"><?=translate_text("Dạng")?></td>
             <td class="bold bg" align="center" width="30" >Sửa</td>
-            <td class="bold bg" align="center" width="30" >Xóa</td>		
+            <td class="bold bg" align="center" width="30" >Xóa</td>
    	</tr>
 		<form action="quickedit.php?returnurl=<?=base64_encode(getURL())?>" method="post" name="form_listing" id="form_listing" enctype="multipart/form-data">
-		<input type="hidden" name="iQuick" value="update" />	
-		   <? 
+		<input type="hidden" name="iQuick" value="update" />
+		   <?
          $i=0;
          $j = 0;
          $m = 0;
-         $n = 0;   
+         $n = 0;
          $db_Lesson = new db_query("SELECT skl_les_id,skl_les_cat_id,skl_les_name FROM categories_multi
                                     INNER JOIN skill_lesson ON skill_lesson.skl_les_cat_id = categories_multi.cat_id
                                     WHERE ".$sql_search." ORDER BY skl_les_cat_id ASC");
-         while($rowLesson = mysql_fetch_array($db_Lesson->result)){
+         while($rowLesson = mysqli_fetch_array($db_Lesson->result)){
          $i++;
          $m++;
          $n++;
          $dlCont = '';
          $db_cont = new db_query("SELECT skl_les_id,skl_les_name,skl_cont_id,skl_cont_title,skl_cont_type,skl_cont_order
    					  	             FROM skill_lesson,skill_content
-   						             WHERE skill_lesson.skl_les_id = skill_content.skl_cont_les_id 
+   						             WHERE skill_lesson.skl_les_id = skill_content.skl_cont_les_id
                                   AND skill_content.skl_cont_les_id = ".$rowLesson["skl_les_id"]."
-                                  ORDER BY skl_cont_order ASC"); 
+                                  ORDER BY skl_cont_order ASC");
          ?>
             <tr <? if($m%2==0) echo ' bgcolor="#FAFAFA"';?>>
                <td align="center"><?php echo $i ?></td>
@@ -100,21 +100,21 @@ $list->addSearch(translate_text("Chọn bài học"),"Course_search","array",$ar
                <td></td>
                <td colspan="4"  style="padding-left: 40px;">
                   <b><?php echo nameCate($rowLesson['skl_les_cat_id']); ?>
-                  
+
                   </b>
                </td>
             </tr>
             <?php
             if($les_id == $rowLesson['skl_les_id']){
-               while($rowCont = mysql_fetch_assoc($db_cont->result)){
+               while($rowCont = mysqli_fetch_assoc($db_cont->result)){
                switch($rowCont['skl_cont_type']){
                   case 1 : $select = "add_type_main.php"; break;
                   case 2 : $select = "add_type_gram.php"; break;
                   case 3 : $select = "add_type_voc.php";  break;
                   case 4 : $select = "add_type_writing.php"; break;
-                  case 5 : $select = "add_type_ext.php";  break;  
-                 default : $select = "add_type_main.php"; break;  
-               }   
+                  case 5 : $select = "add_type_ext.php";  break;
+                 default : $select = "add_type_main.php"; break;
+               }
                $j++;
                $n++;
                $dlCont .= '<tr';
@@ -136,9 +136,9 @@ $list->addSearch(translate_text("Chọn bài học"),"Course_search","array",$ar
                }
                unset($db_cont);
                echo $dlCont;
-            }   
+            }
             ?>
-         <?php 
+         <?php
          }unset($db_Lesson);
          ?>
 		</form>
@@ -183,5 +183,5 @@ $(document).ready(function() {
       var iLesson		   =	$("#Course_search").val();
       window.location	=	"listing.php?iCate=" +iCate+"&iParent="+iParent+"&iLesson="+ iLesson;
    });
-}); 
+});
 </script>

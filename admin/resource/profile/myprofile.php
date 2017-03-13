@@ -68,9 +68,9 @@ if($action == "update_password"){
 }
 //Select data
 $db_data = new db_query("SELECT * FROM admin_user WHERE adm_id = " . $admin_id);
-if (mysql_num_rows($db_data->result) > 0)
+if (mysqli_num_rows($db_data->result) > 0)
 {
-	$row = mysql_fetch_array($db_data->result);
+	$row = mysqli_fetch_array($db_data->result);
 	$db_data->close();
 	unset($db_data);
 }
@@ -85,7 +85,7 @@ else{
 <title>Add New</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="<?=$fs_stype_css?>" rel="stylesheet" type="text/css">
-<link href="<?=$fs_template_css?>" rel="stylesheet" type="text/css"> 
+<link href="<?=$fs_template_css?>" rel="stylesheet" type="text/css">
 <script language="javascript">
 function check_form_change_password(){
 	if (document.getElementById("adm_password_old").value==''){

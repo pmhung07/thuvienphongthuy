@@ -9,8 +9,8 @@ checkAddEdit("edit");
    $high_id          = getValue("high_id","int","GET",0);
    $record_id 		   = getValue("record_id");
    $iQues            = getValue("iQues","int","GET","");
-   
-   $myform = new generate_form();  
+
+   $myform = new generate_form();
    $myform->add("high_paragraph", "high_paragraph", 0, 0, "",1, "Bạn chưa nhập đoạn văn", 0, "");
 	//Add table insert data
 	$myform->addTable("test_highlight");
@@ -19,14 +19,14 @@ checkAddEdit("edit");
    //Check $action for insert new data
    if($action == "execute"){
    	//Check form data
-   	$fs_errorMsg .= $myform->checkdata();      
-   	if($fs_errorMsg == ""){ 	
+   	$fs_errorMsg .= $myform->checkdata();
+   	if($fs_errorMsg == ""){
    		$myform->removeHTML(0);
    		$db_ex = new db_execute($myform->generate_update_SQL("high_id",$high_id));
-   		redirect("add_exercises.php?&iQues=".$iQues."&iPara=".$iPara."&record_id=".$record_id);	
-   	}	
+   		redirect("add_exercises.php?&iQues=".$iQues."&iPara=".$iPara."&record_id=".$record_id);
+   	}
    }
-   
+
    $myform->addFormname("add_new");
    $myform->evaluate();
    $myform->checkjavascript();
@@ -37,10 +37,10 @@ checkAddEdit("edit");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <?=$load_header?>
-<? 
+<?
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM test_highlight WHERE high_id = " . $high_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -71,7 +71,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
       $form->close_form();
       unset($form);
       ?>
-   </p>   
+   </p>
    <?=template_bottom() ?>
 </body>
 </html>

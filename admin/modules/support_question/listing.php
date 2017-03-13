@@ -12,7 +12,7 @@ $iParent = getValue("iParent");
 $sql_filter = "";
 if($iParent !=""){
    if($iCat !="") $sql_filter .= " AND scat_parent_id = '".$iParent."'";
-   else $sql_filter .= " AND scat_id = '".$iParent."'"; 
+   else $sql_filter .= " AND scat_id = '".$iParent."'";
 }
 if($iCat !="") $sql_filter  .= " AND scat_id = '" . $iCat . "'";
 //if($iLev !="") $sql_filter  .= " AND lev_id = '" . $iLev . "'";
@@ -28,14 +28,14 @@ $db_cateogryAll = new db_query("SELECT scat_name,scat_id
                                 FROM support_category
                                 WHERE scat_type = 0");
 $arr_catAll = $db_cateogryAll->resultArray();
-                            
+
 //Lay ra danh muc con
 $arrayCat = array();
 $arrayCat[''] = "Chọn Danh mục con";
 $db_cateogry = new db_query("SELECT scat_name,scat_id
                             FROM support_category
                             WHERE scat_type = 0");
-while($row = mysql_fetch_array($db_cateogry->result)){
+while($row = mysqli_fetch_array($db_cateogry->result)){
   $arrayCat[$row["scat_id"]] = $row["scat_name"];
 }unset($db_cateogry);
 
@@ -63,18 +63,18 @@ $list->add("",translate_text("Delete"),"delete");
 //$list->quickEdit = false;
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
-$total			= new db_count("SELECT 	count(*) AS count 
+$total			= new db_count("SELECT 	count(*) AS count
                                 FROM ".$fs_table."
-                                INNER JOIN support_category ON support_share.ssha_cat_id = support_category.scat_id 
+                                INNER JOIN support_category ON support_share.ssha_cat_id = support_category.scat_id
                                 WHERE 1".$list->sqlSearch().$sql_filter);
-//câu lệnh select dữ liêu										 
-$db_listing 	= new db_query("SELECT * FROM support_share 
-                               INNER JOIN support_category ON support_share.ssha_cat_id = support_category.scat_id 
+//câu lệnh select dữ liêu
+$db_listing 	= new db_query("SELECT * FROM support_share
+                               INNER JOIN support_category ON support_share.ssha_cat_id = support_category.scat_id
 						 		 WHERE 1".$list->sqlSearch().$sql_filter
 							   . " ORDER BY " . $list->sqlSort() . "ssha_id DESC "
                               .	$list->limit($total->total));
-                                 
-$total_row = mysql_num_rows($db_listing->result);
+
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -90,9 +90,9 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
       <td width="250" class="bold" align="center">
          <textarea cols="60" rows="3"><?=$row[$name_field]?></textarea>
@@ -115,7 +115,7 @@ $total_row = mysql_num_rows($db_listing->result);
       <?=$list->end_tr()?>
    <?
      }
-   ?>  
+   ?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>

@@ -31,7 +31,7 @@ $score            = getValue("score","int","GET",0);
    		?>
    		<?
    		$i=0;
-   		while($row = mysql_fetch_assoc($db_picture->result)){
+   		while($row = mysqli_fetch_assoc($db_picture->result)){
    			$i++;
    		?>
    			<tr <?=$fs_change_bg?>>
@@ -40,9 +40,9 @@ $score            = getValue("score","int","GET",0);
                   <?
                   $para = $row['ielt_user_speaking_first'];
                   $para_split = explode(" ",$para);
-                  $para_count = count($para_split);      
+                  $para_count = count($para_split);
                   for($i = 0;$i < $para_count;$i++){
-                     if($i % 2 != 0){         
+                     if($i % 2 != 0){
                         echo "<br/>";
                      }else{
                         if($para_split[$i] != ""){
@@ -51,11 +51,11 @@ $score            = getValue("score","int","GET",0);
                         }else{
                            echo "Not Audio";
                         }
-                     }               
-                  }             
+                     }
+                  }
                   ?>
                   </div><br />
-               </td>		
+               </td>
                <td align="" width="">
                   <div style="float: left;color: #164989;font-size: 11px;text-align: justify;padding-left: 10px;font-weight: bold;">
                   <?
@@ -64,18 +64,18 @@ $score            = getValue("score","int","GET",0);
                         echo'<a style="text-decoration:none" title="Audio" class="thickbox noborder a_detail" href="view_media.php?url='. base64_encode(getURL()) . '&url_media=' . $url . '&TB_iframe=true&amp;height=115&amp;width=420" /><b> View Audio</b></a>';
                      }else{
                         echo "Not Audio";
-                     }           
+                     }
                   ?>
                   </div>
-               </td>	
+               </td>
                <td align="" width="">
                   <div style="float: left;color: #164989;font-size: 11px;text-align: justify;padding-left: 10px;font-weight: bold;">
                   <?
                   $para = $row['ielt_user_speaking_third'];
                   $para_split = explode(" ",$para);
-                  $para_count = count($para_split);      
+                  $para_count = count($para_split);
                   for($i = 0;$i < $para_count;$i++){
-                     if($i % 2 != 0){         
+                     if($i % 2 != 0){
                         echo "<br/>";
                      }else{
                         if($para_split[$i] != ""){
@@ -84,11 +84,11 @@ $score            = getValue("score","int","GET",0);
                         }else{
                            echo "Not Audio";
                         }
-                     }               
-                  }             
+                     }
+                  }
                   ?>
                   </div><br />
-               </td>		
+               </td>
             </tr>
             <tr>
                <td colspan="3">
@@ -107,7 +107,7 @@ $score            = getValue("score","int","GET",0);
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 <style>
 .a_detail{padding: 2px 15px;border: solid 1px;background: #EEE;text-decoration: none;color: #164989;float: left;cursor: pointer;margin-bottom: 10px;}
-</style>  
+</style>
 <script>
 function score_speaking(record_id){
    var score = $('#score_speaking_'+record_id).val();
@@ -125,7 +125,7 @@ function score_speaking(record_id){
 		url:'ajax_score_speaking.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);

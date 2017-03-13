@@ -24,7 +24,7 @@ class db_init{
 	 * Ham khoi tao class
 	 * @return
 	 */
-	function db_init(){
+	function __construct(){
  		// Khai bao Server localhost day
 
 		$this->server	 					= config('database.db_host');
@@ -120,7 +120,7 @@ class db_query{
 	 * @param string $file_line_query : loi se ghi
 	 * @return
 	 */
-	function db_query($query, $file_line_query = ""){
+	function __construct($query, $file_line_query = ""){
 
 		$dbinit       = new db_init();
 		//Khai bao connect
@@ -244,7 +244,7 @@ class db_execute{
 	 * @param string $file_line_query : Ghi loi
 	 * @return
 	 */
-	function db_execute($query, $file_line_query = ""){
+	function __construct($query, $file_line_query = ""){
 
 		$dbinit       = new db_init();
         $this->links  = mysqli_connect($dbinit->server, $dbinit->username, $dbinit->passworddb, $dbinit->database);
@@ -289,7 +289,7 @@ class db_count{
 	 * @param string $sql : Cau lenh sql
 	 * @return int so ket qua
 	 */
-	function db_count($sql){
+	function __construct($sql){
 		$db_ex    = new db_query($sql);
 
 		if( $row = mysqli_fetch_assoc($db_ex->result)){
@@ -325,7 +325,7 @@ class db_execute_return{
 	 * @param string $file_line_query : Loi se ghi
 	 * @return int :ID duoc them vao cuoi cung.
 	 */
-	function db_execute($query, $file_line_query = ""){
+	function __construct($query, $file_line_query = ""){
 
 		$dbinit       =   new db_init();
 		$this->links  =   mysqli_connect($dbinit->server, $dbinit->username, $dbinit->passworddb);

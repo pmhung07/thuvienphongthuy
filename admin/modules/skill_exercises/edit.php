@@ -22,7 +22,7 @@ $iCont = getValue("iCont","int","GET",0);
 //Get active
 $exe_active    	= getValue("exe_active", "int", "POST", 0);
 
-//Get unit - lesson 
+//Get unit - lesson
 if($iskill_les > 0){
    $sql = "skl_cont_les_id = ". $iskill_les ."";
 }else {$sql=1;}
@@ -31,18 +31,18 @@ $menu 				= new menu();
 
 //Display information of Lesson
 if($iskill_les > 0){
-   $db_lesson_select = new db_query("SELECT skl_les_name,cat_name 
-                                     FROM skill_lesson INNER JOIN categories_multi 
+   $db_lesson_select = new db_query("SELECT skl_les_name,cat_name
+                                     FROM skill_lesson INNER JOIN categories_multi
                                      ON skl_les_cat_id = cat_id WHERE skl_les_id = ". $iskill_les ."");
 }
 
 $arr_get_content[''] = "[-----Danh mục Content-----]";
 if($iskill_les > 0){
    $sql_get_content = new db_query("SELECT skl_cont_id,skl_cont_title,skl_cont_order
-                                 FROM skill_content 
+                                 FROM skill_content
                                  WHERE skl_cont_active = 1 AND skl_cont_les_id = ". $iskill_les ." ORDER BY skl_cont_order ASC");
    $count_content = 1;
-   while($row_content = mysql_fetch_assoc($sql_get_content->result)){
+   while($row_content = mysqli_fetch_assoc($sql_get_content->result)){
       if($row_content['skl_cont_title'] != ""){
          $arr_get_content[$row_content["skl_cont_id"]] = $row_content['skl_cont_title'];
       }
@@ -51,7 +51,7 @@ if($iskill_les > 0){
       }
       $count_content++;
    }unset($sql_get_content);
-} 
+}
 
 
 /*
@@ -90,16 +90,16 @@ if($action == "execute"){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <?=$load_header?>
-<? 
+<?
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->addFormname("edit");
-$myform->checkjavascript(); 
+$myform->checkjavascript();
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM " . $fs_table . " WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}
@@ -131,27 +131,27 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
       </table>
    </form>
    <div style="float: left;" id="show_result"></div>
-  
+
    <p align="center" style="padding-left:10px;">
       <?
    	$form = new form();
    	$form->create_form("add", $_SERVER["REQUEST_URI"], "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
    	$form->create_table();
-      ?>    
+      ?>
          <?=$form->text_note('<strong style="textalign:center;">----------- Sửa thông tin Quiz ---------</strong>')?>
       	<?=$form->text_note('Những ô có dấu sao (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
       	<?=$form->errorMsg($fs_errorMsg)?>
          <?
          if($iskill_les > 0){
-            if($row_lesson = mysql_fetch_assoc($db_lesson_select->result)){?>
+            if($row_lesson = mysqli_fetch_assoc($db_lesson_select->result)){?>
                <tr>
                   <td class="form_name">Danh mục :</td>
                   <td class="form_text"><p class="p_name_course"><?=$row_lesson["cat_name"]?></p></td>
-               </tr>    
+               </tr>
                <tr>
                   <td class="form_name">Bài học :</td>
                   <td class="form_text"><p class="p_name_course"><?=$row_lesson["skl_les_name"]?></p></td>
-               </tr>  
+               </tr>
          <?}unset($db_lesson_select);}?>
          <?//=$form->select_db_multi("Chọn Unit", "exe_com_id", "exe_com_id", $arrCource, "com_id", "com_name", $exe_com_id, "Danh mục bài học", 0, 256, 1, 0, "", "")?>
          <?//=$form->select("Chọn Units","com_select","com_select",$arr_get_unit,$com_select,"Chọn [Unit] để thêm [Quiz]",1,186,"");?>

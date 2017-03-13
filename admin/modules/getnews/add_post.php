@@ -16,18 +16,18 @@
    $content       = getValue("post_content","str","POST","");
    $db_new = new db_query('SELECT * FROM '.$fs_table.'
                            WHERE 1 AND gen_id = '.$record_id);
-   $list_new = mysql_fetch_assoc($db_new->result);
+   $list_new = mysqli_fetch_assoc($db_new->result);
    //Lisr Danh muc
    $sql = '1';
    $menu = new menu();
    $listAll = $menu->getAllChild("post_category","pcat_id","pcat_parent_id","0",$sql . " AND lang_id = " . $lang_id . $sqlcategory,"pcat_id,pcat_name,pcat_order,pcat_type,pcat_parent_id,pcat_has_child","pcat_order ASC, pcat_name ASC","pcat_has_child");
-   
-   
-     
+
+
+
     /*
 	Call class form:
 	1). Ten truong
-	2). Ten form 
+	2). Ten form
 	3). Kieu du lieu , 0 : string , 1 : kieu int, 2 : kieu email, 3 : kieu double, 4 : kieu hash password
 	4). Noi luu giu data  0 : post(sẽ tìm trong form ở dưới có cotrol nào có name đc khai báo ở (2)), 1 : variable (sẽ tìm những biến nào có tên đã đc khai báo ở (2) )
 	5). Gia tri mac dinh, neu require thi phai lon hon hoac bang default
@@ -36,31 +36,31 @@
 	8). Chi co duy nhat trong database (0: cho phép trùng ; 1: ko cho phép)
 	9). Loi dua ra man hinh neu co duplicate
 	*/
-   $post_time = time();  
-   //tạo mới class generate_form 
+   $post_time = time();
+   //tạo mới class generate_form
    $myform = new generate_form();
-   
-   $myform->add("post_pcat_id","post_pcat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,""); 
+
+   $myform->add("post_pcat_id","post_pcat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,"");
    $myform->add("post_title", "post_title", 0, 0, "", 1, "Bạn chưa nhập tiêu đề bài viết", 0, "");
    $myform->add("post_description","post_description", 0, 0,"", 0, "", 0, "");
    $myform->add("post_content", "post_content", 0, 0, "", 0, "",0, "");
    $myform->add("post_time","post_time", 0, 1,"", 0, "", 0, "");
    $myform->add("post_active","post_active",1,0,0,0,"",0,"");
-   
+
    $myform->add("meta_title","meta_title",0,0,"",0,"",0,"");
    $myform->add("meta_description","meta_description",0,0,"",0,"",0,"");
    $myform->add("meta_keywords","meta_keywords",0,0,"",0,"",0,"");
    $myform->add("post_tags","post_tags", 0, 0,"", 0, "", 0, "");
    $myform->addTable('posts');
 
-   $action			= getValue("action", "str", "POST", ""); 
+   $action			= getValue("action", "str", "POST", "");
    if($action == "execute"){
-   	$fs_errorMsg .= $myform->checkdata();      
+   	$fs_errorMsg .= $myform->checkdata();
       if($fs_errorMsg == ""){
          $upload		= new upload("post_picture", $imgpath, $fs_extension, $fs_filesize);
-         
+
          $filename	= $upload->file_name;
-         
+
          if($filename != ""){
       		$myform->add("post_picture","filename",0,1,0,0);
       		foreach($arr_resize as $type => $arr){
@@ -69,9 +69,9 @@
    		}else{
    		   $fs_errorMsg .= "Bạn chưa chọn ảnh đại diện cho bài viết ! </br>";
    		}
-        
+
          $fs_errorMsg .= $upload->show_warning_error();
-         	     
+
          if($fs_errorMsg == ""){
          	$myform->removeHTML(0);
             $db_insert = new db_execute_return();
@@ -110,7 +110,7 @@ $fs_errorMsg .= $myform->strErrorField;
 	<p align="center" style="padding-left:10px;">
 	<?
 	$form = new form();
-  
+
 	$form->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
    $form->create_table();
 	?>
@@ -121,7 +121,7 @@ $fs_errorMsg .= $myform->strErrorField;
    <?=$form->text("Tiêu đề bài viết", "post_title", "post_title", $list_new['gen_title'], "Tiêu đề", 1, 250, "", 255, "", "", "")?>
    <?=$form->textarea("Mô tả","post_description","post_description",removeHTML($list_new['gen_teaser']),"Mô tả",0,255,100,"","","")?>
    <?=$form->getFile("Ảnh đại diện", "post_picture", "post_picture", "Chọn hình ảnh", 1, 40, "", "")?>
-   
+
    <?=$form->text("Title", "meta_title", "meta_title", $list_new['gen_title'], "Title", 0, 450, 24, 255, "", "", "")?>
    <?=$form->text("Description", "meta_description", "meta_description", removeHTML($list_new['gen_teaser']), "Description", 0, 450, 24, 255, "", "", "")?>
    <?=$form->text("Keywords", "meta_keywords", "meta_keywords", $meta_keywords, "Keywords", 0, 450,24, 255, "", "", "")?>

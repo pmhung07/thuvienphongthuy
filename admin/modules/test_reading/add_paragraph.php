@@ -19,9 +19,9 @@ Call class form:
 9). Loi dua ra man hinh neu co duplicate
 */
 
-//câu lệnh select dữ liêu										  
+//câu lệnh select dữ liêu
 $db_listing = new db_query("SELECT * FROM  test_content WHERE tec_typ_id = ".$record_id." ORDER BY tec_order");
-$total_row = mysql_num_rows($db_listing->result);
+$total_row = mysqli_num_rows($db_listing->result);
 
 $myform = new generate_form();
 $myform->add("tec_name", "tec_name", 0, 0, "", 1, "Bạn chưa nhập tiêu đề đoạn văn", 0, "");
@@ -41,7 +41,7 @@ if($action == "execute"){
       $myform->removeHTML(0);
 		$db_insert		= new db_execute($myform->generate_insert_SQL());
 		redirect($_SERVER['REQUEST_URI']);
-      }	
+      }
 	}else{
       echo("<script>alert('Chỉ được thêm 5 đoạn văn trong phần Reading')</script>");
       redirect($_SERVER['REQUEST_URI']);
@@ -60,8 +60,8 @@ margin:5px;
 }
 </style>
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 ?>
@@ -88,7 +88,7 @@ $fs_errorMsg .= $myform->strErrorField;
 	$form->close_form();
 	unset($form);
 	?>
-	
+
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<div style="padding-left:3px; padding-right:3px;padding-top: 30px;">
 	<table cellpadding="5" cellspacing="0" width="100%" style="border-collapse:collapse;" bordercolor="#CCCCCC" border="1">
@@ -107,7 +107,7 @@ $fs_errorMsg .= $myform->strErrorField;
 		?>
 		<?
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){
+		while($row = mysqli_fetch_assoc($db_picture->result)){
 			$i++;
 		?>
 			<tr <?=$fs_change_bg?>>
@@ -120,7 +120,7 @@ $fs_errorMsg .= $myform->strErrorField;
             </td>
             <td width="50" align="center"><?=$row["tec_order"]?></td>
 				<td align="center"><a href="edit_paragraph.php?record_id=<?=$row["tec_id"]?>&tec_typ_id=<?=$record_id?>&url=<?=base64_encode($_SERVER['REQUEST_URI'])?>" href="#" class="edit"><img border="0" src="<?=$fs_imagepath?>edit.gif"/></a></td>
-  		      <td align="center"><img src="<?=$fs_imagepath?>delete.gif" alt="DELETE" border="0" onClick="if (confirm('Are you sure to delete?')){ window.location.href='del_paragraph.php?record_id=<?=$row["tec_id"]?>&returnurl=<?=base64_encode(getURL())?>'}" style="cursor:pointer"></td>   
+  		      <td align="center"><img src="<?=$fs_imagepath?>delete.gif" alt="DELETE" border="0" onClick="if (confirm('Are you sure to delete?')){ window.location.href='del_paragraph.php?record_id=<?=$row["tec_id"]?>&returnurl=<?=base64_encode(getURL())?>'}" style="cursor:pointer"></td>
           </tr>
 		<?
 		}

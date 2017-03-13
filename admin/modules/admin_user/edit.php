@@ -48,8 +48,8 @@ if ($Action =='update')
 			$module_list  			= getValue("mod_id","arr","POST","");
 			$user_lang_id_list  	= getValue("user_lang_id","arr","POST","");
 			$arelate_select  		= getValue("arelate_select","arr","POST","");
-			
-			$db_delete = new db_execute("DELETE FROM admin_user_right WHERE adu_admin_id =" . $iAdm);		
+
+			$db_delete = new db_execute("DELETE FROM admin_user_right WHERE adu_admin_id =" . $iAdm);
 			unset($db_delete);
 			if(isset($module_list[0])){
 				for ($i=0; $i< count($module_list); $i++){
@@ -58,7 +58,7 @@ if ($Action =='update')
 					unset($db_ex);
 				}
 			}
-			$db_delete = new db_execute("DELETE FROM admin_user_language WHERE aul_admin_id =" . $iAdm);		
+			$db_delete = new db_execute("DELETE FROM admin_user_language WHERE aul_admin_id =" . $iAdm);
 			unset($db_delete);
 			if(isset($user_lang_id_list[0])){
 				for ($i=0; $i< count($user_lang_id_list); $i++){
@@ -94,10 +94,10 @@ if ($Action =='update_password')
 //Select access module
 $acess_module			= "";
 $arrayAddEdit 			= array();
-$db_access = new db_query("SELECT * 
+$db_access = new db_query("SELECT *
 									FROM admin_user, admin_user_right, modules
 									WHERE adm_id = adu_admin_id AND mod_id = adu_admin_module_id AND adm_id =" . $iAdm);
-while ($row_access = mysql_fetch_array($db_access->result)){
+while ($row_access = mysqli_fetch_array($db_access->result)){
 	$acess_module 			.= "[" . $row_access['mod_id'] . "]";
 	$arrayAddEdit[$row_access['mod_id']] = array($row_access["adu_add"],$row_access["adu_edit"],$row_access["adu_delete"]);
 }
@@ -110,14 +110,14 @@ $access_language="";
 $db_access = new db_query("SELECT *
 										FROM admin_user, admin_user_language, languages
 										WHERE adm_id = aul_admin_id AND languages.lang_id = aul_lang_id AND adm_id =" . $iAdm);
-while($row_access = mysql_fetch_array($db_access->result)) $access_language .="[" . $row_access['lang_id'] . "]";
+while($row_access = mysqli_fetch_array($db_access->result)) $access_language .="[" . $row_access['lang_id'] . "]";
 unset($row_access);
 
 //Check user exist or not
 $db_admin_sel = new db_query("SELECT *
 										  FROM admin_user
 										  WHERE adm_id = " . $iAdm);
-$db_getallmodule = new db_query("SELECT * 
+$db_getallmodule = new db_query("SELECT *
 												FROM modules
 												ORDER BY mod_order DESC");
 
@@ -143,38 +143,38 @@ $db_getallmodule = new db_query("SELECT *
 			</tr>
 			<tr>
 				<td>
-						<? $row = mysql_fetch_array($db_admin_sel->result); ?>
+						<? $row = mysqli_fetch_array($db_admin_sel->result); ?>
 						<form ACTION="<?=$ff_action;?>" METHOD="POST" name="edit_user">
 								<table align="center" cellpadding="4" cellspacing="0" border="0">
-									<tr class="bgTableBorder"> 
+									<tr class="bgTableBorder">
 										<td class="textBold" colspan="2" align="center"></td>
 									</tr>
-									<tr> 
+									<tr>
 										<td align="right" nowrap="nowrap" class="textBold"><?=translate_text("Login name")?> :</td>
 										<td class="textBold">
 											<?=$row['adm_loginname'];?>
 										</td>
 									</tr>
-									<tr <?=$fs_change_bg?>> 
+									<tr <?=$fs_change_bg?>>
 										<td align="right" valign="middle" nowrap class="textBold"><?=translate_text("Full name")?> :</td>
 										<td class="textBold">
-										<input type="text" name="adm_name" id="adm_name" value="<?=$row["adm_name"]?>" size="50" maxlength="50" class="form"> 
+										<input type="text" name="adm_name" id="adm_name" value="<?=$row["adm_name"]?>" size="50" maxlength="50" class="form">
 										</td>
 									</tr>
-									<tr <?=$fs_change_bg?>> 
+									<tr <?=$fs_change_bg?>>
 										<td align="right" valign="middle" nowrap class="textBold"><?=translate_text("Phone")?> :</td>
 										<td class="textBold">
-										<input type="text" name="adm_phone" id="adm_phone" value="<?=$row["adm_phone"]?>" size="50" maxlength="50" class="form"> 
+										<input type="text" name="adm_phone" id="adm_phone" value="<?=$row["adm_phone"]?>" size="50" maxlength="50" class="form">
 										</td>
 									</tr>
-									<tr <?=$fs_change_bg?>> 
+									<tr <?=$fs_change_bg?>>
 									<td align="right" valign="middle" nowrap class="textBold"><?=translate_text("Email")?> :</td>
 									<td> <input type="text" name="adm_email" id="adm_email" value="<?=$row["adm_email"]?>" size="50" maxlength="50" class="form">
 									</td>
 									</tr>
-									<tr <?=$fs_change_bg?>> 
+									<tr <?=$fs_change_bg?>>
 									<td align="right" valign="middle" nowrap class="textBold"><?=translate_text("Right module")?> :</td>
-									<td> 
+									<td>
 									<table cellpadding="2" cellspacing="0" style="border-collapse:collapse" border="1" bordercolor="#DDF8CC">
 										<tr bgcolor="#E0EAF3" height="30">
 											<td class="textBold"><?=translate_text("select")?></td>
@@ -184,7 +184,7 @@ $db_getallmodule = new db_query("SELECT *
 											<td class="textBold"><?=translate_text("delete")?></td>
 										</tr>
 										<?
-										while ($mod=mysql_fetch_array($db_getallmodule->result)){
+										while ($mod=mysqli_fetch_array($db_getallmodule->result)){
 											if(file_exists("../../modules/" . $mod["mod_path"] . "/inc_security.php")===true){
 											?>
 												<tr>
@@ -202,11 +202,11 @@ $db_getallmodule = new db_query("SELECT *
 									</table>
 									</td>
 									</tr>
-									 <tr <?=$fs_change_bg?>> 
+									 <tr <?=$fs_change_bg?>>
 										<td align="right" valign="middle" nowrap class="textBold"><?=translate_text("Language")?> :</td>
 										<td> <input type="hidden" name="adm_edit_all" <? if($row["adm_edit_all"]==1) echo 'checked="checked"';?> value="1" >
 											<?
-											$db_getall_languages = new db_query("SELECT * 
+											$db_getall_languages = new db_query("SELECT *
 																				 FROM languages
 																				 ORDER BY lang_id ASC");
 											$cha_type="";
@@ -214,7 +214,7 @@ $db_getallmodule = new db_query("SELECT *
 											<table cellpadding="2" cellspacing="0">
 												<tr>
 												<?
-												while ($lan=mysql_fetch_array($db_getall_languages->result)){
+												while ($lan=mysqli_fetch_array($db_getall_languages->result)){
 												?>
 													<td><input type="checkbox" name="user_lang_id[]" id="user_lang_id" value="<?=$lan['lang_id'];?>" <? if (strpos($access_language, "[" . $lan['lang_id'] . "]") !== false) {?> checked="checked"<? } ?>></td>
 													<td class="textBold"><?=$lan['lang_name'];?></td>
@@ -226,9 +226,9 @@ $db_getallmodule = new db_query("SELECT *
 											</table>
 										</td>
 									 </tr>
-									 <tr <?=$fs_change_bg?>> 
-										<td align="right" valign="middle" nowrap class="textBold"><?=translate_text("all_category")?>:</td> 
-										<td class="textBold"> 
+									 <tr <?=$fs_change_bg?>>
+										<td align="right" valign="middle" nowrap class="textBold"><?=translate_text("all_category")?>:</td>
+										<td class="textBold">
 											<input type="checkbox" name="adm_all_category" onclick="checkshowlistcat()" id="adm_all_category"  <? if($row["adm_all_category"]==1) echo ' checked="checked"';?> value="1">
 											<script language="javascript">
 												function checkshowlistcat(){
@@ -242,15 +242,15 @@ $db_getallmodule = new db_query("SELECT *
 										</td>
 									</tr>
 									<tbody id="showlistcategory" <? if($row["adm_all_category"]==1) echo 'style="display:none"';?> >
-									<tr <?=$fs_change_bg?>> 
-										<td align="right" valign="middle" nowrap class="textBold" valign="top"><?=translate_text("Select category")?>:</td> 
+									<tr <?=$fs_change_bg?>>
+										<td align="right" valign="middle" nowrap class="textBold" valign="top"><?=translate_text("Select category")?>:</td>
 										<td class="textBold">
 											<?
 											$db_category = new db_query("SELECT cat_id,cat_name FROM categories_multi WHERE cat_parent_id = 0");
 											?>
 											<ul>
 												<?
-												while($cat = mysql_fetch_assoc($db_category->result)){
+												while($cat = mysqli_fetch_assoc($db_category->result)){
 												?>
 												<li><input type="checkbox" name="arelate_select[]" <? if(strpos($row["adm_access_category"],"[" . $cat["cat_id"]  . "]")!==false) echo ' checked="checked"'?> value="<?=$cat["cat_id"]?>" /> <?=$cat["cat_name"]?></li>
 												<?
@@ -260,7 +260,7 @@ $db_getallmodule = new db_query("SELECT *
 										</td>
 									</tr>
 									</tbody>
-									<tr> 
+									<tr>
 										<td nowrap align="right"></td>
 										<td>
 											<input type="button" class="form" onClick="document.edit_user.submit();" value="<?=translate_text("save_change")?>">
@@ -283,22 +283,22 @@ $db_getallmodule = new db_query("SELECT *
 									<?
 									}
 									?>
-									<tr> 
+									<tr>
 										<td align="right" nowrap="nowrap" class="textBold"><?=translate_text("New password")?> :</td>
 										<td>
 											<input type="password" name="adm_password" id="adm_password" size="20" class="form">
 										</td>
 									</tr>
-									<tr> 
+									<tr>
 										<td align="right" nowrap="nowrap" class="textBold"><?=translate_text("Confirm password")?> :</td>
 										<td>
 											<input type="password" name="adm_password_con" id="adm_password_con" size="20" class="form">
 										</td>
 									</tr>
-									<tr> 
+									<tr>
 										<td nowrap align="right"></td>
-										<td> 
-											<input type="submit" class="button" value="<?=translate_text("Change password")?>" > 
+										<td>
+											<input type="submit" class="button" value="<?=translate_text("Change password")?>" >
 										</td>
 									</tr>
 								</table>

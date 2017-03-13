@@ -1,9 +1,9 @@
 <?
 	require_once("inc_security.php");
-    
+
 	//khoi tao object Datagird
 	$list = new fsDataGird($id_field, $name_field, translate_text("Listing"));
-	
+
 	$list->add("ema_title", "Tiêu đề email", "string", 1, 1);
 	$list->add("ema_send","Email gửi","string", 1, 1);
     $list->add("ema_time","Ngày gửi","int",0,0);
@@ -20,8 +20,8 @@
 									    		FROM  "	.	$fs_table	.	"
 										 		WHERE 1 "	.	$list->sqlSearch() . "
 												ORDER BY " . $list->sqlSort() . " ema_id DESC
-					 							" . $list->limit($total->total));	
-	$total_row					=	mysql_num_rows($db_listing->result);
+					 							" . $list->limit($total->total));
+	$total_row					=	mysqli_num_rows($db_listing->result);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -37,8 +37,8 @@
 <div id="listing">
   <?=$list->showHeader($total_row)?>
 	<?
-	$i=0; 
-	while($row  = mysql_fetch_assoc($db_listing->result)){
+	$i=0;
+	while($row  = mysqli_fetch_assoc($db_listing->result)){
 		$i++;
 		?>
   		<?=$list->start_tr($i, $row[$id_field])?>

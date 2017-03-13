@@ -5,32 +5,32 @@
 <div id="quiz_area">
     <div id="quiz_box">
     <?
-    $dbQuiz = new db_query('SELECT * FROM skill_content 
+    $dbQuiz = new db_query('SELECT * FROM skill_content
                                INNER JOIN exercises ON skl_cont_id = exe_skl_cont_id
                                     WHERE skl_cont_les_id = '.$iLes.' AND exe_type = 0 LIMIT 1');
-    $numQuiz = mysql_num_rows($dbQuiz->result);
+    $numQuiz = mysqli_num_rows($dbQuiz->result);
     if($numQuiz > 0){
         $type       = array();
-       	$in         = 0; 
-       	$classinput = ""; 
+       	$in         = 0;
+       	$classinput = "";
        	$numA       = array();
-      
+
         echo '<div class="quiz_cont">';
 
-   	    while($rowQuiz  = mysql_fetch_assoc($dbQuiz->result)){
-   	        $icont      = $rowQuiz['skl_cont_id']; 
+   	    while($rowQuiz  = mysqli_fetch_assoc($dbQuiz->result)){
+   	        $icont      = $rowQuiz['skl_cont_id'];
    			$sqlQues    = new db_query('SELECT * FROM questions WHERE que_exe_id = '.$rowQuiz["exe_id"].' ORDER BY que_type , que_order ASC');
-   			while($rowQues = mysql_fetch_assoc($sqlQues->result)){
+   			while($rowQues = mysqli_fetch_assoc($sqlQues->result)){
                 $in ++;
-                $type[$in] = $rowQues['que_type']; 
-               
+                $type[$in] = $rowQues['que_type'];
+
                 if($arrSkill[0]['skl_les_type'] == 5){
                     $sqlMedia       =    new db_query('SELECT * FROM media_exercies WHERE media_id = '.$rowQues["que_media_id"]);
-                    $rowMedia       =    mysql_fetch_assoc($sqlMedia->result);   
+                    $rowMedia       =    mysqli_fetch_assoc($sqlMedia->result);
                     $mediaUrl       =    'http://'.$base_url.'/data/skill_exercises/';
 
                     if($rowMedia['media_type'] == 2){
-                        echo "<embed width='300' height='24' type='application/x-shockwave-flash' src='http://".$base_url."/mediaplayer/player.swf' flashvars='file=".$mediaUrl.$rowMedia['media_name'] ."'</embed>";            
+                        echo "<embed width='300' height='24' type='application/x-shockwave-flash' src='http://".$base_url."/mediaplayer/player.swf' flashvars='file=".$mediaUrl.$rowMedia['media_name'] ."'</embed>";
                     }
                     else{
                         echo get_media_quiz_skill($rowQues['que_media_id']); //Lay ra media cua cau hoi
@@ -38,23 +38,23 @@
                 }else {
                     echo get_media_quiz_skill($rowQues['que_media_id']); //Lay ra media cua cau hoi
                 }
-               
+
    				if($rowQues['que_type']== 1 ){
                 ?>
                	    <!--  bắt đầu hiển thị nội dung quiz dạng chọn câu đúng -->
                		<div style="width: 100%;overflow: hidden;">
-               		<div class="cau_hoi"><?=$in?>.<?php echo $rowQues['que_content'] =   str_replace ('&&', '<br />', $rowQues['que_content']);  ?></div>	   
+               		<div class="cau_hoi"><?=$in?>.<?php echo $rowQues['que_content'] =   str_replace ('&&', '<br />', $rowQues['que_content']);  ?></div>
            			<?php
        				$sqlAns    = new db_query("SELECT * FROM answers WHERE ans_ques_id = ".$rowQues['que_id']);
        				$arrayT    = array(1=>'A',2=>'B',3=>'C',4=>'D',5=>'E');
        				$iA        = 0; //Chi so cua cau tra loi
-       				while($rowAns = mysql_fetch_assoc($sqlAns->result)){
+       				while($rowAns = mysqli_fetch_assoc($sqlAns->result)){
        				$iA ++;
-           			?>  
-    		               <span class="check_box"><input id="checke<?=$in?>_<?=$iA?>" name="chec_box<?=$in?>" type="radio" value="<?=$rowAns['ans_id']?>" /><label style="cursor: pointer;" for="checke<?=$in?>_<?=$iA?>"><?=$arrayT[$iA]?>. <?=$rowAns['ans_content']?></label></span> 
+           			?>
+    		               <span class="check_box"><input id="checke<?=$in?>_<?=$iA?>" name="chec_box<?=$in?>" type="radio" value="<?=$rowAns['ans_id']?>" /><label style="cursor: pointer;" for="checke<?=$in?>_<?=$iA?>"><?=$arrayT[$iA]?>. <?=$rowAns['ans_content']?></label></span>
     			        <?php } ?>
        		        </div>
-   			    <?php }elseif($rowQues['que_type']== 2 ){ 
+   			    <?php }elseif($rowQues['que_type']== 2 ){
    					$arrayCont  =  getMainC($rowQues['que_content']);
    					$cArrayCont =  count($arrayCont);
    			        ?>
@@ -63,16 +63,16 @@
    			                <?php
    				            $j = 0;
    				            for($i=0;$i<$cArrayCont;$i++){
-   					            if($i%2 != 0) { 
+   					            if($i%2 != 0) {
    						        $j ++;
    						            $classinput .= "#editme".$in."_".$j.",";
 						            echo '<span id="editme'.$in.'_'.$j.'" style="color:red;font-weight: bold;">....................</span>';
 						        }else{
                                     echo $arrayCont[$i];
-   					            }     
+   					            }
    				            }$numA[$in] = $j; ?>
    			            </div>
-   			    <?php }elseif($rowQues['que_type']== 3 ){ 
+   			    <?php }elseif($rowQues['que_type']== 3 ){
    					$arrayAns  = getStringAns($rowQues['que_content']);
    					$result    = count($arrayAns);
    					$rand_keys = array_random($arrayAns, $result); ?>
@@ -91,15 +91,15 @@
    				        $cArrayCont =  count($arrayCont);
    				        $j = 0;
    				        for($i=0;$i<$cArrayCont;$i++){
-   					        if($i%2 != 0) { 
+   					        if($i%2 != 0) {
    						        $j ++;
    						        echo '<span id="droppable'.$in.'_'.$j.'"><span class="dotset">.................</span></span>';
    						    }else{
    							    echo $arrayCont[$i];
-   					        }     
-   				        }$numA[$in] = $j; ?>                                        
+   					        }
+   				        }$numA[$in] = $j; ?>
    			        </div>
-   			<?php } 
+   			<?php }
    	    }   }unset($dbQuiz);
         echo '</div>'; // End quiz cont
    }    ?>
@@ -108,7 +108,7 @@
 
    <div class="pull-left button button-orange show_result">Kiểm tra kết quả</div>
    <div class="clearfix"></div>
-</div><!-- End #quiz_area -->   
+</div><!-- End #quiz_area -->
 
 <script type="text/javascript">
     var urlPoint      =   "";
@@ -132,8 +132,8 @@
                 for($idrag=1;$idrag<=$numA[$i];$idrag++){  ?>
             var valueDropDrag<?=$i?> = "";
             var valuePoint<?=$i?> = [];
-            $( "#draggable<?=$i?>_<?=$idrag?>" ).draggable({ appendTo: "body",helper: "clone" });    
-   
+            $( "#draggable<?=$i?>_<?=$idrag?>" ).draggable({ appendTo: "body",helper: "clone" });
+
    		    $( "#droppable<?=$i?>_<?=$idrag?>" ).droppable({
    			    activeClass: "ui-state-hover",
    			    hoverClass: "ui-state-active",
@@ -162,9 +162,9 @@
                 urlPoint += 'idAns<?=$i?>='+varValue<?=$i?>+'&';
 
             <?php }elseif($type[$i] == 2){ ?>
-                
+
                 urlPoint += 'type<?=$i?>=2&numAns<?=$i?>=<?=$numA[$i]?>&';
-            
+
             <?php for($iThree=1;$iThree<=$numA[$i];$iThree++){ ?>
 
        		    var str<?=$i?>_<?=$iThree?> = $('#editme<?=$i?>_<?=$iThree?>').text().replace(/\s+/g, '_');
@@ -179,7 +179,7 @@
             if(confirm('Xem kết quả bài đã làm?')){
                 $('#quiz_area').load(baseurl+'/ajax/mark_skill_quiz.php?iles=<?=$iLes?>&icont=<?=$icont?>&nAns=<?=$in?>&'+urlPoint);
             }
-           
-       });   
+
+       });
    })
 </script>

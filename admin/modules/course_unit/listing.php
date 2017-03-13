@@ -17,7 +17,7 @@ $arrayParent = array(0=>translate_text("Danh mục cha"));
 $db_parent = new db_query("SELECT cat_type,cat_name,cat_id
                              FROM categories_multi
                              WHERE cat_parent_id = 0" );
-while($row_parent = mysql_fetch_array($db_parent->result)){
+while($row_parent = mysqli_fetch_array($db_parent->result)){
 	$arrayParent[$row_parent["cat_id"]]   = $row_parent["cat_name"];
 }unset($db_parent);
 
@@ -27,7 +27,7 @@ if($iParent>0){
    $db_cateogry = new db_query("SELECT cat_type,cat_name,cat_id
                              FROM categories_multi
                              WHERE cat_parent_id = ".$iParent );
-   while($row = mysql_fetch_array($db_cateogry->result)){
+   while($row = mysqli_fetch_array($db_cateogry->result)){
    	$arrayCate[$row["cat_id"]]   = $row["cat_name"];
    }unset($db_cateogry);
 }
@@ -37,7 +37,7 @@ if($iParent>0){
    $db_courses = new db_query("SELECT cou_id,cou_name FROM categories_multi
                               INNER JOIN courses ON courses.cou_cat_id = categories_multi.cat_id
                               WHERE cou_cat_id = ".$iParent." OR categories_multi.cat_parent_id = ".$iParent);
-   while($row_courses = mysql_fetch_assoc($db_courses->result)){
+   while($row_courses = mysqli_fetch_assoc($db_courses->result)){
       $arrayCourses[$row_courses["cou_id"]] = $row_courses["cou_name"];
    }unset($db_course);
 }
@@ -58,34 +58,34 @@ $list->addSearch("Khóa học","Courses_search","array",$arrayCourses,$iCourses)
    <?=template_top(translate_text("Category listing"))?>
    	<?php echo $list->urlsearch(); ?>
    	<table border="1" cellpadding="3" cellspacing="0" class="table" width="100%" bordercolor="<?=$fs_border?>">
-   		<tr> 
+   		<tr>
    			<td class="bold bg" width="5"><input type="checkbox" id="check_all" onClick="check('1','<?=count($listAll)+1?>')"/></td>
    			<td class="bold bg" ><?=translate_text("name")?></td>
-            <td class="bold bg" align="center" width="400"><?=translate_text("Chuyên mục - Level")?></td>				
-            <td class="bold bg" align="center" width="5"><?=translate_text("Number")?></td>			
+            <td class="bold bg" align="center" width="400"><?=translate_text("Chuyên mục - Level")?></td>
+            <td class="bold bg" align="center" width="5"><?=translate_text("Number")?></td>
    			<td class="bold bg" align="center" width="5"><img src="<?=$fs_imagepath?>copy.gif" border="0"/></td>
    			<td class="bold bg" align="center" width="16"><img src="<?=$fs_imagepath?>edit.png" border="0" width="16"/></td>
    			<td class="bold bg" align="center" width="16"><img src="<?=$fs_imagepath?>delete.gif" border="0"/></td>
    		</tr>
    		<form action="quickedit.php?returnurl=<?=base64_encode(getURL())?>" method="post" name="form_listing" id="form_listing" enctype="multipart/form-data">
-   		<input type="hidden" name="iQuick" value="update" />	
-   		<? 		
+   		<input type="hidden" name="iQuick" value="update" />
+   		<?
          $i=0;
          $j = 0;
-         $m = 0;  
+         $m = 0;
          $n = 0;
          $db_course = new db_query("SELECT cou_id,cou_cat_id,cou_name,cou_lev_id FROM categories_multi
                                     INNER JOIN courses ON courses.cou_cat_id = categories_multi.cat_id
                                     WHERE ".$sql_search." ORDER BY cou_cat_id ASC");
 
-         while($rowCourse = mysql_fetch_array($db_course->result)){
+         while($rowCourse = mysqli_fetch_array($db_course->result)){
          $m++;
          $n++;
          $dlUnut = '';
          $db_unit = new db_query("SELECT com_cou_id,com_name,com_id,com_num_unit,com_active,com_picture,com_content
                   				 	 FROM courses_multi
                   					 WHERE com_cou_id = ".$rowCourse["cou_id"]."
-                                  ORDER BY com_num_unit ASC"); 
+                                  ORDER BY com_num_unit ASC");
          ?>
          <tr <? if($m%2==0) echo ' bgcolor="#FAFAFA"';?>>
             <td></td>
@@ -96,11 +96,11 @@ $list->addSearch("Khóa học","Courses_search","array",$arrayCourses,$iCourses)
             <td colspan="5" style="padding-left: 20px;">
                <?php echo nameCate($rowCourse['cou_cat_id']).'  --  '.nameLevel($rowCourse['cou_lev_id']); ?>
             </td>
-            
+
          </tr>
          <?php
          if($cou_id == $rowCourse['cou_id']){
-            while($rowUnit = mysql_fetch_array($db_unit->result)){
+            while($rowUnit = mysqli_fetch_array($db_unit->result)){
             $j++;
             $n++;
             $dlUnut .= '<tr class="unit"';
@@ -110,7 +110,7 @@ $list->addSearch("Khóa học","Courses_search","array",$arrayCourses,$iCourses)
             $dlUnut .='><input type="checkbox" name="record_id[]" id="record_'.$rowUnit["com_id"].'_'.$n.'" value="'.$rowUnit["com_id"].'"/></td>';
             $dlUnut .= '<td nowrap="nowrap" style="padding-left: 20px;height: 20px;line-height: 20px;">|------ <b>Unit '.$rowUnit["com_num_unit"].' </b> : '.$rowUnit["com_name"].'</td>';
             $dlUnut .= '<td align="">
-                           <textarea style="margin-left: 18px;width: 280px;height: 25px;">'.$rowUnit["com_content"].'</textarea>   
+                           <textarea style="margin-left: 18px;width: 280px;height: 25px;">'.$rowUnit["com_content"].'</textarea>
                            <img style="height:31px" src="'.$imgpath.'small_'.$rowUnit["com_picture"].'" />
                         </td>';
             $dlUnut .= '<td align="center">'.$rowUnit["com_num_unit"].'</td>';
@@ -120,9 +120,9 @@ $list->addSearch("Khóa học","Courses_search","array",$arrayCourses,$iCourses)
             $dlUnut .= '</tr>';
             }
          echo $dlUnut;
-         }   
+         }
          ?>
-         <?php       
+         <?php
          }
          unset($dlUnut);
          unset($db_unit);
@@ -167,6 +167,6 @@ $(document).ready(function() {
       var iCourses		   =	$("#Courses_search").val();
       window.location	=	"listing.php?iCate=" +iCate+"&iParent="+iParent+"&iCourses="+ iCourses;
    });
-}); 
+});
 </script>
 

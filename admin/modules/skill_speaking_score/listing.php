@@ -24,16 +24,16 @@ $list->add("",translate_text("Delete"),"delete");
 //$list->quickEdit = false;
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
-$total			= new db_count("SELECT count(*) AS count FROM learn_speak_result 
+$total			= new db_count("SELECT count(*) AS count FROM learn_speak_result
                                INNER JOIN skill_lesson ON learn_speak_result.lsr_skl_les_id=skill_lesson.skl_les_id
                                WHERE 1".$list->sqlSearch().$sql_filter);
-//câu lệnh select dữ liêu										 
-$db_listing 	= new db_query("SELECT * FROM learn_speak_result 
+//câu lệnh select dữ liêu
+$db_listing 	= new db_query("SELECT * FROM learn_speak_result
                                INNER JOIN skill_lesson ON learn_speak_result.lsr_skl_les_id=skill_lesson.skl_les_id
                                WHERE 1".$list->sqlSearch()
 									   . $list->sqlSort() . $sql_filter . " ORDER BY lsr_id DESC "
                               .	$list->limit($total->total));
-$total_row = mysql_num_rows($db_listing->result);
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -49,24 +49,24 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
       $i++;
    	$str_cate = "";
       //select category
       $db_cate = new db_query('SELECT cat_name,cat_parent_id FROM categories_multi WHERE cat_id = '.$row['skl_les_cat_id']);
-      $row_cate = mysql_fetch_assoc($db_cate->result);
+      $row_cate = mysqli_fetch_assoc($db_cate->result);
       unset($db_cate);
       if($row_cate['cat_parent_id'] == 0){
          $str_cate = $row_cate['cat_name'];
       }else{
          $db_parent = new db_query('SELECT cat_name FROM categories_multi WHERE cat_id = '.$row_cate['cat_parent_id']);
-         $row_parent = mysql_fetch_assoc($db_parent->result);
+         $row_parent = mysqli_fetch_assoc($db_parent->result);
          unset($db_parent);
          $str_cate = $row_parent['cat_name'].'-'.$row_cate['cat_name'];
       }
       //
       $url = gen_sk_les_v2($str_cate,$row['skl_les_id'],$row['skl_les_name']);
-   ?>    
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
       <td align="center" width="200">
          <input style="text-align: center;color: red;font-weight: bold;font-size: 11px;width: 50px;" value="<?=$row['lsr_use_id']?>" type="text" />
@@ -82,7 +82,7 @@ $total_row = mysql_num_rows($db_listing->result);
       </td>
       <td width="50" align="center">
          <?php if ($row['lsr_smail'] == 0) { ?>
-         
+
          <button class="bt_send_mail" type="button" style="width: 76px;background: #EEE;text-align: center;font-weight: bold;color: red;cursor: pointer;" name="<?=$row['lsr_id']?>">Send Mail</button>
          <?php } ?>
       </td>
@@ -94,7 +94,7 @@ $total_row = mysql_num_rows($db_listing->result);
       <?//=$list->showEdit($row['lsr_id'])?>
       <?=$list->showDelete($row['lsr_id'])?>
       <?=$list->end_tr()?>
-   <?}?>  
+   <?}?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>
@@ -136,7 +136,7 @@ function gen_sk_les_v2($nCate,$iLes,$nLes){
 			url:'ajax_send_mail_score.php',
 			success:function(data){
 				if(data.err == 1){
-				   alert(data.msg);	
+				   alert(data.msg);
 				   window.location.reload();
 				}else{
 					alert(data.err);
@@ -144,18 +144,18 @@ function gen_sk_les_v2($nCate,$iLes,$nLes){
 			 }
 		  });
 	  })
-     
+
       $('#iParent').change(function (){
          var iParent		   =	$("#iParent").val();
          window.location	=	"listing.php?iParent=" +iParent;
       });
-      
+
       $('#iCat').change(function (){
          var iParent		   =	$("#iParent").val();
          var iCat		      =	$("#iCat").val();
          window.location	=	"listing.php?iParent="+ iParent +"&iCat="+ iCat;
       });
    });
-   
-   
+
+
 </script>

@@ -9,11 +9,11 @@ checkAddEdit("add");
    $listing				= "listing.php";
    $after_save_data	= getValue("after_save_data", "str", "POST", "add.php");
    $fs_redirect		= $after_save_data;
-   $typ_type         = 3;     
-   $iTyp             = getValue("iTyp","int","GET",0);  
+   $typ_type         = 3;
+   $iTyp             = getValue("iTyp","int","GET",0);
    if($iTyp > 0){
       $db_check_type = new db_query("SELECT typ_id FROM type_test WHERE typ_test_id = ". $iTyp ." AND typ_type = 3");
-      $total_row = mysql_num_rows($db_check_type->result);
+      $total_row = mysqli_num_rows($db_check_type->result);
       if($total_row > 0){
          echo("<script>alert('Đã tồn tại phần thi Listening của bài thi này!Hãy họn đề thi khác!');</script>");
          redirect("add.php");
@@ -23,20 +23,20 @@ checkAddEdit("add");
    $arr_get_typ = array();
    $db_select_test = new db_query("SELECT * FROM test STRAIGHT_JOIN type_test ON test_id = typ_test_id WHERE typ_type = 3 GROUP BY typ_test_id ");
    $i = 0;
-   while($row_a = mysql_fetch_assoc($db_select_test->result)){
+   while($row_a = mysqli_fetch_assoc($db_select_test->result)){
       $arr_get_typ[$i] = $row_a["typ_test_id"];
       $i++;
    }
 
    //Get Test
    $db_select_test = new db_query("SELECT test_id,test_name FROM test");
-   while($row = mysql_fetch_assoc($db_select_test->result)){
+   while($row = mysqli_fetch_assoc($db_select_test->result)){
       $arr_get_test[$row["test_id"]] = $row["test_name"];
    }unset($db_select_test);
     /*
 	Call class form:
 	1). Ten truong
-	2). Ten form 
+	2). Ten form
 	3). Kieu du lieu , 0 : string , 1 : kieu int, 2 : kieu email, 3 : kieu double, 4 : kieu hash password
 	4). Noi luu giu data  0 : post(sẽ tìm trong form ở dưới có cotrol nào có name đc khai báo ở (2)), 1 : variable (sẽ tìm những biến nào có tên đã đc khai báo ở (2) )
 	5). Gia tri mac dinh, neu require thi phai lon hon hoac bang default
@@ -45,32 +45,32 @@ checkAddEdit("add");
 	8). Chi co duy nhat trong database (0: cho phép trùng ; 1: ko cho phép)
 	9). Loi dua ra man hinh neu co duplicate
 	*/
-   $test_date = time();  
-   //tạo mới class generate_form 
-   $myform = new generate_form();  
+   $test_date = time();
+   //tạo mới class generate_form
+   $myform = new generate_form();
    $myform->add("typ_test_id", "typ_test_id", 1, 0, 0, 1, "Bạn chưa chọn đề thi", 0, "");
    $myform->add("typ_name", "typ_name", 0, 0, "", 1, "Bạn chưa nhập tên phần thi", 0, "");
-   //$myform->add("typ_direct", "typ_direct", 0, 0, "",1, "Bạn chưa nhập hướng dẫn thi", 0, "");   
-   $myform->add("typ_type", "typ_type", 1, 1, 3, 0, "", 0, "");   
+   //$myform->add("typ_direct", "typ_direct", 0, 0, "",1, "Bạn chưa nhập hướng dẫn thi", 0, "");
+   $myform->add("typ_type", "typ_type", 1, 1, 3, 0, "", 0, "");
 	$myform->addTable($fs_table);
    //Get action variable for add new data
-   $action			= getValue("action", "str", "POST", ""); 
+   $action			= getValue("action", "str", "POST", "");
    //Check $action for insert new data
-   if($action == "execute"){      
+   if($action == "execute"){
       if($fs_errorMsg == ""){
          /*
    		$upload		= new upload("typ_direct_audio", $data_path, $fs_extension, $fs_filesize);
    		$filename	= $upload->file_name;
          if($filename != ""){
       		$myform->add("typ_direct_audio","filename",0,1,0,0);
-   		}	
+   		}
       	$fs_errorMsg .= $upload->show_warning_error();
          */
       	//kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database
          if($fs_errorMsg == ""){
          	//Insert to database
-         	$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi 
-            //thực hiện insert 
+         	$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi
+            //thực hiện insert
          	$db_insert = new db_execute($myform->generate_insert_SQL());
          	//unset biến để giải phóng bộ nhớ.
             unset($db_insert);
@@ -79,7 +79,7 @@ checkAddEdit("add");
          	redirect($fs_redirect);
          }
       }//End if($fs_errorMsg == "")
-   	
+
    }//End if($action == "insert")
    $myform->addFormname("add_new");
    $myform->evaluate();
@@ -90,9 +90,9 @@ checkAddEdit("add");
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
 <?
-// kiểm tra lỗi và alert ra màn hinh (check ngay tại máy của minh) 
+// kiểm tra lỗi và alert ra màn hinh (check ngay tại máy của minh)
 $myform->checkjavascript();
-//Chú ý : khi check cần có thêm phần check PHP ( bảo mật, thực thi tai sver). t 
+//Chú ý : khi check cần có thêm phần check PHP ( bảo mật, thực thi tai sver). t
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 //giữ lại giá trị các control đã nhập nếu bị thông báo lỗi
 
@@ -106,7 +106,7 @@ $fs_errorMsg .= $myform->strErrorField;
 	<p align="center" style="padding-left:10px;">
 	<?
 	$form = new form();
-  
+
 	$form->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
    $form->create_table();
 	?>
@@ -119,7 +119,7 @@ $fs_errorMsg .= $myform->strErrorField;
          <select class="form_control" style="width: 186px;" name="typ_test_id" id="typ_test_id">
             <option value=""> - Chọn đề thi - </option>
             <?foreach($arr_get_test as $id=>$name){
-              if(in_array($id,$arr_get_typ)) continue;       
+              if(in_array($id,$arr_get_typ)) continue;
             ?>
       			<option value="<?=$id?>"<?=($id == $iTyp) ? "selected='selected'" : ""?>><?=$name?></option>
       		<?}?>
@@ -148,5 +148,5 @@ $(document).ready(function() {
       var iTyp		   =	$("#typ_test_id").val();
       window.location	=	"add.php?iTyp=" +iTyp;
    });
-}); 
+});
 </script>

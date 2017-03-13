@@ -20,19 +20,19 @@ checkAddEdit("add");
    $array_unit = array();
     echo $com_cou_id;
    if($com_cou_id > 0){
-      $unit_select = new db_query("SELECT com_id,com_name FROM courses_multi 
+      $unit_select = new db_query("SELECT com_id,com_name FROM courses_multi
                                     WHERE com_cou_id = " .$com_cou_id . " AND com_active = 1");
-      while($row_unit = mysql_fetch_assoc($unit_select->result)){
+      while($row_unit = mysqli_fetch_assoc($unit_select->result)){
          $array_unit[$row_unit["com_id"]] = $row_unit["com_name"];
-      }unset($unit_select);                              
+      }unset($unit_select);
    }
-	
+
    $arr_check = array();
    if ($com_c_id != "") $db_select_unit = new db_query("SELECT * FROM courses_multi WHERE com_cou_id	 = ".$com_c_id);
     //Call Class generate_form();
- 
+
 	if($cat_parent_id != "") $sqlCourse = new db_query("SELECT cou_id,cou_name,cou_lev_id FROM courses WHERE cou_cat_id = ".$cat_parent_id );
-    
+
     $myform = new generate_form();
 	//Loại bỏ chuc nang thay the Tag Html
 	$myform->removeHTML(0);
@@ -58,9 +58,9 @@ checkAddEdit("add");
             }
             $fs_errorMsg .= $upload->show_warning_error();
             if($fs_errorMsg == ""){
-    			//Insert to database         
-    			$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi 
-                //thực hiện insert 
+    			//Insert to database
+    			$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi
+                //thực hiện insert
     			$db_insert = new db_execute($myform->generate_insert_SQL());
     			//unset biến để giải phóng bộ nhớ.
                 unset($db_insert);
@@ -101,7 +101,7 @@ checkAddEdit("add");
             <select name="com_cou_id" id="com_cou_id"  class="form_control" style="width: 200px;" onChange="window.location.href='add.php?com_cou_id='+this.value+'&cat_parent_id=<?php echo $cat_parent_id; ?>'">
 				<option value="-1">- <?=translate_text("Chọn Course")?> - </option>
 				<?
-				while($row = mysql_fetch_assoc($sqlCourse->result)){
+				while($row = mysqli_fetch_assoc($sqlCourse->result)){
 				?>
 				<option value="<?=$row['cou_id']?>" <?php if($row['cou_id'] == $com_c_id ) echo "selected='selected'" ;   ?>  ><? echo nameLevel($row['cou_lev_id']).' -- '.$row['cou_name']?></option>
 				<? } ?>
@@ -121,7 +121,7 @@ checkAddEdit("add");
             </select>
         </td>
     </tr>
-    
+
     <? //media type = 1 (Ảnh) , 2 (Video) , 3 (Flash) ?>
     <?=$form->radio("Chọn kiểu media","learn_wr_mtype","learn_wr_mtype",1,$learn_wr_mtype,"Ảnh",0,"","")?>
     <?=$form->radio("","learn_wr_mtype","learn_wr_mtype",2,$learn_wr_mtype,"Video - Audio",0,"","")?>

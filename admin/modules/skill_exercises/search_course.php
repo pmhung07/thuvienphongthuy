@@ -14,9 +14,9 @@ include ("inc_security.php");
       $check = getValue("check","str","POST","",1,1);
       $record_id = getValue("record_id","str","POST","",1,1);
    	$db_search = new db_query("SELECT * FROM skill_lesson
-   										WHERE skl_les_active = 1 AND skl_les_name LIKE '%" . str_replace(" ","%",$keyword) . "%' 
+   										WHERE skl_les_active = 1 AND skl_les_name LIKE '%" . str_replace(" ","%",$keyword) . "%'
                                                       OR skl_les_id LIKE '" . str_replace(" ","%",$keyword) . "' LIMIT 15");
-   	
+
    	?>
    	<table cellpadding="5" cellspacing="0" style="border-collapse:collapse" border="1" bordercolor="#f2f2f2" bgcolor="#FFFFCC">
    		<tr>
@@ -24,8 +24,8 @@ include ("inc_security.php");
    			<th>Thông tin khóa học</th>
    			<th>Chọn</th>
    		</tr>
-      	<?while($row = mysql_fetch_assoc($db_search->result)){
-      	  $info = removeHTML($row["skl_les_desc"]);  
+      	<?while($row = mysqli_fetch_assoc($db_search->result)){
+      	  $info = removeHTML($row["skl_les_desc"]);
          ?>
    		<tr>
    			<td><?=$row["skl_les_name"]?></td>
@@ -35,7 +35,7 @@ include ("inc_security.php");
                <a href="add.php?iskill_les=<?=$row["skl_les_id"]?>">Chọn</a>
             <?}else{?>
                <a href="edit.php?iskill_les=<?=$row["skl_les_id"]?>&record_id=<?=$record_id?>">Chọn</a>
-            <?}?>   
+            <?}?>
             </td>
    		</tr>
       	<?}?>

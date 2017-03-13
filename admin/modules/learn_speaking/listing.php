@@ -3,7 +3,7 @@ require_once("inc_security.php");
 $name_field = "Danh sách khóa học luyện thi";
 $list = new fsDataGird($id_field,$name_field,translate_text("Listing"));
 $iParent = getValue("iParent","int","GET","");
-$iCate   = getValue("iCate","int","GET",""); 
+$iCate   = getValue("iCate","int","GET","");
 $iCourse = getValue("iCourse","int","GET","");
 $cou_id  = getValue("cou_id");
 
@@ -17,7 +17,7 @@ $arrayParent = array(0=>translate_text("Danh mục cha"));
 
 $db_Parent = new db_query("SELECT cat_type,cat_name,cat_id FROM categories_multi
                              WHERE cat_parent_id = 0" );
-while($row_parent = mysql_fetch_array($db_Parent->result)){
+while($row_parent = mysqli_fetch_array($db_Parent->result)){
 	$arrayParent[$row_parent["cat_id"]] = $row_parent["cat_name"];
 }unset($db_Parent);
 
@@ -27,7 +27,7 @@ if($iParent>0){
    $db_cateogry = new db_query("SELECT cat_type,cat_name,cat_id
                              FROM categories_multi
                              WHERE cat_parent_id = ".$iParent );
-   while($row = mysql_fetch_array($db_cateogry->result)){
+   while($row = mysqli_fetch_array($db_cateogry->result)){
    	$arrayCate[$row["cat_id"]]   = $row["cat_name"];
    }unset($db_cateogry);
 }
@@ -39,7 +39,7 @@ if($iParent>0){
    $db_Course = new db_query("SELECT cou_id,cou_name FROM categories_multi
                               INNER JOIN courses ON courses.cou_cat_id = categories_multi.cat_id
                               WHERE cou_cat_id = ".$iParent." OR categories_multi.cat_parent_id = ".$iParent);
-   while($row = mysql_fetch_array($db_Course->result)){
+   while($row = mysqli_fetch_array($db_Course->result)){
       $arrayCourse[$row["cou_id"]] = $row["cou_name"];
    }unset($db_Course);
 }
@@ -63,35 +63,35 @@ $list->addSearch(translate_text("Chọn Course"),"Course_search","array",$arrayC
 <div id="listing">
     <?php echo $list->urlsearch(); ?>
 	<table border="1" cellpadding="3" cellspacing="0" class="table" width="100%" bordercolor="<?=$fs_border?>">
-   	<tr> 
+   	<tr>
    		<td class="bold bg" width="5">STT</td>
    		<td class="bold bg" ><?=translate_text("name")?></td>
             <td class="bold bg" align="center" width="100"><?=translate_text("Xem Chi tiết")?></td>
-            <td class="bold bg" align="center" width="180"><?=translate_text("Chuyên mục")?></td>				
-            <td class="bold bg" align="center" width="5"><?=translate_text("Number")?></td>	
+            <td class="bold bg" align="center" width="180"><?=translate_text("Chuyên mục")?></td>
+            <td class="bold bg" align="center" width="5"><?=translate_text("Number")?></td>
             <td class="bold bg" align="center" width="30" >Sửa</td>
-            <td class="bold bg" align="center" width="30" >Xóa</td>		
+            <td class="bold bg" align="center" width="30" >Xóa</td>
    	</tr>
 		<form action="quickedit.php?returnurl=<?=base64_encode(getURL())?>" method="post" name="form_listing" id="form_listing" enctype="multipart/form-data">
-		<input type="hidden" name="iQuick" value="update" />	
-		   <? 
+		<input type="hidden" name="iQuick" value="update" />
+		   <?
          $i=0;
          $j = 0;
          $m = 0;
-         $n = 0;   
+         $n = 0;
          $db_course = new db_query("SELECT cou_id,cou_cat_id,cou_name FROM categories_multi
                                     INNER JOIN courses ON courses.cou_cat_id = categories_multi.cat_id
                                     WHERE ".$sql_search." ORDER BY cou_cat_id ASC");
-         while($rowCourse = mysql_fetch_array($db_course->result)){
+         while($rowCourse = mysqli_fetch_array($db_course->result)){
          $i++;
          $m++;
          $n++;
          $dlUnut = '';
          $db_unit = new db_query("SELECT com_cou_id,com_name,com_id,com_num_unit,com_active,learn_sp_id
    					  	             FROM courses_multi,learn_speaking
-   						             WHERE courses_multi.com_id = learn_speaking.learn_unit_id 
+   						             WHERE courses_multi.com_id = learn_speaking.learn_unit_id
                                   AND courses_multi.com_cou_id = ".$rowCourse["cou_id"]."
-                                  ORDER BY com_num_unit ASC"); 
+                                  ORDER BY com_num_unit ASC");
          ?>
             <tr <? if($m%2==0) echo ' bgcolor="#FAFAFA"';?>>
                <td align="center"><?php echo $i ?></td>
@@ -106,13 +106,13 @@ $list->addSearch(translate_text("Chọn Course"),"Course_search","array",$arrayC
             </tr>
             <?php
             if($cou_id == $rowCourse['cou_id']){
-                while($rowUnit = mysql_fetch_array($db_unit->result)){
+                while($rowUnit = mysqli_fetch_array($db_unit->result)){
                $j++;
                $n++;
                $dlUnut .= '<tr';
                if($j%2==0) $dlUnut .= ' bgcolor="#FAFAFA"';
                $dlUnut .= '><td';
-               
+
                $dlUnut .='></td>';
                $dlUnut .= '<td nowrap="nowrap" style="padding-left: 20px;height: 20px;line-height: 20px;">|------ <b style="color:red">Phần Speaking của Unit '.$rowUnit["com_num_unit"].' </b></td>';
                $dlUnut .= '<td align="center"><a title="Xem chi tiết" class="thickbox noborder a_detail" href="listdetail.php?url='.base64_encode(getURL()).'&record_id='.$rowUnit["learn_sp_id"].'&TB_iframe=true&amp;height=450&amp;width=950"">Xem chi tiết</a></td>';
@@ -123,10 +123,10 @@ $list->addSearch(translate_text("Chọn Course"),"Course_search","array",$arrayC
                $dlUnut .= '</tr>';
                }
                echo $dlUnut;
-            }   
+            }
             ?>
-      
-         <?php 
+
+         <?php
          }
          unset($db_unit);
          unset($dlUnut);
@@ -174,5 +174,5 @@ $(document).ready(function() {
       var iCourse		   =	$("#Course_search").val();
       window.location	=	"listing.php?iCate=" +iCate+"&iParent="+iParent+"&iCourse="+ iCourse;
    });
-}); 
+});
 </script>

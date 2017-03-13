@@ -17,16 +17,16 @@ $time_audio_minute_cv = $time_audio_minute * 60;
 $total_audio_time = $time_audio_minute_cv + $time_audio_second;
 //echo $total_audio_time;
 
-$myform = new generate_form();  
+$myform = new generate_form();
 $myform->add("teque_part_time_audio", "total_audio_time", 1, 1, 0, 0, "", 0, "");
 $myform->addTable("test_questions");
 //Get action variable for add new data
-$action	  = getValue("action", "str", "POST", ""); 
+$action	  = getValue("action", "str", "POST", "");
 //Check $action for insert new datac
 
-if($action == "execute"){      
-   if($fs_errorMsg == ""){    	
-   	$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi 
+if($action == "execute"){
+   if($fs_errorMsg == ""){
+   	$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi
       $upload		= new upload("teque_part_audio", $data_path, $fs_extension, $fs_filesize);
       $filename	= $upload->file_name;
       if($filename != ""){
@@ -42,7 +42,7 @@ if($action == "execute"){
       	}
       }
 
-      //thực hiện insert 
+      //thực hiện insert
       $db_ex = new db_execute($myform->generate_update_SQL("teque_id", $iQues));
       unset($db_ex);
    	//redirect("add_exercises.php?iPara=".$iPara."&record_id=".$record_id);
@@ -56,7 +56,7 @@ $fs_errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM test_questions WHERE teque_id =".$iQues);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -106,9 +106,9 @@ if($teque_part_time_audio > 0){
       $form->close_form();
       unset($form);
       ?>
-   </p>   
+   </p>
    <?=template_bottom() ?>
-   
+
    <? /*------------------------------------------------------------------------------------------------*/ ?>
 	<div style="padding-left:3px; padding-right:3px;">
 	<table cellpadding="5" cellspacing="0" width="450px" style="border-collapse:collapse;" bordercolor="#CCCCCC" border="1">
@@ -122,7 +122,7 @@ if($teque_part_time_audio > 0){
 		<?
       $db_picture = new db_query("SELECT * FROM test_questions WHERE  teque_id=".$iQues);
 		$i=0;
-		while($row = mysql_fetch_assoc($db_picture->result)){
+		while($row = mysqli_fetch_assoc($db_picture->result)){
 			$i++;
 		?>
 			<tr <?=$fs_change_bg?>>
@@ -140,6 +140,6 @@ if($teque_part_time_audio > 0){
 	</div>
 <? /*------------------------------------------------------------------------------------------------*/ ?>
 
-   
+
 </body>
 </html>

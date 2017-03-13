@@ -24,27 +24,27 @@ $arrayParent = array(0=>translate_text("Danh mục cha"));
 <? /*---------Body------------*/ ?>
 <div id="listing">
 	<table border="1" cellpadding="3" cellspacing="0" class="table" width="100%" bordercolor="<?=$fs_border?>">
-   	<tr> 
+   	<tr>
    		<td class="bold bg" width="5">STT</td>
-   		<td class="bold bg" ><?=translate_text("Name")?></td>	
-         <td colspan="5" align="center">Thông tin chi tiết</td>			
+   		<td class="bold bg" ><?=translate_text("Name")?></td>
+         <td colspan="5" align="center">Thông tin chi tiết</td>
    	</tr>
 		<form action="quickedit.php?returnurl=<?=base64_encode(getURL())?>" method="post" name="form_listing" id="form_listing" enctype="multipart/form-data">
-		<input type="hidden" name="iQuick" value="update" />	
-		   <? 
+		<input type="hidden" name="iQuick" value="update" />
+		   <?
          $i=0;
          $j = 0;
          $m = 0;
-         $n = 0;   
+         $n = 0;
          $db_course = new db_query("SELECT kcou_id,kcou_title FROM kids_courses ORDER BY kcou_id");
-         while($rowCourse = mysql_fetch_array($db_course->result)){
+         while($rowCourse = mysqli_fetch_array($db_course->result)){
          $i++;
          $m++;
          $n++;
          $dlUnut = '';
          $db_unit = new db_query("SELECT kcou_id,kunit_title,kunit_id
    					  	             FROM kids_units
-                                  WHERE kids_units.kcou_id = ".$rowCourse["kcou_id"]); 
+                                  WHERE kids_units.kcou_id = ".$rowCourse["kcou_id"]);
          ?>
             <tr <? if($m%2==0) echo ' bgcolor="#FAFAFA"';?>>
                <td align="center"><?php echo $i ?></td>
@@ -57,7 +57,7 @@ $arrayParent = array(0=>translate_text("Danh mục cha"));
             </tr>
             <?php
             if($cou_id == $rowCourse['kcou_id']){
-               while($rowUnit = mysql_fetch_array($db_unit->result)){
+               while($rowUnit = mysqli_fetch_array($db_unit->result)){
                $j++;
                $n++;
                $dlUnut .= '<tr';
@@ -73,10 +73,10 @@ $arrayParent = array(0=>translate_text("Danh mục cha"));
                $dlUnut .= '</tr>';
                }
                echo $dlUnut;
-            }   
+            }
             ?>
-      
-         <?php 
+
+         <?php
          }
          unset($db_unit);
          unset($dlUnut);
@@ -124,5 +124,5 @@ $(document).ready(function() {
       var iCourse		   =	$("#Course_search").val();
       window.location	=	"listing.php?iCate=" +iCate+"&iParent="+iParent+"&iCourse="+ iCourse;
    });
-}); 
+});
 </script>

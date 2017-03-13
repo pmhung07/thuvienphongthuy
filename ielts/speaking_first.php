@@ -2,7 +2,7 @@
 <?
    //-----------------------------------------------------------------------------------------------------------------
    //-----------------------------------------------------------------------------------------------------------------
-   $test_id = getValue("test_id","int","GET",0); 
+   $test_id = getValue("test_id","int","GET",0);
    //1.Kiem tra xem co ton tai bai thi nay khong
    //check_isset_ielts($test_id);
    //2.Kiem tra cac truong hop user truy cap bai thi
@@ -23,11 +23,11 @@
    //------------------------------------------------------------------------------------------------------------------
    $order_speak = getValue("order_speak","int","GET",1);
    //echo $_SESSION['order_speak'];
-   $db_select_cont   = new db_query("SELECT * FROM ielt_content INNER JOIN ielt_type ON(iecon_iety_id = iety_id) 
+   $db_select_cont   = new db_query("SELECT * FROM ielt_content INNER JOIN ielt_type ON(iecon_iety_id = iety_id)
                                      WHERE iety_ielt_id = ".$test_id." AND iety_type = 3 AND iecon_order = ".($order_speak)." AND iecon_part_speak = 1");
-   $db_select_count  = new db_query("SELECT * FROM ielt_content INNER JOIN ielt_type ON(iecon_iety_id = iety_id) 
+   $db_select_count  = new db_query("SELECT * FROM ielt_content INNER JOIN ielt_type ON(iecon_iety_id = iety_id)
                                      WHERE iety_ielt_id = ".$test_id." AND iety_type = 3 AND iecon_part_speak = 1");
-   $total_row_cont   = mysql_num_rows($db_select_count->result);
+   $total_row_cont   = mysqli_num_rows($db_select_count->result);
    $_SESSION['row_speak_first'] = $total_row_cont;
    if($order_speak > $total_row_cont){
       redirect("speaking_second.php?test_id=".$test_id);
@@ -79,9 +79,9 @@
          <div class="time_record">
             <p id="time_re"></p>
             <div id="status"></div>
-            <div id="wami"></div>                      
-         </div> 
-         <?while($row_speaking = mysql_fetch_assoc($db_select_cont->result)){  ?>
+            <div id="wami"></div>
+         </div>
+         <?while($row_speaking = mysqli_fetch_assoc($db_select_cont->result)){  ?>
          <div id="speak_record">
             <div id="guide_speak">
                Click <img class="" src="<?=$var_path_ielt?>speak_mic.png" /> để ghi âm câu trả lời. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Click <img class="" src="<?=$var_path_ielt?>speak_record.png" /> để kết thúc câu trả lời và tự động chuyển câu hỏi.
@@ -95,7 +95,7 @@
                    'width': '660',
                    'height': '330',
                    'autoplay':true,
-                   'file': "http://<?=$base_url?>/data/ielt_speaking/<?=$row_speaking['iecon_audio']?>",              
+                   'file': "http://<?=$base_url?>/data/ielt_speaking/<?=$row_speaking['iecon_audio']?>",
                    'skin': 'http://<?=$base_url?>/mediaplayer/skins/blueratio/blueratio.xml',
                    'viral.allowmenu':false,
                    'viral.functions' : false,
@@ -114,11 +114,11 @@
                   <img style="display: none;margin-top: 5px;" id="wait_record" class="img_act_record cl_speak_act" src="<?=$var_path_ielt?>wait_stop.gif" />
                   <span id="bf_stop" class="sp_act_record">Stop</span>
                   <span style="display: none;" id="af_stop" class="sp_act_record">Waiting..</span>
-               </div>   
+               </div>
                <div id="btn_speak_part">
                   <img class="img_act_record" src="<?=$var_path_ielt?>speak_part.png" />
                   <span class="sp_act_record">Part 1 / 3</span>
-               </div>    
+               </div>
                <div id="btn_speak_guide">
                   <img class="img_act_record" src="<?=$var_path_ielt?>speak_guide.png" />
                   <span class="sp_act_record">Question <?=$order_speak?> / <?=$total_row_cont?></span>
@@ -136,17 +136,17 @@
 
 <script>
 /*********************************************************************************
-*Start record 
+*Start record
 *********************************************************************************/
-$(document).ready(function() { 
+$(document).ready(function() {
     window.document.onload = setup();
 });
 
-$("#start_record").click(function (){ 
+$("#start_record").click(function (){
    $("#btn_wait_record").show();
    $("#btn_speak_record").hide();
    window.document.onload = record();
-});  
+});
 
 $("#stop_record").click(function (){
    window.document.onload = stop();
@@ -163,17 +163,17 @@ $("#stop_record").click(function (){
 
 /*********************************************************************************
 *Function ghi am
-*********************************************************************************/  
+*********************************************************************************/
 
 function setup() {
    Wami.setup("wami");
 }
-function record() { 
+function record() {
    <?
       $_SESSION["record_first_speak_".$order_speak] = $name_file.".wav";
    ?>
    console.log(Wami);
-   Wami.startRecording('http://<?=$base_url?>/ielts/js/accessfile.php?name=<?=$name_file?>.wav');                    
+   Wami.startRecording('http://<?=$base_url?>/ielts/js/accessfile.php?name=<?=$name_file?>.wav');
 }
 function stop() {
    Wami.stopRecording();
@@ -184,12 +184,12 @@ function status(msg) {
 }
 
 /*********************************************************************************
-*Append time 
+*Append time
 *********************************************************************************/
 
-var hours = <?=$remainingHour?>  
-var minutes = <?=$remainingMinutes?>  
-var seconds = <?=$remainingSeconds?> 
+var hours = <?=$remainingHour?>
+var minutes = <?=$remainingMinutes?>
+var seconds = <?=$remainingSeconds?>
 function setCountDown ()
 {
    seconds--;
@@ -211,7 +211,7 @@ function setCountDown ()
    SD=window.setTimeout( "setCountDown()", 1000 );
    if(minutes == '00' && seconds == '00') { seconds = "00"; window.clearTimeout(SD);
       window.location = "http://hochay.vn";
-   } 
+   }
 }
 
 </script>

@@ -12,8 +12,8 @@ $cat_id        = getValue("cat_id");;
 $sql = '1';
 $menu 	= new menu();
 $listAll   = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",$sql . " AND lang_id = " . $lang_id . $sqlcategory,"cat_id,cat_name,cat_order,cat_type,cat_parent_id,cat_has_child","cat_order ASC, cat_name ASC","cat_has_child");
-$array_type_ad = array(1=>"Banner Slider",2=>"Banner Sidebar Right",3=>"Nhà tuyển dụng hàng đầu",4=>"Banner trang giới thiệu"); 
-$array_position = array(0=>"Mô tả bên trái",1=>"Mô tả bên phải");  
+$array_type_ad = array(1=>"Banner Slider",2=>"Banner Sidebar Right",3=>"Nhà tuyển dụng hàng đầu",4=>"Banner trang giới thiệu");
+$array_position = array(0=>"Mô tả bên trái",1=>"Mô tả bên phải");
 // Lay ra danh sach Level
 
 	/*
@@ -41,7 +41,7 @@ $array_position = array(0=>"Mô tả bên trái",1=>"Mô tả bên phải");
    $myform->addTable($fs_table);
    $action = getValue("action", "str", "POST", "");
    if($action == "execute"){
-   	$fs_errorMsg .= $myform->checkdata();      
+   	$fs_errorMsg .= $myform->checkdata();
       if($fs_errorMsg == ""){
          $uploadImg	= new upload("slide_img", $imgpath, $fs_extension, $fs_filesize);
          $filenameImg= $uploadImg->file_name;
@@ -50,12 +50,12 @@ $array_position = array(0=>"Mô tả bên trái",1=>"Mô tả bên phải");
             foreach($arr_resize as $type => $arr){
       		   resize_image($imgpath, $filenameImg, $arr["width"], $arr["height"], $arr["quality"], $type);
       		}
-   		}	
+   		}
          $fs_errorMsg .= $uploadImg->show_warning_error();
          if($fs_errorMsg == ""){
             $db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
-            redirect($fs_redirect);	
-         }         
+            redirect($fs_redirect);
+         }
    	}
    }
    $myform->addFormname("add_new");
@@ -65,15 +65,15 @@ $array_position = array(0=>"Mô tả bên trái",1=>"Mô tả bên phải");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM slides
                             WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -104,10 +104,10 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
       <?=$form->textarea("Mô tả ngắn", "slide_content", "slide_content", $slide_content, "Mô tả", 1, 250, 50, 255, "", "", "")?>
       <?=$form->getFile("Ảnh đại diện", "slide_img", "slide_img", "Chọn hình ảnh", 1, 40, "", "")?>
       <?=$form->text("Thứ tụ", "slide_order", "slide_order", $slide_order, "Thứ tự", 1, 250, 24, 255, "", "", "")?>
-  
+
       <?=$form->close_table();?>
       <?=$form->create_table();?>
-      <?=$form->checkbox("Kích hoạt", "slide_active", "slide_active", 1 ,$slide_active, "",0, "", "")?>  
+      <?=$form->checkbox("Kích hoạt", "slide_active", "slide_active", 1 ,$slide_active, "",0, "", "")?>
       <?=$form->checkbox("Nội dung Slide", "slide_content_invi", "slide_content_invi", 1 ,$slide_content_invi, "",0, "", "")?>
       <?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>
       <?=$form->hidden("action", "action", "execute", "");?>

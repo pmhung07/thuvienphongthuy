@@ -28,12 +28,12 @@ $fs_errorMsg		= "";
 	$myform = new generate_form();
 	$myform->add("listarm_name","listarm_name",0,0,"",1,"Bạn chưa nhập tên Huy hiệu!",0,"Huy hiệu này đã tồn tại !");
    $myform->add("listarm_exp","listarm_exp",1,0,"",1,"Bạn chưa nhập tên Huy hiệu!",0,"Huy hiệu này đã tồn tại !");
-	
+
 	//Add table insert data
 	$myform->addTable($fs_table);
    //Get action variable for add new data
    $action				= getValue("action", "str", "POST", "");
-   
+
    //Check $action for insert new data
    if($action == "execute"){
    	//Check form data
@@ -53,16 +53,16 @@ $fs_errorMsg		= "";
 
 
    	if($fs_errorMsg == ""){
-	   
+
    		//Insert to database
    		$myform->removeHTML(0);
    		$db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
          unset($db_ex);
    		//echo($fs_redirect);
    		//Redirect to:
-   		redirect($fs_redirect);		
+   		redirect($fs_redirect);
    	}//End if($fs_errorMsg == "")
-   	
+
    }//End if($action == "insert")
 
 
@@ -72,8 +72,8 @@ $fs_errorMsg		= "";
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
@@ -82,7 +82,7 @@ $fs_errorMsg .= $myform->strErrorField;
 $db_data 	= new db_query("SELECT * FROM " . $fs_table.
                            " WHERE " . $id_field . " = " . $record_id);
 
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}

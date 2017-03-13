@@ -7,40 +7,40 @@ checkAddEdit("edit");
    //Khai bao Bien
    $errorMsg = "";
    $fs_redirect = base64_decode(getValue("url","str","GET",base64_encode("listing.php")));
-   $record_id = getValue("record_id");    
-   
+   $record_id = getValue("record_id");
+
    $cat_parent_id = getValue("cat_parent_id","str","GET","");
    $com_cou_id = getValue("com_cou_id","str","GET","");
    $voc_det_id = getValue("voc_det_id","str","GET","");
-   
-   $db_dataVoca = new db_query("SELECT les_com_id,les_det_id,com_cou_id,com_id FROM  lesson_details,courses_multi 
+
+   $db_dataVoca = new db_query("SELECT les_com_id,les_det_id,com_cou_id,com_id FROM  lesson_details,courses_multi
                                 WHERE lesson_details.les_com_id = courses_multi.com_id
                                 AND   lesson_details.les_det_id = ".$record_id);
-   while($rowC = mysql_fetch_array($db_dataVoca->result)){
+   while($rowC = mysqli_fetch_array($db_dataVoca->result)){
       $les_com_id = $rowC['les_com_id'];
       $com_cou_id = $rowC['com_cou_id'];
-      
+
       $db_course = new db_query("SELECT courses.cou_cat_id,courses.cou_id FROM  courses,courses_multi
                                  WHERE courses.cou_id = courses_multi.com_cou_id
                                  AND courses_multi.com_id = ".$les_com_id);
-      while($rowD = mysql_fetch_array($db_course->result)){
+      while($rowD = mysqli_fetch_array($db_course->result)){
          $cat_parent_id = $rowD['cou_cat_id'];
-      }        
+      }
    }
    unset($db_dataVoca);
    unset($db_course);
-    
+
    $com_c_id = $com_cou_id;
-    
+
    $menu = new menu();
    $sql = '1';
    $listAll = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",$sql . " AND lang_id = " . $lang_id . $sqlcategory,"cat_id,cat_name,cat_order,cat_type,cat_parent_id,cat_has_child","cat_order ASC, cat_name ASC","cat_has_child");
    $sql1 = 'com_cou_id = -1';
-   if($com_c_id != '') $sql1 = 'com_cou_id = '.$com_c_id;   
+   if($com_c_id != '') $sql1 = 'com_cou_id = '.$com_c_id;
    if($com_c_id != "") $sqlUnit = new db_query("SELECT * FROM courses_multi WHERE com_cou_id = ".$com_c_id);
    //Call Class generate_form();
 	if($cat_parent_id != "")  $sqlCourse = new db_query("SELECT cou_id,cou_name,cou_lev_id FROM courses WHERE cou_cat_id = ".$cat_parent_id );
-    
+
    $myform = new generate_form();
    //Loại bỏ chuc nang thay the Tag Html
    $myform->removeHTML(0);
@@ -56,8 +56,8 @@ checkAddEdit("edit");
    $action	= getValue("action", "str", "POST", "");
    if($action == "execute"){
       //Check form data : kiêm tra lỗi
-      $fs_errorMsg .= $myform->checkdata();   
-      //kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database	
+      $fs_errorMsg .= $myform->checkdata();
+      //kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database
       if($fs_errorMsg == ""){
          $myform->removeHTML(0);
          $db_ex 	= new db_execute_return();
@@ -65,7 +65,7 @@ checkAddEdit("edit");
          redirect($fs_redirect);
          exit();
       }//End if($fs_errorMsg == "")
-   
+
    }//End if($action == "insert")
 	//add form for javacheck
 	$myform->addFormname("add_new");
@@ -76,13 +76,13 @@ checkAddEdit("edit");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
+<?
 $myform->checkjavascript();
 $errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM lesson_details WHERE les_det_id = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}
@@ -111,7 +111,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
                <select name="com_cou_id" id="com_cou_id"  class="form_control" style="width: 200px;" onChange="window.location.href='add.php?com_cou_id='+this.value+'&cat_parent_id=<?php echo $cat_parent_id; ?>'">
             	<option value="-1">- <?=translate_text("Chọn Course")?> - </option>
             	<?
-            	while($row = mysql_fetch_assoc($sqlCourse->result)){
+            	while($row = mysqli_fetch_assoc($sqlCourse->result)){
             	?>
             	<option value="<?=$row['cou_id']?>" <?php if($row['cou_id'] == $com_c_id ) echo "selected='selected'" ;   ?>  ><? echo nameLevel($row['cou_lev_id']).' -- '.$row['cou_name']?></option>
             	<? } ?>
@@ -124,7 +124,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
                <select name="les_com_id" id="les_com_id"  class="form_control" style="width: 200px;" >
                   <option value="-1">- <?=translate_text("Chọn Unit")?> - </option>
                   <?
-                  while($rowUnit = mysql_fetch_assoc($sqlUnit->result)){
+                  while($rowUnit = mysqli_fetch_assoc($sqlUnit->result)){
                   ?>
                   <option value="<?=$rowUnit['com_id']?>" <?php if($rowUnit['com_id'] == $les_com_id ) echo "selected='selected'" ;   ?>  ><? echo $rowUnit['com_name']?></option>
                   <? } ?>

@@ -11,19 +11,19 @@ $fs_errorMsg		= "";
 $after_save_data  = getValue("after_save_data", "str", "POST", "add_exercises.php");
 $fs_redirect      = $after_save_data;
 
-$myform = new generate_form();  
+$myform = new generate_form();
 $myform->add("high_paragraph", "high_paragraph", 0, 0, "",1, "Bạn chưa nhập đoạn văn", 0, "");
 $myform->add("high_tec_id", "iPara", 1, 1, 0, 0, "", 0, "");
 $myform->add("high_teque_id","iQues", 1, 1, 0, 0, "", 0, "");
 
 $myform->addTable("test_highlight");
 //Get action variable for add new data
-$action	  = getValue("action", "str", "POST", ""); 
+$action	  = getValue("action", "str", "POST", "");
 //Check $action for insert new data
-if($action == "execute"){      
-   if($fs_errorMsg == ""){    	
-   	$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi 
-      //thực hiện insert 
+if($action == "execute"){
+   if($fs_errorMsg == ""){
+   	$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi
+      //thực hiện insert
    	$db_insert = new db_execute($myform->generate_insert_SQL());
    	//unset biến để giải phóng bộ nhớ.
       unset($db_insert);
@@ -58,8 +58,8 @@ $fs_errorMsg .= $myform->strErrorField;
          <td width="" class="form_name">Highligh word :</td>
          <td width="800">
             <?
-            $db_para_select = new db_query("SELECT * FROM test_content WHERE tec_id = " . $iPara);  
-            if($row_para = mysql_fetch_assoc($db_para_select->result)){
+            $db_para_select = new db_query("SELECT * FROM test_content WHERE tec_id = " . $iPara);
+            if($row_para = mysqli_fetch_assoc($db_para_select->result)){
             $para = $row_para["tec_content"];
             ?>
             <?=$form->wysiwyg("<font class='form_asterisk'>*</font> Thông tin đề thi", "high_paragraph", $para , "../../resource/wysiwyg_editor/", 800, 250)?>
@@ -75,7 +75,7 @@ $fs_errorMsg .= $myform->strErrorField;
       $form->close_form();
       unset($form);
       ?>
-   </p>   
+   </p>
    <?=template_bottom() ?>
 </body>
 </html>

@@ -2,6 +2,10 @@
 require_once("session.php");
 //require_once("../functions/checkpostserver.php");
 
+// Bootstrap appliation
+require_once '../bootstrap/setup.php';
+require_once("../functions/app_functions.php");
+
 require_once("../functions/translate.php");
 require_once("../functions/functions.php");
 require_once("../classes/database.php");
@@ -24,7 +28,7 @@ if($action == "login" && $check_ip_exists == 1){
 	if($user_id != 0){
 		$isAdmin		= 0;
 		$db_isadmin	= new db_query("SELECT adm_isadmin, lang_id FROM admin_user WHERE adm_id = " . $user_id);
-		$row			= mysql_fetch_array($db_isadmin->result);
+		$row			= mysqli_fetch_array($db_isadmin->result);
 		if($row["adm_isadmin"] != 0) $isAdmin = 1;
 		//Set SESSION
 		//$_SESSION["Logged"]			= 1;
@@ -44,7 +48,7 @@ if($action == "login" && $check_ip_exists == 1){
 $logged = getValue("logged", "int", "SESSION", 0);
 $db_language			= new db_query("SELECT tra_text,tra_keyword FROM admin_translate");
 $langAdmin 				= array();
-while($row=mysql_fetch_assoc($db_language->result)){
+while($row=mysqli_fetch_assoc($db_language->result)){
 	$langAdmin[$row["tra_keyword"]] = $row["tra_text"];
 }
 ?>

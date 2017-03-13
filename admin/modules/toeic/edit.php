@@ -28,7 +28,7 @@ $listAll   = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",
 	9). Loi dua ra man hinh neu co duplicate
 	*/
    //$datetime =  date("Y-m-d g:i:s");
-   $myform = new generate_form(); 
+   $myform = new generate_form();
    $myform->add("toeic_name", "toeic_name", 0, 0, "", 1, "Bạn chưa nhập tên của đề thi", 0, "Đề thi này đã có trong cơ sở dữ liệu!");
    $myform->add("toeic_cat_id","cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,"");
    $myform->add("toeic_type","toeic_type",1,0,0,0);
@@ -41,8 +41,8 @@ $listAll   = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",
    //Check $action for insert new data
    if($action == "execute"){
    	//Check form data
-   	$fs_errorMsg .= $myform->checkdata();      
-   	if($fs_errorMsg == ""){ 	
+   	$fs_errorMsg .= $myform->checkdata();
+   	if($fs_errorMsg == ""){
    		$upload = new upload("toeic_image", $imgpath, $fs_extension, $fs_filesize );
    		$filename = $upload->file_name;
    		if($filename != ""){
@@ -58,8 +58,8 @@ $listAll   = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",
          //Lưu tag cho đề thi toeic (Group type:3, type:1)
          if($tags != '') save_tags($record_id,$tags,3,1);
    		//Redirect to:
-   		redirect($fs_redirect); 
-         unset($db_ex);		
+   		redirect($fs_redirect);
+         unset($db_ex);
    	}
    }
    $myform->addFormname("add_new");
@@ -69,14 +69,14 @@ $listAll   = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM toeic WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -101,10 +101,10 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
    <?=$form->errorMsg($fs_errorMsg)?>
    <?=$form->text("Tên đề thi", "toeic_name", "toeic_name", $toeic_name, "Tên đề thi", 1, 250, "", 255, "", "", "")?>
   	<?=$form->select_db_multi("Danh mục", "cat_id", "cat_id", $listAll, "cat_id", "cat_name", $toeic_cat_id, "Chọn danh mục", 1, "", 1, 0, "", "")?>
-   <?=$form->getFile("Hình ảnh", "toeic_image", "toeic_image", "Chọn hình ảnh", 0, 40, "", "")?>  
+   <?=$form->getFile("Hình ảnh", "toeic_image", "toeic_image", "Chọn hình ảnh", 0, 40, "", "")?>
    <?=$form->select("Dạng test", "toeic_type", "toeic_type", $arr_toeic_type, $toeic_name,"Lựa chọn dạng test",0,"","");?>
-   <?=$form->text("Tags", "toeic_tags", "toeic_tags", $toeic_tags, "Tags", 0, 450,24, 255, "", "", "<span  style=\"color: red;padding-left: 10px;\" >(Các từ khóa viết thường, cách nhau bằng dấu \",\")</span>")?>  
-   <?=$form->checkbox("Kích hoạt", "toeic_active", "toeic_active", 1 ,$toeic_active, "",0, "", "")?>  
+   <?=$form->text("Tags", "toeic_tags", "toeic_tags", $toeic_tags, "Tags", 0, 450,24, 255, "", "", "<span  style=\"color: red;padding-left: 10px;\" >(Các từ khóa viết thường, cách nhau bằng dấu \",\")</span>")?>
+   <?=$form->checkbox("Kích hoạt", "toeic_active", "toeic_active", 1 ,$toeic_active, "",0, "", "")?>
    <?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>
    <?=$form->hidden("action", "action", "execute", "");?>
    <?

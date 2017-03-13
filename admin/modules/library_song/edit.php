@@ -6,11 +6,11 @@ checkAddEdit("add");
 	//Khai bao Bien
 	$fs_redirect = base64_decode(getValue("url","str","GET",base64_encode("listing.php")));
 	$record_id   = getValue("record_id");
-   $tags        = getValue("lib_song_tags","str","POST",""); 
+   $tags        = getValue("lib_song_tags","str","POST","");
    $sql = "lib_cat_type = 3";
    $menu 	= new menu();
    $listAll = $menu->getAllChild("library_cate","lib_cat_id","lib_cat_parent_id","0",$sql . " AND lang_id = " . $lang_id . $sqlcategory,"lib_cat_id,lib_cat_name,lib_cat_order,lib_cat_type,lib_cat_parent_id,lib_cat_has_child","lib_cat_order ASC, lib_cat_name ASC","lib_cat_has_child");
-  	
+
    $myform = new generate_form();
    $errorMsg = "";
 	//Loại bỏ chuc nang thay the Tag Html
@@ -33,10 +33,10 @@ checkAddEdit("add");
 	//Get Action.
 	$action	= getValue("action", "str", "POST", "");
     if($action == "execute"){
-       
+
        //Check form data : kiêm tra lỗi
    	   $fs_errorMsg .= $myform->checkdata();
-       
+
        if($fs_errorMsg == ""){
     			$upload		= new upload("lib_song_image", $imgpath, $fs_extension, $fs_filesize);
     			$filename	= $upload->file_name;
@@ -46,16 +46,16 @@ checkAddEdit("add");
         			foreach($arr_resize as $type => $arr){
         					resize_image($imgpath, $filename, $arr["width"], $arr["height"], $arr["quality"], $type);
         				}
-        		}	
+        		}
     	   $fs_errorMsg .= $upload->show_warning_error();
             $uploadAudio = new upload("lib_song_url", $songpath, $fs_extension, $fs_filesize);
             $filenameAudio	= $uploadAudio->file_name;
             if($filenameAudio != ""){
                     delete_file($fs_table,"lib_song_id",$record_id,"lib_song_url",$songpath);
         			$myform->add("lib_song_url","filenameAudio",0,1,0,0);
-        		}	
+        		}
     	   $fs_errorMsg .= $uploadAudio->show_warning_error();
-    	//kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database	
+    	//kiểm tra chuỗi thông báo lỗi. Nếu ko có lỗi => thực hiện insert vào database
        if($fs_errorMsg == ""){
             $myform->removeHTML(0);
     		$db_ex 	= new db_execute_return();
@@ -66,7 +66,7 @@ checkAddEdit("add");
 			exit();
     		}
     	}//End if($fs_errorMsg == "")
-    	
+
     }//End if($action == "insert")
 	//add form for javacheck
 	$myform->addFormname("add_new");
@@ -77,13 +77,13 @@ checkAddEdit("add");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
+<?
 $myform->checkjavascript();
 $errorMsg .= $myform->strErrorField;
 
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM " . $fs_table . " WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
 	foreach($row as $key=>$value){
 		if($key!='lang_id' && $key!='admin_id') $$key = $value;
 	}
@@ -110,12 +110,12 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
    <?=$form->getFile("Bài hát", "lib_song_url", "lib_song_url", "Bài hát", 1, 30, "", "")?>
    <?=$form->textarea("Giới thiệu", "lib_song_info", "lib_song_info", $lib_song_info, "Giới thiệu", 1, 400, 60, "", "", "")?>
     <tr>
-        <td colspan="2"> 
+        <td colspan="2">
         <?=$form->wysiwyg("Lời tiếng anh", "lib_song_en", $lib_song_en,  "../../resource/wysiwyg_editor/", 800, 200)?>
         </td>
     </tr>
     <tr>
-        <td colspan="2"> 
+        <td colspan="2">
         <?=$form->wysiwyg("Lời tiếng việt", "lib_song_vi", $lib_song_vi, "../../resource/wysiwyg_editor/", 800, 200)?>
         </td>
     </tr>

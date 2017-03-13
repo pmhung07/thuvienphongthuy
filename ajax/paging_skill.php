@@ -41,8 +41,8 @@ if($iCategory != 0){
                                                 cat_id,
                                                 cat_name
                                            FROM skill_lesson a,
-                                                categories_multi b 
-                                          WHERE a.skl_les_cat_id = b.cat_id 
+                                                categories_multi b
+                                          WHERE a.skl_les_cat_id = b.cat_id
                                             AND skl_les_cat_id = ".$value." ORDER BY skl_les_order");
         $arrCoursesChild    =   $dbCourses->resultArray();
         $countSkill         +=   count($arrCoursesChild);
@@ -51,16 +51,16 @@ if($iCategory != 0){
     }
 
     // LIST ITEM
-    $countItemSkill = 1; 
+    $countItemSkill = 1;
     for($i = 0;$i < count($arrSkill);$i++){
-        for($j = 0;$j < count($arrSkill[$i]);$j++){ 
+        for($j = 0;$j < count($arrSkill[$i]);$j++){
 
             // COUNT LESSON SKILL
-            $dbLessonCount = new db_query('SELECT COUNT(skl_cont_id) 
-                                               AS count_lesson 
-                                             FROM skill_content 
+            $dbLessonCount = new db_query('SELECT COUNT(skl_cont_id)
+                                               AS count_lesson
+                                             FROM skill_content
                                             WHERE skl_cont_les_id = '.$arrSkill[$i][$j]['skl_les_id']);
-            $row_count = mysql_fetch_assoc($dbLessonCount->result);
+            $row_count = mysqli_fetch_assoc($dbLessonCount->result);
 
             $arrItemSkill[$countItemSkill] = array(
                 'skl_les_id'        => $arrSkill[$i][$j]['skl_les_id'],
@@ -69,8 +69,8 @@ if($iCategory != 0){
                 'cat_id'            => $arrSkill[$i][$j]['cat_id'],
                 'cat_name'          => $arrSkill[$i][$j]['cat_name'],
                 'count_lesson'      => $row_count['count_lesson']
-            ); 
-            $countItemSkill++; } 
+            );
+            $countItemSkill++; }
             unset($dbLessonCount);
     }
 }
@@ -81,15 +81,15 @@ $pageCount     	  = getValue('pageCount','int','POST',0);
 $num_new_list     = 9;
 if($page != 1){
     $startPage        = (($page-1) * $num_new_list) + 1;
-    $endPage          = (($page-1) * $num_new_list) + $num_new_list;   
+    $endPage          = (($page-1) * $num_new_list) + $num_new_list;
 }else{
     $startPage        = 1;
-    $endPage          = 9;  
+    $endPage          = 9;
 }
 
 $countItemNews = 1;
-for($start = $startPage;$start <= $endPage;$start++){ 
-    if(isset($arrItemSkill[$start]["skl_les_id"])){ 
+for($start = $startPage;$start <= $endPage;$start++){
+    if(isset($arrItemSkill[$start]["skl_les_id"])){
         $list_cou .= '<div class="content-show-courses">';
             $list_cou .= '<div class="content-show-courses-img">';
                 $list_cou .= '<a href="'.generate_skill_details_link($arrItemSkill[$start]["cat_id"],$arrItemSkill[$start]["cat_name"],$arrItemSkill[$start]["skl_les_id"],$arrItemSkill[$start]["skl_les_name"]).'">';
@@ -121,7 +121,7 @@ if($pageCount > 1){
   if($page > 1){
      $list_cou .= '<a title="'.($page - 1).'" class="a_paging listing_page_pre"> < </a>';
   }
-  
+
   if($pageCount > 10){
         if($page < 9){
            if($page < 6){
@@ -142,13 +142,13 @@ if($pageCount > 1){
               }
            }
            $list_cou .= '<a>…</a>';
-           for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+           for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
               $list_cou .= '<a class="a_paging" title="'.$j.'">'.$j.'</a>';
            }
         }else{
            $go_page = $page + 4;
            if($pageCount - $page > 8 && $go_page < $pageCount - 3){
-              for ($i=1; $i<=2; $i++) { 
+              for ($i=1; $i<=2; $i++) {
                  $list_cou .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
               }
               $list_cou .= '<a>…</a>';
@@ -161,12 +161,12 @@ if($pageCount > 1){
                  }
               }
               $list_cou .= '<a>…</a>';
-              for ($j = ($pageCount - 1); $j <= $pageCount; $j++) { 
+              for ($j = ($pageCount - 1); $j <= $pageCount; $j++) {
                  $list_cou .= '<a class="a_paging" title="'.$j.'">'.$j.'</a>';
               }
            }else{
               if($pageCount-$page < 6){
-                 for ($i=1; $i<=2; $i++) { 
+                 for ($i=1; $i<=2; $i++) {
                     $list_cou .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                  }
                  $list_cou .= '<a>…</a>';
@@ -179,7 +179,7 @@ if($pageCount > 1){
                  }
               }
               else{
-                 for ($i=1; $i<=2; $i++) { 
+                 for ($i=1; $i<=2; $i++) {
                     $list_cou .= '<a class="a_paging" title="'.$i.'">'.$i.'</a>';
                  }
                  $list_cou .= '<a>…</a>';
@@ -191,7 +191,7 @@ if($pageCount > 1){
                     }
                  }
               }
-  
+
            }
         }}else{
            for ($i= 1;$i<=$pageCount; $i++) {
@@ -202,7 +202,7 @@ if($pageCount > 1){
               }
            }
         }
-  
+
   if($page < $pageCount){
      $list_cou .= '<a title="'.($page + 1).'" class="a_paging listing_page_next"> > </a>';
   }

@@ -28,10 +28,10 @@ $record_id 		= getValue("record_id");
    $action = getValue("action", "str", "POST", "");
    if($action == "execute"){
    	$fs_errorMsg .= $myform->checkdata();
-   	if($fs_errorMsg == ""){	   	                
+   	if($fs_errorMsg == ""){
          	$myform->removeHTML(0);
          	$db_ex = new db_execute($myform->generate_update_SQL($id_field, $record_id));
-        	redirect($fs_redirect);	         
+        	redirect($fs_redirect);
    	}
    }
    $myform->addFormname("add_new");
@@ -41,15 +41,15 @@ $record_id 		= getValue("record_id");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?=$load_header?>
-<? 
-$myform->checkjavascript(); 
+<?
+$myform->checkjavascript();
 //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
 $myform->evaluate();
 $fs_errorMsg .= $myform->strErrorField;
 //lay du lieu cua record can sua doi
-$db_data 	= new db_query("SELECT * FROM kids_courses                       
+$db_data 	= new db_query("SELECT * FROM kids_courses
                             WHERE " . $id_field . " = " . $record_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -76,13 +76,13 @@ $fs_errorMsg .= $myform->strErrorField;
 	<p align="center" style="padding-left:10px;">
 	<?
 	$form = new form();
-  
+
 	$form->create_form("add", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
    $form->create_table();
 	?>
    <?=$form->text_note('<strong style="text-align:center;">----------Thêm mới khóa học-----------</strong>')?>
    <?=$form->text_note('Những ô có dấu sao (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
-   <?=$form->errorMsg($fs_errorMsg)?>	   
+   <?=$form->errorMsg($fs_errorMsg)?>
    <?=$form->text("Tên khóa học", "kcou_title", "kcou_title", $kcou_title, "Tên khóa học", 1, 250, 24, 255, "", "", "")?>
    <?=$form->textarea("Thông tin khóa học", "kcou_desc", "kcou_desc", $kcou_desc, "Thông tin khóa học", 1, 400, 60, "", "", "")?>
    <?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>

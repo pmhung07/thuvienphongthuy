@@ -8,13 +8,13 @@ checkAddEdit("add");
 	$record_id = getValue("record_id");
    $db_Main = new db_query("SELECT * FROM  main_lesson
 									 WHERE  main_det_id = ".$record_id." ORDER BY main_order");
-                                    
+
    $db_Lesson = new db_query("SELECT com_name,com_id,com_cou_id,les_com_id
       							   FROM  courses_multi,lesson_details
       							   WHERE courses_multi.com_id = lesson_details.les_com_id
                               AND   lesson_details.les_det_id = ".$record_id);
-                              
-   while($row_lesson = mysql_fetch_assoc($db_Lesson->result)){
+
+   while($row_lesson = mysqli_fetch_assoc($db_Lesson->result)){
       $nLesson = $row_lesson['com_name'];
       $nCourse  = $row_lesson['com_cou_id'];
       $iCoirse  = $row_lesson['com_id'];
@@ -27,7 +27,7 @@ checkAddEdit("add");
                                  ON(cou_lev_id = lev_id)
                                  WHERE cou_id ='.$nCourse.'
                                  GROUP BY cat_id');
-   $dbcate = mysql_fetch_assoc($db_cate->result);
+   $dbcate = mysqli_fetch_assoc($db_cate->result);
    unset($db_cate);
    $nCate =  $dbcate['cat_name'];
    $iCate =  $dbcate['cat_id'];
@@ -37,14 +37,14 @@ checkAddEdit("add");
    $db_course = new db_query("SELECT cou_id,cou_cat_id,cou_name,cou_lev_id
                               FROM  courses
                               WHERE  cou_id = ".$nCourse);
-                                 
-   while($row_course = mysql_fetch_assoc($db_course->result)){
+
+   while($row_course = mysqli_fetch_assoc($db_course->result)){
       $nCourse    = $row_course['cou_name'];
    } unset($db_course);
    //Khai bao mang kieu bai hoc chinh
    $array_main_type 		= array(0 => translate_text("Ẩn")
                                ,1 => translate_text("Hiển thị")
-                                );  
+                                );
    $myform 	= new generate_form();
    //Loại bỏ chuc nang thay the Tag Html
    $myform->removeHTML(0);
@@ -63,8 +63,8 @@ checkAddEdit("add");
     if($action == "execute"){
       $fs_errorMsg .= $myform->checkdata();
       if($fs_errorMsg == ""){
-         $upload1		    = new upload("main_media_url1", $imgpath, $fs_extension, $fs_filesize);       
-      	$filename1	= $upload1->file_name;    
+         $upload1		    = new upload("main_media_url1", $imgpath, $fs_extension, $fs_filesize);
+      	$filename1	= $upload1->file_name;
          if($filename1 != ""){
             $myform->add("main_media_url1","filename1",0,1,0,0);
             foreach($arr_resize as $type => $arr){
@@ -73,12 +73,12 @@ checkAddEdit("add");
          }
          $fs_errorMsg .= $upload1->show_warning_error();
          if($fs_errorMsg == ""){
-      		$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi 
+      		$myform->removeHTML(0);//loại bỏ  các ký tự html( 0 thi ko loại bỏ, 1: bỏ) tránh lỗi
       		$db_insert = new db_execute($myform->generate_insert_SQL());
-            unset($db_insert);       			
+            unset($db_insert);
       		redirect("listdetail.php?url=".base64_encode(getURL())."&record_id=".$record_id);
       	}
-      } 
+      }
    }
 	$myform->addFormname("add_new");
 	$myform->evaluate();
@@ -93,9 +93,9 @@ checkAddEdit("add");
    <body>
    <? /*------------------------------------------------------------------------------------------------*/ ?>
       <p class="head">- Thêm Bài học chính trong Unit : <span style="color: red;"><?=$nLesson?></span></p>
-      <p class="head head_cate"> 
-        <span style="padding: 0 12px;">- Khóa học : <span style="color: red;"><?=$nCourse?></span></span>   
-        
+      <p class="head head_cate">
+        <span style="padding: 0 12px;">- Khóa học : <span style="color: red;"><?=$nCourse?></span></span>
+
       </p>
       <table border="0" cellpadding="3" cellspacing="0" class="tablelist formdetail" width="90%">
       <?php $form = new form();
@@ -112,7 +112,7 @@ checkAddEdit("add");
                   foreach($array_main_type as $key => $value){
                ?>
                      <option value="<?=$key?>"><?=$value?></option>
-               <?      
+               <?
                   }
                ?>
             </select>
@@ -142,45 +142,45 @@ checkAddEdit("add");
       ?>
       </table>
       <p class="head_cate"></p>
-      
+
       <p class="head">- Danh sách Bài học có trong Lesson</p>
       <table border="1" cellpadding="3" cellspacing="0" class="tablelist" width="90%" bordercolor="#E3E3E3">
-      <tr class="head"> 
+      <tr class="head">
          <td class="bold bg" align="center" width="20">STT</td>
          <td class="bold bg" width="150"><?=translate_text("Nội dung tiếng anh")?></td>
          <td class="bold bg" width="150"><?=translate_text("Nội dung tiếng việt")?></td>
          <td class="bold bg" align="center" width="100">Media</td>
          <td class="bold bg" align="center" width="40">Order</td>
          <td class="bold bg" align="center" width="20" >Sửa</td>
-         <td class="bold bg" align="center" width="20" >Xóa</td>	
-         <td class="bold bg" align="center" width="20" >Preview</td>  	
+         <td class="bold bg" align="center" width="20" >Xóa</td>
+         <td class="bold bg" align="center" width="20" >Preview</td>
       </tr>
       <form action="quickedit.php?returnurl=<?=base64_encode(getURL())?>" method="post" name="form_listing" id="form_listing" enctype="multipart/form-data">
       <input type="hidden" name="iQuick" value="update" />
-       <? 
-   		
+       <?
+
    	$i=0;
       $j = 0;
-   	while($row = mysql_fetch_array($db_Main->result)){ $i++;
-       
+   	while($row = mysqli_fetch_array($db_Main->result)){ $i++;
+
    	?>
       <tr <? if($i%2==0) echo ' bgcolor="#FAFAFA"';?>>
          <td width="20"><?php echo $i ?></td>
          <td width="" align="left" >
             <textarea style="width: 300px;height: 100px;padding: 0px;">
             <?php echo removeHTML($row['main_content_en']); ?>
-            </textarea>  
+            </textarea>
          </td>
          <td width="" align="left" >
             <textarea style="width: 300px;height: 100px;">
             <?php echo removeHTML($row['main_content_vi']); ?>
-            </textarea>  
+            </textarea>
          </td>
          <td nowrap="nowrap">
-            <?php 
-            $url = $imgpath.$row['main_media_url1'];         
+            <?php
+            $url = $imgpath.$row['main_media_url1'];
             checkmedia_les($row['main_media_type'],$url);
-            ?>               
+            ?>
          </td>
          <td align="center" width="30">
          <input style="width:30px;background: #eee;" type="text" readonly="" value="<?=$row["main_order"]?>" />

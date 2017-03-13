@@ -24,7 +24,7 @@ $level_score_writing_abt = '';
 $cmt_score_writing = '';
 //Lay thong tin cua bai da thi
 $sqlUser = new db_query("SELECT * FROM test_result WHERE tesr_id = ".$tesr_id);
-if($row_user = mysql_fetch_assoc($sqlUser->result)){
+if($row_user = mysqli_fetch_assoc($sqlUser->result)){
    $user_id          = $row_user['tesr_user_id'];
    $score_reading    = $row_user['tesr_reading'];
    $score_listening  = $row_user['tesr_listening'];
@@ -91,7 +91,7 @@ if($score_writing >= 0 && $score_writing <= 13){
 }
 //Lay thong tin cua user
 $sqlInfo = new db_query("SELECT * FROM users WHERE use_id = ".$user_id);
-if($row_info = mysql_fetch_assoc($sqlInfo->result)){
+if($row_info = mysqli_fetch_assoc($sqlInfo->result)){
   $user_name = $row_info['use_name'];
   $use_gender = $row_info['use_gender'];
   $user_birth = date('d/m/Y',$row_info['use_birthdays']);
@@ -110,7 +110,7 @@ $message = '
 <html>
 <head>
 	<meta charset="utf-8"/>
-	
+
 <style>
 <!--
 	table{line-height:20px;//border:1px solid #000000;border-spacing:1px;}
@@ -156,10 +156,10 @@ $message = '
 								</tr>
 								<tr>
 									<td style="border:1px solid;border-bottom:none;padding-left:10px">
-																	
+
 									</td>
 								</tr>
-								
+
 								<tr>
 									<td colspan="2" border="1" style="border:1px solid;border-right:none;border-bottom:none;padding-left:10px;">
 										Registration Number: <span style="display:inline-block;background-color:#404040;color:#FFFFFF;padding-left:5px;padding-right:5px;line-height:18px">0000 0000 0000 0000</span>
@@ -181,7 +181,7 @@ $message = '
 								</tr>
 								<tr>
 									<td style="border:1px solid;border-right:none;padding-left:10px">
-										Date of Birth: 
+										Date of Birth:
 											<span style="display:inline-block;background-color:#404040;color:#FFFFFF;padding-left:5px;padding-right:5px;line-height:18px;">'.$user_birth.'</span>
 									</td>
 									<td style="border:1px solid;border-right:none;padding-left:10px">
@@ -238,12 +238,12 @@ $message = '
 				</table>
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td style="height:10px;border-bottom:1px dashed">
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td style="padding-top:20px;">
 				<table width="960" style="line-height:30px;border:1px solid;border-spacing:0px;font-size:15px">
@@ -274,9 +274,9 @@ $message = '
 						<td style="padding-left:50px;font-size:13px">'.$cmt_score_listening.'</td>
 					</tr>
 				</table>
-				
+
 				<br/>
-				
+
 				<table width="960" style="line-height:30px;border:1px solid;border-spacing:0px;font-size:15px">
 					<thead>
 						<tr style="background-color:#221E1F;color:#FFFFFF;text-align:center;">
@@ -301,7 +301,7 @@ $message = '
 						<tr>
 							<td style="padding:0 20px">Writing based on Academic Course Content</td>
 							<td style="padding-left:50px;font-size:13px">'.$cmt_speaking_1.'</td>
-						</tr>					
+						</tr>
 					</tbody>
 					<!---->
 					<tr style="background-color:#221E1F;color:#FFFFFF;text-align:center;font-size:15px;">
@@ -320,7 +320,7 @@ $message = '
 					<tr>
 						<td style="padding:0 20px">Writing based on Knowledge and Experience</td>
 						<td style="padding-left:50px;font-size:13px">'.$cmt_writing_2.'</td>
-					</tr>					
+					</tr>
 				</table>
 				<br/>
 			</td>
@@ -483,7 +483,7 @@ if($cmt_speaking_1 != '' && $cmt_speaking_2 != '' && $cmt_speaking_3 != '' && $c
    $isSuccess = $sendMail->send($message, $email, 'You');
    $db_ex = new db_execute("UPDATE test_result SET tesr_teach_success = 1 WHERE tesr_id = " . $tesr_id);
    if($isSuccess == true){
-      $msg = "Gửi mail thành công";   
+      $msg = "Gửi mail thành công";
    }else{
       $err = "Có lỗi xảy ra trong quá trình gửi mail!";
    }

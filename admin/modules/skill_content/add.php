@@ -2,7 +2,7 @@
 require_once("inc_security.php");
 //check quyền them sua xoa
 checkAddEdit("add");
-   
+
    //Khai bao Bien
    $fs_title = $module_name . " | Thêm mới";
    $add = "add.php";
@@ -13,7 +13,7 @@ checkAddEdit("add");
    $skl_cont_les_id = getValue("skl_cont_les_id","int","GET","");
    $skl_c_les_id = $skl_cont_les_id;
    $fs_errorMsg = "";
-   
+
    //Array type of Skill Content
    $arr_type = array( 1 => translate_text("Dạng 1"),
                       2 => translate_text("Dạng 2"),
@@ -25,12 +25,12 @@ checkAddEdit("add");
    $arr_mark = array( 0 => translate_text("Không chấm"),
                       1 => translate_text("Chấm ghi âm"),
                       2 => translate_text("Chấm bài viết"));
-   
+
    //Mang lua chon vi tri cua content
    $arr_pos = array(  1 => translate_text("Box1 (Top - Left)"),
                       2 => translate_text("Box2 (Top - Right)"),
-                      3 => translate_text("Box3 (Middle)"));                                           
-   
+                      3 => translate_text("Box3 (Middle)"));
+
    //List Danh muc
    $menu = new menu();
    $sql = '1';
@@ -38,8 +38,8 @@ checkAddEdit("add");
    $listAll = $menu->getAllChild("categories_multi","cat_id","cat_parent_id","0",$sql . " AND lang_id = " . $lang_id . $sqlcategory,"cat_id,cat_name,cat_order,cat_type,cat_parent_id,cat_has_child","cat_order ASC, cat_name ASC","cat_has_child");
    //========================================================================================//
 	if($cat_parent_id != "")  $sqlLesson	= new db_query("SELECT * FROM skill_lesson WHERE skl_les_cat_id = ".$cat_parent_id );
-   
-	$myform 		= new generate_form();    
+
+	$myform 		= new generate_form();
 	$myform->removeHTML(0);
    $myform->add("skl_cont_les_id", "skl_cont_les_id", 1, 0, 0, 1, "Bạn chưa chọn bài học", 0, "");
 	$myform->add("skl_cont_title","skl_cont_title",0,0,"",0,"",0,"");
@@ -50,12 +50,12 @@ checkAddEdit("add");
    $myform->add("skl_cont_order","skl_cont_order",1,0,0,1,"Bạn chưa nhập thứ tự cho Content",0,"");
    $myform->add("skl_cont_active","skl_cont_active",1,0,0,0,"",0,"");
 	$myform->addTable($fs_table);
-	
+
 	//Get Action.
 	$action	= getValue("action", "str", "POST", "");
    if($action == "execute"){
       //Check form data : kiêm tra lỗi
-   $fs_errorMsg .= $myform->checkdata();	
+   $fs_errorMsg .= $myform->checkdata();
       if($fs_errorMsg == ""){
       	$myform->removeHTML(0);
       	$db_insert = new db_execute($myform->generate_insert_SQL());
@@ -71,7 +71,7 @@ checkAddEdit("add");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <?=$load_header?>
-<? 
+<?
    $myform->checkjavascript();
    $fs_errorMsg .= $myform->strErrorField;
 ?>
@@ -89,14 +89,14 @@ checkAddEdit("add");
    <?//=$form->text_note('<strong style="text-align:center;">----------Thêm mới bài học chính-----------</strong>')?>
 	<?=$form->text_note('Những ô dấu (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
 	<?=$form->errorMsg($fs_errorMsg)?>
-	<?=$form->select_db_multi("Chọn danh mục", "cat_parent_id", "cat_parent_id", $listAll, "cat_id", "cat_name", $cat_parent_id, "Chọn danh mục", 1, "", 1, 0, "onChange=\"window.location.href='add.php?cat_parent_id='+this.value\"", "")?> 
+	<?=$form->select_db_multi("Chọn danh mục", "cat_parent_id", "cat_parent_id", $listAll, "cat_id", "cat_name", $cat_parent_id, "Chọn danh mục", 1, "", 1, 0, "onChange=\"window.location.href='add.php?cat_parent_id='+this.value\"", "")?>
    <tr>
       <td align="right" nowrap="" class="form_name"><font class="form_asterisk">* </font> <?=translate_text("Chọn bài học")?> :</td>
       <td>
          <select name="skl_cont_les_id" id="skl_cont_les_id"  class="form_control" style="width: 200px;">
          	<option value="-1">- <?=translate_text("Chọn bài học")?> - </option>
          	<?
-         	while($row = mysql_fetch_assoc($sqlLesson->result)){
+         	while($row = mysqli_fetch_assoc($sqlLesson->result)){
          	?>
          	<option value="<?=$row['skl_les_id']?>" <?if($row['skl_les_id'] == $skl_c_les_id) echo "selected='selected'";?>><?=$row['skl_les_name']?></option>
             <?} ?>
@@ -112,7 +112,7 @@ checkAddEdit("add");
             foreach($arr_type as $key => $value){
             ?>
                <option value="<?=$key?>">-<?=$value?>- </option>
-            <?   
+            <?
             }
             ?>
          </select>
@@ -142,7 +142,7 @@ checkAddEdit("add");
             foreach($arr_mark as $key => $value){
             ?>
                <option value="<?=$key?>">-<?=$value?>- </option>
-            <?   
+            <?
             }
             ?>
          </select>
@@ -156,7 +156,7 @@ checkAddEdit("add");
             foreach($arr_pos as $key => $value){
             ?>
                <option value="<?=$key?>">-<?=$value?>- </option>
-            <?   
+            <?
             }
             ?>
          </select>

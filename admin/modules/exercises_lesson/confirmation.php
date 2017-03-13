@@ -14,24 +14,24 @@ $fs_action = getURL();
 */
 $arr_type_question = array(1 => "|-- Multi choice" , 2 => "|-- Fill word (Điền từ)" , 3 => "|-- Drag and drop (Kéo thả)");
 
-//=====Get information=====/ 
+//=====Get information=====/
 $sql_course = "";
 if($record_id >0){
    $sql_course = "SELECT * FROM " . $fs_table . " INNER JOIN courses_multi ON exe_com_id = com_id
-                                                  INNER JOIN courses ON com_cou_id = cou_id 
+                                                  INNER JOIN courses ON com_cou_id = cou_id
                                                   WHERE exe_id = ".$record_id;
    $db_course_select = new db_query($sql_course);
-   $db_course = mysql_fetch_assoc($db_course_select->result);
+   $db_course = mysqli_fetch_assoc($db_course_select->result);
 }
 $db_cate       = new db_query('SELECT cat_name,cat_id
                                  FROM categories_multi
                                  WHERE cat_id='.$db_course['cou_cat_id']);
-$dbcate        = mysql_fetch_assoc($db_cate->result);
+$dbcate        = mysqli_fetch_assoc($db_cate->result);
 unset($db_cate);
 $db_level      = new db_query('SELECT lev_name
                                  FROM levels
                                  WHERE lev_id='.$db_course['cou_lev_id']);
-$dblevel       = mysql_fetch_assoc($db_level->result);
+$dblevel       = mysqli_fetch_assoc($db_level->result);
 unset($db_level);
 $link = generate_preview_link($dbcate['cat_name'],$dblevel['lev_name'],$db_course['com_name'],$db_course['cou_id'],$db_course['com_id'],'quiz');
 //========Array for checkout type questions============//
@@ -39,7 +39,7 @@ $arr_get_typeques = array();
 //Get Type questions
 $db_select_type = new db_query("SELECT * FROM questions STRAIGHT_JOIN exercises ON que_exe_id = exe_id WHERE exe_id = ".$record_id." GROUP BY que_type");
 $i = 0;
-while($row_a = mysql_fetch_assoc($db_select_type->result)){
+while($row_a = mysqli_fetch_assoc($db_select_type->result)){
    $arr_get_typeques[$i] = $row_a["que_type"];
    $i++;
 }
@@ -47,7 +47,7 @@ unset($db_select_type);
 //=====Get list question=====/
 $total			   = new db_count("SELECT 	count(*) AS count FROM questions WHERE que_exe_id = ".$record_id);
 $db_ques_select   = new db_query("SELECT * FROM questions WHERE que_exe_id = ".$record_id ." AND que_type = 1 GROUP BY que_id DESC");
-$total_row        = mysql_num_rows($db_ques_select->result);
+$total_row        = mysqli_num_rows($db_ques_select->result);
 
 /*--------------------------------------------------------------------------------------------------------*/
 
@@ -62,34 +62,34 @@ $total_row        = mysql_num_rows($db_ques_select->result);
    <div id="confirm_order">
       <div id="wr_detail">
          <?//==============================INFO===================================?>
-         
+
          <div id="wr_detail_info">
-            <?if($row =	mysql_fetch_assoc($db_course_select->result)){?>
+            <?if($row =	mysqli_fetch_assoc($db_course_select->result)){?>
             <p class="p_info">
                <b>Khóa học : </b><b class="b_info"><?=$row["cou_name"]?></b>
                <b> -  Unit : </b><b class="b_info"><?=$row["com_name"]?></b>
-            </p>     
+            </p>
             <?}unset($db_course_select)?>
          </div>
-          
+
          <?//=========================CHOOSE QUESTION TYPE=========================?>
          <div id="wr_detail_answer">
-         
+
             <?//==========================TITLE========================?>
-            
+
             <div id="detail_title">
                <select class="form_control" style="width: 402px;" name="unit_select" id="unit_select">
                   <option value="-1"> - Chọn dạng câu hỏi - </option>
                   <?foreach($arr_type_question as $id=>$name){
-                     if(!in_array($id,$arr_get_typeques) && $arr_get_typeques != Null) continue;    
+                     if(!in_array($id,$arr_get_typeques) && $arr_get_typeques != Null) continue;
                   ?>
    						<option value="<?=$id?>"><?=$name?></option>
    					<?}?>
                </select>
             </div>
-            
+
             <?//====================MULTI CHOICE TYPE ==================?>
-            
+
             <div id="multi_choice" style="display: none;">
                <?
                $form = new form();
@@ -120,7 +120,7 @@ $total_row        = mysql_num_rows($db_ques_select->result);
                            <input type="text" name="ans_4" id="ans_4" class="form_control" style="width:205px;" value=""/>
                            <input type="radio" name="rdo" id="rdo_4" class="form_control" value="0" onclick="check_rdo_true(4)" />
                         </li>
-                     </ul>                 
+                     </ul>
                   </td>
                </tr>
                <tr>
@@ -133,9 +133,9 @@ $total_row        = mysql_num_rows($db_ques_select->result);
             	unset($form);
             	?>
             </div>
-            
+
             <?//================== FILLWORD TYPE=================?>
-            
+
             <div id="fill_word" style="display: none;">
                <? echo'<a style="padding:5px 0px 5px 6px;text-decoration:underline;float:left;" title="Nhập đoạn văn" class="thickbox noborder a_detail" href="fill_word.php?&record_id='. $record_id .'&que_type	= 2&url='. base64_encode(getURL()) . '&TB_iframe=true&amp;height=350&amp;width=950" /><b style="padding-left:6px;">Nhập đoạn văn</b></a>';?>
                <?/*
@@ -166,9 +166,9 @@ $total_row        = mysql_num_rows($db_ques_select->result);
             	$form->close_form();
             	unset($form);
             	?>
-               
+
                <hr />
-               <?/*  Nhập theo đoạn văn 
+               <?/*  Nhập theo đoạn văn
                <?
                $form = new form();
             	$form->create_form("add_v", $fs_action, "post", "multipart/form-data",'onsubmit="validateForm(); return false;"');
@@ -195,7 +195,7 @@ $total_row        = mysql_num_rows($db_ques_select->result);
             	?>
                */?>
             </div>
-            
+
             <?/*//Drag and Drop*/?>
             <div id="drag" style="display: none;">
                <? echo'<a style="padding:5px 0px 5px 6px;text-decoration:underline;float:left;" title="Nhập đoạn văn" class="thickbox noborder a_detail" href="fill_word.php?&record_id='. $record_id .'&que_type	= 3&url='. base64_encode(getURL()) . '&TB_iframe=true&amp;height=350&amp;width=950" /><b style="padding-left:6px;">Nhập đoạn văn</b></a>';?>
@@ -206,22 +206,22 @@ $total_row        = mysql_num_rows($db_ques_select->result);
                <p>• Không sửa "_____" khi sửa nội dung câu hỏi .</p>
             </div>-->
          </div>
-         
+
          <?//=========================QUESTION LIST==========================?>
-         
-         <div id="wr_list_answer">       
+
+         <div id="wr_list_answer">
             <div id="list_title">Danh sách câu hỏi - Dạng multi choice</div>
             <table class="table_info_exe">
                <tr style="background-color: #eee;">
                   <th width="30">STT</th>
                   <th width="500">Nội dung câu hỏi</th>
                   <th width="500">Nội dung câu trả lời</th>
-               </tr>            
+               </tr>
                <?
                $i = 0;
-               while($row_ques = mysql_fetch_assoc($db_ques_select->result)){$i++;?>
+               while($row_ques = mysqli_fetch_assoc($db_ques_select->result)){$i++;?>
                <tr style="">
-                  <td style="background: #A9BAD0;" align="center"><?=$i?></td>               
+                  <td style="background: #A9BAD0;" align="center"><?=$i?></td>
                   <td style="background: #A9BAD0;">
                      <input size="30" class="ans_content" id="ques_content_<?=$row_ques['que_id']?>" name="ans_content" value="<?=$row_ques['que_content']?>"/>
                      <a class="ans_edit" onclick="save_question(<?=$row_ques['que_id']?>)">Save</a>
@@ -234,33 +234,33 @@ $total_row        = mysql_num_rows($db_ques_select->result);
                   </td>
                   <td style="background: #A9BAD0;">
                      <?
-                     $db_ans_select = new db_query("SELECT * FROM answers INNER JOIN questions ON ans_ques_id = que_id 
-                                                    WHERE ans_ques_id  = ". $row_ques["que_id"]);  
-                     while($row_ans = mysql_fetch_assoc($db_ans_select->result)){
+                     $db_ans_select = new db_query("SELECT * FROM answers INNER JOIN questions ON ans_ques_id = que_id
+                                                    WHERE ans_ques_id  = ". $row_ques["que_id"]);
+                     while($row_ans = mysqli_fetch_assoc($db_ans_select->result)){
                      ?>
                         <input size="30" id="ans_content_<?=$row_ans['ans_id']?>" class="ans_content" name="ans_content" value="<?=$row_ans['ans_content']?>"/>
                         <input type="radio" <?=($row_ans['ans_true'] == 1)? "checked=''":""?> class="rdo_check_true" onclick="set_true(<?=$row_ans['ans_id']?>,<?=$row_ques['que_id']?>)" id="ans_ques_<?=$row_ans['ans_id']?>" name="ans_<?=$row_ques['que_id']?>" value=""/>
                         <a class="ans_edit" onclick="save_answers(<?=$row_ans['ans_id']?>)">Save</a>
                         <a class="ans_del" onclick="del_answers(<?=$row_ans['ans_id']?>)">Delete</a>
-                     <?}unset($db_ans_select);?> 
+                     <?}unset($db_ans_select);?>
                      <?if($row_ques['que_type'] == 1){?>
-                        <div id="dv_add_action">  
-                           <div id="dv_add_action_invi_<?=$row_ques['que_id']?>" class="dv_add_action_invi"> 
+                        <div id="dv_add_action">
+                           <div id="dv_add_action_invi_<?=$row_ques['que_id']?>" class="dv_add_action_invi">
                               <input size="30" id="add_ans_content_<?=$row_ques['que_id']?>" class="ans_content" name="ans_content" value="<?=$row_ans['ans_content']?>"/>
                               <a class="ans_add" onclick="add_ans_multi(<?=$row_ques['que_id']?>)">Add</a>
-                              <a class="ans_close" onclick="">Close</a>  
+                              <a class="ans_close" onclick="">Close</a>
                            </div>
                            <a onclick="add_show(<?=$row_ques['que_id']?>)" class="add_action">+</a>
-                        </div> 
-                     <?}?>           
-                  </td>        
+                        </div>
+                     <?}?>
+                  </td>
                </tr>
                <?}unset($db_ques_select);?>
             </table>
-         </div>            
-         
-         <?//Question list Fillword?>         
-         <div id="wr_list_answer">       
+         </div>
+
+         <?//Question list Fillword?>
+         <div id="wr_list_answer">
             <div id="list_title">Danh sách câu hỏi - Dạng Fill word</div>
             <table class="table_info_exe">
                <tr style="background-color: #eee;">
@@ -269,14 +269,14 @@ $total_row        = mysql_num_rows($db_ques_select->result);
                   <th width="20">Edit</th>
                   <th width="20">Delete</th>
                </tr>
-               <? 
-               $db_ans_select = new db_query("SELECT * FROM questions WHERE que_type = 2 AND que_exe_id  = ". $record_id);  
+               <?
+               $db_ans_select = new db_query("SELECT * FROM questions WHERE que_type = 2 AND que_exe_id  = ". $record_id);
                $i = 0;
-               while($row_ans = mysql_fetch_assoc($db_ans_select->result)){
+               while($row_ans = mysqli_fetch_assoc($db_ans_select->result)){
                $i++;
                ?>
                <tr>
-                  <td style="background: #A9BAD0;" align="center"><?=$i?></td> 
+                  <td style="background: #A9BAD0;" align="center"><?=$i?></td>
                   <td style="background: white;"><?=str_replace("|","___",$row_ans["que_content"])?></td>
                   <td style="background: #A9BAD0;" align="center"><a class="text" href="edit_fill_word.php?que_id=<?=$row_ans["que_id"]?>&record_id=<?=$record_id?>&returnurl=<?=base64_encode(getURL())?>"><img src="<?=$fs_imagepath?>edit.png" alt="EDIT" border="0"/></a></td>
                   <td style="background: #A9BAD0;" align="center"><img src="<?=$fs_imagepath?>delete.gif" alt="DELETE" border="0" onClick="if (confirm('Are you sure to delete?')){ window.location.href='del_fill_word.php?record_id=<?=$record_id?>&que_id=<?=$row_ans["que_id"]?>&returnurl=<?=base64_encode(getURL())?>'}" style="cursor:pointer"/></td>
@@ -284,9 +284,9 @@ $total_row        = mysql_num_rows($db_ques_select->result);
                <?}unset($db_ans_select)?>
             </table>
          </div>
-         
-         <?//Question list Fillword?>         
-         <div id="wr_list_answer">       
+
+         <?//Question list Fillword?>
+         <div id="wr_list_answer">
             <div id="list_title">Danh sách câu hỏi - Dạng Drag and drop</div>
             <table class="table_info_exe">
                <tr style="background-color: #eee;">
@@ -295,14 +295,14 @@ $total_row        = mysql_num_rows($db_ques_select->result);
                   <th width="20">Edit</th>
                   <th width="20">Delete</th>
                </tr>
-               <? 
-               $db_ans_select = new db_query("SELECT * FROM questions WHERE que_type = 3 AND que_exe_id  = ". $record_id);  
+               <?
+               $db_ans_select = new db_query("SELECT * FROM questions WHERE que_type = 3 AND que_exe_id  = ". $record_id);
                $i = 0;
-               while($row_ans = mysql_fetch_assoc($db_ans_select->result)){
+               while($row_ans = mysqli_fetch_assoc($db_ans_select->result)){
                $i++;
                ?>
                <tr>
-                  <td align="center"><?=$i?></td> 
+                  <td align="center"><?=$i?></td>
                   <td><?=str_replace("|","___",$row_ans["que_content"])?></td>
                   <td align="center"><a class="text" href="edit_fill_word.php?que_id=<?=$row_ans["que_id"]?>&record_id=<?=$record_id?>&returnurl=<?=base64_encode(getURL())?>"><img src="<?=$fs_imagepath?>edit.png" alt="EDIT" border="0"/></a></td>
                   <td align="center"><img src="<?=$fs_imagepath?>delete.gif" alt="DELETE" border="0" onClick="if (confirm('Are you sure to delete?')){ window.location.href='del_fill_word.php?record_id=<?=$record_id?>&que_id=<?=$row_ans["que_id"]?>&returnurl=<?=base64_encode(getURL())?>'}" style="cursor:pointer"/></td>
@@ -311,7 +311,7 @@ $total_row        = mysql_num_rows($db_ques_select->result);
             </table>
          </div>
          <div id="wr_list_answer" style="margin: none; border: none; margin-left: 11px; margin-top: 12px;text-align: center; "><a target="_black" href="<?=$link?>" style="padding: 5px; background: #ddd; border-radius: 2px; text-decoration: none;">Preview</a></div>
-         
+
       </div>
    </div>
 </body>
@@ -359,10 +359,10 @@ $('.ans_close').click(function (){
 //=============================================================
 $('#unit_select').change(function (){
    var iUnit =	$("#unit_select").val();
-   if(iUnit == 1){$('#multi_choice').show();$('#drag').hide();$('#fill_word').hide();} 
-   if(iUnit == 2){$('#fill_word').show();$('#multi_choice').hide();$('#drag').hide();} 
-   if(iUnit == 3){$('#drag').show();$('#multi_choice').hide();$('#fill_word').hide();} 
-});  
+   if(iUnit == 1){$('#multi_choice').show();$('#drag').hide();$('#fill_word').hide();}
+   if(iUnit == 2){$('#fill_word').show();$('#multi_choice').hide();$('#drag').hide();}
+   if(iUnit == 3){$('#drag').show();$('#multi_choice').hide();$('#fill_word').hide();}
+});
 
 //=============================================================
 function add_show(ans_id){
@@ -371,27 +371,27 @@ function add_show(ans_id){
 
 //=================ADD MULTI CHOICE TYPE=======================
 
-function add_multi_choice(exe_id){ 
+function add_multi_choice(exe_id){
    if($('#question').val() == ""){
       alert("Bạn chưa nhập câu hỏi");
       return false;
-   } 
+   }
    if($('#ans_1').val() == ""){
       alert("Bạn chưa nhập câu trả lời : A");
       return false;
-   } 
+   }
    if($('#ans_2').val() == ""){
       alert("Bạn chưa nhập câu trả lời : B");
       return false;
-   } 
+   }
    if($('#ans_3').val() == ""){
       alert("Bạn chưa nhập câu trả lời : C");
       return false;
-   } 
+   }
    if($('#ans_4').val() == ""){
       alert("Bạn chưa nhập câu trả lời : D");
       return false;
-   } 
+   }
 
    var ans_1 = $('#ans_1').val();
    var ans_2 = $('#ans_2').val();
@@ -424,7 +424,7 @@ function add_multi_choice(exe_id){
       url:'multi_choice.php',
       success:function(data){
       	if(data.err == ''){
-      		alert(data.msg);	
+      		alert(data.msg);
       		window.location.reload();
       	}else{
       		alert(data.err);
@@ -437,12 +437,12 @@ function add_drag(exe_id){
    if($('#ques_drag_head').val() == ""){
       alert("Bạn chưa nhập câu hỏi");
       return false;
-   }  
+   }
    if($('#ans_drag').val() == ""){
       alert("Bạn chưa nhập câu trả lời");
       return false;
-   }  
-   
+   }
+
    var ans_drag = $('#ans_drag').val();
    var ques_head = $('#ques_drag_head').val();
    var ques_end = $('#ques_drag_end').val();
@@ -460,7 +460,7 @@ function add_drag(exe_id){
       url:'drag.php',
       success:function(data){
       	if(data.err == ''){
-      		alert(data.msg);	
+      		alert(data.msg);
       		window.location.reload();
       	}else{
       		alert(data.err);
@@ -474,12 +474,12 @@ function add_drag_v(exe_id){
    if($('#ques_drag_v').val() == ""){
       alert("Bạn chưa nhập câu hỏi");
       return false;
-   }  
+   }
    if($('#ans_drag_v').val() == ""){
       alert("Bạn chưa nhập câu trả lời");
       return false;
-   }  
-   
+   }
+
    var ans_drag = $('#ans_drag_v').val();
    var ques_drag = $('#ques_drag_v').val();
    var type_ques = $('#unit_select').val();
@@ -495,7 +495,7 @@ function add_drag_v(exe_id){
       url:'drag_v.php',
       success:function(data){
       	if(data.err == ''){
-      		alert(data.msg);	
+      		alert(data.msg);
       		window.location.reload();
       	}else{
       		alert(data.err);
@@ -517,7 +517,7 @@ function save_question(que_id){
 		url:'edit_ans_ques.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -540,7 +540,7 @@ function save_explain(que_id){
 		url:'edit_explain.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -559,7 +559,7 @@ function del_question(que_id){
 		url:'del_ans_ques.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -582,7 +582,7 @@ function save_answers(ans_id){
 		url:'edit_ans_ques.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -601,7 +601,7 @@ function del_answers(ans_id){
 		url:'del_ans_ques.php',
 		success:function(data){
 			if(data.err == ''){
-				alert(data.msg);	
+				alert(data.msg);
 				window.location.reload();
 			}else{
 				alert(data.err);
@@ -622,7 +622,7 @@ function set_true(ans_id,ans_ques_id){
       url:'set_true.php',
       success:function(data){
       	if(data.err == ''){
-      		alert(data.msg);	
+      		alert(data.msg);
       		window.location.reload();
       	}else{
       		alert(data.err);
@@ -642,7 +642,7 @@ $.ajax({
    url:'add_ans_ques.php',
    success:function(data){
    	if(data.err == ''){
-   		alert(data.msg);	
+   		alert(data.msg);
    		window.location.reload();
    	}else{
    		alert(data.err);

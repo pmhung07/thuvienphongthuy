@@ -8,9 +8,9 @@ checkAddEdit("edit");
    $que_id 		      = getValue("que_id");
    $record_id 		   = getValue("record_id");
 
-   $myform = new generate_form();  
+   $myform = new generate_form();
    $myform->add("que_content", "que_content", 0, 0, "",1, "Bạn chưa nhập đoạn văn", 0, "");
-	
+
 	//Add table insert data
 	$myform->addTable("questions");
    //Get action variable for add new data
@@ -18,14 +18,14 @@ checkAddEdit("edit");
    //Check $action for insert new data
    if($action == "execute"){
    	//Check form data
-   	$fs_errorMsg .= $myform->checkdata();      
-   	if($fs_errorMsg == ""){ 	
+   	$fs_errorMsg .= $myform->checkdata();
+   	if($fs_errorMsg == ""){
    		$myform->removeHTML(0);
    		$db_ex = new db_execute($myform->generate_update_SQL("que_id",$que_id));
-   		redirect("confirmation.php?record_id=".$record_id);	
-   	}	
+   		redirect("confirmation.php?record_id=".$record_id);
+   	}
    }
-   
+
    $myform->addFormname("add_new");
    $myform->evaluate();
    $myform->checkjavascript();
@@ -36,10 +36,10 @@ checkAddEdit("edit");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <?=$load_header?>
-<? 
+<?
 //lay du lieu cua record can sua doi
 $db_data 	= new db_query("SELECT * FROM questions WHERE que_id = " . $que_id);
-if($row 		= mysql_fetch_assoc($db_data->result)){
+if($row 		= mysqli_fetch_assoc($db_data->result)){
    foreach($row as $key=>$value){
    	if($key!='lang_id' && $key!='admin_id') $$key = $value;
    }
@@ -70,7 +70,7 @@ if($row 		= mysql_fetch_assoc($db_data->result)){
       $form->close_form();
       unset($form);
       ?>
-   </p>   
+   </p>
    <?=template_bottom() ?>
 </body>
 </html>

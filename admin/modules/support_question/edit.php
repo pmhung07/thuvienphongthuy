@@ -1,18 +1,18 @@
     <?
     include("inc_security.php");
     checkAddEdit("edit");
-    
+
     $fs_title			= $module_name . " | Sửa đổi";
     $fs_action			= getURL();
     $fs_errorMsg		= "";
-    
+
     $fs_redirect 	= base64_decode(getValue("url","str","GET",base64_encode("listing.php")));
     $record_id 		= getValue("record_id");
     //Call class menu - lay ra danh sach Category
     $sql = 'scat_type = 0';
     $menu 									= new menu();
     $listAll 								= $menu->getAllChild("support_category","scat_id","scat_parent_id","0",$sql . " AND lang_id = " . $lang_id . $sqlcategory,"scat_id,scat_name,scat_order,scat_type,scat_parent_id,scat_has_child","scat_order ASC, scat_name ASC","scat_has_child");
-    
+
     /*
     Call class form:
     1). Ten truong
@@ -26,7 +26,7 @@
     9). Loi dua ra man hinh neu co duplicate
     */
     $myform = new generate_form();
-    $myform->add("ssha_cat_id","ssha_cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,""); 
+    $myform->add("ssha_cat_id","ssha_cat_id",1,0,0,1,"Bạn chưa chọn danh mục",0,"");
     $myform->add("ssha_title", "ssha_title", 0, 0, "", 1, "Bạn chưa nhập tiêu đề ", 0, "");
     $myform->add("ssha_content","ssha_content", 0, 0,"", 1, "Bạn chưa nhập nội dung", 0, "");
     $myform->add("ssha_active","ssha_active",1,0,0,0,"",0,"");
@@ -51,23 +51,23 @@
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <?=$load_header?>
-    <? 
-    $myform->checkjavascript(); 
+    <?
+    $myform->checkjavascript();
     //chuyển các trường thành biến để lấy giá trị thay cho dùng kiểu getValue
     $myform->evaluate();
     $fs_errorMsg .= $myform->strErrorField;
     //lay du lieu cua record can sua doi
-    $db_data 	= new db_query("SELECT * FROM ".$fs_table." 
-                                INNER JOIN support_category ON support_share.ssha_cat_id = support_category.scat_id 
+    $db_data 	= new db_query("SELECT * FROM ".$fs_table."
+                                INNER JOIN support_category ON support_share.ssha_cat_id = support_category.scat_id
                                 WHERE " . $id_field . " = " . $record_id);
-    if($row 		= mysql_fetch_assoc($db_data->result)){
+    if($row 		= mysqli_fetch_assoc($db_data->result)){
         foreach($row as $key=>$value){
             if($key!='lang_id' && $key!='admin_id') $$key = $value;
         }
     }else{
         exit();
     }
-    
+
     ?>
     </head>
     <body>
@@ -84,7 +84,7 @@
     <?=$form->text_note('Những ô có dấu sao (<font class="form_asterisk">*</font>) là bắt buộc phải nhập.')?>
     <?=$form->errorMsg($fs_errorMsg)?>
     <?=$form->select_db_multi("Danh mục", "ssha_cat_id", "ssha_cat_id", $listAll, "scat_id", "scat_name", $ssha_cat_id, "Chọn danh mục", 1, "", 1, 0, "", "")?>
-    <?=$form->text("Tiêu đề", "ssha_title", "ssha_title", $ssha_title, "Tiêu đề", 1, 250, "", 255, "", "", "")?> 
+    <?=$form->text("Tiêu đề", "ssha_title", "ssha_title", $ssha_title, "Tiêu đề", 1, 250, "", 255, "", "", "")?>
     <?=$form->textarea("Nội dung câu hỏi","ssha_content","ssha_content",$ssha_content,'',1,400,100)?>
     <?=$form->checkbox("Kích hoạt", "ssha_active", "ssha_active", 1 ,$ssha_active, "",0, "", "")?>
     <?=$form->button("submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "submit" . $form->ec . "reset", "Cập nhật" . $form->ec . "Làm lại", "Cập nhật" . $form->ec . "Làm lại", 'style="background:url(' . $fs_imagepath . 'button_1.gif) no-repeat"' . $form->ec . 'style="background:url(' . $fs_imagepath . 'button_2.gif)"', "");?>

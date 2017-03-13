@@ -12,7 +12,7 @@ $list          = new fsDataGird($id_field,$name_field,translate_text("Countries 
 $arr_city      = array(0=>'Chọn thành phố');
 $db_city       = new db_query('SELECT *
                               FROM provinces');
-while($row = mysql_fetch_array($db_city->result)){
+while($row = mysqli_fetch_array($db_city->result)){
 	$arr_city[$row["id"]] = $row["name"];
 }
 unset($db_city);
@@ -45,16 +45,16 @@ $list->addSearch(translate_text("Tỉnh"),"sho_province","array",$arr_city,"sho_
 //$list->quickEdit = false;
 $list->ajaxedit($fs_table);
 //tính tổng các rows trong csdl để phục vụ phân trang
-$total			= new db_count("SELECT 	count(*) AS count 
+$total			= new db_count("SELECT 	count(*) AS count
 										 FROM ".$fs_table."
                                WHERE 1".$sqlSearch);
-//câu lệnh select dữ liêu						 
-$db_listing 	= new db_query("SELECT * FROM ".$fs_table." 
+//câu lệnh select dữ liêu
+$db_listing 	= new db_query("SELECT * FROM ".$fs_table."
 								 		 WHERE 1".$sqlSearch
 									   . " ORDER BY " . $list->sqlSort() . "sho_id DESC "
                               .	$list->limit($total->total));
-                                 
-$total_row = mysql_num_rows($db_listing->result);
+
+$total_row = mysqli_num_rows($db_listing->result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -70,26 +70,26 @@ $total_row = mysql_num_rows($db_listing->result);
    <?
    $i = 0;
    //thực hiện lênh select csdl
-   while($row	=	mysql_fetch_assoc($db_listing->result)){
+   while($row	=	mysqli_fetch_assoc($db_listing->result)){
    $i++;
         $db_districts = new db_query('SELECT * FROM districts WHERE id = '.$row['sho_district']);
-        $districts = mysql_fetch_assoc($db_districts->result);unset($db_districts);
+        $districts = mysqli_fetch_assoc($db_districts->result);unset($db_districts);
         $db_provinces = new db_query('SELECT * FROM provinces WHERE id = '.$row['sho_province']);
-        $provinces = mysql_fetch_assoc($db_provinces->result);unset($db_provinces);                   
-   ?>    
+        $provinces = mysqli_fetch_assoc($db_provinces->result);unset($db_provinces);
+   ?>
       <?=$list->start_tr($i, $row[$id_field])?>
       <td width="250" class="bold" align="center">
          <input type="text" style="width: 240px;color: red;" value="<?=$row[$name_field]?>" />
-      </td>  
+      </td>
       <td width="250" class="bold" align="center">
          <p><?=$districts['name'].' - '.$provinces['name']?></p>
-      </td>   
+      </td>
       <td width="250" class="bold" align="center">
          <input type="text" style="width: 240px;color: red;" value="<?=$row['sho_address']?>" />
-      </td>   
+      </td>
       <td width="100" class="bold" align="center">
          <input type="text" style="width: 100px;color: red;" value="<?=$row['sho_phone']?>" />
-      </td>   
+      </td>
       <td align="center"><?=date("d/m/Y",$row['sho_date'])?></td>
       <?=$list->showCheckbox("sho_negative", $row["sho_negative"], $row[$id_field])?>
       <?=$list->showCheckbox("sho_active", $row["sho_active"], $row[$id_field])?>
@@ -98,7 +98,7 @@ $total_row = mysql_num_rows($db_listing->result);
       <?=$list->end_tr()?>
    <?
      }
-   ?>  
+   ?>
    <?=$list->showFooter($total_row)?>
 </div>
 <? /*---------Body------------*/ ?>
