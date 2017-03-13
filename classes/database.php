@@ -27,13 +27,13 @@ class db_init{
 	function db_init(){
  		// Khai bao Server localhost day
 
-		$this->server	 					= config('db_host');
+		$this->server	 					= config('database.db_host');
 		//$this->username 					= "sql_hochay";
 		//$this->database					= "db_hochay";
 		//$this->passworddb					= 'lfdsjlvnslfdslfhs2q'; //matj khau server ape
-		$this->username 					= config('db_username');
-		$this->database				   		= config('db_database');
-		$this->passworddb					= config('db_password'); //matj khau server ape
+		$this->username 					= config('database.db_username');
+		$this->database				   		= config('database.db_database');
+		$this->passworddb					= config('database.db_password'); //matj khau server ape
 
 		if($_SERVER['SERVER_NAME'] == 'localhost'){
 			$this->cookie_server			= '/'; //cau hinh server luu cookie
@@ -124,7 +124,7 @@ class db_query{
 
 		$dbinit       = new db_init();
 		//Khai bao connect
-		$this->links  = @mysql_connect($dbinit->server, $dbinit->username, $dbinit->passworddb);
+		$this->links  = mysqli_connect($dbinit->server, $dbinit->username, $dbinit->passworddb, $dbinit->database);
 		//Neu khong ket noi duoc
 		if(!$this->links){
 
@@ -141,11 +141,10 @@ class db_query{
 			exit();
 		}
 
-		$db_select    = mysql_select_db($dbinit->database,$this->links);
 		$time_start   = $this->microtime_float();
 
-		@mysql_query("SET NAMES 'utf8'");
-		$this->result = @mysql_query($query, $this->links);
+		mysqli_query($this->links, "SET NAMES 'utf8'");
+		$this->result = mysqli_query($this->links, $query);
 
 		$time_end     = $this->microtime_float();
 		$time         = $time_end - $time_start;
@@ -167,8 +166,8 @@ class db_query{
 		if (!$this->result){
 			//ghi ra log loi query
 			$path    = $_SERVER['DOCUMENT_ROOT'] . "/logs/";
-			$error   = @mysql_error($this->links);
-			@mysql_close($this->links);
+			$error   = mysqli_error($this->links);
+			mysqli_close($this->links);
 		 	$dbinit->log("error_sql", $error . "\n" . $query);
 			die( $error . ": " . $query);
 		}
@@ -186,7 +185,7 @@ class db_query{
 	 */
 	function resultArray($field_id = ""){
 		$arrayReturn = array();
-		while($row = mysql_fetch_assoc($this->result)){
+		while($row = mysqli_fetch_assoc($this->result)){
 			if($field_id != ""){
 				$arrayReturn[$row[$field_id]] = $row;
 			}else{
@@ -204,9 +203,9 @@ class db_query{
 	 * @return
 	 */
 	function close(){
-		@mysql_free_result($this->result);
+		mysqli_free_result($this->result);
 		if ($this->links){
-			@mysql_close($this->links);
+			mysqli_close($this->links);
 		}
 	}
 
@@ -248,22 +247,21 @@ class db_execute{
 	function db_execute($query, $file_line_query = ""){
 
 		$dbinit       = new db_init();
-        $this->links  = @mysql_connect($dbinit->server, $dbinit->username, $dbinit->passworddb);
-		@mysql_select_db($dbinit->database);
-		@mysql_query("SET NAMES 'utf8'");
-		@mysql_query($query);
+        $this->links  = mysqli_connect($dbinit->server, $dbinit->username, $dbinit->passworddb, $dbinit->database);
+		mysqli_query($this->links, "SET NAMES 'utf8'");
+		mysqli_query($this->links, $query);
 
 		//kiem tra thanh cong hay chua
-		$this->total = @mysql_affected_rows();
+		$this->total = mysqli_affected_rows($this->links);
 
 		//neu ket qua query thuc thi khong thanh cong tru truong hop insert ignore
 		if($this->total < 0 && strpos($query, "IGNORE") === false ){
-			$error = @mysql_error($this->links);
-			@mysql_close($this->links);
+			$error = mysqli_error($this->links);
+			mysqli_close($this->links);
             //ghi log
 			$dbinit->log("error_sql", $file_line_query . " " . $error . "\n" . $query);
 		}
-		@mysql_close($this->links);
+		mysqli_close($this->links);
 
 		//ghi query ra log de kiem tra
 		$dbinit->debug_query($query, $file_line_query);
@@ -294,7 +292,7 @@ class db_count{
 	function db_count($sql){
 		$db_ex    = new db_query($sql);
 
-		if( $row = mysql_fetch_assoc($db_ex->result)){
+		if( $row = mysqli_fetch_assoc($db_ex->result)){
 			$this->total = intval($row["count"]);
 		}else{
 			$this->total = 0;
@@ -330,32 +328,32 @@ class db_execute_return{
 	function db_execute($query, $file_line_query = ""){
 
 		$dbinit       =   new db_init();
-		$this->links  =   @mysql_connect($dbinit->server, $dbinit->username, $dbinit->passworddb);
-		@mysql_select_db($dbinit->database);
+		$this->links  =   mysqli_connect($dbinit->server, $dbinit->username, $dbinit->passworddb);
+		mysqli_select_db($this->links, $dbinit->database);
 
 
-		@mysql_query("SET NAMES 'utf8'");
-		@mysql_query($query);
+		mysql_query($this->links, "SET NAMES 'utf8'");
+		mysql_query($this->links, $query);
 
-		$total        =   @mysql_affected_rows();
+		$total =   mysqli_affected_rows();
 
 		//neu ket qua khong thanh cong và khong phai là insert ignore
 		if($total < 0 && strpos($query, "IGNORE") === false ){
 
-			$error = @mysql_error($this->links);
-			@mysql_close($this->links);
+			$error = mysqli_error($this->links);
+			mysqli_close($this->links);
 
 			$dbinit->log("error_sql", $file_line_query . " " . $error . "\n" . $query);
 		}
 
 		$last_id      =   0;
-		$this->result = @mysql_query("select LAST_INSERT_ID() as last_id",$this->links);
+		$this->result = mysqli_query("select LAST_INSERT_ID() as last_id",$this->links);
 
-		if($row = @mysql_fetch_array($this->result)){
+		if($row = mysqli_fetch_array($this->result)){
 			$last_id = $row["last_id"];
 		}
 
-		@mysql_close($this->links);
+		mysqli_close($this->links);
 
 		//ghi query ra log de kiem tra
 		$dbinit->debug_query($query, $file_line_query);

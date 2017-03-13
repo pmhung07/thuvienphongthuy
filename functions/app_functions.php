@@ -33,3 +33,26 @@ if( ! function_exists('array_get') ) {
         return $array;
     }
 }
+
+
+if( ! function_exists('_debug') ) {
+    function _debug($data) {
+
+        echo '<pre style="background: #000; color: #fff; width: 100%; overflow: auto">';
+        echo '<div>Your IP: ' . $_SERVER['REMOTE_ADDR'] . '</div>';
+
+        $debug_backtrace = debug_backtrace();
+        $debug = array_shift($debug_backtrace);
+
+        echo '<div>File: ' . $debug['file'] . '</div>';
+        echo '<div>Line: ' . $debug['line'] . '</div>';
+
+        if(is_array($data) || is_object($data)) {
+            print_r($data);
+        }
+        else {
+            var_dump($data);
+        }
+        echo '</pre>';
+    }
+}

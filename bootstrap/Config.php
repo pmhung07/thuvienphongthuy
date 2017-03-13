@@ -8,10 +8,10 @@ class Config {
 
     public function __construct()
     {
-        $configPath = __DIR__ . '../config';
+        $configPath =realpath(dirname(__DIR__)) . '/config';
         foreach(glob($configPath . '/*.php') as $file) {
             $config = require($file);
-            $configName = str_replace('.php', '', $config);
+            $configName = str_replace('.php', '', basename($file));
             $this->configs[$configName] = $config;
         }
     }

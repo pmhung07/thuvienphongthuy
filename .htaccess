@@ -1,0 +1,71 @@
+RewriteEngine On
+
+RewriteCond %{HTTP_USER_AGENT} libwww-perl.*
+RewriteRule .* – [F,L]
+
+RewriteCond %{HTTP_HOST} ^XXX\.XXX\.XXX\.XXX
+RewriteRule (.*) http://www.thuvienphongthuy.vn/$1 [R=301,L]
+
+##RewriteCond %{HTTP_HOST} !^www.
+##RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ http%{ENV:protossl}://%1%{REQUEST_URI} [L,R=301]
+
+##Rewrite TiengAnh2020##
+
+RewriteRule 404.html$ /home/404.php [L]
+
+RewriteRule ^home.htm$ /home/index.php [L]
+RewriteRule ^introduce.htm$ /home/module.php?module=introduce [L]
+RewriteRule ^course-details-lrn.htm$ /home/module.php?module=coursedetails [L]
+
+RewriteRule ^courses.htm$ /home/module.php?module=coursecategory&iCategory=$1&nCategory=$2 [L]
+RewriteRule ^courses/([^/]*)/([^/]*).htm$ /home/module.php?module=coursecategory&iCategory=$1&nCategory=$2 [L]
+RewriteRule ^courses/info/([^/]*)/([^/]*).htm$ /home/module.php?module=courseinfo&iCourses=$1&nCourses=$2 [L]
+RewriteRule ^courses/lesson/([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*).htm$ /home/module.php?module=courselesson&iCourses=$1&nCourses=$2&iUnit=$3&iTab=$4&nUnit=$5 [L]
+RewriteRule ^courses/lesson/([^/]*)/([^/]*).htm$ /home/module.php?module=courselesson&iCourses=$1&nCourses=$2&iUnit=$3&iTab=$4&nUnit=$5 [L]
+
+
+RewriteRule ^cv/([^/]*)/([^/]*).htm$ /home/module.php?module=cvcategory&iCategory=$1&nCategory=$2 [L]
+RewriteRule ^cvs/([^/]*)/c([^/]*)p([^/]*).htm$ /home/module.php?module=cvcategorydetails&nCv=$1&iCategory=$2&iCv=$3 [L]
+
+RewriteRule ^news.htm$ /home/module.php?module=newcategory&iCategory=$1&nCategory=$2 [L]
+RewriteRule ^news/([^/]*)/([^/]*).htm$ /home/module.php?module=newcategory&iCategory=$1&nCategory=$2 [L]
+RewriteRule ^news/s/([^/]*)/c([^/]*)p([^/]*).htm$ /home/module.php?module=newcategorydetails&nNews=$1&iCategory=$2&iNews=$3 [L]
+
+##Rewrite cho phần Regiter và Login , Logout , Active User##
+RewriteRule ^login.htm$ /home/module.php?module=login [L]
+RewriteRule ^logout.htm$ /home/module.php?module=logout [L]
+RewriteRule ^login/google.htm$ /home/login_google.php [L]
+RewriteRule ^login/facebook.htm$ /home/login_facebook.php [L]
+RewriteRule ^activate/([^/]*)/([^/]*)$ /home/active_acc.php?e=$1&sec=$2 [L]
+
+##Rewrite cho phần Payment ##
+RewriteRule ^payment.html$ /home/module.php?module=payment [L]
+RewriteRule ^payment/method.html$ /home/module.php?module=paymentMethod [L]
+RewriteRule ^request-bk$ /includes/payment/request_bk.php [L]
+RewriteRule ^bpn$ /home/bpn.php [L]
+
+##Rewrite cho phần UserInfo ##
+RewriteRule ^user/info.html$ /home/module.php?module=user&mod=userInfo [L]
+RewriteRule ^user/assistant.html$ /home/module.php?module=user&mod=userAssistant [L]
+RewriteRule ^user/myas.html$ /home/module.php?module=user&mod=userMypractice [L]
+RewriteRule ^user/mes.html$ /home/module.php?module=user&mod=userMes [L]
+RewriteRule ^user/mesAdmin.html$ /home/module.php?module=user&mod=userMesAdmin [L]
+RewriteRule ^user/mesAdminTeach.html$ /home/module.php?module=user&mod=userMesAdminTeach [L]
+RewriteRule ^user/userExp.html$ /home/module.php?module=user&mod=userExp [L]
+RewriteRule ^user/userAcc.html$ /home/module.php?module=user&mod=userAcc [L]
+RewriteRule ^user/SendMesTeach.html$ /home/module.php?module=user&mod=SendMesTeach [L]
+
+RewriteRule ^userview/view-info/([^/]*).html$ /home/module.php?module=userViewInfo&mod=userViewInfo&uId=$1 [L]
+
+##Cac loi cho nguoi dung va boot truy cap##
+#Bad requestch
+ErrorDocument 400 /404error.html
+#Can pass de truy cap - it quen redirect
+ErrorDocument 401 /404error.html
+#403 – Forbidden
+ErrorDocument 403 /404error.html
+#500 – Internal Server Error
+ErrorDocument 500 /404error.html
