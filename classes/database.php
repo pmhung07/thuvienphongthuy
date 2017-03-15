@@ -335,7 +335,7 @@ class db_execute_return{
 		mysqli_query($this->links, "SET NAMES 'utf8'");
 		mysqli_query($this->links, $query);
 
-		$total =   mysqli_affected_rows();
+		$total =   mysqli_affected_rows($this->links);
 
 		//neu ket qua khong thanh cong và khong phai là insert ignore
 		if($total < 0 && strpos($query, "IGNORE") === false ){
@@ -347,7 +347,7 @@ class db_execute_return{
 		}
 
 		$last_id      =   0;
-		$this->result = mysqli_query("select LAST_INSERT_ID() as last_id",$this->links);
+		$this->result = mysqli_query($this->links, "select LAST_INSERT_ID() as last_id");
 
 		if($row = mysqli_fetch_array($this->result)){
 			$last_id = $row["last_id"];
