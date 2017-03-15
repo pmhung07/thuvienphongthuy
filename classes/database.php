@@ -325,15 +325,15 @@ class db_execute_return{
 	 * @param string $file_line_query : Loi se ghi
 	 * @return int :ID duoc them vao cuoi cung.
 	 */
-	function __construct($query, $file_line_query = ""){
+	function db_execute($query, $file_line_query = ""){
 
 		$dbinit       =   new db_init();
 		$this->links  =   mysqli_connect($dbinit->server, $dbinit->username, $dbinit->passworddb);
 		mysqli_select_db($this->links, $dbinit->database);
 
 
-		mysql_query($this->links, "SET NAMES 'utf8'");
-		mysql_query($this->links, $query);
+		mysqli_query($this->links, "SET NAMES 'utf8'");
+		mysqli_query($this->links, $query);
 
 		$total =   mysqli_affected_rows();
 
