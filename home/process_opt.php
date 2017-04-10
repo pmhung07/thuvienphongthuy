@@ -15,8 +15,8 @@ function execPostRequest($url, $data)
     return $result;
 }
 
-$access_key = "9bss21ok10ncransrvgd";           // access_key được cấp bởi 1pay, thay bằng access_key của bạn
-$secret = "s8j6qu3fhvj11gnqdq6f4o7gylzuacmc";               // secret key được cấp bởi 1pay, thay bằng secret_key của bạn
+$access_key = "y6on5orl74p9x5inje3w";           // access_key được cấp bởi 1pay, thay bằng access_key của bạn
+$secret = "ji0rstmx6zxuxn1duxl2ycqnivja03iy";               // secret key được cấp bởi 1pay, thay bằng secret_key của bạn
                                                                               // bạn thay bằng return_url của bạn
 $msisdn = $_POST['msisdn'];   // request_transaction
 $amount = $_POST['amount'];    // >10000

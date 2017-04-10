@@ -81,7 +81,7 @@ if($nLanguage == "vi"){
     <div class="content">
         <div class="content-main">
             <a href="http://<?=$base_url?>">
-                <img class="imglogo" src="http://www.phongthuyvuong.com/templates/sj_vinda/images/logo.png">
+                <img class="imglogo" src="http://phongthuyvuong.com/themes/tamnguyen/images/logo_home.png">
             </a>
         </div>
     </div>

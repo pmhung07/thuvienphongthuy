@@ -23,7 +23,7 @@ $access_key = isset($_GET["access_key"]) ? $_REQUEST["access_key"] : NULL;
 $amount = isset($_GET["amount"]) ? $_REQUEST["amount"] : NULL;
 $cv_id = isset($_GET["cv_id"]) ? $_REQUEST["cv_id"] : NULL;
   //$access_key = "yaz93veaf8qmwahshoo5";           // access_key được cấp bởi 1pay, thay bằng access_key của bạn
-$secret = "s8j6qu3fhvj11gnqdq6f4o7gylzuacmc";               // secret key được cấp bởi 1pay, thay bằng secret_key của bạn
+$secret = "ji0rstmx6zxuxn1duxl2ycqnivja03iy";               // secret key được cấp bởi 1pay, thay bằng secret_key của bạn
 
 $data = "access_key=".$access_key."&otp=".$otp."&requestId=".$requestId."&transId=".$transId;
 
@@ -44,20 +44,17 @@ $errorCode = $decode_bankCharging["errorCode"];
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>Học Tiếng Anh Online, Tiếng Anh giao tiếp, thi TOEIC, IELTS, TOEFL</title>
+<title>Thư viện phong thuỷ :: Kiến thức phong thủy · Thiết kế Phong thủy · Câu chuyện Phong thủy · Kiến thức Tử vi · Phần mềm Phong thủy · Nhân Tướng Học · Tổng hợp · Sách...</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Học tiếng Anh Online, Tiếng Anh giao tiếp, luyện thi TOEFL, IELTS, TOEIC, kỹ năng Tiếng Anh, Tiếng Anh phổ thông, tiếng anh văn phòng, tiếng Anh trẻ em">
-<meta name="keywords" content="Học tiếng Anh online, khóa học tiếng Anh, luyện thi TOEIC, IELTS, TOEFL, Ngữ pháp tiếng Anh, Từ vựng tiếng Anh, CLB tiếng Anh">
+<meta name="description" content="Kiến thức phong thủy · Thiết kế Phong thủy · Câu chuyện Phong thủy · Kiến thức Tử vi · Phần mềm Phong thủy · Nhân Tướng Học · Tổng hợp · Sách...">
+<meta name="keywords" content="Kiến thức phong thủy · Thiết kế Phong thủy · Câu chuyện Phong thủy · Kiến thức Tử vi · Phần mềm Phong thủy · Nhân Tướng Học · Tổng hợp · Sách...">
 <meta property="og:url" content="http://<?=$base_url?>/">
-<meta property="og:title" content="Tienganh2020.com - Học Tiếng Anh Online, học Tiếng Anh chất lượng cao">
-<meta property="og:description" content="Học Tiếng Anh trực tuyến, học ngoại ngữ online, luyện giao tiếp Tiếng Anh, luyện thi TOEFL,IELTS,TOEIC, luyện kỹ năng Tiếng Anh">
+<meta property="og:title" content="Thư viện phong thuỷ - Kiến thức phong thủy · Thiết kế Phong thủy · Câu chuyện Phong thủy · Kiến thức Tử vi · Phần mềm Phong thủy · Nhân Tướng Học · Tổng hợp · Sách...">
+<meta property="og:description" content="Kiến thức phong thủy · Thiết kế Phong thủy · Câu chuyện Phong thủy · Kiến thức Tử vi · Phần mềm Phong thủy · Nhân Tướng Học · Tổng hợp · Sách...">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://<?=$base_url?>/themes_v2/images/logo_fav.jpg">
-<meta property="og:site_name" content="tienganh2020.com">
-
-<link rel="icon" type="image/x-icon" href="http://<?=$base_url?><?=$var_path_img?>favicon.ico" />
-<link rel="shortcut icon" href="http://<?=$base_url?><?=$var_path_img?>favicon.ico" />
+<meta property="og:site_name" content="thuvienphongthuy.vn">
 
 <?=$var_general_css?>
 <?=$var_general_js?>
