@@ -66,13 +66,13 @@ $order_id = 'CV_u'.$myuser->u_id.'_'.str_pad(rand(0, pow(10, $digits)-1), $digit
                                 <span class="request_sms">XÁC NHẬN</span>
                             </div>
                         </div>
-                                                <div style="padding: 10px;
-    background: #e4ffff;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 13px;">
-<a target="_blank" href="http://<?=$base_url?>/data/cover_letters/<?=$arrCv[0]['cv_data']?>">Tải xuống</a>
-</div>
+                        <!--<div style="padding: 10px;
+                        background: #e4ffff;
+                        text-align: center;
+                        text-transform: uppercase;
+                        font-size: 13px;">
+                        <a target="_blank" href="http://<?=$base_url?>/data/cover_letters/<?//=$arrCv[0]['cv_data']?>">Tải xuống</a>
+                        </div>-->
                     </div>
                 </div>
             </div>
